@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" standalone="no" ?>
+<GUI onOpen="onOpen" onClose="onClose" onCreate="onCreate">
+
+    <GuiElement type="bitmap" profile="yesNoDialogBg" size="740px 540px" screenAlign="topCenter" positionOrigin="topCenter">
+        <GuiElement type="bitmap" profile="dialogHeaderDocked">
+            <GuiElement type="text" profile="dialogHeaderText" text="gui_ad_colorSettingsTitle" textUpperCase="false" id="headerText" visible="true" onCreate="onCreateAutoDriveHeaderText" />
+        </GuiElement>
+
+        <GuiElement type="empty" profile="autoDriveNotificationHistoryNavigationBox" >
+
+            <GuiElement type="list" profile="autoDriveNotificationHistoryList" position="10px -160px" onSelectionChanged="onListSelectionChanged" onDoubleClick="onDoubleClick" id="autoDriveColorList">
+                <GuiElement type="listItem" profile="autoDriveNotificationHistoryListItem" id="listItemTemplate">
+                    <GuiElement type="text" profile="autoDriveNotificationHistoryItemText" text="Color text" name="listItemText" />
+                </GuiElement>
+            </GuiElement>
+
+            <GuiElement type="bitmap" profile="verticalGlassListSliderBackground" size="28px 530px" >
+                <GuiElement type="slider" profile="verticalGlassListSlider" size="16px 518px" dataElementId="autoDriveColorList" handleFocus="false" />
+            </GuiElement>
+        </GuiElement>
+
+        <GuiElement type="flowLayout" profile="buttonBoxDocked">
+            <GuiElement type="button" profile="buttonBack" text="$l10n_button_back" onClick="onClickBack" />
+            <GuiElement type="button" profile="buttonOK" text="gui_ad_button_export" onClick="onClickOk" textUpperCase="false" onCreate="onCreateAutoDriveText1" />
+            <!-- <GuiElement type="button" profile="buttonCancel" text="$l10n_button_reset" onClick="onClickReset" /> -->
+            <GuiElement type="button" profile="buttonCancel" text="button_reset_selected" onClick="onClickReset" textUpperCase="false" onCreate="onCreateAutoDriveText2" />
+            
+        </GuiElement>
+    </GuiElement>
+</GUI>
