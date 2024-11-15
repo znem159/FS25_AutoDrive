@@ -197,14 +197,21 @@ function AutoDrive:loadMap(name)
 		if gameXmlFile ~= nil then
 			if hasXMLProperty(gameXmlFile, "game.development.controls") then
 				AutoDrive.developmentControls = Utils.getNoNil(getXMLBool(gameXmlFile, "game.development.controls"), AutoDrive.developmentControls)
+			else
+				AutoDrive.errorMsg(nil, "AutoDrive:loadMap game.development.controls not found!")
 			end
+		else
+			AutoDrive.errorMsg(nil, "AutoDrive:loadMap could not load ->%s<- !", tostring(gameXmlFilePath))
 		end
+	else
+		AutoDrive.errorMsg(nil, "AutoDrive:loadMap file not exist ->%s<- !", tostring(gameXmlFilePath))
 	end
 
     -- calculate the collision masks only once
-    AutoDrive.collisionMaskFS19 = ADCollSensor.getMaskFS19()
-    AutoDrive.collisionMaskTerrain = ADCollSensor.getMaskTerrain()
-    AutoDrive.collisionMaskSplines = ADCollSensor.getMaskSplines()
+    -- AutoDrive.collisionMaskFS19 = ADCollSensor.getMaskFS19()
+    -- AutoDrive.collisionMaskTerrain = ADCollSensor.getMaskTerrain()
+    -- AutoDrive.collisionMaskSplines = ADCollSensor.getMaskSplines()
+    AutoDrive.collisionMaskTerrain = ADCollSensor.getMask()
 
 	ADGraphManager:load()
 
@@ -226,10 +233,6 @@ function AutoDrive:loadMap(name)
 
 	-- Save Configuration when saving savegame
 	FSBaseMission.saveSavegame = Utils.appendedFunction(FSBaseMission.saveSavegame, AutoDrive.saveSavegame)
-
-	LoadTrigger.onActivateObject = Utils.overwrittenFunction(LoadTrigger.onActivateObject, AutoDrive.onActivateObject)
-
-	LoadTrigger.getIsActivatable = Utils.overwrittenFunction(LoadTrigger.getIsActivatable, AutoDrive.getIsActivatable)
 
 	LoadTrigger.onFillTypeSelection = Utils.appendedFunction(LoadTrigger.onFillTypeSelection, AutoDrive.onFillTypeSelection)
 
@@ -279,7 +282,7 @@ end
 function AutoDrive:onAIFrameOpen()
 	AutoDrive.aiFrameOpen = true
 	AutoDrive.aiFrame = self
-	AutoDrive.aiFrameVehicle = g_currentMission.vehicleSystem.enterables[g_currentMission.vehicleSystem.lastEnteredVehicleIndex]
+	AutoDrive.aiFrameVehicle = AutoDrive.getControlledVehicle()
 end
 
 function AutoDrive:onAIFrameClose()
