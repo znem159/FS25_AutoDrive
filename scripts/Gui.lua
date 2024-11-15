@@ -1,9 +1,7 @@
 function AutoDrive:loadGUI()
 	GuiOverlay.loadOverlay = AutoDrive.overwrittenStaticFunction(GuiOverlay.loadOverlay, AutoDrive.GuiOverlay_loadOverlay)
 
-	--[[
 	g_gui:loadProfiles(AutoDrive.directory .. "gui/guiProfiles.xml")
-	--]]
 	AutoDrive.gui = {}
 	--[[
 	AutoDrive.gui.ADEnterDriverNameGui = ADEnterDriverNameGui.new()
