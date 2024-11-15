@@ -519,7 +519,7 @@ function AutoDrive.readGraphFromXml(xmlId, rootNode)
 end
 
 function AutoDrive.readLocalSettingsFromXML()
-    local rootFolder = getUserProfileAppPath() .. "modSettings/" .. "FS22_AutoDrive/"
+    local rootFolder = getUserProfileAppPath() .. "modSettings/" .. "FS25_AutoDrive/"
     local xmlFileName = rootFolder .. "AutoDrive_LocalSettings.xml"
 
 	if fileExists(xmlFileName) then
@@ -549,7 +549,7 @@ end
 function AutoDrive.writeLocalSettingsToXML()
     local settingsFolder = getUserProfileAppPath() .. "modSettings/"
     createFolder(settingsFolder)
-    local rootFolder = settingsFolder .. "FS22_AutoDrive/"
+    local rootFolder = settingsFolder .. "FS25_AutoDrive/"
     createFolder(rootFolder)
     local xmlFileName = rootFolder .. "AutoDrive_LocalSettings.xml"
 
