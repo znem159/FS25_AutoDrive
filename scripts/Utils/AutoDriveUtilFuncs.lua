@@ -237,7 +237,7 @@ function AutoDrive.setEditorMode(editorMode)
 end
 
 function AutoDrive.cycleEditMode()
-    local vehicle = g_currentMission.vehicleSystem.enterables[g_currentMission.vehicleSystem.lastEnteredVehicleIndex]
+    local vehicle = AutoDrive.getControlledVehicle()
     if g_client ~= nil and vehicle ~= nil then
 
         if vehicle ~= nil and vehicle.ad ~= nil then
@@ -261,7 +261,7 @@ function AutoDrive.cycleEditMode()
 end
 
 function AutoDrive.cycleEditorShowMode()
-    local vehicle = g_currentMission.vehicleSystem.enterables[g_currentMission.vehicleSystem.lastEnteredVehicleIndex]
+    local vehicle = AutoDrive.getControlledVehicle()
 
     if g_client ~= nil and vehicle ~= nil then
         if (AutoDrive.getSetting("EditorMode") == AutoDrive.EDITOR_OFF) then
@@ -676,8 +676,8 @@ function AutoDrive.getADFocusVehicle(debug)
 	local vehicle = nil
     if AutoDrive.aiFrameOpen and AutoDrive.aiFrameVehicle ~= nil and AutoDrive.aiFrameVehicle.ad ~= nil and AutoDrive.aiFrameVehicle.ad.stateModule ~= nil then
         vehicle = AutoDrive.aiFrameVehicle
-    elseif g_currentMission.vehicleSystem.enterables[g_currentMission.vehicleSystem.lastEnteredVehicleIndex] ~= nil and g_currentMission.vehicleSystem.enterables[g_currentMission.vehicleSystem.lastEnteredVehicleIndex].ad ~= nil and g_currentMission.vehicleSystem.enterables[g_currentMission.vehicleSystem.lastEnteredVehicleIndex].ad.stateModule ~= nil then
-        vehicle = g_currentMission.vehicleSystem.enterables[g_currentMission.vehicleSystem.lastEnteredVehicleIndex]
+    elseif AutoDrive.getControlledVehicle() ~= nil and AutoDrive.getControlledVehicle().ad ~= nil and AutoDrive.getControlledVehicle().ad.stateModule ~= nil then
+        vehicle = AutoDrive.getControlledVehicle()
     end
     return vehicle
 end
@@ -798,5 +798,64 @@ function AutoDrive.isImplementAllowedForReverseDriving(vehicle,implement)
         end
     end
     return ret
+end
+
+function AutoDrive.getAllVehicles()
+    return (g_currentMission and g_currentMission.vehicleSystem and g_currentMission.vehicleSystem.vehicles) or {}
+end
+
+function AutoDrive.getControlledVehicle()
+
+--[[     if g_currentMission and g_currentMission.vehicleSystem and g_currentMission.vehicleSystem.enterables then
+        if g_currentMission.vehicleSystem.lastEnteredVehicleIndex then
+            return g_currentMission.vehicleSystem.enterables[g_currentMission.vehicleSystem.lastEnteredVehicleIndex]
+        end
+    end
+ ]]
+
+   if g_currentMission and g_currentMission.vehicleSystem and g_currentMission.vehicleSystem.vehicles then
+        for index, vehicle in pairs(g_currentMission.vehicleSystem.vehicles) do
+            -- if vehicle.getIsControlled and vehicle:getIsControlled() then
+            --     return vehicle
+            -- end
+            if vehicle.getIsControlled and vehicle:getIsControlled() then
+                return vehicle
+            end
+            
+        end
+    end
+
+    return nil
+end
+
+function AutoDrive.setEnteredVehicle(vehicle)
+    if vehicle and g_currentMission.vehicleSystem and g_currentMission.vehicleSystem.setEnteredVehicle then
+        g_currentMission.vehicleSystem:setEnteredVehicle(vehicle)
+    end
+end
+
+function AutoDrive.getPlayer()
+    if g_currentMission and g_currentMission.playerSystem and g_currentMission.playerSystem.getLocalPlayer then
+        return g_currentMission.playerSystem:getLocalPlayer()
+    end 
+    return nil
+end
+
+function AutoDrive.getPriceMultiplier()
+    return (g_currentMission and g_currentMission.economyManager and g_currentMission.economyManager.getPriceMultiplier 
+    and g_currentMission.economyManager:getPriceMultiplier()) or 1
+end
+
+function AutoDrive.drawTripod(node, offset)
+    if offset == nil then
+        offset = {x=0,y=0,z=0}
+    end
+    local nodeX, nodeY, nodeZ = getWorldTranslation(node)
+    local targetX, targetY, targetZ = localToWorld(node, 2, 0, 0)
+    ADDrawingManager:addLineTask(nodeX + offset.x, nodeY + offset.y, nodeZ + offset.z, targetX + offset.x, targetY + offset.y, targetZ + offset.z, 1, 1, 0, 0)
+    targetX, targetY, targetZ = localToWorld(node, 0, 2, 0)
+    ADDrawingManager:addLineTask(nodeX + offset.x, nodeY + offset.y, nodeZ + offset.z, targetX + offset.x, targetY + offset.y, targetZ + offset.z, 1, 0, 1, 0)
+    targetX, targetY, targetZ = localToWorld(node, 0, 0, 2)
+    ADDrawingManager:addLineTask(nodeX + offset.x, nodeY + offset.y, nodeZ + offset.z, targetX + offset.x, targetY + offset.y, targetZ + offset.z, 1, 0, 0, 1)
 end
 
