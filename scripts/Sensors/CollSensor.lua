@@ -109,7 +109,7 @@ function ADCollSensor:new(vehicle, sensorParameters)
     return o
 end
 
-function ADCollSensor:getMask()
+function ADCollSensor:getMask_old()
     if AutoDrive.getSetting("enableTrafficDetection") == 1 then
         return AutoDrive.collisionMaskTerrain
     elseif AutoDrive.getSetting("enableTrafficDetection") == 2 then
@@ -137,7 +137,7 @@ function ADCollSensor.getMaskFS19()
     return mask
 end
 
-function ADCollSensor.getMaskTerrain()
+function ADCollSensor.getMaskFS22()
     local mask = 0
 
 -- ?? 0:
@@ -174,6 +174,54 @@ function ADCollSensor.getMaskTerrain()
 -- ?? 29:
     -- mask = mask + math.pow(2, ADCollSensor.mask_FILLABLE)
     
+    return mask
+end
+
+function ADCollSensor.getMask()
+    local mask = 0
+
+--[[ 
+    from collisionMaskFlags.xml
+    <flag bit="0" name="DEFAULT" desc="The default bit"/>
+    <flag bit="1" name="STATIC_OBJECT" desc="Static object"/>
+    <flag bit="2" name="CAMERA_BLOCKING" desc="Blocks the player camera from being inside"/>
+    <flag bit="3" name="GROUND_TIP_BLOCKING" desc="Blocks tipping on the ground beneath/above"/>
+    <flag bit="4" name="PLACEMENT_BLOCKING" desc="Blocks placing objects via construction"/>
+    <flag bit="5" name="AI_BLOCKING" desc="Blocks vehicle navigation map beneath/above"/>
+    <flag bit="6" name="PRECIPITATION_BLOCKING" desc="Masks all precipitation inside and below the collision"/>
+    <flag bit="8" name="TERRAIN" desc="Terrain without tip any or displacement"/>
+    <flag bit="9" name="TERRAIN_DELTA" desc="Tip anything"/>
+    <flag bit="10" name="TERRAIN_DISPLACEMENT" desc="Terrain displacement (tiretrack deformation)"/>
+    <flag bit="11" name="TREE" desc="A tree"/>
+    <flag bit="12" name="BUILDING" desc="A building"/>
+    <flag bit="13" name="ROAD" desc="A road"/>
+    <flag bit="14" name="AI_DRIVABLE" desc="Blocks vehicle navigation map at the vertical faces of the mesh if they are above the terrain"/>
+    <flag bit="16" name="VEHICLE" desc="A vehicle"/>
+    <flag bit="17" name="VEHICLE_FORK" desc="A vehicle fork tip for pallets or bales"/>
+    <flag bit="18" name="DYNAMIC_OBJECT" desc="A dynamic object"/>
+    <flag bit="19" name="TRAFFIC_VEHICLE" desc="A AI traffic vehicle"/>
+    <flag bit="20" name="PLAYER" desc="A player"/>
+    <flag bit="21" name="ANIMAL" desc="An Animal"/>
+    <flag bit="22" name="ANIMAL_POSITIONING" desc="For animal to walk on (position is raycast from above)"/>
+    <flag bit="23" name="ANIMAL_NAV_MESH_BLOCKING" desc="Area of the collision is excluded from generated nav meshes"/>
+    <flag bit="24" name="TRAFFIC_VEHICLE_BLOCKING" desc="Blocks AI traffic vehicles"/>
+    <flag bit="28" name="INTERACTABLE_TARGET" desc="An interactable trigger that the player can target"/>
+    <flag bit="29" name="TRIGGER" desc="A trigger"/>
+    <flag bit="30" name="FILLABLE" desc="A fillable node. For trailer fillNodes and unload triggers"/>
+    <flag bit="31" name="WATER" desc="A water plane"/>
+
+ ]]
+
+    mask = mask + math.pow(2, 1)
+    mask = mask + math.pow(2, 5)
+    mask = mask + math.pow(2, 8)
+    mask = mask + math.pow(2, 9)
+    mask = mask + math.pow(2, 11)
+    mask = mask + math.pow(2, 12)
+    mask = mask + math.pow(2, 16)
+    mask = mask + math.pow(2, 17)
+    mask = mask + math.pow(2, 18)
+    mask = mask + math.pow(2, 19)
     return mask
 end
 
