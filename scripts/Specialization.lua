@@ -629,19 +629,6 @@ function AutoDrive:onDraw()
     --]]
 end
 
-function AutoDrive.drawTripod(node, offset)
-    if offset == nil then
-        offset = {x=0,y=0,z=0}
-    end
-    local nodeX, nodeY, nodeZ = getWorldTranslation(node)
-    local targetX, targetY, targetZ = localToWorld(node, 2, 0, 0)
-    ADDrawingManager:addLineTask(nodeX + offset.x, nodeY + offset.y, nodeZ + offset.z, targetX + offset.x, targetY + offset.y, targetZ + offset.z, 1, 1, 0, 0)
-    targetX, targetY, targetZ = localToWorld(node, 0, 2, 0)
-    ADDrawingManager:addLineTask(nodeX + offset.x, nodeY + offset.y, nodeZ + offset.z, targetX + offset.x, targetY + offset.y, targetZ + offset.z, 1, 0, 1, 0)
-    targetX, targetY, targetZ = localToWorld(node, 0, 0, 2)
-    ADDrawingManager:addLineTask(nodeX + offset.x, nodeY + offset.y, nodeZ + offset.z, targetX + offset.x, targetY + offset.y, targetZ + offset.z, 1, 0, 0, 1)
-end
-
 function AutoDrive:onDrawPreviews()
     local lastHeight = AutoDrive.splineInterpolation.startNode.y
     local lastWp = AutoDrive.splineInterpolation.startNode
