@@ -1,5 +1,5 @@
 function AutoDrive:checkDestinations(showAll)
-    local vehicle = g_currentMission.vehicleSystem.enterables[g_currentMission.vehicleSystem.lastEnteredVehicleIndex]
+    local vehicle = AutoDrive.getControlledVehicle()
     if vehicle == nil or vehicle.ad == nil or vehicle.ad.stateModule == nil then
         Logging.error("ADCheckDestinations needs to be called only while entered an AD vehicle")
         return
