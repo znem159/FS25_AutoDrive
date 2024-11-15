@@ -1,19 +1,26 @@
 function AutoDrive:loadGUI()
 	GuiOverlay.loadOverlay = AutoDrive.overwrittenStaticFunction(GuiOverlay.loadOverlay, AutoDrive.GuiOverlay_loadOverlay)
 
+	--[[
 	g_gui:loadProfiles(AutoDrive.directory .. "gui/guiProfiles.xml")
+	--]]
 	AutoDrive.gui = {}
+	--[[
 	AutoDrive.gui.ADEnterDriverNameGui = ADEnterDriverNameGui.new()
 	AutoDrive.gui.ADEnterTargetNameGui = ADEnterTargetNameGui.new()
 	AutoDrive.gui.ADEnterGroupNameGui = ADEnterGroupNameGui.new()
 	AutoDrive.gui.ADEnterDestinationFilterGui = ADEnterDestinationFilterGui.new()
 	AutoDrive.gui.ADRoutesManagerGui = ADRoutesManagerGui:new()
+	--]]
 	AutoDrive.gui.ADNotificationsHistoryGui = ADNotificationsHistoryGui:new()
+	--[[
 	AutoDrive.gui.ADColorSettingsGui = ADColorSettingsGui:new()
 	AutoDrive.gui.ADScanConfirmationGui = ADScanConfirmationGui:new()
 
+	--]]
     local count = 1
     local result = nil
+	--[[
 	result = g_gui:loadGui(AutoDrive.directory .. "gui/enterDriverNameGUI.xml", "ADEnterDriverNameGui", AutoDrive.gui.ADEnterDriverNameGui)
 
     count = count + 1
@@ -44,12 +51,14 @@ function AutoDrive:loadGUI()
     if result == nil then
         AutoDrive.debugMsg(nil, "AutoDrive:loadGUI failed count %d", count)
     end
+	--]]
 	result = g_gui:loadGui(AutoDrive.directory .. "gui/notificationsHistoryGUI.xml", "ADNotificationsHistoryGui", AutoDrive.gui.ADNotificationsHistoryGui)
 
     count = count + 1
     if result == nil then
         AutoDrive.debugMsg(nil, "AutoDrive:loadGUI failed count %d", count)
     end
+	--[[
 	result = g_gui:loadGui(AutoDrive.directory .. "gui/colorSettingsGUI.xml", "ADColorSettingsGui", AutoDrive.gui.ADColorSettingsGui)
 
     count = count + 1
@@ -111,6 +120,7 @@ function AutoDrive:loadGUI()
     if result == nil then
         AutoDrive.debugMsg(nil, "AutoDrive:loadGUI failed count %d", count)
     end
+	--]]
 end
 
 function AutoDrive.GuiOverlay_loadOverlay(superFunc, ...)

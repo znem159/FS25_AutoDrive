@@ -176,7 +176,7 @@ function AutoDrive:loadMap(name)
 		AutoDrive.AutoDriveSync:register(false)
 	end
 
-	--AutoDrive:loadGUI()
+	AutoDrive:loadGUI()
 
 	Logging.info("[AD] Map title: %s", g_currentMission.missionInfo.map.title)
 
