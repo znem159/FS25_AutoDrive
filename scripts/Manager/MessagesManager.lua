@@ -99,12 +99,12 @@ function ADMessagesManager:addMessage(vehicle, messageType, text, duration)
             end
         )
     if not exists then
-        self.messages:Enqueue({vehicle = g_currentMission.vehicleSystem.enterables[g_currentMission.vehicleSystem.lastEnteredVehicleIndex], messageType = messageType, text = text, duration = duration})
+        self.messages:Enqueue({vehicle = AutoDrive.getControlledVehicle(), messageType = messageType, text = text, duration = duration})
     end
 end
 
 function ADMessagesManager:addNotification(vehicle, messageType, text, duration)
-    if g_currentMission.vehicleSystem.enterables[g_currentMission.vehicleSystem.lastEnteredVehicleIndex] == vehicle then
+    if AutoDrive.getControlledVehicle() == vehicle then
         self:addMessage(vehicle, messageType, text, duration)
     else
         local exists = false

@@ -805,7 +805,7 @@ function AutoDrive.getTriggerAndTrailerPairs(vehicle, dt)
 end
 
 function AutoDrive.trailerIsInTriggerList(trailer, trigger, fillUnitIndex)
-
+    -- LoadTrigger
     if trigger ~= nil and trigger.fillableObjects ~= nil then
         for _, fillableObject in pairs(trigger.fillableObjects) do
             if fillableObject == trailer or (fillableObject.object ~= nil and fillableObject.object == trailer and fillableObject.fillUnitIndex == fillUnitIndex) then
@@ -815,6 +815,7 @@ function AutoDrive.trailerIsInTriggerList(trailer, trigger, fillUnitIndex)
         end
     end
 
+    -- FillTrigger
     local activatable = true
     if trigger.getIsActivatable ~= nil then
         activatable = trigger:getIsActivatable(trailer)

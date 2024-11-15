@@ -69,7 +69,8 @@ function ADHarvestManager:unregisterAsUnloader(vehicle)
     end
     if table.contains(self.activeUnloaders, vehicle) then
         table.removeValue(self.activeUnloaders, vehicle)
-        if g_currentMission.vehicleSystem.enterables[g_currentMission.vehicleSystem.lastEnteredVehicleIndex] ~= nil and vehicle == g_currentMission.vehicleSystem.enterables[g_currentMission.vehicleSystem.lastEnteredVehicleIndex] then
+        local controlledVehicle = AutoDrive.getControlledVehicle()
+        if controlledVehicle ~= nil and vehicle == controlledVehicle then
             --Give the player some time to reset/reposition the fired unloader
             self.assignmentDelayTimer:timer(false)
         else

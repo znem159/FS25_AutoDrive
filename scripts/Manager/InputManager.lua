@@ -80,7 +80,7 @@ function ADInputManager:load()
 end
 
 function ADInputManager.onActionCall(vehicle, actionName)
-    local controlledVehicle = g_currentMission.vehicleSystem.enterables[g_currentMission.vehicleSystem.lastEnteredVehicleIndex]
+    local controlledVehicle = AutoDrive.getControlledVehicle()
 
     for k, v in pairs(ADInputManager.actionsToInputs) do
         local action = ADInputManager.actionsToInputs[k][1]
@@ -107,7 +107,7 @@ function ADInputManager:onInputCall(vehicle, input, farmId, sendEvent)
         actualFarmId = vehicle.ad.stateModule:getActualFarmId()
     end
 
-    local controlledVehicle = g_currentMission.vehicleSystem.enterables[g_currentMission.vehicleSystem.lastEnteredVehicleIndex]
+    local controlledVehicle = AutoDrive.getControlledVehicle()
 
     for k, v in pairs(ADInputManager.actionsToInputs) do
         local allowed = ADInputManager.actionsToInputs[k][3] or ((controlledVehicle ~= nil and controlledVehicle == vehicle) or v[4])

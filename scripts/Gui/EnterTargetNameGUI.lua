@@ -32,21 +32,23 @@ function ADEnterTargetNameGui:onOpen()
     self.editName = nil
     self.editId = nil
     self.edit = false
-
+    local controlledVehicle = AutoDrive.getControlledVehicle()
     -- If editSelectedMapMarker is true, we have to edit the map marker selected on the pull down list otherwise we can go for closest waypoint
-    if AutoDrive.editSelectedMapMarker ~= nil and AutoDrive.editSelectedMapMarker == true then
-        self.editId = g_currentMission.vehicleSystem.enterables[g_currentMission.vehicleSystem.lastEnteredVehicleIndex].ad.stateModule:getFirstMarkerId()
-        self.editName = ADGraphManager:getMapMarkerById(self.editId).name
-    else
-        local closest, _ = g_currentMission.vehicleSystem.enterables[g_currentMission.vehicleSystem.lastEnteredVehicleIndex]:getClosestWayPoint()
-        if closest ~= nil and closest ~= -1 and ADGraphManager:getWayPointById(closest) ~= nil then
-            local cId = closest
-            for i, mapMarker in pairs(ADGraphManager:getMapMarkers()) do
-                -- If we have already a map marker on this waypoint, we edit it otherwise we create a new one
-                if mapMarker.id == cId then
-                    self.editId = i
-                    self.editName = mapMarker.name
-                    break
+    if controlledVehicle then
+        if AutoDrive.editSelectedMapMarker ~= nil and AutoDrive.editSelectedMapMarker == true then
+            self.editId = controlledVehicle.ad.stateModule:getFirstMarkerId()
+            self.editName = ADGraphManager:getMapMarkerById(self.editId).name
+        else
+            local closest, _ = controlledVehicle:getClosestWayPoint()
+            if closest ~= nil and closest ~= -1 and ADGraphManager:getWayPointById(closest) ~= nil then
+                local cId = closest
+                for i, mapMarker in pairs(ADGraphManager:getMapMarkers()) do
+                    -- If we have already a map marker on this waypoint, we edit it otherwise we create a new one
+                    if mapMarker.id == cId then
+                        self.editId = i
+                        self.editName = mapMarker.name
+                        break
+                    end
                 end
             end
         end
@@ -73,7 +75,7 @@ function ADEnterTargetNameGui:onClickOk()
     if self.edit then
         ADGraphManager:renameMapMarker(self.textInputElement.text, self.editId)
     else
-        ADGraphManager:createMapMarkerOnClosest(g_currentMission.vehicleSystem.enterables[g_currentMission.vehicleSystem.lastEnteredVehicleIndex], self.textInputElement.text)
+        ADGraphManager:createMapMarkerOnClosest(AutoDrive.getControlledVehicle(), self.textInputElement.text)
     end
     self:onClickBack()
 end

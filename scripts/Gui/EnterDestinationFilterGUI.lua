@@ -20,6 +20,7 @@ end
 
 function ADEnterDestinationFilterGui:onOpen()
     ADEnterDestinationFilterGui:superClass().onOpen(self)
+    local controlledVehicle = AutoDrive.getControlledVehicle()
     self.textInputElement.blockTime = 0
     self.textInputElement:onFocusActivate()
     if self.textInputElement.overlay and self.textInputElement.overlay.colorFocused then
@@ -27,15 +28,16 @@ function ADEnterDestinationFilterGui:onOpen()
             self.textInputElement.overlay.colorFocused = AutoDrive.currentColors.ad_color_textInputBackground
         end
     end
-    if g_currentMission.vehicleSystem.enterables[g_currentMission.vehicleSystem.lastEnteredVehicleIndex] ~= nil and g_currentMission.vehicleSystem.enterables[g_currentMission.vehicleSystem.lastEnteredVehicleIndex].ad ~= nil then
-        self.textInputElement:setText(g_currentMission.vehicleSystem.enterables[g_currentMission.vehicleSystem.lastEnteredVehicleIndex].ad.destinationFilterText)
+    if controlledVehicle ~= nil and controlledVehicle.ad ~= nil then
+        self.textInputElement:setText(controlledVehicle.ad.destinationFilterText)
     end
 end
 
 function ADEnterDestinationFilterGui:onClickOk()
     ADEnterDestinationFilterGui:superClass().onClickOk(self)
-    if g_currentMission.vehicleSystem.enterables[g_currentMission.vehicleSystem.lastEnteredVehicleIndex] ~= nil and g_currentMission.vehicleSystem.enterables[g_currentMission.vehicleSystem.lastEnteredVehicleIndex].ad ~= nil then
-        g_currentMission.vehicleSystem.enterables[g_currentMission.vehicleSystem.lastEnteredVehicleIndex].ad.destinationFilterText = self.textInputElement.text
+    local controlledVehicle = AutoDrive.getControlledVehicle()
+    if controlledVehicle ~= nil and controlledVehicle.ad ~= nil then
+        controlledVehicle.ad.destinationFilterText = self.textInputElement.text
     end
     self:onClickBack()
 end

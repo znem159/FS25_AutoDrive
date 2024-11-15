@@ -21,6 +21,7 @@ end
 
 function ADEnterDriverNameGui:onOpen()
     ADEnterDriverNameGui:superClass().onOpen(self)
+    local controlledVehicle = AutoDrive.getControlledVehicle()
     self.textInputElement.blockTime = 0
     self.textInputElement:onFocusActivate()
     if self.textInputElement.overlay and self.textInputElement.overlay.colorFocused then
@@ -28,22 +29,24 @@ function ADEnterDriverNameGui:onOpen()
             self.textInputElement.overlay.colorFocused = AutoDrive.currentColors.ad_color_textInputBackground
         end
     end
-    if g_currentMission.vehicleSystem.enterables[g_currentMission.vehicleSystem.lastEnteredVehicleIndex] ~= nil and g_currentMission.vehicleSystem.enterables[g_currentMission.vehicleSystem.lastEnteredVehicleIndex].ad ~= nil then
-        self.textInputElement:setText(g_currentMission.vehicleSystem.enterables[g_currentMission.vehicleSystem.lastEnteredVehicleIndex].ad.stateModule:getName())
+    if controlledVehicle ~= nil and controlledVehicle.ad ~= nil then
+        self.textInputElement:setText(controlledVehicle.ad.stateModule:getName())
     end
 end
 
 function ADEnterDriverNameGui:onClickOk()
     ADEnterDriverNameGui:superClass().onClickOk(self)
-    if g_currentMission.vehicleSystem.enterables[g_currentMission.vehicleSystem.lastEnteredVehicleIndex] ~= nil then
-        AutoDrive.renameDriver(g_currentMission.vehicleSystem.enterables[g_currentMission.vehicleSystem.lastEnteredVehicleIndex], self.textInputElement.text)
+    local controlledVehicle = AutoDrive.getControlledVehicle()
+    if controlledVehicle ~= nil then
+        AutoDrive.renameDriver(controlledVehicle, self.textInputElement.text)
     end
     self:onClickBack()
 end
 
 function ADEnterDriverNameGui:onClickCancel()
-    if g_currentMission.vehicleSystem.enterables[g_currentMission.vehicleSystem.lastEnteredVehicleIndex] ~= nil and g_currentMission.vehicleSystem.enterables[g_currentMission.vehicleSystem.lastEnteredVehicleIndex].ad ~= nil then
-        self.textInputElement:setText(g_currentMission.vehicleSystem.enterables[g_currentMission.vehicleSystem.lastEnteredVehicleIndex].ad.stateModule:getName())
+    local controlledVehicle = AutoDrive.getControlledVehicle()
+    if controlledVehicle ~= nil and controlledVehicle.ad ~= nil then
+        self.textInputElement:setText(controlledVehicle.ad.stateModule:getName())
     end
 end
 

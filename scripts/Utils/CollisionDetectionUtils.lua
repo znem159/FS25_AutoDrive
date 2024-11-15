@@ -162,7 +162,7 @@ function AutoDrive.getDistanceBetween(vehicleOne, vehicleTwo)
 end
 
 function AutoDrive.debugDrawBoundingBoxForVehicles()
-    local vehicle = g_currentMission.vehicleSystem.enterables[g_currentMission.vehicleSystem.lastEnteredVehicleIndex]
+    local vehicle = AutoDrive.getControlledVehicle()
     if vehicle ~= nil and vehicle.getIsEntered ~= nil and vehicle:getIsEntered() then
         local PosX, _, PosZ = getWorldTranslation(vehicle.components[1].node)
         local maxDistance = AutoDrive.drawDistance
