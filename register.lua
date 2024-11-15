@@ -294,11 +294,15 @@ local function check()
             end
         else
             Logging.error("[AD] ERROR: AutoDriveRegister.check g_currentModName %s", tostring(g_currentModName))
-
-
-            --g_gui:showInfoDialog({
-            --    text = "AutoDrive: Wrong mod file name / Falscher Dateiname " .. g_currentModName .. " <--> FS25_AutoDrive or mod corrupt / oder Mod defekt",
-            --})
+            local args = {text = "AutoDrive: Wrong mod file name / Falscher Dateiname " .. g_currentModName .. " <--> FS25_AutoDrive or mod corrupt / oder Mod defekt"}
+            local dialog = g_gui:showDialog("InfoDialog")
+            if dialog then
+                dialog.target:setDialogType(Utils.getNoNil(args.dialogType, DialogElement.TYPE_WARNING))
+                dialog.target:setText(args.text)
+                dialog.target:setCallback(args.callback, args.target, args.args)
+                dialog.target:setButtonTexts(args.okText)
+                dialog.target:setButtonAction(args.buttonAction)
+            end
             return
         end
     end
