@@ -800,6 +800,21 @@ function AutoDrive.debugMsg(vehicle, debugText, ...)
     Logging.info(printText .. debugText, ...)
 end
 
+function AutoDrive.errorMsg(vehicle, debugText, ...)
+    local printText = "[AD] " .. tostring(g_updateLoopIndex) .. " "
+    if vehicle ~= nil then
+        if vehicle.ad ~= nil and vehicle.ad.stateModule ~= nil and vehicle == vehicle:getRootVehicle() then
+            printText = printText .. vehicle.ad.stateModule:getName() .. " (" .. tostring(vehicle.id or 0) .. ") : "
+        elseif vehicle.getName ~= nil then
+            printText = printText .. vehicle:getName() .. " (" .. tostring(vehicle.id or 0) .. ") : "
+        else
+            printText = printText .. tostring(vehicle) .. " (" .. tostring(vehicle.id or 0) .. ") : "
+        end
+    end
+
+    Logging.error(printText .. debugText, ...)
+end
+
 AutoDrive.debug = {}
 AutoDrive.debug.connectionSendEventBackup = nil
 AutoDrive.debug.serverBroadcastEventBackup = nil
@@ -966,23 +981,24 @@ Sprayer.registerOverwrittenFunctions =
 )
 ]]
 
--- LoadTrigger doesn't allow filling non controlled tools
-function AutoDrive:getIsActivatable(superFunc, objectToFill)
+-- TODO check if working without this
+-- FillTrigger doesn't allow filling non controlled tools ???
+--[[ function AutoDrive:getIsActivatable(superFunc, objectToFill)
 	--when the trigger is filling, it uses this function without objectToFill
 	if objectToFill ~= nil then
 		local vehicle = objectToFill:getRootVehicle()
 		if vehicle ~= nil and vehicle.ad ~= nil and vehicle.ad.stateModule:isActive() then
 			--if i'm in the vehicle, all is good and I can use the normal function, if not, i have to cheat:
-			if g_currentMission.vehicleSystem.enterables[g_currentMission.vehicleSystem.lastEnteredVehicleIndex] ~= vehicle then
-				local oldControlledVehicle = g_currentMission.vehicleSystem.enterables[g_currentMission.vehicleSystem.lastEnteredVehicleIndex]
+			if AutoDrive.getControlledVehicle() ~= vehicle then
+				local oldControlledVehicle = AutoDrive.getControlledVehicle()
 
-				g_currentMission.vehicleSystem.enterables[g_currentMission.vehicleSystem.lastEnteredVehicleIndex] = vehicle
+				AutoDrive.setEnteredVehicle(vehicle)
 				local result = true
 				if superFunc ~= nil then
 					result = superFunc(self, objectToFill)
 				end
 
-                g_currentMission.vehicleSystem.enterables[g_currentMission.vehicleSystem.lastEnteredVehicleIndex] = oldControlledVehicle
+                AutoDrive.setEnteredVehicle(oldControlledVehicle)
 				return result
 			end
 		end
@@ -993,7 +1009,7 @@ function AutoDrive:getIsActivatable(superFunc, objectToFill)
 	end
 	return result
 end
-
+ ]]
 function AutoDrive:zoomSmoothly(superFunc, offset)
 	if AutoDrive.splineInterpolation ~= nil and AutoDrive.splineInterpolation.valid then
         AutoDrive.splineInterpolationUserCurvature = math.clamp(AutoDrive.splineInterpolationUserCurvature + offset/12, 0.49, 3.5)
@@ -1002,23 +1018,6 @@ function AutoDrive:zoomSmoothly(superFunc, offset)
 	if not AutoDrive.mouseWheelActive then -- don't zoom camera when mouse wheel is used to scroll targets (thanks to sperrgebiet)
 		superFunc(self, offset)
 	end
-end
-
-function AutoDrive:onActivateObject(superFunc, vehicle)
-	if vehicle ~= nil then
-		--if i'm in the vehicle, all is good and I can use the normal function, if not, i have to cheat:
-		if g_currentMission.vehicleSystem.enterables[g_currentMission.vehicleSystem.lastEnteredVehicleIndex] ~= vehicle then
-			local oldControlledVehicle = g_currentMission.vehicleSystem.enterables[g_currentMission.vehicleSystem.lastEnteredVehicleIndex]
-			g_currentMission.vehicleSystem.enterables[g_currentMission.vehicleSystem.lastEnteredVehicleIndex] = vehicle
-
-			superFunc(self, vehicle)
-
-            g_currentMission.vehicleSystem.enterables[g_currentMission.vehicleSystem.lastEnteredVehicleIndex] = oldControlledVehicle
-			return
-		end
-	end
-
-	superFunc(self, vehicle)
 end
 
 function AutoDrive:onFillTypeSelection(fillType)
