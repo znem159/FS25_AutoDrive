@@ -362,9 +362,6 @@ function AutoDriveHud:refreshHudElementsLayerSequence()
 end
 
 function AutoDriveHud:drawHud(vehicle)
-	--AutoDrive.dumpTable(g_currentMission.vehicleSystem.enterables, "g_currentMission.vehicleSystem.enterables", 2)
-	-- if (vehicle ~= nil and vehicle == g_currentMission.controlledVehicle) or AutoDrive.aiFrameOpen then
-
 	local controlledVehicle = AutoDrive.getControlledVehicle()
 	if (vehicle ~= nil and vehicle == controlledVehicle) or AutoDrive.aiFrameOpen then
 		local uiScale = g_gameSettings:getValue("uiScale")
