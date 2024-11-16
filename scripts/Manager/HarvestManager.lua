@@ -339,7 +339,7 @@ function ADHarvestManager:hasHarvesterPotentialUnloaders(harvester)
             return true
         end
     end
-    for _, other in pairs(g_currentMission.vehicleSystem.vehicles) do
+    for _, other in pairs(AutoDrive.getAllVehicles()) do
         if other ~= self.vehicle and other.ad ~= nil and other.ad.stateModule ~= nil and other.ad.stateModule:isActive() and other.ad.stateModule:getFirstMarker() == harvester.ad.stateModule:getFirstMarker() and other.ad.stateModule:getMode() == AutoDrive.MODE_UNLOAD then
             return true
         end

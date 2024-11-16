@@ -814,8 +814,8 @@ function AutoDrive.getControlledVehicle()
     end
  ]]
 
-   if g_currentMission and g_currentMission.vehicleSystem and g_currentMission.vehicleSystem.vehicles then
-        for index, vehicle in pairs(g_currentMission.vehicleSystem.vehicles) do
+   if g_currentMission and g_currentMission.vehicleSystem and AutoDrive.getAllVehicles() then
+        for index, vehicle in pairs(AutoDrive.getAllVehicles()) do
             -- if vehicle.getIsControlled and vehicle:getIsControlled() then
             --     return vehicle
             -- end

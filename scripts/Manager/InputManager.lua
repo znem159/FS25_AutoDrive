@@ -273,7 +273,7 @@ function ADInputManager:input_start_stop(vehicle, farmId)
         vehicle.ad.stateModule:getCurrentMode():start(AutoDrive.USER_PLAYER)
 
         if AutoDrive.rightSHIFTmodifierKeyPressed then
-            for _, otherVehicle in pairs(g_currentMission.vehicleSystem.vehicles) do
+            for _, otherVehicle in pairs(AutoDrive.getAllVehicles()) do
                 if otherVehicle ~= nil and otherVehicle ~= vehicle and otherVehicle.ad ~= nil and otherVehicle.ad.stateModule ~= nil then
                     --Doesn't work yet, if vehicle hasn't been entered before apparently. So we need to check what to call before, to setup all required variables.
                     

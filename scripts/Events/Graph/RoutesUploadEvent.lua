@@ -37,7 +37,7 @@ function AutoDriveRoutesUploadEvent:run(connection)
 		ADGraphManager:setGroups(self.groups, true)
 
 		if g_server ~= nil then
-			for _, vehicle in pairs(g_currentMission.vehicleSystem.vehicles) do
+			for _, vehicle in pairs(AutoDrive.getAllVehicles()) do
 				if vehicle ~= nil and vehicle.ad ~= nil and vehicle.ad.stateModule ~= nil then
 					vehicle.ad.stateModule:resetMarkersOnReload()
 				end

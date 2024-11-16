@@ -144,7 +144,7 @@ function AutoDrive.outputTelemetry()
 	table.insert(outputTable, "HudShow:" .. tostring(AutoDrive.Hud.showHud))
 
 	local vehiclesTable = {}
-	for vehicleID, vehicle in pairs(g_currentMission.vehicleSystem.vehicles) do
+	for vehicleID, vehicle in pairs(AutoDrive.getAllVehicles()) do
 		if vehicle.ad ~= nil and vehicle.ad.stateModule ~= nil then
 			AutoDrive.CreateOutputForVehicle(vehicle, vehicleID, vehiclesTable)
 		end

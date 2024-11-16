@@ -60,7 +60,7 @@ function RepairTask:update(dt)
                         local implementFarmId = implement.getOwnerFarmId and implement:getOwnerFarmId()
                         if  implementFarmId ~= nil and implementFarmId ~= 0 then
                             local implementPosX, implementPosY, implementPosZ = getWorldTranslation(implement.components[1].node)
-                            for _, otherVehicle in pairs(g_currentMission.vehicleSystem.vehicles) do
+                            for _, otherVehicle in pairs(AutoDrive.getAllVehicles()) do
                                 local otherVehicleFarmId = otherVehicle.getOwnerFarmId and otherVehicle:getOwnerFarmId()
                                 if otherVehicleFarmId ~= nil and otherVehicleFarmId == implementFarmId then
                                     local otherPosX, otherPosY, otherPosZ = getWorldTranslation(otherVehicle.components[1].node)
