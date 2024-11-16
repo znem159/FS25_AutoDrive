@@ -71,6 +71,7 @@ function ADSettings:onGuiSetupFinished()
 end
 
 function ADSettings:setupPages()
+    local controlledVehicle = AutoDrive.getControlledVehicle()
     local alwaysEnabled = function()
         return true
     end
@@ -80,14 +81,14 @@ function ADSettings:setupPages()
     end
 
     local vehicleEnabled = function()
-        if g_currentMission ~= nil and g_currentMission.vehicleSystem.enterables[g_currentMission.vehicleSystem.lastEnteredVehicleIndex] ~= nil and g_currentMission.vehicleSystem.enterables[g_currentMission.vehicleSystem.lastEnteredVehicleIndex].ad ~= nil then
+        if g_currentMission ~= nil and controlledVehicle ~= nil and controlledVehicle.ad ~= nil then
             return true
         end
         return false
     end
 
     local combineEnabled = function()
-        if vehicleEnabled() and (g_currentMission.vehicleSystem.enterables[g_currentMission.vehicleSystem.lastEnteredVehicleIndex].ad and g_currentMission.vehicleSystem.enterables[g_currentMission.vehicleSystem.lastEnteredVehicleIndex].ad.hasCombine) then
+        if vehicleEnabled() and (controlledVehicle and controlledVehicle.ad and controlledVehicle.ad.hasCombine) then
             return true
         end
         return false
@@ -177,12 +178,13 @@ end
 
 function ADSettings:onClickSetDefault()
     if self:pagesHasChanges() then
+        local controlledVehicle = AutoDrive.getControlledVehicle()
         for settingName, setting in pairs(AutoDrive.settings) do
             local newSetting = setting
-            if setting.isVehicleSpecific and g_currentMission.vehicleSystem.enterables[g_currentMission.vehicleSystem.lastEnteredVehicleIndex] ~= nil and g_currentMission.vehicleSystem.enterables[g_currentMission.vehicleSystem.lastEnteredVehicleIndex].ad ~= nil and g_currentMission.vehicleSystem.enterables[g_currentMission.vehicleSystem.lastEnteredVehicleIndex].ad.settings[settingName] ~= nil then
-                newSetting = g_currentMission.vehicleSystem.enterables[g_currentMission.vehicleSystem.lastEnteredVehicleIndex].ad.settings[settingName]
-                if g_currentMission.vehicleSystem.enterables[g_currentMission.vehicleSystem.lastEnteredVehicleIndex].ad.settings[settingName].new ~= nil then
-                    g_currentMission.vehicleSystem.enterables[g_currentMission.vehicleSystem.lastEnteredVehicleIndex].ad.settings[settingName].current = g_currentMission.vehicleSystem.enterables[g_currentMission.vehicleSystem.lastEnteredVehicleIndex].ad.settings[settingName].new
+            if setting.isVehicleSpecific and controlledVehicle ~= nil and controlledVehicle.ad ~= nil and controlledVehicle.ad.settings[settingName] ~= nil then
+                newSetting = controlledVehicle.ad.settings[settingName]
+                if controlledVehicle.ad.settings[settingName].new ~= nil then
+                    controlledVehicle.ad.settings[settingName].current = AutoDrive.controlledVehicle.ad.settings[settingName].new
                 end
                 if (not newSetting.isUserSpecific) and newSetting.new ~= nil and newSetting.new ~= setting.userDefault then
                     -- We could even print this with our debug system, but since GIANTS itself prints every changed config, for the moment we will do the same
@@ -192,17 +194,18 @@ function ADSettings:onClickSetDefault()
             end            
         end
 
-        AutoDriveUpdateSettingsEvent.sendEvent(g_currentMission.vehicleSystem.enterables[g_currentMission.vehicleSystem.lastEnteredVehicleIndex])
+        AutoDriveUpdateSettingsEvent.sendEvent(controlledVehicle)
     end
 end
 
 function ADSettings:applySettings()
     if self:pagesHasChanges() then
         local userSpecificHasChanges = false
+        local controlledVehicle = AutoDrive.getControlledVehicle()
 
         for settingName, setting in pairs(AutoDrive.settings) do
-            if setting.isVehicleSpecific and g_currentMission.vehicleSystem.enterables[g_currentMission.vehicleSystem.lastEnteredVehicleIndex] ~= nil and g_currentMission.vehicleSystem.enterables[g_currentMission.vehicleSystem.lastEnteredVehicleIndex].ad ~= nil and g_currentMission.vehicleSystem.enterables[g_currentMission.vehicleSystem.lastEnteredVehicleIndex].ad.settings[settingName] ~= nil then
-                setting = g_currentMission.vehicleSystem.enterables[g_currentMission.vehicleSystem.lastEnteredVehicleIndex].ad.settings[settingName]
+            if setting.isVehicleSpecific and controlledVehicle ~= nil and controlledVehicle.ad ~= nil and controlledVehicle.ad.settings[settingName] ~= nil then
+                setting = controlledVehicle.ad.settings[settingName]
             end
             if setting.new ~= nil and setting.new ~= setting.current then
                 -- We could even print this with our debug system, but since GIANTS itself prints every changed config, for the moment we will do the same
@@ -219,7 +222,7 @@ function ADSettings:applySettings()
             ADUserDataManager:sendToServer()
         end
 
-        AutoDriveUpdateSettingsEvent.sendEvent(g_currentMission.vehicleSystem.enterables[g_currentMission.vehicleSystem.lastEnteredVehicleIndex])
+        AutoDriveUpdateSettingsEvent.sendEvent(controlledVehicle)
     end
 end
 
@@ -228,11 +231,12 @@ function ADSettings:resetPage(page)
         return
     end
     if page:hasChanges() then
+        local controlledVehicle = AutoDrive.getControlledVehicle()
         for settingName, _ in pairs(page.settingElements) do
             if AutoDrive.settings[settingName] ~= nil then
                 local setting = AutoDrive.settings[settingName]
-                if setting.isVehicleSpecific and g_currentMission.vehicleSystem.enterables[g_currentMission.vehicleSystem.lastEnteredVehicleIndex] ~= nil and g_currentMission.vehicleSystem.enterables[g_currentMission.vehicleSystem.lastEnteredVehicleIndex].ad ~= nil and g_currentMission.vehicleSystem.enterables[g_currentMission.vehicleSystem.lastEnteredVehicleIndex].ad.settings[settingName] ~= nil then
-                    setting = g_currentMission.vehicleSystem.enterables[g_currentMission.vehicleSystem.lastEnteredVehicleIndex].ad.settings[settingName]
+                if setting.isVehicleSpecific and controlledVehicle ~= nil and controlledVehicle.ad ~= nil and controlledVehicle.ad.settings[settingName] ~= nil then
+                    setting = controlledVehicle.ad.settings[settingName]
                 end
                 setting.new = setting.current
                 page:loadGUISetting(settingName, setting.current)
@@ -245,11 +249,12 @@ function ADSettings:restorePage(page)
     if page == nil or page.isAutonomous then
         return
     end
+    local controlledVehicle = AutoDrive.getControlledVehicle()
     for settingName, _ in pairs(page.settingElements) do
         if AutoDrive.settings[settingName] ~= nil then
             local setting = AutoDrive.settings[settingName]
-            if setting.isVehicleSpecific and g_currentMission.vehicleSystem.enterables[g_currentMission.vehicleSystem.lastEnteredVehicleIndex] ~= nil and g_currentMission.vehicleSystem.enterables[g_currentMission.vehicleSystem.lastEnteredVehicleIndex].ad ~= nil and g_currentMission.vehicleSystem.enterables[g_currentMission.vehicleSystem.lastEnteredVehicleIndex].ad.settings[settingName] ~= nil then
-                setting = g_currentMission.vehicleSystem.enterables[g_currentMission.vehicleSystem.lastEnteredVehicleIndex].ad.settings[settingName]
+            if setting.isVehicleSpecific and controlledVehicle ~= nil and controlledVehicle.ad ~= nil and controlledVehicle.ad.settings[settingName] ~= nil then
+                setting = controlledVehicle.ad.settings[settingName]
             end
 
             if AutoDrive.settings[settingName].userDefault ~= nil then

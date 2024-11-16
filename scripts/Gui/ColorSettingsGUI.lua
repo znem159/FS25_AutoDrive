@@ -58,7 +58,7 @@ end
 
 function ADColorSettingsGui:onClickOk()   -- OK
     ADColorSettingsGui.debugMsg("ADColorSettingsGui:onClickOk self.rowIndex %s", tostring(self.rowIndex))
-    local controlledVehicle = g_currentMission.vehicleSystem.enterables[g_currentMission.vehicleSystem.lastEnteredVehicleIndex]
+    local controlledVehicle = AutoDrive.getControlledVehicle()
     if controlledVehicle ~= nil and controlledVehicle.ad ~= nil and controlledVehicle.ad.selectedColorNodeId ~= nil then
         local colorPoint = ADGraphManager:getWayPointById(controlledVehicle.ad.selectedColorNodeId)
         if colorPoint ~= nil and colorPoint.colors ~= nil then

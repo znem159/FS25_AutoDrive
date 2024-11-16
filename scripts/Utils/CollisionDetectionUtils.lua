@@ -7,7 +7,7 @@ function AutoDrive:checkForVehicleCollision(vehicle,boundingBox, excludedVehicle
 end
 
 function AutoDrive.checkForVehiclesInBox(boundingBox, excludedVehicles)
-    for _, otherVehicle in pairs(g_currentMission.vehicleSystem.vehicles) do
+    for _, otherVehicle in pairs(AutoDrive.getAllVehicles()) do
         local isExcluded = false
         if excludedVehicles ~= nil and otherVehicle ~= nil then
             for _, excludedVehicle in pairs(excludedVehicles) do
@@ -38,7 +38,7 @@ function AutoDrive.checkForVehiclesInBox(boundingBox, excludedVehicles)
 end
 
 function AutoDrive.checkForVehiclePathInBox(boundingBox, minTurnRadius, searchingVehicle, currentVec)
-    for _, otherVehicle in pairs(g_currentMission.vehicleSystem.vehicles) do
+    for _, otherVehicle in pairs(AutoDrive.getAllVehicles()) do
         if otherVehicle ~= nil and otherVehicle ~= searchingVehicle and otherVehicle.components ~= nil and otherVehicle.size.width ~= nil and otherVehicle.size.length ~= nil and otherVehicle.rootNode ~= nil then
             if minTurnRadius ~= nil and otherVehicle.ad ~= nil and otherVehicle.ad.drivePathModule ~= nil and otherVehicle.ad.stateModule:isActive() then
                 local otherWPs, otherCurrentWp = otherVehicle.ad.drivePathModule:getWayPoints()
@@ -162,11 +162,11 @@ function AutoDrive.getDistanceBetween(vehicleOne, vehicleTwo)
 end
 
 function AutoDrive.debugDrawBoundingBoxForVehicles()
-    local vehicle = g_currentMission.vehicleSystem.enterables[g_currentMission.vehicleSystem.lastEnteredVehicleIndex]
+    local vehicle = AutoDrive.getControlledVehicle()
     if vehicle ~= nil and vehicle.getIsEntered ~= nil and vehicle:getIsEntered() then
         local PosX, _, PosZ = getWorldTranslation(vehicle.components[1].node)
         local maxDistance = AutoDrive.drawDistance
-        for _, otherVehicle in pairs(g_currentMission.vehicleSystem.vehicles) do
+        for _, otherVehicle in pairs(AutoDrive.getAllVehicles()) do
             if otherVehicle ~= nil and otherVehicle.components ~= nil and otherVehicle.components[1].node ~= nil and otherVehicle.size.width ~= nil and otherVehicle.size.length ~= nil and otherVehicle.rootNode ~= nil then
                 local x, _, z = getWorldTranslation(otherVehicle.components[1].node)
                 local distance = MathUtil.vector2Length(PosX - x, PosZ - z)

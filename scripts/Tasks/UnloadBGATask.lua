@@ -655,7 +655,7 @@ function UnloadBGATask:findCloseTrailer()
     local closestDistance = 50
     local closest = nil
     local closestTrailer = nil
-    for _, vehicle in pairs(g_currentMission.vehicleSystem.vehicles) do
+    for _, vehicle in pairs(AutoDrive.getAllVehicles()) do
         if vehicle ~= self.vehicle and self:vehicleHasTrailersAttached(vehicle) and vehicle.ad ~= nil and vehicle.ad.noMovementTimer ~= nil then
             if AutoDrive.getDistanceBetween(vehicle, self.vehicle) < closestDistance and vehicle.ad.noMovementTimer:timer(vehicle.lastSpeedReal < 0.0004, 3000, 16) and (not vehicle.ad.trailerModule:isActiveAtTrigger()) then
                 local _, trailers = self:vehicleHasTrailersAttached(vehicle)

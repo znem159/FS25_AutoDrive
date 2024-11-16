@@ -80,7 +80,7 @@ function ADInputManager:load()
 end
 
 function ADInputManager.onActionCall(vehicle, actionName)
-    local controlledVehicle = g_currentMission.vehicleSystem.enterables[g_currentMission.vehicleSystem.lastEnteredVehicleIndex]
+    local controlledVehicle = AutoDrive.getControlledVehicle()
 
     for k, v in pairs(ADInputManager.actionsToInputs) do
         local action = ADInputManager.actionsToInputs[k][1]
@@ -107,7 +107,7 @@ function ADInputManager:onInputCall(vehicle, input, farmId, sendEvent)
         actualFarmId = vehicle.ad.stateModule:getActualFarmId()
     end
 
-    local controlledVehicle = g_currentMission.vehicleSystem.enterables[g_currentMission.vehicleSystem.lastEnteredVehicleIndex]
+    local controlledVehicle = AutoDrive.getControlledVehicle()
 
     for k, v in pairs(ADInputManager.actionsToInputs) do
         local allowed = ADInputManager.actionsToInputs[k][3] or ((controlledVehicle ~= nil and controlledVehicle == vehicle) or v[4])
@@ -273,7 +273,7 @@ function ADInputManager:input_start_stop(vehicle, farmId)
         vehicle.ad.stateModule:getCurrentMode():start(AutoDrive.USER_PLAYER)
 
         if AutoDrive.rightSHIFTmodifierKeyPressed then
-            for _, otherVehicle in pairs(g_currentMission.vehicleSystem.vehicles) do
+            for _, otherVehicle in pairs(AutoDrive.getAllVehicles()) do
                 if otherVehicle ~= nil and otherVehicle ~= vehicle and otherVehicle.ad ~= nil and otherVehicle.ad.stateModule ~= nil then
                     --Doesn't work yet, if vehicle hasn't been entered before apparently. So we need to check what to call before, to setup all required variables.
                     
@@ -486,11 +486,15 @@ function ADInputManager:input_toggleCP_AIVE(vehicle) -- select CP or AIVE
 end
 
 function ADInputManager:input_toggleAutomaticUnloadTarget(vehicle)
-    vehicle.ad.stateModule:toggleAutomaticUnloadTarget()
+    if AutoDrive.automaticUnloadTarget then
+        vehicle.ad.stateModule:toggleAutomaticUnloadTarget()
+    end
 end
 
 function ADInputManager:input_toggleAutomaticPickupTarget(vehicle)
-    vehicle.ad.stateModule:toggleAutomaticPickupTarget()
+    if AutoDrive.automaticPickupTarget then
+        vehicle.ad.stateModule:toggleAutomaticPickupTarget()
+    end
 end
 
 function ADInputManager:input_toggleLoadByFillLevel(vehicle)

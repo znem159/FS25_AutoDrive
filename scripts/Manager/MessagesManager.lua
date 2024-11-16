@@ -99,12 +99,12 @@ function ADMessagesManager:addMessage(vehicle, messageType, text, duration)
             end
         )
     if not exists then
-        self.messages:Enqueue({vehicle = g_currentMission.vehicleSystem.enterables[g_currentMission.vehicleSystem.lastEnteredVehicleIndex], messageType = messageType, text = text, duration = duration})
+        self.messages:Enqueue({vehicle = AutoDrive.getControlledVehicle(), messageType = messageType, text = text, duration = duration})
     end
 end
 
 function ADMessagesManager:addNotification(vehicle, messageType, text, duration)
-    if g_currentMission.vehicleSystem.enterables[g_currentMission.vehicleSystem.lastEnteredVehicleIndex] == vehicle then
+    if AutoDrive.getControlledVehicle() == vehicle then
         self:addMessage(vehicle, messageType, text, duration)
     else
         local exists = false
@@ -139,21 +139,21 @@ end
 
 function ADMessagesManager:addToHistory(item)
     table.insert(self.history, 1, item)
-    if AutoDrive.gui.ADNotificationsHistoryGui.isOpen then
+    if AutoDrive.gui and AutoDrive.gui.ADNotificationsHistoryGui  and AutoDrive.gui.ADNotificationsHistoryGui.isOpen then
         AutoDrive.gui.ADNotificationsHistoryGui:refreshItems()
     end
 end
 
 function ADMessagesManager:removeFromHistory(index)
     table.remove(self.history, index)
-    if AutoDrive.gui.ADNotificationsHistoryGui.isOpen then
+    if AutoDrive.gui and AutoDrive.gui.ADNotificationsHistoryGui  and AutoDrive.gui.ADNotificationsHistoryGui.isOpen then
         AutoDrive.gui.ADNotificationsHistoryGui:refreshItems()
     end
 end
 
 function ADMessagesManager:clearHistory()
     self.history = {}
-    if AutoDrive.gui.ADNotificationsHistoryGui.isOpen then
+    if AutoDrive.gui and AutoDrive.gui.ADNotificationsHistoryGui  and AutoDrive.gui.ADNotificationsHistoryGui.isOpen then
         AutoDrive.gui.ADNotificationsHistoryGui:refreshItems()
     end
 end

@@ -73,8 +73,9 @@ end
 
 function ADSettingsPage:onOptionChange(state, element)
     local setting = AutoDrive.settings[element.name]
-    if setting.isVehicleSpecific and g_currentMission.vehicleSystem.enterables[g_currentMission.vehicleSystem.lastEnteredVehicleIndex] ~= nil and g_currentMission.vehicleSystem.enterables[g_currentMission.vehicleSystem.lastEnteredVehicleIndex].ad ~= nil and g_currentMission.vehicleSystem.enterables[g_currentMission.vehicleSystem.lastEnteredVehicleIndex].ad.settings[element.name] ~= nil then
-        setting = g_currentMission.vehicleSystem.enterables[g_currentMission.vehicleSystem.lastEnteredVehicleIndex].ad.settings[element.name]
+    local controlledVehicle = AutoDrive.getControlledVehicle()
+    if setting.isVehicleSpecific and controlledVehicle ~= nil and controlledVehicle.ad ~= nil and controlledVehicle.ad.settings[element.name] ~= nil then
+        setting = controlledVehicle.ad.settings[element.name]
     end
     setting.new = state
 
@@ -89,11 +90,12 @@ function ADSettingsPage:onOptionChange(state, element)
 end
 
 function ADSettingsPage:hasChanges()
+    local controlledVehicle = AutoDrive.getControlledVehicle()
     for settingName, _ in pairs(self.settingElements) do
         if AutoDrive.settings[settingName] ~= nil then
             local setting = AutoDrive.settings[settingName]
-            if setting.isVehicleSpecific and g_currentMission.vehicleSystem.enterables[g_currentMission.vehicleSystem.lastEnteredVehicleIndex] ~= nil and g_currentMission.vehicleSystem.enterables[g_currentMission.vehicleSystem.lastEnteredVehicleIndex].ad ~= nil and g_currentMission.vehicleSystem.enterables[g_currentMission.vehicleSystem.lastEnteredVehicleIndex].ad.settings[settingName] ~= nil then
-                setting = g_currentMission.vehicleSystem.enterables[g_currentMission.vehicleSystem.lastEnteredVehicleIndex].ad.settings[settingName]
+            if setting.isVehicleSpecific and controlledVehicle ~= nil and controlledVehicle.ad ~= nil and controlledVehicle.ad.settings[settingName] ~= nil then
+                setting = controlledVehicle.ad.settings[settingName]
             end
             if setting.new ~= nil and setting.new ~= setting.current then
                 return true
@@ -119,11 +121,12 @@ function ADSettingsPage:onIngameMenuHelpTextChanged(box)
 end
 
 function ADSettingsPage:loadGUISettings()
+    local controlledVehicle = AutoDrive.getControlledVehicle()
     for settingName, _ in pairs(self.settingElements) do
         if AutoDrive.settings[settingName] ~= nil then
             local setting = AutoDrive.settings[settingName]
-            if setting.isVehicleSpecific and g_currentMission.vehicleSystem.enterables[g_currentMission.vehicleSystem.lastEnteredVehicleIndex] ~= nil and g_currentMission.vehicleSystem.enterables[g_currentMission.vehicleSystem.lastEnteredVehicleIndex].ad ~= nil and g_currentMission.vehicleSystem.enterables[g_currentMission.vehicleSystem.lastEnteredVehicleIndex].ad.settings[settingName] ~= nil then
-                setting = g_currentMission.vehicleSystem.enterables[g_currentMission.vehicleSystem.lastEnteredVehicleIndex].ad.settings[settingName]
+            if setting.isVehicleSpecific and controlledVehicle ~= nil and controlledVehicle.ad ~= nil and controlledVehicle.ad.settings[settingName] ~= nil then
+                setting = controlledVehicle.ad.settings[settingName]
             end
             self:loadGUISetting(settingName, setting.current)
         end

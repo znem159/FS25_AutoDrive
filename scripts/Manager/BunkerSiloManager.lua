@@ -29,7 +29,7 @@ function ADBunkerSiloManager:update(dt)
     for _, bunkerSilo in pairs(self.bunkerSilos) do
         local minDistance = math.huge
         bunkerSilo.adClosestVehicle = nil
-        for _, vehicle in pairs(g_currentMission.vehicleSystem.vehicles) do
+        for _, vehicle in pairs(AutoDrive.getAllVehicles()) do
             if vehicle and vehicle.ad and vehicle.ad.stateModule and vehicle.ad.stateModule:isActive() then
                 if self:isDestinationInBunkerSilo(vehicle, bunkerSilo) then
                     table.insert(bunkerSilo.adVehicles, vehicle)

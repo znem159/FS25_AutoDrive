@@ -386,7 +386,7 @@ function ADGraphManager:addGroup(groupName, sendEvent)
             AutoDriveGroupsEvent.sendEvent(groupName, AutoDriveGroupsEvent.TYPE_ADD)
         else
             self.groups[groupName] = table.count(self.groups) + 1
-            for _, vehicle in pairs(g_currentMission.vehicleSystem.vehicles) do
+            for _, vehicle in pairs(AutoDrive.getAllVehicles()) do
                 if (vehicle.ad ~= nil and vehicle.ad.groups ~= nil) then
                     if vehicle.ad.groups[groupName] == nil then
                         vehicle.ad.groups[groupName] = false
@@ -412,7 +412,7 @@ function ADGraphManager:removeGroup(groupName, sendEvent)
             -- Removing group from the groups list
             self.groups[groupName] = nil
             -- Removing group from the vehicles groups list
-            for _, vehicle in pairs(g_currentMission.vehicleSystem.vehicles) do
+            for _, vehicle in pairs(AutoDrive.getAllVehicles()) do
                 if (vehicle.ad ~= nil and vehicle.ad.groups ~= nil) then
                     if vehicle.ad.groups[groupName] ~= nil then
                         vehicle.ad.groups[groupName] = nil
@@ -461,7 +461,7 @@ end
 function ADGraphManager:setGroups(groups, updateVehicles)
     self.groups = groups
     if updateVehicles then
-        for _, vehicle in pairs(g_currentMission.vehicleSystem.vehicles) do
+        for _, vehicle in pairs(AutoDrive.getAllVehicles()) do
             if vehicle.ad ~= nil then
                 if vehicle.ad.groups == nil then
                     vehicle.ad.groups = {}
@@ -498,7 +498,7 @@ function ADGraphManager:removeMapMarker(markerId, sendEvent)
 
                 if g_server ~= nil then
                     -- Removing references to it on all vehicles
-                    for _, vehicle in pairs(g_currentMission.vehicleSystem.vehicles) do
+                    for _, vehicle in pairs(AutoDrive.getAllVehicles()) do
                         if
                             vehicle.ad ~= nil and vehicle.ad.stateModule ~= nil and
                                 vehicle.ad.stateModule.getParkDestinationAtJobFinished ~= nil
@@ -517,7 +517,7 @@ function ADGraphManager:removeMapMarker(markerId, sendEvent)
                         end
                     end
                     -- handle all vehicles and tools park destination
-                    for _, vehicle in pairs(g_currentMission.vehicleSystem.vehicles) do
+                    for _, vehicle in pairs(AutoDrive.getAllVehicles()) do
                         if
                             vehicle.advd ~= nil and vehicle.advd.getParkDestination ~= nil and
                                 vehicle.advd.setParkDestination ~= nil
@@ -708,7 +708,7 @@ function ADGraphManager:recordWayPoint(x, y, z, connectPrevious, dual, isReverse
 
     -- play sound only on client with enabled editor mode or RecordWhileNotInVehicle
     if g_client ~= nil then
-        local vehicle = g_currentMission.vehicleSystem.enterables[g_currentMission.vehicleSystem.lastEnteredVehicleIndex]
+        local vehicle = AutoDrive.getControlledVehicle()
         local forced = AutoDrive.experimentalFeatures.RecordWhileNotInVehicle
         if (vehicle ~= nil and vehicle.ad ~= nil and AutoDrive.isInExtendedEditorMode()) or forced then
             AutoDrive.playSample(AutoDrive.recordWaypointSample, 0.25, forced)
@@ -1096,7 +1096,7 @@ function ADGraphManager:checkResetVehicleDestinations(destination)
         return
     end
     -- remove deleted marker in vehicle destinations
-    for _, vehicle in pairs(g_currentMission.vehicleSystem.vehicles) do
+    for _, vehicle in pairs(AutoDrive.getAllVehicles()) do
         if vehicle.ad ~= nil and vehicle.ad.stateModule ~= nil then
             if destination == vehicle.ad.stateModule:getFirstMarkerId() then
                 local firstMarker = ADGraphManager:getMapMarkerById(1)

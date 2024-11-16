@@ -80,7 +80,7 @@ function AutoDrive.readNewInputs()
 	if vehicle ~= nil and vehicle.ad ~= nil then
 		
 		--Logging.info("[AD] found selectedVehicle " .. selectedVehicle)
-		--local vehicle = g_currentMission.vehicleSystem.enterables[g_currentMission.vehicleSystem.lastEnteredVehicleIndex]
+		--local vehicle = AutoDrive.getControlledVehicle()
 
 		if showingHud ~= nil and showingHud ~= AutoDrive.Hud.showHud then
 			AutoDrive.Hud:toggleHud(vehicle)
@@ -108,7 +108,7 @@ function AutoDrive.readNewInputs()
 			vehicle.ad.stateModule:setMode(mode)
 		end
 
-		if enterVehicle ~= nil and enterVehicle == true and vehicle ~= g_currentMission.vehicleSystem.enterables[g_currentMission.vehicleSystem.lastEnteredVehicleIndex] then
+		if enterVehicle ~= nil and enterVehicle == true and vehicle ~= AutoDrive.getControlledVehicle() then
 			g_currentMission:requestToEnterVehicle(enterVehicle)
 		end		
 
@@ -128,7 +128,7 @@ function AutoDrive.readNewInputs()
 end
 
 function AutoDrive.EnterVehicle(vehicle)	
-	AutoDrive.RestoreVehicle = g_currentMission.vehicleSystem.enterables[g_currentMission.vehicleSystem.lastEnteredVehicleIndex];
+	AutoDrive.RestoreVehicle = AutoDrive.getControlledVehicle();
 	g_currentMission:requestToEnterVehicle(vehicle)
 end
 
@@ -144,11 +144,11 @@ function AutoDrive.outputTelemetry()
 	table.insert(outputTable, "HudShow:" .. tostring(AutoDrive.Hud.showHud))
 
 	local vehiclesTable = {}
-	for vehicleID, vehicle in pairs(g_currentMission.vehicleSystem.vehicles) do
+	for vehicleID, vehicle in pairs(AutoDrive.getAllVehicles()) do
 		if vehicle.ad ~= nil and vehicle.ad.stateModule ~= nil then
 			AutoDrive.CreateOutputForVehicle(vehicle, vehicleID, vehiclesTable)
 		end
-		if vehicle == g_currentMission.vehicleSystem.enterables[g_currentMission.vehicleSystem.lastEnteredVehicleIndex] then
+		if vehicle == AutoDrive.getControlledVehicle() then
 			table.insert(outputTable, "currentVehicleId:" .. vehicleID)
 		end
 	end

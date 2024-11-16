@@ -362,17 +362,7 @@ function AutoDriveHud:refreshHudElementsLayerSequence()
 end
 
 function AutoDriveHud:drawHud(vehicle)
-	--AutoDrive.dumpTable(g_currentMission.vehicleSystem.enterables, "g_currentMission.vehicleSystem.enterables", 2)
-
-	local controlledVehicle = nil
-	if vehicle ~= nil then
-		if g_currentMission.vehicleSystem.lastEnteredVehicleIndex > 0 then
-			if g_currentMission.vehicleSystem.enterables[g_currentMission.vehicleSystem.lastEnteredVehicleIndex] ~= nil then
-				controlledVehicle = g_currentMission.vehicleSystem.enterables[g_currentMission.vehicleSystem.lastEnteredVehicleIndex]
-			end			
-		end
-	end
-
+	local controlledVehicle = AutoDrive.getControlledVehicle()
 	if (vehicle ~= nil and vehicle == controlledVehicle) or AutoDrive.aiFrameOpen then
 		local uiScale = g_gameSettings:getValue("uiScale")
 		if AutoDrive.getSetting("guiScale") ~= 0 then
@@ -1004,73 +994,73 @@ function AutoDrive.getTourHotspot()
 end
 
 function AutoDrive.getPlaceableHotspot()
---[[
-        local hotspot = PlaceableHotspot.new()
-        hotspot:setPlaceable(self)
-
-        local hotspotTypeName = self.xmlFile:getValue(key .. "#type", "UNLOADING")
-        local hotspotType = PlaceableHotspot.getTypeByName(hotspotTypeName)
-        if hotspotType == nil then
-            Logging.xmlWarning(self.xmlFile, "Unknown placeable hotspot type '%s'. Falling back to type 'UNLOADING'\nAvailable types: %s", hotspotTypeName, table.concatKeys(PlaceableHotspot.TYPE, " "))
-            hotspotType = PlaceableHotspot.TYPE.UNLOADING
-        end
-        hotspot:setPlaceableType(hotspotType)
-
-        local linkNode = self.xmlFile:getValue(key .. "#linkNode", nil, self.components, self.i3dMappings) or self.rootNode
-        if linkNode ~= nil then
-            local x, _, z = getWorldTranslation(linkNode)
-            hotspot:setWorldPosition(x, z)
-        end
-
-        local teleportNode = self.xmlFile:getValue(key .. "#teleportNode", nil, self.components, self.i3dMappings)
-        if teleportNode ~= nil then
-            local x, y, z = getWorldTranslation(teleportNode)
-            hotspot:setTeleportWorldPosition(x, y, z)
-        end
-
-        local worldPositionX, worldPositionZ = self.xmlFile:getValue(key .. "#worldPosition", nil)
-        if worldPositionX ~= nil then
-            hotspot:setWorldPosition(worldPositionX, worldPositionZ)
-        end
-
-        local teleportX, teleportY, teleportZ = self.xmlFile:getValue(key .. "#teleportWorldPosition", nil)
-        if teleportX ~= nil then
-            if g_currentMission ~= nil then
-                teleportY = math.max(teleportY, getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, teleportX, 0, teleportZ))
-            end
-            hotspot:setTeleportWorldPosition(teleportX, teleportY, teleportZ)
-        end
-
-        local text = self.xmlFile:getValue(key.."#text", nil)
-        if text ~= nil then
-            text = g_i18n:convertText(text, self.customEnvironment)
-            hotspot:setName(text)
-        end
-]]
-        local mapHotspot = PlaceableHotspot.new()
-
---[[
-        mapHotspot.ownerFarmId = g_currentMission.player.farmId
-        mapHotspot.clickArea.area[1] = 0.13
-        mapHotspot.clickArea.area[2] = 0.13
-        mapHotspot.clickArea.area[3] = 0.74
-        mapHotspot.clickArea.area[4] = 0.74
-]]
-        -- mapHotspot.isHotspotSelectionActive = true ???
-
-        mapHotspot:setPlaceableType(PlaceableHotspot.TYPE.UNLOADING)
-        -- mapHotspot:setTeleportWorldPosition(x, y, z)
-
-
-    return mapHotspot
-end
-
+	--[[
+			local hotspot = PlaceableHotspot.new()
+			hotspot:setPlaceable(self)
+	
+			local hotspotTypeName = self.xmlFile:getValue(key .. "#type", "UNLOADING")
+			local hotspotType = PlaceableHotspot.getTypeByName(hotspotTypeName)
+			if hotspotType == nil then
+				Logging.xmlWarning(self.xmlFile, "Unknown placeable hotspot type '%s'. Falling back to type 'UNLOADING'\nAvailable types: %s", hotspotTypeName, table.concatKeys(PlaceableHotspot.TYPE, " "))
+				hotspotType = PlaceableHotspot.TYPE.UNLOADING
+			end
+			hotspot:setPlaceableType(hotspotType)
+	
+			local linkNode = self.xmlFile:getValue(key .. "#linkNode", nil, self.components, self.i3dMappings) or self.rootNode
+			if linkNode ~= nil then
+				local x, _, z = getWorldTranslation(linkNode)
+				hotspot:setWorldPosition(x, z)
+			end
+	
+			local teleportNode = self.xmlFile:getValue(key .. "#teleportNode", nil, self.components, self.i3dMappings)
+			if teleportNode ~= nil then
+				local x, y, z = getWorldTranslation(teleportNode)
+				hotspot:setTeleportWorldPosition(x, y, z)
+			end
+	
+			local worldPositionX, worldPositionZ = self.xmlFile:getValue(key .. "#worldPosition", nil)
+			if worldPositionX ~= nil then
+				hotspot:setWorldPosition(worldPositionX, worldPositionZ)
+			end
+	
+			local teleportX, teleportY, teleportZ = self.xmlFile:getValue(key .. "#teleportWorldPosition", nil)
+			if teleportX ~= nil then
+				if g_currentMission ~= nil then
+					teleportY = math.max(teleportY, getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, teleportX, 0, teleportZ))
+				end
+				hotspot:setTeleportWorldPosition(teleportX, teleportY, teleportZ)
+			end
+	
+			local text = self.xmlFile:getValue(key.."#text", nil)
+			if text ~= nil then
+				text = g_i18n:convertText(text, self.customEnvironment)
+				hotspot:setName(text)
+			end
+	]]
+			local mapHotspot = PlaceableHotspot.new()
+	
+	--[[
+			mapHotspot.ownerFarmId = g_currentMission.player.farmId
+			mapHotspot.clickArea.area[1] = 0.13
+			mapHotspot.clickArea.area[2] = 0.13
+			mapHotspot.clickArea.area[3] = 0.74
+			mapHotspot.clickArea.area[4] = 0.74
+	]]
+			-- mapHotspot.isHotspotSelectionActive = true ???
+	
+			mapHotspot:setPlaceableType(PlaceableHotspot.TYPE.UNLOADING)
+			-- mapHotspot:setTeleportWorldPosition(x, y, z)
+	
+	
+		return mapHotspot
+	end
+	
 function AutoDrive.updateDestinationsMapHotspots()
     AutoDrive.debugPrint(nil, AutoDrive.DC_DEVINFO, "AutoDrive.updateDestinationsMapHotspots()")
 
     local width, height = getNormalizedScreenValues(9, 9)
 
-    if AutoDrive.mapHotspotsBuffer ~= nil then
+	if AutoDrive.mapHotspotsBuffer ~= nil then
         -- Removing all old map hotspots
         for _, mapHotspot in pairs(AutoDrive.mapHotspotsBuffer) do
             g_currentMission.hud:removeMapHotspot(mapHotspot)
@@ -1079,7 +1069,7 @@ function AutoDrive.updateDestinationsMapHotspots()
     end
     AutoDrive.mapHotspotsBuffer = {}
 
-    -- Updating and adding hotspots
+	-- Updating and adding hotspots
     for index, marker in ipairs(ADGraphManager:getMapMarkers()) do
         -- local mapHotspot = TourHotspot.new()
         local mapHotspot = PlaceableHotspot.new()
@@ -1101,8 +1091,8 @@ function AutoDrive.updateDestinationsMapHotspots()
 
         mapHotspot.isADMarker = true
         mapHotspot.markerID = index
-        
-        local wp = ADGraphManager:getWayPointById(marker.id)
+
+		local wp = ADGraphManager:getWayPointById(marker.id)
         if wp ~= nil then
             g_currentMission.hud:addMapHotspot(mapHotspot)
             table.insert(AutoDrive.mapHotspotsBuffer, mapHotspot)

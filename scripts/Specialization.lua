@@ -9,6 +9,7 @@ function AutoDrive.prerequisitesPresent(specializations)
     (
     SpecializationUtil.hasSpecialization(SplineVehicle, specializations)
     and SpecializationUtil.hasSpecialization(Drivable, specializations)
+    and SpecializationUtil.hasSpecialization(Locomotive, specializations)
     )
 end
 
@@ -91,7 +92,7 @@ end
 function AutoDrive:onRegisterActionEvents(_, isOnActiveVehicle)
     local registerEvents = isOnActiveVehicle
     if self.ad ~= nil then
-        registerEvents = registerEvents or self == g_currentMission.vehicleSystem.enterables[g_currentMission.vehicleSystem.lastEnteredVehicleIndex]
+        registerEvents = registerEvents or self == AutoDrive.getControlledVehicle()
     end
 
     -- only in active vehicle
@@ -147,8 +148,12 @@ function AutoDrive.initSpecialization()
     schemaSavegame:register(XMLValueType.BOOL, "vehicles.vehicle(?).AutoDrive#AIVElastActive", "AIVElastActive")
     schemaSavegame:register(XMLValueType.INT, "vehicles.vehicle(?).AutoDrive#parkDestination", "parkDestination")
     schemaSavegame:register(XMLValueType.INT, "vehicles.vehicle(?).AutoDrive#bunkerUnloadType", "bunkerUnloadType")
-    schemaSavegame:register(XMLValueType.BOOL, "vehicles.vehicle(?).AutoDrive#automaticUnloadTarget", "automaticUnloadTarget")
-    schemaSavegame:register(XMLValueType.BOOL, "vehicles.vehicle(?).AutoDrive#automaticPickupTarget", "automaticPickupTarget")
+    if AutoDrive.automaticUnloadTarget then
+        schemaSavegame:register(XMLValueType.BOOL, "vehicles.vehicle(?).AutoDrive#automaticUnloadTarget", "automaticUnloadTarget")
+    end
+    if AutoDrive.automaticPickupTarget then
+        schemaSavegame:register(XMLValueType.BOOL, "vehicles.vehicle(?).AutoDrive#automaticPickupTarget", "automaticPickupTarget")
+    end
 end
 
 function AutoDrive:onPreLoad(savegame)
@@ -253,6 +258,10 @@ function AutoDrive:onPostLoad(savegame)
 
         self.ad.noMovementTimer = AutoDriveTON:new()
         self.ad.driveForwardTimer = AutoDriveTON:new()
+
+        if not (AIJobFieldWork and AIJobFieldWork.getPricePerMs) then
+            Logging.error("[AD] AutoDrive:onPostLoad AIJobFieldWork not found!")
+        end
     end
 
     if self.ad.typeIsConveyorBelt == nil then
@@ -295,6 +304,10 @@ function AutoDrive:onPostLoad(savegame)
     link(self.components[1].node, self.ad.frontNode)
     setTranslation(self.ad.frontNode, 0, 0, self.size.length / 2 + self.size.lengthOffset + 0.75)
     self.ad.frontNodeGizmo = DebugGizmo.new()
+    if self.ad.frontNodeGizmo == nil then
+        Logging.error("[AD] AutoDrive:onPostLoad frontNodeGizmo not creatd!")
+    end
+
     -- self.ad.debug = RingQueue:new()
     local x, y, z = getWorldTranslation(self.components[1].node)
     self.ad.lastDrawPosition = {x = x, z = z}
@@ -377,7 +390,7 @@ function AutoDrive:onUpdateTick(dt, isActiveForInput, isActiveForInputIgnoreSele
         end
         if farmID ~= nil and farmID > 0 and self.ad.stateModule:isActive() then
             local driverWages = AutoDrive.getSetting("driverWages")
-            local difficultyMultiplier = g_currentMission.economyManager:getPriceMultiplier()
+            local difficultyMultiplier = AutoDrive.getPriceMultiplier()
             local pricePerMs = AIJobFieldWork and AIJobFieldWork.getPricePerMs and AIJobFieldWork:getPricePerMs() or 0.0005
             local price = -dt * difficultyMultiplier * (driverWages) * pricePerMs
             --price = price + (dt * difficultyMultiplier * 0.001)   -- add the price which AI internal already substracted - no longer required for FS22
@@ -541,7 +554,7 @@ function AutoDrive:onDraw()
 
     local x, y, z = getWorldTranslation(self.components[1].node)
     if AutoDrive.getDebugChannelIsSet(AutoDrive.DC_PATHINFO) then
-        for _, otherVehicle in pairs(g_currentMission.vehicleSystem.vehicles) do
+        for _, otherVehicle in pairs(AutoDrive.getAllVehicles()) do
             if otherVehicle ~= nil and otherVehicle.ad ~= nil and otherVehicle.ad.drivePathModule ~= nil and otherVehicle.ad.drivePathModule:getWayPoints() ~= nil and not otherVehicle.ad.drivePathModule:isTargetReached() then
                 local currentIndex = otherVehicle.ad.drivePathModule:getCurrentWayPointIndex()
 
@@ -572,7 +585,7 @@ function AutoDrive:onDraw()
             end
         end
 
-        for _, otherVehicle in pairs(g_currentMission.vehicleSystem.vehicles) do
+        for _, otherVehicle in pairs(AutoDrive.getAllVehicles()) do
             if otherVehicle ~= nil and otherVehicle.ad ~= nil and otherVehicle.ad.drivePathModule ~= nil and otherVehicle.ad.modes[AutoDrive.MODE_UNLOAD]:getBreadCrumbs() ~= nil then
                 local lastPoint = nil
                 for index, point in ipairs(otherVehicle.ad.modes[AutoDrive.MODE_UNLOAD]:getBreadCrumbs().items) do
@@ -614,19 +627,6 @@ function AutoDrive:onDraw()
         end
     end
     --]]
-end
-
-function AutoDrive.drawTripod(node, offset)
-    if offset == nil then
-        offset = {x=0,y=0,z=0}
-    end
-    local nodeX, nodeY, nodeZ = getWorldTranslation(node)
-    local targetX, targetY, targetZ = localToWorld(node, 2, 0, 0)
-    ADDrawingManager:addLineTask(nodeX + offset.x, nodeY + offset.y, nodeZ + offset.z, targetX + offset.x, targetY + offset.y, targetZ + offset.z, 1, 1, 0, 0)
-    targetX, targetY, targetZ = localToWorld(node, 0, 2, 0)
-    ADDrawingManager:addLineTask(nodeX + offset.x, nodeY + offset.y, nodeZ + offset.z, targetX + offset.x, targetY + offset.y, targetZ + offset.z, 1, 0, 1, 0)
-    targetX, targetY, targetZ = localToWorld(node, 0, 0, 2)
-    ADDrawingManager:addLineTask(nodeX + offset.x, nodeY + offset.y, nodeZ + offset.z, targetX + offset.x, targetY + offset.y, targetZ + offset.z, 1, 0, 0, 1)
 end
 
 function AutoDrive:onDrawPreviews()
@@ -689,7 +689,8 @@ function AutoDrive:onPostAttachImplement(attachable, inputJointDescIndex, jointD
     end
     AutoDrive.setValidSupportedFillType(self)
 
-    if g_currentMission.vehicleSystem.enterables[g_currentMission.vehicleSystem.lastEnteredVehicleIndex] ~= nil and g_currentMission.vehicleSystem.enterables[g_currentMission.vehicleSystem.lastEnteredVehicleIndex].ad ~= nil and g_currentMission.vehicleSystem.enterables[g_currentMission.vehicleSystem.lastEnteredVehicleIndex] == self then
+    local controlledVehicle = AutoDrive.getControlledVehicle()
+    if controlledVehicle and controlledVehicle.ad and controlledVehicle == self then
         AutoDrive.Hud.lastUIScale = 0
     end
     AutoDrive.getFrontToolWidth(self, true)
@@ -714,24 +715,25 @@ end
 -- Giants special behaviour: at time of the event the implement and all implements attached to it are still attached!
 -- thats why the attached and all following have to be taken to special consideration!
 function AutoDrive:onPostDetachImplement(implementIndex)
+    local controlledVehicle = AutoDrive.getControlledVehicle()
     AutoDrive.setValidSupportedFillType(self, implementIndex)
-    if g_currentMission.vehicleSystem.enterables[g_currentMission.vehicleSystem.lastEnteredVehicleIndex] ~= nil and g_currentMission.vehicleSystem.enterables[g_currentMission.vehicleSystem.lastEnteredVehicleIndex].ad ~= nil and g_currentMission.vehicleSystem.enterables[g_currentMission.vehicleSystem.lastEnteredVehicleIndex] == self then
+    if controlledVehicle and controlledVehicle.ad and controlledVehicle == self then
         AutoDrive.Hud.lastUIScale = 0
     end
 end
 
 function AutoDrive:onEnterVehicle(isControlling)
+    local controlledVehicle = AutoDrive.getControlledVehicle()
     if AutoDrive:hasAL(self) then
         -- AutoLoad
         local currentFillType = AutoDrive:getALCurrentFillType(self)
         if currentFillType ~= nil then
             self.ad.stateModule:setFillType(currentFillType)
-            if g_currentMission.vehicleSystem.enterables[g_currentMission.vehicleSystem.lastEnteredVehicleIndex] ~= nil and g_currentMission.vehicleSystem.enterables[g_currentMission.vehicleSystem.lastEnteredVehicleIndex].ad ~= nil and g_currentMission.vehicleSystem.enterables[g_currentMission.vehicleSystem.lastEnteredVehicleIndex] == self then
-                AutoDrive.Hud.lastUIScale = 0
-            end
+        else
+            self.ad.stateModule:setFillType(FillType.UNKNOWN)
         end
     end
-    if g_currentMission.vehicleSystem.enterables[g_currentMission.vehicleSystem.lastEnteredVehicleIndex] ~= nil and g_currentMission.vehicleSystem.enterables[g_currentMission.vehicleSystem.lastEnteredVehicleIndex].ad ~= nil and g_currentMission.vehicleSystem.enterables[g_currentMission.vehicleSystem.lastEnteredVehicleIndex] == self then
+    if controlledVehicle and controlledVehicle.ad and controlledVehicle == self then
         AutoDrive.Hud.lastUIScale = 0
     end
     if self.isServer and self.ad and self.ad.stateModule and not self.ad.stateModule:isActive() then
@@ -742,7 +744,7 @@ function AutoDrive:onEnterVehicle(isControlling)
     end
 
     local spec = self.spec_enterable
-    if spec and spec.isControlled then
+    if spec and self:getIsControlled() then
         if self.ad and self.ad.stateModule then
             self.ad.stateModule:setPlayerFarmId(spec.controllerFarmId)
         end
@@ -1533,8 +1535,11 @@ function AutoDrive:leaveVehicle(superFunc)
 end
 
 function AutoDrive:updateAutoDriveLights(switchOff)
+    if not self.setTurnLightState then
+        AutoDrive.errorMsg(self, "AutoDrive:updateAutoDriveLights self.setTurnLightState %s", tostring(self.setTurnLightState))
+    end
     if switchOff then
-        if AutoDrive.getSetting("useHazardLightReverse", self) then
+        if AutoDrive.getSetting("useHazardLightReverse", self) and self.setTurnLightState then
             self:setTurnLightState(Lights.TURNLIGHT_OFF)
         end
     elseif self.ad ~= nil and self.ad.stateModule:isActive() then
