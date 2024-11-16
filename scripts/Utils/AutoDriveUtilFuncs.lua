@@ -674,10 +674,11 @@ end
 -- return the vehicle which can be AD controlled
 function AutoDrive.getADFocusVehicle(debug)
 	local vehicle = nil
+    local controlledVehicle = AutoDrive.getControlledVehicle()
     if AutoDrive.aiFrameOpen and AutoDrive.aiFrameVehicle ~= nil and AutoDrive.aiFrameVehicle.ad ~= nil and AutoDrive.aiFrameVehicle.ad.stateModule ~= nil then
         vehicle = AutoDrive.aiFrameVehicle
-    elseif AutoDrive.getControlledVehicle() ~= nil and AutoDrive.getControlledVehicle().ad ~= nil and AutoDrive.getControlledVehicle().ad.stateModule ~= nil then
-        vehicle = AutoDrive.getControlledVehicle()
+    elseif controlledVehicle ~= nil and controlledVehicle.ad ~= nil and controlledVehicle.ad.stateModule ~= nil then
+        vehicle = controlledVehicle
     end
     return vehicle
 end
