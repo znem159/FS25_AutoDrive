@@ -139,21 +139,21 @@ end
 
 function ADMessagesManager:addToHistory(item)
     table.insert(self.history, 1, item)
-    if AutoDrive.gui.ADNotificationsHistoryGui.isOpen then
+    if AutoDrive.gui and AutoDrive.gui.ADNotificationsHistoryGui  and AutoDrive.gui.ADNotificationsHistoryGui.isOpen then
         AutoDrive.gui.ADNotificationsHistoryGui:refreshItems()
     end
 end
 
 function ADMessagesManager:removeFromHistory(index)
     table.remove(self.history, index)
-    if AutoDrive.gui.ADNotificationsHistoryGui.isOpen then
+    if AutoDrive.gui and AutoDrive.gui.ADNotificationsHistoryGui  and AutoDrive.gui.ADNotificationsHistoryGui.isOpen then
         AutoDrive.gui.ADNotificationsHistoryGui:refreshItems()
     end
 end
 
 function ADMessagesManager:clearHistory()
     self.history = {}
-    if AutoDrive.gui.ADNotificationsHistoryGui.isOpen then
+    if AutoDrive.gui and AutoDrive.gui.ADNotificationsHistoryGui  and AutoDrive.gui.ADNotificationsHistoryGui.isOpen then
         AutoDrive.gui.ADNotificationsHistoryGui:refreshItems()
     end
 end
