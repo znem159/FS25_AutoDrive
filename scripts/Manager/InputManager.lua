@@ -486,11 +486,15 @@ function ADInputManager:input_toggleCP_AIVE(vehicle) -- select CP or AIVE
 end
 
 function ADInputManager:input_toggleAutomaticUnloadTarget(vehicle)
-    vehicle.ad.stateModule:toggleAutomaticUnloadTarget()
+    if AutoDrive.automaticUnloadTarget then
+        vehicle.ad.stateModule:toggleAutomaticUnloadTarget()
+    end
 end
 
 function ADInputManager:input_toggleAutomaticPickupTarget(vehicle)
-    vehicle.ad.stateModule:toggleAutomaticPickupTarget()
+    if AutoDrive.automaticPickupTarget then
+        vehicle.ad.stateModule:toggleAutomaticPickupTarget()
+    end
 end
 
 function ADInputManager:input_toggleLoadByFillLevel(vehicle)

@@ -441,44 +441,60 @@ function ADStateModule:toggleAutomaticUnloadTarget()
     if self.vehicle.spec_locomotive then
         return
     end
-    self.automaticUnloadTarget = not self.automaticUnloadTarget
-    self:raiseDirtyFlag()
+    if AutoDrive.automaticUnloadTarget then
+        self.automaticUnloadTarget = not self.automaticUnloadTarget
+        self:raiseDirtyFlag()
+    end
 end
 
 function ADStateModule:setAutomaticUnloadTarget(enabled)
     if self.vehicle.spec_locomotive then
         return
     end
-    if enabled ~= self.automaticUnloadTarget then
-        self.automaticUnloadTarget = enabled
-        self:raiseDirtyFlag()
+    if AutoDrive.automaticUnloadTarget then
+        if enabled ~= self.automaticUnloadTarget then
+            self.automaticUnloadTarget = enabled
+            self:raiseDirtyFlag()
+        end
     end
 end
 
 function ADStateModule:getAutomaticUnloadTarget()
-    return self.automaticUnloadTarget and not self.vehicle.spec_locomotive
+    if AutoDrive.automaticUnloadTarget then
+        return self.automaticUnloadTarget and not self.vehicle.spec_locomotive
+    else
+        return false
+    end
 end
 
 function ADStateModule:toggleAutomaticPickupTarget()
     if self.vehicle.spec_locomotive then
         return
     end
-    self.automaticPickupTarget = not self.automaticPickupTarget
-    self:raiseDirtyFlag()
+    if AutoDrive.automaticPickupTarget then
+        self.automaticPickupTarget = not self.automaticPickupTarget
+        self:raiseDirtyFlag()
+    end
 end
 
 function ADStateModule:setAutomaticPickupTarget(enabled)
     if self.vehicle.spec_locomotive then
         return
     end
-    if enabled ~= self.automaticPickupTarget then
-        self.automaticPickupTarget = enabled
-        self:raiseDirtyFlag()
+    if AutoDrive.automaticPickupTarget then
+        if enabled ~= self.automaticPickupTarget then
+            self.automaticPickupTarget = enabled
+            self:raiseDirtyFlag()
+        end
     end
 end
 
 function ADStateModule:getAutomaticPickupTarget()
-    return self.automaticPickupTarget and not self.vehicle.spec_locomotive
+    if AutoDrive.automaticPickupTarget then
+        return self.automaticPickupTarget and not self.vehicle.spec_locomotive
+    else
+        return false
+    end
 end
 
 function ADStateModule:setHarvesterPairingOk(ok)

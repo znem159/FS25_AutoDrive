@@ -19,6 +19,9 @@ AutoDrive.experimentalFeatures.RefuelOnlyAtValidStations = true
 AutoDrive.experimentalFeatures.RecordWhileNotInVehicle = false
 AutoDrive.experimentalFeatures.NewPathfinder = true
 
+AutoDrive.automaticUnloadTarget = false
+AutoDrive.automaticPickupTarget = false
+
 AutoDrive.dynamicChaseDistance = true
 AutoDrive.smootherDriving = true
 AutoDrive.developmentControls = false
@@ -247,8 +250,6 @@ function AutoDrive:loadMap(name)
 	MapHotspot.getIsVisible = Utils.overwrittenFunction(MapHotspot.getIsVisible, AutoDrive.MapHotspot_getIsVisible)
 
 	IngameMapElement.mouseEvent = Utils.overwrittenFunction(IngameMapElement.mouseEvent, AutoDrive.ingameMapElementMouseEvent)
-
-	-- FarmStats.getStatisticData = Utils.overwrittenFunction(FarmStats.getStatisticData, AutoDrive.FarmStats_getStatisticData)
 
 	FSBaseMission.removeVehicle = Utils.prependedFunction(FSBaseMission.removeVehicle, AutoDrive.preRemoveVehicle)
 
@@ -509,20 +510,6 @@ function AutoDrive:saveSavegame()
 --    Logging.info("[AD] AutoDrive:saveSavegame start")
 	if g_server ~= nil then
 --        Logging.info("[AD] AutoDrive:saveSavegame g_server ~= nil start")
---[[
-		if ADGraphManager:hasChanges() or AutoDrive.HudChanged then
-            Logging.info("[AD] AutoDrive:saveSavegame hasChanges or HudChanged")
-			AutoDrive.saveToXML(AutoDrive.adXml)
-			ADGraphManager:resetChanges()
-			AutoDrive.HudChanged = false
-		else
-            Logging.info("[AD] AutoDrive:saveSavegame else hasChanges or HudChanged")
-			if AutoDrive.adXml ~= nil then
-                Logging.info("[AD] AutoDrive:saveSavegame AutoDrive.adXml ~= nil -> saveXMLFile")
-				saveXMLFile(AutoDrive.adXml)
-			end
-		end
-]]
         AutoDrive.saveToXML()
 		ADUserDataManager:saveToXml()
 --        Logging.info("[AD] AutoDrive:saveSavegame g_server ~= nil end")
@@ -717,30 +704,3 @@ function AutoDrive:FarmStats_loadFromXMLFile(xmlFileName, key)
 	-- self.statistics["driversTraveledDistance"].total = xmlFile:getFloat(key .. ".driversTraveledDistance", 0)
 end
 
-function AutoDrive:FarmStats_getStatisticData(superFunc)
-	if superFunc ~= nil then
-		superFunc(self)
-	end
-	if not g_currentMission.missionDynamicInfo.isMultiplayer or not g_currentMission.missionDynamicInfo.isClient then
-		local firstCall = self.statisticDataRev["driversHired"] == nil or self.statisticDataRev["driversTraveledDistance"] == nil
-		self:addStatistic("driversHired", nil, self:getSessionValue("driversHired"), nil, "%s")
-		self:addStatistic("driversTraveledDistance", g_i18n:getMeasuringUnit(), g_i18n:getDistance(self:getSessionValue("driversTraveledDistance")), g_i18n:getDistance(self:getTotalValue("driversTraveledDistance")), "%.2f")
-		if firstCall then
-			-- Moving position of our stats
-			local statsLength = #self.statisticData
-			local dTdPosition = 14
-			-- Backup of our new stats
-			local driversHired = self.statisticData[statsLength - 1]
-			local driversTraveledDistance = self.statisticData[statsLength]
-			-- Moving 'driversHired' one position up
-			self.statisticData[statsLength - 1] = self.statisticData[statsLength - 2]
-			self.statisticData[statsLength - 2] = driversHired
-			-- Moving 'driversTraveledDistance' to 14th position
-			for i = statsLength - 1, dTdPosition, -1 do
-				self.statisticData[i + 1] = self.statisticData[i]
-			end
-			self.statisticData[dTdPosition] = driversTraveledDistance
-		end
-	end
-	return Utils.getNoNil(self.statisticData, {})
-end
