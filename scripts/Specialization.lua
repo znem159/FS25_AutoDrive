@@ -729,9 +729,8 @@ function AutoDrive:onEnterVehicle(isControlling)
         local currentFillType = AutoDrive:getALCurrentFillType(self)
         if currentFillType ~= nil then
             self.ad.stateModule:setFillType(currentFillType)
-            if controlledVehicle and controlledVehicle.ad and controlledVehicle == self then
-                AutoDrive.Hud.lastUIScale = 0
-            end
+        else
+            self.ad.stateModule:setFillType(FillType.UNKNOWN)
         end
     end
     if controlledVehicle and controlledVehicle.ad and controlledVehicle == self then
