@@ -11,7 +11,6 @@ local ADEnterTargetNameGui_mt = Class(ADEnterTargetNameGui, DialogElement)
 
 function ADEnterTargetNameGui.new(target)
     local self = DialogElement.new(target, ADEnterTargetNameGui_mt)
-    self.returnScreenName = ""
     self.editName = nil
     self.editId = nil
     self.edit = false

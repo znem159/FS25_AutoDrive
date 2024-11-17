@@ -3,9 +3,7 @@ function AutoDrive:loadGUI()
 
 	g_gui:loadProfiles(AutoDrive.directory .. "gui/guiProfiles.xml")
 	AutoDrive.gui = {}
-	--[[
 	AutoDrive.gui.ADEnterDriverNameGui = ADEnterDriverNameGui.new()
-	--]]
 	AutoDrive.gui.ADEnterTargetNameGui = ADEnterTargetNameGui.new()
 	--[[
 	AutoDrive.gui.ADEnterGroupNameGui = ADEnterGroupNameGui.new()
@@ -18,14 +16,12 @@ function AutoDrive:loadGUI()
 	--]]
     local count = 1
     local result = nil
-	--[[
 	result = g_gui:loadGui(AutoDrive.directory .. "gui/enterDriverNameGUI.xml", "ADEnterDriverNameGui", AutoDrive.gui.ADEnterDriverNameGui)
 
     count = count + 1
     if result == nil then
         AutoDrive.debugMsg(nil, "AutoDrive:loadGUI failed count %d", count)
     end
-	--]]
 	result = g_gui:loadGui(AutoDrive.directory .. "gui/enterTargetNameGUI.xml", "ADEnterTargetNameGui", AutoDrive.gui.ADEnterTargetNameGui)
 
     count = count + 1
@@ -146,7 +142,7 @@ end
 
 function AutoDrive.onOpenEnterDriverName()
 	if not AutoDrive.gui.ADEnterDriverNameGui.isOpen then
-		g_gui:showGui("ADEnterDriverNameGui")
+		g_gui:showDialog("ADEnterDriverNameGui")
 	end
 end
 
