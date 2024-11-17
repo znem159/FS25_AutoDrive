@@ -57,6 +57,8 @@ function ADStateModule:reset()
 
     self.useCP = (self.vehicle.cpStartStopDriver ~= nil)
 
+    self.startAIHelper = false
+
     self.driverName = g_i18n:getText("UNKNOWN")
     if self.vehicle.getName ~= nil then
         self.driverName = self.vehicle:getName()
@@ -1260,4 +1262,14 @@ function ADStateModule:setActualFarmId(farmId, sendEvent)
             self:raiseDirtyFlag()
         end
     end
+end
+
+-- TODO Implement HUD Button for AI
+function ADStateModule:getStartAI()
+    -- return self.startAIHelper
+    return true
+end
+
+function ADStateModule:setStartAI(enabled)
+    self.startAIHelper = enabled
 end

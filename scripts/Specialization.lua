@@ -42,6 +42,11 @@ function AutoDrive.registerEventListeners(vehicleType)
             "onCpFull",
             "onCpFuelEmpty",
             "onCpBroken",
+            -- Giants helper events
+            -- "onAIJobStarted",
+            "onAIJobFinished",
+            -- "onAIJobVehicleBlock",
+            -- "onAIJobVehicleContinue",
         }
     ) do
         SpecializationUtil.registerEventListener(vehicleType, n, AutoDrive)
@@ -212,6 +217,7 @@ function AutoDrive:onLoad(savegame)
     self.ad.isStoppingWithError = false
     self.ad.isCpEmpty = false
     self.ad.isCpFull = false
+    self.ad.isAIJobFinished = false
 
     AutoDrive.resetMouseSelections(self)
 end
@@ -1150,6 +1156,8 @@ function AutoDrive:stopAutoDrive()
 
             self.ad.isCpEmpty = false
             self.ad.isCpFull = false
+            self.ad.isAIJobFinished = false
+
             if self.ad.isStoppingWithError == true then
                 self.ad.onRouteToRefuel = false
                 self.ad.onRouteToRepair = false
@@ -1159,8 +1167,9 @@ function AutoDrive:stopAutoDrive()
 
             local isStartingAIVE = (not self.ad.isStoppingWithError and self.ad.stateModule:getStartCP_AIVE() and not self.ad.stateModule:getUseCP_AIVE())
             local isPassingToCP = not self.ad.isStoppingWithError and (self.ad.restartCP == true or (self.ad.stateModule:getStartCP_AIVE() and self.ad.stateModule:getUseCP_AIVE()))
+            local isPassingToAI = not self.ad.isStoppingWithError and (self.ad.restartAIFieldWorker == true or self.ad.stateModule:getStartAI())
 
-            if not isStartingAIVE and not isPassingToCP then
+            if not isStartingAIVE and not isPassingToCP and not isPassingToAI then
                 if not AutoDrive:getIsEntered(self) then
                     if self.deactivateLights ~= nil then
                         self:deactivateLights()
@@ -1180,7 +1189,7 @@ function AutoDrive:stopAutoDrive()
                 end
             end
 
-            AutoDriveStartStopEvent:sendStopEvent(self, isPassingToCP, isStartingAIVE)
+            AutoDriveStartStopEvent:sendStopEvent(self, isPassingToCP or isPassingToAI, isStartingAIVE)
 
 			-- currently the pass to CP is only working correct from this call
             AutoDrive.passToExternalMod(self)
@@ -1305,7 +1314,7 @@ function AutoDrive:onStopAutoDrive(isPassingToCP, isStartingAIVE)
     end
 end
 
-function AutoDrive.passToExternalMod(vehicle)
+function AutoDrive.passToExternalMod_CP(vehicle)
     if vehicle == nil or vehicle.ad == nil or vehicle.ad.stateModule == nil then
         return
     end
@@ -1355,6 +1364,64 @@ function AutoDrive.passToExternalMod(vehicle)
                     AutoDrive.debugPrint(vehicle, AutoDrive.DC_EXTERNALINTERFACEINFO, "AutoDrive.passToExternalMod pass control to AIVE with startAIVehicle")
                     vehicle:toggleAIVehicle()
                 end
+            end
+        end
+    end
+end
+
+function AutoDrive.passToExternalMod(vehicle)
+    if vehicle == nil or vehicle.ad == nil or vehicle.ad.stateModule == nil then
+        return
+    end
+
+    local x, y, z = getWorldTranslation(vehicle.components[1].node)
+
+    local point = nil
+    local distanceToStart = 0
+    if
+        vehicle.ad ~= nil and ADGraphManager.getWayPointById ~= nil and vehicle.ad.stateModule ~= nil and vehicle.ad.stateModule.getFirstMarker ~= nil 
+        and vehicle.ad.stateModule:getFirstMarker() ~= nil and vehicle.ad.stateModule:getFirstMarker() ~= 0 and vehicle.ad.stateModule:getFirstMarker().id ~= nil
+     then
+        point = ADGraphManager:getWayPointById(vehicle.ad.stateModule:getFirstMarker().id)
+        if point ~= nil then
+            distanceToStart = MathUtil.vector2Length(x - point.x, z - point.z)
+        end
+    end
+
+    if (not vehicle.ad.isStoppingWithError and distanceToStart < 30) or vehicle.ad.restartAIFieldWorker == true then
+        AutoDrive.debugPrint(vehicle, AutoDrive.DC_EXTERNALINTERFACEINFO, "AutoDrive.passToExternalMod pass to other mod...")
+        if vehicle.ad.restartAIFieldWorker == true then
+            vehicle.ad.restartAIFieldWorker = false
+        end
+        local fieldJob = vehicle:getLastJob()
+        if fieldJob == nil  then
+            -- no job present - generate fielwork job new
+            local fieldJob = g_currentMission.aiJobTypeManager:createJob(AIJobType.FIELDWORK)
+            fieldJob:applyCurrentState(vehicle, g_currentMission, vehicle:getOwnerFarmId(), true)
+            fieldJob:setValues()
+            local success, errorMessage = fieldJob:validate(vehicle:getOwnerFarmId())
+            if success then
+                AutoDrive.debugPrint(vehicle, AutoDrive.DC_EXTERNALINTERFACEINFO, "AutoDrive.passToExternalMod aiSystem:startJob startJob")
+                g_currentMission.aiSystem:startJob(fieldJob, vehicle:getOwnerFarmId())
+            else
+-- TODO add notification
+                AutoDrive.debugMsg(vehicle, "AutoDrive.passToExternalMod aiSystem:startJob errorMessage: %s"
+                , tostring(errorMessage)
+                )
+            end
+        else
+            -- job present - continue fielwork job
+            fieldJob:applyCurrentState(vehicle, g_currentMission, vehicle:getOwnerFarmId(), false)
+            fieldJob:setValues()
+            local success, errorMessage = fieldJob:validate(vehicle:getOwnerFarmId())
+            if success then
+                AutoDrive.debugPrint(vehicle, AutoDrive.DC_EXTERNALINTERFACEINFO, "AutoDrive.passToExternalMod lastJob aiSystem:startJob startJob")
+                g_currentMission.aiSystem:startJob(fieldJob, vehicle:getOwnerFarmId())
+            else
+-- TODO add notification
+                AutoDrive.debugMsg(vehicle, "AutoDrive.passToExternalMod lastJob aiSystem:startJob errorMessage: %s"
+                , tostring(errorMessage)
+                )
             end
         end
     end

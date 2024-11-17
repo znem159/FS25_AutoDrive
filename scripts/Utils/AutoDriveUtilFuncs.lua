@@ -29,7 +29,7 @@ function AutoDrive.isTrailerInCrop(vehicle, enlargeDetectionArea)
     end
 
     local trailers, trailerCount = AutoDrive.getAllUnits(vehicle)
-    local trailer = trailers[trailerCount]
+    local trailer = trailers and trailers[trailerCount]
     local inCrop = false
     if trailer ~= nil then
         if trailer.ad == nil then
@@ -202,7 +202,7 @@ function AutoDrive.isVehicleInBunkerSiloArea(vehicle)
             end
 
             local trailers, trailerCount = AutoDrive.getAllUnits(vehicle)
-            if trailerCount > 0 then
+            if trailers and trailerCount > 0 then
                 for _, trailer in pairs(trailers) do
                     if AutoDrive.isTrailerInBunkerSiloArea(trailer, trigger) then
                         return true
@@ -690,11 +690,13 @@ function AutoDrive.getSupportedFillTypesOfAllUnitsAlphabetically(vehicle)
     if vehicle ~= nil then
         local hasAL = false
         local trailers, _ = AutoDrive.getAllUnits(vehicle)
-        for _, trailer in ipairs(trailers) do
-            hasAL = hasAL or AutoDrive:hasAL(trailer)
+        if trailers then
+            for _, trailer in ipairs(trailers) do
+                hasAL = hasAL or AutoDrive:hasAL(trailer)
+            end
         end
         supportedFillTypes = {}
-        if hasAL then
+        if trailers and hasAL then
             -- AutoLoad - TODO: return the correct fillTypes
             for trailerIndex, trailer in ipairs(trailers) do
                 autoLoadFillTypes = AutoDrive:getALFillTypes(trailer)
