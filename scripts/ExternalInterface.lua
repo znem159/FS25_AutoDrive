@@ -769,7 +769,7 @@ function AutoDrive:unloadALAll(vehicle) -- used by UnloadAtDestinationTask
     end
     local trailers, trailerCount = AutoDrive.getAllUnits(vehicle)
     AutoDrive.debugPrint(vehicle, AutoDrive.DC_EXTERNALINTERFACEINFO, "AutoDrive:unloadALAll trailerCount %s", tostring(trailerCount))
-    if trailerCount > 0 then
+    if trailers and trailerCount > 0 then
         for i=1, trailerCount do
             AutoDrive:unloadAL(trailers[i])
         end
@@ -857,7 +857,7 @@ function AutoDrive:setALFillType(vehicle, fillType) -- used by PullDownList
     end
     AutoDrive.debugPrint(vehicle, AutoDrive.DC_EXTERNALINTERFACEINFO, "AutoDrive:setALFillType")
     local trailers, trailerCount = AutoDrive.getAllUnits(vehicle)
-    if trailerCount > 0 then
+    if trailers and trailerCount > 0 then
         for i=1, trailerCount do
             local object = trailers[i]
             -- spec_aPalletAutoLoader
@@ -877,3 +877,87 @@ function AutoDrive:setALFillType(vehicle, fillType) -- used by PullDownList
     end
 end
 
+function AutoDrive:handleAIFinished(vehicle)
+    AutoDrive.debugPrint(self, AutoDrive.DC_EXTERNALINTERFACEINFO, "AutoDrive:handleAIFinished start... enableParkAtJobFinished %s", AutoDrive.getSetting("enableParkAtJobFinished", self))
+    if self.isServer then
+        if self.ad and self.ad.stateModule and self.startAutoDrive and AutoDrive.getSetting("enableParkAtJobFinished", self) then
+            self.ad.onRouteToRefuel = false
+            self.ad.onRouteToRepair = false
+            self.ad.restartAIFieldWorker = false
+            self.ad.stateModule:setStartAI(false)
+            local parkDestinationAtJobFinished = self.ad.stateModule:getParkDestinationAtJobFinished()
+
+            if parkDestinationAtJobFinished >= 1 then
+                AutoDrive.debugPrint(self, AutoDrive.DC_EXTERNALINTERFACEINFO, "AutoDrive:handleAIFinished drive to park position")
+                self.ad.onRouteToPark = true
+                self.ad.stateModule:setMode(AutoDrive.MODE_DRIVETO)
+                self.ad.stateModule:setFirstMarker(parkDestinationAtJobFinished)
+                self.ad.stateModule:getCurrentMode():start()
+            else
+                AutoDriveMessageEvent.sendMessageOrNotification(self, ADMessagesManager.messageTypes.ERROR, "$l10n_AD_Driver_of; %s $l10n_AD_parkVehicle_noPosSet;", 5000, self.ad.stateModule:getName())
+                -- stop vehicle movement
+                self.ad.trailerModule:handleTrailerReversing(false)
+                AutoDrive.driveInDirection(self, 16, 30, 0, 0.2, 20, false, false, 0, 0, 0, 1)
+                self:setCruiseControlState(Drivable.CRUISECONTROL_STATE_OFF)
+                if self.stopMotor ~= nil then
+                    self:stopMotor()
+                end
+            end
+        end
+    else
+        Logging.devError("AutoDrive:handleAIFinished() must be called only on the server.")
+    end
+    AutoDrive.debugPrint(self, AutoDrive.DC_EXTERNALINTERFACEINFO, "AutoDrive:handleAIFinished end")
+end
+
+function AutoDrive:handleAIFieldWorker(vehicle)
+    AutoDrive.debugPrint(vehicle, AutoDrive.DC_EXTERNALINTERFACEINFO, "AutoDrive:handleAIFieldWorker start...")
+    if vehicle.isServer then
+        if vehicle.ad and vehicle.ad.stateModule and vehicle.startAutoDrive then
+            -- restart AI
+            vehicle.ad.restartAIFieldWorker = true
+            if not vehicle.ad.stateModule:isActive() then
+                if vehicle.ad.stateModule:getStartAI() then
+                    -- AI button active
+                    if table.contains(AutoDrive.modesToStartFromCP, vehicle.ad.stateModule:getMode()) then
+                        -- mode allowed to activate
+                        AutoDrive.debugPrint(vehicle, AutoDrive.DC_EXTERNALINTERFACEINFO, "AutoDrive:handleAIFieldWorker start AD")
+                        vehicle.ad.stateModule:getCurrentMode():start()
+                    else
+                        -- deactivate AI button
+                        AutoDriveMessageEvent.sendMessageOrNotification(vehicle, ADMessagesManager.messageTypes.ERROR, "$l10n_AD_Driver_of; %s: $l10n_AD_Wrong_Mode_takeover_from_CP;", 5000, vehicle.ad.stateModule:getName())
+                        vehicle.ad.restartAIFieldWorker = false -- do not continue AI job
+                        vehicle.ad.stateModule:setStartAI(false)
+                    end
+                end
+            else
+                AutoDrive.debugPrint(vehicle, AutoDrive.DC_EXTERNALINTERFACEINFO, "AutoDrive:handleAIFieldWorker - AD already active, should not happen")
+            end
+        end
+    else
+        Logging.devError("AutoDrive:handleAIFieldWorker() must be called only on the server.")
+    end
+    AutoDrive.debugPrint(vehicle, AutoDrive.DC_EXTERNALINTERFACEINFO, "AutoDrive:handleAIFieldWorker end")
+end
+
+function AutoDrive:onAIJobFinished()
+    AutoDrive.debugPrint(self, AutoDrive.DC_EXTERNALINTERFACEINFO, "AutoDrive:onAIJobFinished start...")
+    local rootVehicle = self.getRootVehicle and self:getRootVehicle()
+    if rootVehicle then
+        if rootVehicle.ad == nil then
+            rootVehicle.ad = {}
+        end
+        rootVehicle.ad.isAIJobFinished = true
+    end
+
+    local trailers, _ = AutoDrive.getAllUnits(self)
+    local fillLevel, _, _ = AutoDrive.getAllFillLevels(trailers)
+    if (self.ad.stateModule:getMode() == AutoDrive.MODE_PICKUPANDDELIVER and fillLevel > 0) -- something to unload
+        or (self.ad.stateModule:getMode() == AutoDrive.MODE_UNLOAD and fillLevel > 0) -- something to unload
+        or (self.ad.stateModule:getMode() == AutoDrive.MODE_LOAD and fillLevel < 0.01) -- something to load
+    then
+        AutoDrive:handleAIFieldWorker(self)
+    else
+        AutoDrive:handleAIFinished(self) -- stop or park
+    end
+end
