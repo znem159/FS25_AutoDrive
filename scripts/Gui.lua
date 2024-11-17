@@ -5,8 +5,8 @@ function AutoDrive:loadGUI()
 	AutoDrive.gui = {}
 	AutoDrive.gui.ADEnterDriverNameGui = ADEnterDriverNameGui.new()
 	AutoDrive.gui.ADEnterTargetNameGui = ADEnterTargetNameGui.new()
-	--[[
 	AutoDrive.gui.ADEnterGroupNameGui = ADEnterGroupNameGui.new()
+	--[[
 	AutoDrive.gui.ADEnterDestinationFilterGui = ADEnterDestinationFilterGui.new()
 	AutoDrive.gui.ADRoutesManagerGui = ADRoutesManagerGui:new()
 	AutoDrive.gui.ADNotificationsHistoryGui = ADNotificationsHistoryGui:new()
@@ -16,25 +16,26 @@ function AutoDrive:loadGUI()
 	--]]
     local count = 1
     local result = nil
+
 	result = g_gui:loadGui(AutoDrive.directory .. "gui/enterDriverNameGUI.xml", "ADEnterDriverNameGui", AutoDrive.gui.ADEnterDriverNameGui)
-
     count = count + 1
     if result == nil then
         AutoDrive.debugMsg(nil, "AutoDrive:loadGUI failed count %d", count)
     end
+
 	result = g_gui:loadGui(AutoDrive.directory .. "gui/enterTargetNameGUI.xml", "ADEnterTargetNameGui", AutoDrive.gui.ADEnterTargetNameGui)
-
     count = count + 1
     if result == nil then
         AutoDrive.debugMsg(nil, "AutoDrive:loadGUI failed count %d", count)
     end
-	--[[
+
 	result = g_gui:loadGui(AutoDrive.directory .. "gui/enterGroupNameGUI.xml", "ADEnterGroupNameGui", AutoDrive.gui.ADEnterGroupNameGui)
-
     count = count + 1
     if result == nil then
         AutoDrive.debugMsg(nil, "AutoDrive:loadGUI failed count %d", count)
     end
+
+	--[[
 	result = g_gui:loadGui(AutoDrive.directory .. "gui/enterDestinationFilterGUI.xml", "ADEnterDestinationFilterGui", AutoDrive.gui.ADEnterDestinationFilterGui)
 
     count = count + 1
@@ -154,7 +155,7 @@ end
 
 function AutoDrive.onOpenEnterGroupName()
 	if not AutoDrive.gui.ADEnterGroupNameGui.isOpen then
-		g_gui:showGui("ADEnterGroupNameGui")
+		g_gui:showDialog("ADEnterGroupNameGui")
 	end
 end
 
