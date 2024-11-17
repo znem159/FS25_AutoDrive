@@ -6,8 +6,8 @@ function AutoDrive:loadGUI()
 	AutoDrive.gui.ADEnterDriverNameGui = ADEnterDriverNameGui.new()
 	AutoDrive.gui.ADEnterTargetNameGui = ADEnterTargetNameGui.new()
 	AutoDrive.gui.ADEnterGroupNameGui = ADEnterGroupNameGui.new()
-	--[[
 	AutoDrive.gui.ADEnterDestinationFilterGui = ADEnterDestinationFilterGui.new()
+	--[[
 	AutoDrive.gui.ADRoutesManagerGui = ADRoutesManagerGui:new()
 	AutoDrive.gui.ADNotificationsHistoryGui = ADNotificationsHistoryGui:new()
 	AutoDrive.gui.ADColorSettingsGui = ADColorSettingsGui:new()
@@ -35,13 +35,13 @@ function AutoDrive:loadGUI()
         AutoDrive.debugMsg(nil, "AutoDrive:loadGUI failed count %d", count)
     end
 
-	--[[
 	result = g_gui:loadGui(AutoDrive.directory .. "gui/enterDestinationFilterGUI.xml", "ADEnterDestinationFilterGui", AutoDrive.gui.ADEnterDestinationFilterGui)
-
     count = count + 1
     if result == nil then
         AutoDrive.debugMsg(nil, "AutoDrive:loadGUI failed count %d", count)
     end
+
+	--[[
 	result = g_gui:loadGui(AutoDrive.directory .. "gui/routesManagerGUI.xml", "ADRoutesManagerGui", AutoDrive.gui.ADRoutesManagerGui)
 
     count = count + 1
@@ -161,7 +161,7 @@ end
 
 function AutoDrive.onOpenEnterDestinationFilter()
 	if not AutoDrive.gui.ADEnterDestinationFilterGui.isOpen then
-		g_gui:showGui("ADEnterDestinationFilterGui")
+		g_gui:showDialog("ADEnterDestinationFilterGui")
 	end
 end
 

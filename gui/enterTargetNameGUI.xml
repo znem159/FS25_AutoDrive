@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8" standalone="no" ?>
 <GUI onOpen="onOpen" onClose="onClose" onCreate="onCreate">
     <GuiElement profile="newLayer"/>
-    <Bitmap profile="dialogFullscreenBg" id="dialogBg"/>
-    <GuiElement profile="fs25_dialogBg" id="dialogElement" height="280px">
+    <Bitmap profile="dialogFullscreenBg"/>
+    <GuiElement profile="fs25_dialogBg" height="280px">
         <ThreePartBitmap profile="fs25_dialogBgMiddleSmall"/>
         <ThreePartBitmap profile="fs25_dialogBgTopSmall"/>
         <ThreePartBitmap profile="fs25_dialogBgBottom"/>
         <GuiElement profile="fs25_dialogContentContainer">
             <Text profile="fs25_dialogTitle" id="titleElement" position="0px -40px"/>
             <ThreePartBitmap profile="fs25_lineSeparatorTop" absoluteSizeOffset="100px 0px" position="0px -80px"/>
-            <Text profile="fs25_dialogText" id="dialogTextElement" text="$l10n_gui_ad_enterTargetNameText" position="0px -110px"/>
+            <Text profile="fs25_dialogText" text="$l10n_gui_ad_enterTargetNameText" position="0px -110px"/>
             <TextInput profile="fs25_dialogTextInput" id="textInputElement" onEnterPressed="onEnterPressed" onEscPressed="onEscPressed" enterWhenClickOutside="false" focusInit="onOpen" maxCharacters="30">
                 <ThreePartBitmap profile="fs25_textInputBg"/>
                 <Bitmap profile="fs25_dialogTextInputIconBox">
