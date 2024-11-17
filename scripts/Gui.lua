@@ -66,15 +66,24 @@ function AutoDrive:loadGUI()
     if result == nil then
         AutoDrive.debugMsg(nil, "AutoDrive:loadGUI failed count %d", count)
     end
+
+	--]]
+
+	--[[
 	AutoDrive.gui.ADSettingsPage = ADSettingsPage:new()
+	
 	AutoDrive.gui.ADUserSettingsPage = ADSettingsPage:new()
+	--]]
 	AutoDrive.gui.ADVehicleSettingsPage = ADSettingsPage:new()
+	--[[
 	AutoDrive.gui.ADCombineUnloadSettingsPage = ADSettingsPage:new()
 	AutoDrive.gui.ADEnvironmentSettingsPage = ADSettingsPage:new()
 	AutoDrive.gui.ADDebugSettingsPage = ADDebugSettingsPage:new()
 	AutoDrive.gui.ADExperimentalFeaturesSettingsPage = ADExperimentalFeaturesSettingsPage:new()
+	--]]
 	AutoDrive.gui.ADSettings = ADSettings:new()
 
+	--[[
 	result = g_gui:loadGui(AutoDrive.directory .. "gui/settingsPage.xml", "ADSettingsFrame", AutoDrive.gui.ADSettingsPage, true)
     count = count + 1
     if result == nil then
@@ -85,11 +94,13 @@ function AutoDrive:loadGUI()
     if result == nil then
         AutoDrive.debugMsg(nil, "AutoDrive:loadGUI failed count %d", count)
     end
-	result = g_gui:loadGui(AutoDrive.directory .. "gui/vehicleSettingsPage.xml", "ADVehicleSettingsFrame", AutoDrive.gui.ADVehicleSettingsPage, true)
+	--]]
+	result = g_gui:loadGui(AutoDrive.directory .. "gui/vehicleSettingsPage.xml", "autoDriveVehicleSettings", AutoDrive.gui.ADVehicleSettingsPage, true)
     count = count + 1
     if result == nil then
         AutoDrive.debugMsg(nil, "AutoDrive:loadGUI failed count %d", count)
     end
+	--[[
 	result = g_gui:loadGui(AutoDrive.directory .. "gui/combineUnloadSettingsPage.xml", "ADCombineUnloadSettingsFrame", AutoDrive.gui.ADCombineUnloadSettingsPage, true)
     count = count + 1
     if result == nil then
@@ -110,12 +121,13 @@ function AutoDrive:loadGUI()
     if result == nil then
         AutoDrive.debugMsg(nil, "AutoDrive:loadGUI failed count %d", count)
     end
+	--]]
+
 	result = g_gui:loadGui(AutoDrive.directory .. "gui/settings.xml", "ADSettings", AutoDrive.gui.ADSettings)
     count = count + 1
     if result == nil then
         AutoDrive.debugMsg(nil, "AutoDrive:loadGUI failed count %d", count)
     end
-	--]]
 end
 
 function AutoDrive.GuiOverlay_loadOverlay(superFunc, ...)

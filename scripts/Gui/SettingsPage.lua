@@ -16,7 +16,8 @@ function ADSettingsPage:new(target)
     local element = TabbedMenuFrameElement.new(target, ADSettingsPage_mt)
     element.returnScreenName = ""
     element.settingElements = {}
-    --element:registerControls(ADSettingsPage.CONTROLS)
+    element.skipRow = 0
+
     return element
 end
 
@@ -27,18 +28,27 @@ function ADSettingsPage:onFrameOpen()
     if not self:hasChanges() then
         self:loadGUISettings()
     end
-    FocusManager:setFocus(self.boxLayout)
+    FocusManager:setFocus(self.boxLayout)    
 end
+
 
 function ADSettingsPage:onFrameClose()
     ADSettingsPage:superClass().onFrameClose(self)
 end
 
+function ADSettingsPage:onCreateAutoDriveSettingRow(element)
+    if self.skipRow == 0 then
+        element:setImageColor(nil, 0.04231, 0.04231, 0.04231, 1)    
+    else
+        element:setImageColor(nil, 0.02956, 0.02956, 0.02956, 0.5)
+    end
+    self.skipRow = (self.skipRow + 1) % 2
+end
+
 function ADSettingsPage:onCreateAutoDriveSetting(element)
     self.settingElements[element.name] = element
+
     local setting = AutoDrive.settings[element.name]
-    element.labelElement.text = g_i18n:getText(setting.text)
-    element.toolTipText = g_i18n:getText(setting.tooltip)
 
     local labels = {}
     for i = 1, #setting.texts, 1 do
@@ -53,9 +63,13 @@ function ADSettingsPage:onCreateAutoDriveSetting(element)
         else
             labels[i] = setting.texts[i]
         end
-    end
+    end    
+
     element:setTexts(labels)
 
+    element.parent:setImageColor(nil, unpack(ADSettings.ICON_COLOR.DEFAULT))
+
+    --[[
     local iconElem = element.elements[6]
     if iconElem ~= nil then
         if setting.isUserSpecific then
@@ -69,6 +83,7 @@ function ADSettingsPage:onCreateAutoDriveSetting(element)
             iconElem:setImageUVs(nil, unpack(GuiUtils.getUVs(ADSettings.ICON_UV.GLOBAL)))
         end
     end
+    --]]
 end
 
 function ADSettingsPage:onOptionChange(state, element)
@@ -79,6 +94,7 @@ function ADSettingsPage:onOptionChange(state, element)
     end
     setting.new = state
 
+    --[[
     local iconElem = element.elements[6]
     if iconElem ~= nil then
         if setting.new ~= setting.current then
@@ -87,6 +103,7 @@ function ADSettingsPage:onOptionChange(state, element)
             iconElem:setImageColor(iconElem.overlayState, unpack(ADSettings.ICON_COLOR.DEFAULT))
         end
     end
+    --]]
 end
 
 function ADSettingsPage:hasChanges()
@@ -102,6 +119,7 @@ function ADSettingsPage:hasChanges()
             end
         end
     end
+    
     return false
 end
 
@@ -137,42 +155,6 @@ function ADSettingsPage:loadGUISetting(settingName, state)
     local element = self.settingElements[settingName]
     element:setState(state, false)
     self:onOptionChange(state, element)
-end
-
-function ADSettingsPage:onCreateAutoDriveHeaderText(box)
-    if self.storedHeaderKey == nil then
-        self.storedHeaderKey = box.text
-    end
-    if self.storedHeaderKey ~= nil then
-
-        local hasText = self.storedHeaderKey ~= nil and self.storedHeaderKey ~= ""
-        if hasText then
-            local text = self.storedHeaderKey
-            if text:sub(1,6) == "$l10n_" then
-                text = text:sub(7)
-            end
-            text = g_i18n:getText(text)
-            box:setTextInternal(text, false, true)
-        end
-    end
-end
-
-function ADSettingsPage:onCreateAutoDriveText1(box)
-    if self.storedKey1 == nil then
-        self.storedKey1 = box.text
-    end
-    if self.storedKey1 ~= nil then
-
-        local hasText = self.storedKey1 ~= nil and self.storedKey1 ~= ""
-        if hasText then
-            local text = self.storedKey1
-            if text:sub(1,6) == "$l10n_" then
-                text = text:sub(7)
-            end
-            text = g_i18n:getText(text)
-            box:setTextInternal(text, false, true)
-        end
-    end
 end
 
 function ADSettingsPage:copyAttributes(src)

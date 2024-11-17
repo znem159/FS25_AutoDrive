@@ -9,7 +9,7 @@ ADSettings = {}
 
 local ADSettings_mt = Class(ADSettings, TabbedMenu)
 
-ADSettings.CONTROLS = {"autoDriveVehicleSettings", "autoDriveCombineUnloadSettings", "autoDriveUserSettings", "autoDriveSettings", "autoDriveEnvironmentSettings",  "autoDriveDebugSettings", "autoDriveExperimentalFeaturesSettings"}
+ADSettings.CONTROLS = {"autoDriveVehicleSettings"} -- , "autoDriveCombineUnloadSettings", "autoDriveUserSettings", "autoDriveSettings", "autoDriveEnvironmentSettings",  "autoDriveDebugSettings", "autoDriveExperimentalFeaturesSettings"}
 
 --- Page tab UV coordinates for display elements.
 --AD specific iconUVs
@@ -58,10 +58,9 @@ ADSettings.ICON_COLOR = {
     CHANGED = {0.9910, 0.03865, 0.0100, 1}
 }
 
-function ADSettings:new()
-    local element = TabbedMenu.new(nil, ADSettings_mt, g_messageCenter, g_i18n, g_gui.inputManager)
+function ADSettings:new(target)
+    local element = TabbedMenu.new(target, ADSettings_mt, g_messageCenter, g_i18n, g_gui.inputManager)
     element.returnScreenName = ""
-    --element:registerControls(ADSettings.CONTROLS)
     return element
 end
 
@@ -70,7 +69,7 @@ function ADSettings:onGuiSetupFinished()
     self:setupPages()
 end
 
-function ADSettings:setupPages()
+function ADSettings:setupPages()    
     local controlledVehicle = AutoDrive.getControlledVehicle()
     local alwaysEnabled = function()
         return true
@@ -93,28 +92,44 @@ function ADSettings:setupPages()
         end
         return false
     end
+
     local orderedPages = {
         {self.autoDriveVehicleSettings, vehicleEnabled, g_iconsUIFilename, ADSettings.TAB_UV.SETTINGS_VEHICLE, false},
-        {self.autoDriveCombineUnloadSettings, combineEnabled, g_autoDriveUIFilename, ADSettings.TAB_UV.SETTINGS_UNLOAD, false},
-        {self.autoDriveUserSettings, alwaysEnabled, g_iconsUIFilename, ADSettings.TAB_UV.SETTINGS_USER, false},
-        {self.autoDriveSettings, alwaysEnabled, g_iconsUIFilename, ADSettings.TAB_UV.SETTINGS_GENERAL, false},
-        {self.autoDriveEnvironmentSettings, vehicleEnabled, g_iconsUIFilename, ADSettings.TAB_UV.SETTINGS_ENVIRONMENT, false},
-        {self.autoDriveDebugSettings, developmentControlsEnabled, g_iconsUIFilename, ADSettings.TAB_UV.SETTINGS_DEBUG, true},
-        {self.autoDriveExperimentalFeaturesSettings, alwaysEnabled, g_iconsUIFilename, ADSettings.TAB_UV.SETTINGS_EXPFEAT, true}
+        --{self.autoDriveCombineUnloadSettings, combineEnabled, g_autoDriveUIFilename, ADSettings.TAB_UV.SETTINGS_UNLOAD, false},
+        --{self.autoDriveUserSettings, alwaysEnabled, g_iconsUIFilename, ADSettings.TAB_UV.SETTINGS_USER, false},
+        --{self.autoDriveSettings, alwaysEnabled, g_iconsUIFilename, ADSettings.TAB_UV.SETTINGS_GENERAL, false},
+        --{self.autoDriveEnvironmentSettings, vehicleEnabled, g_iconsUIFilename, ADSettings.TAB_UV.SETTINGS_ENVIRONMENT, false},
+        --{self.autoDriveDebugSettings, developmentControlsEnabled, g_iconsUIFilename, ADSettings.TAB_UV.SETTINGS_DEBUG, true},
+        --{self.autoDriveExperimentalFeaturesSettings, alwaysEnabled, g_iconsUIFilename, ADSettings.TAB_UV.SETTINGS_EXPFEAT, true}
     }
 
-    for i, pageDef in ipairs(orderedPages) do
+    for i, pageDef in ipairs(orderedPages) do        
         local page, predicate, uiFilename, iconUVs, isAutonomous = unpack(pageDef)
+        --[[
         local normalizedIconUVs = GuiUtils.getUVs(iconUVs)
+
+        AutoDrive.dumpTable(normalizedIconUVs, "normalizedIconUVs: ", 1)
+        AutoDrive.dumpTable(pageDef, "pageDef: ", 1)
+        AutoDrive.dumpTable(self, "self: ", 2)
+
         local pageRoot, position = self:registerPage(page, i, predicate)
+
+        AutoDrive.dumpTable(self, "self2: ", 2)
+
         self:addPageTab(page, uiFilename, normalizedIconUVs) -- use the global here because the value changes with resolution settings
+        
+        AutoDrive.dumpTable(self, "self3: ", 2)  
+        --]]
         page.isAutonomous = isAutonomous
+        --[[]]
         -- page.headerIcon:setImageFilename(uiFilename)
         -- page.headerIcon:setImageUVs(nil, unpack(normalizedIconUVs))
         if page.setupMenuButtonInfo ~= nil then
             page:setupMenuButtonInfo(self)
         end
+        --]]
     end
+    
 end
 
 function ADSettings:onOpen()
@@ -156,7 +171,8 @@ end
 
 function ADSettings:onClickBackDialogCallback(yes)
     if yes then
-        ADSettings:superClass().onClickBack(self)
+        --ADSettings:superClass().onClickBack(self)
+        g_gui:changeScreen(nil)
     end
 end
 
