@@ -36,6 +36,7 @@ function AutoDrive.registerEventListeners(vehicleType)
             "onPostDetachImplement",
             "onEnterVehicle",
             "onLeaveVehicle",
+            -- "onPlayerLeaveVehicle", -- TODO check, at the moment not called
             -- CP events, see ExternalInterface.lua
             "onCpFinished",
             "onCpEmpty",
@@ -772,10 +773,14 @@ function AutoDrive:onLeaveVehicle(wasEntered)
         if self.ad and self.ad.stateModule then
             self.ad.stateModule:setPlayerFarmId(0)
         end
-        if not self.ad.stateModule:isActive() and not AutoDrive:getIsCPActive(self) then
+        if not self.ad.stateModule:isActive() and not AutoDrive:getIsCPActive(self) and not self:getIsAIActive() then
             self.ad.stateModule:setActualFarmId(self.ad.stateModule:getPlayerFarmId()) -- onLeaveVehicle
         end
     end
+    if g_inputBinding:getShowMouseCursor() then
+        g_inputBinding:setShowMouseCursor(false)
+    end
+    AutoDrive.Hud:closeAllPullDownLists(self)
 end
 
 function AutoDrive:onDelete()
@@ -1394,36 +1399,26 @@ function AutoDrive.passToExternalMod(vehicle)
             vehicle.ad.restartAIFieldWorker = false
         end
         local fieldJob = vehicle:getLastJob()
-        if fieldJob == nil  then
+        if fieldJob == nil then
             -- no job present - generate fielwork job new
-            local fieldJob = g_currentMission.aiJobTypeManager:createJob(AIJobType.FIELDWORK)
-            fieldJob:applyCurrentState(vehicle, g_currentMission, vehicle:getOwnerFarmId(), true)
-            fieldJob:setValues()
-            local success, errorMessage = fieldJob:validate(vehicle:getOwnerFarmId())
-            if success then
-                AutoDrive.debugPrint(vehicle, AutoDrive.DC_EXTERNALINTERFACEINFO, "AutoDrive.passToExternalMod aiSystem:startJob startJob")
-                g_currentMission.aiSystem:startJob(fieldJob, vehicle:getOwnerFarmId())
-            else
--- TODO add notification
-                AutoDrive.debugMsg(vehicle, "AutoDrive.passToExternalMod aiSystem:startJob errorMessage: %s"
-                , tostring(errorMessage)
-                )
-            end
-        else
-            -- job present - continue fielwork job
+            fieldJob = g_currentMission.aiJobTypeManager:createJob(AIJobType.FIELDWORK)
+        end
+        local success, errorMessage
+        if fieldJob then
+                -- job present - continue fielwork job
             fieldJob:applyCurrentState(vehicle, g_currentMission, vehicle:getOwnerFarmId(), false)
             fieldJob:setValues()
-            local success, errorMessage = fieldJob:validate(vehicle:getOwnerFarmId())
+            success, errorMessage = fieldJob:validate(vehicle:getOwnerFarmId())
             if success then
                 AutoDrive.debugPrint(vehicle, AutoDrive.DC_EXTERNALINTERFACEINFO, "AutoDrive.passToExternalMod lastJob aiSystem:startJob startJob")
                 g_currentMission.aiSystem:startJob(fieldJob, vehicle:getOwnerFarmId())
-            else
--- TODO add notification
-                AutoDrive.debugMsg(vehicle, "AutoDrive.passToExternalMod lastJob aiSystem:startJob errorMessage: %s"
-                , tostring(errorMessage)
-                )
+                return
             end
         end
+        AutoDriveMessageEvent.sendMessageOrNotification(vehicle, ADMessagesManager.messageTypes.ERROR, "$l10n_AD_Driver_of; %s: $l10n_AD_Unable_to_start_AIJob;", 5000, vehicle.ad.stateModule:getName())
+        AutoDrive.debugPrint(vehicle, AutoDrive.DC_EXTERNALINTERFACEINFO, "AutoDrive.passToExternalMod lastJob aiSystem:startJob errorMessage: %s"
+        , tostring(errorMessage)
+        )
     end
 end
 
@@ -1589,7 +1584,37 @@ function AutoDrive:toggleMouse()
     self.ad.lastMouseState = g_inputBinding:getShowMouseCursor()
 end
 
+function AutoDrive:onPlayerLeaveVehicle(param)
+    AutoDrive.debugMsg(self, "AutoDrive:onPlayerLeaveVehicle start param %"
+    , tostring(param)
+    )
+    AutoDrive.debugMsg(self, "AutoDrive:onPlayerLeaveVehicle self.ad %s "
+    , tostring(self.ad)
+    )
+    if self.ad ~= nil then
+        AutoDrive.debugMsg(self, "AutoDrive:onPlayerLeaveVehicle self.getIsEntered %s "
+        , tostring(self.getIsEntered)
+        )
+        if self.getIsEntered then
+            AutoDrive.debugMsg(self, "AutoDrive:onPlayerLeaveVehicle getIsEntered %s "
+            , tostring(self:getIsEntered() )
+            )
+        end
+        if self.getIsEntered ~= nil and self:getIsEntered() then
+            AutoDrive.debugMsg(self, "AutoDrive:onPlayerLeaveVehicle getShowMouseCursor %s "
+            , tostring(g_inputBinding:getShowMouseCursor())
+            )
+            if g_inputBinding:getShowMouseCursor() then
+                g_inputBinding:setShowMouseCursor(false)
+            end
+            AutoDrive.Hud:closeAllPullDownLists(self)
+        end
+    end
+    AutoDrive.debugMsg(self, "AutoDrive:onPlayerLeaveVehicle end")
+end
+
 function AutoDrive:leaveVehicle(superFunc)
+    AutoDrive.debugMsg(self, "AutoDrive:leaveVehicle start")
     if self.ad ~= nil then
         if self.getIsEntered ~= nil and self:getIsEntered() then
             if g_inputBinding:getShowMouseCursor() then

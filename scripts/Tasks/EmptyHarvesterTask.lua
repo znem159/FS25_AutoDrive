@@ -168,7 +168,7 @@ function EmptyHarvesterTask:update(dt)
         else
             overallLength = self.tractorTrainLength -- complete train length
         end
-        if AutoDrive:getIsCPActive(self.combine) then
+        if AutoDrive:getIsCPActive(self.combine) or self.combine:getIsAIActive() then
             -- if CP harvester
             overallLength = overallLength + AutoDrive.getFrontToolWidth(self.combine)
         end
@@ -190,7 +190,7 @@ function EmptyHarvesterTask:update(dt)
         end
     elseif self.state == EmptyHarvesterTask.STATE_WAITING then
         local waitTime = EmptyHarvesterTask.WAITING_TIME
-        if AutoDrive:getIsCPActive(self.combine) then
+        if AutoDrive:getIsCPActive(self.combine) or self.combine:getIsAIActive() then
             -- wait some more time to let CP combine move away
             waitTime = 3 * EmptyHarvesterTask.WAITING_TIME
         end
