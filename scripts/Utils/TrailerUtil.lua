@@ -1047,7 +1047,9 @@ function AutoDrive.setValidSupportedFillType(vehicle, excludedImplementIndex)
         local supportedFillTypes = AutoDrive.getValidSupportedFillTypes(vehicle, excludedVehicles)
 
         if supportedFillTypes and #supportedFillTypes > 0 then
-            if not table.contains(supportedFillTypes, currentFillType) then
+            if table.contains(supportedFillTypes, currentFillType) then
+                newFillType = currentFillType
+            else
                 -- HUD FillType is different, so set the first supported
                 ret = true
                 newFillType = supportedFillTypes[1]
