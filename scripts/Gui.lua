@@ -5,13 +5,13 @@ function AutoDrive:loadGUI()
 	AutoDrive.gui = {}
 	--[[
 	AutoDrive.gui.ADEnterDriverNameGui = ADEnterDriverNameGui.new()
+	--]]
 	AutoDrive.gui.ADEnterTargetNameGui = ADEnterTargetNameGui.new()
+	--[[
 	AutoDrive.gui.ADEnterGroupNameGui = ADEnterGroupNameGui.new()
 	AutoDrive.gui.ADEnterDestinationFilterGui = ADEnterDestinationFilterGui.new()
 	AutoDrive.gui.ADRoutesManagerGui = ADRoutesManagerGui:new()
-	--]]
 	AutoDrive.gui.ADNotificationsHistoryGui = ADNotificationsHistoryGui:new()
-	--[[
 	AutoDrive.gui.ADColorSettingsGui = ADColorSettingsGui:new()
 	AutoDrive.gui.ADScanConfirmationGui = ADScanConfirmationGui:new()
 
@@ -25,12 +25,14 @@ function AutoDrive:loadGUI()
     if result == nil then
         AutoDrive.debugMsg(nil, "AutoDrive:loadGUI failed count %d", count)
     end
+	--]]
 	result = g_gui:loadGui(AutoDrive.directory .. "gui/enterTargetNameGUI.xml", "ADEnterTargetNameGui", AutoDrive.gui.ADEnterTargetNameGui)
 
     count = count + 1
     if result == nil then
         AutoDrive.debugMsg(nil, "AutoDrive:loadGUI failed count %d", count)
     end
+	--[[
 	result = g_gui:loadGui(AutoDrive.directory .. "gui/enterGroupNameGUI.xml", "ADEnterGroupNameGui", AutoDrive.gui.ADEnterGroupNameGui)
 
     count = count + 1
@@ -49,14 +51,12 @@ function AutoDrive:loadGUI()
     if result == nil then
         AutoDrive.debugMsg(nil, "AutoDrive:loadGUI failed count %d", count)
     end
-	--]]
 	result = g_gui:loadGui(AutoDrive.directory .. "gui/notificationsHistoryGUI.xml", "ADNotificationsHistoryGui", AutoDrive.gui.ADNotificationsHistoryGui)
 
     count = count + 1
     if result == nil then
         AutoDrive.debugMsg(nil, "AutoDrive:loadGUI failed count %d", count)
     end
-	--[[
 	result = g_gui:loadGui(AutoDrive.directory .. "gui/colorSettingsGUI.xml", "ADColorSettingsGui", AutoDrive.gui.ADColorSettingsGui)
 
     count = count + 1
@@ -152,7 +152,7 @@ end
 
 function AutoDrive.onOpenEnterTargetName()
 	if not AutoDrive.gui.ADEnterTargetNameGui.isOpen then
-		g_gui:showGui("ADEnterTargetNameGui")
+		g_gui:showDialog("ADEnterTargetNameGui")
 	end
 end
 
