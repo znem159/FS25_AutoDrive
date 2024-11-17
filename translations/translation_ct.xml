@@ -74,6 +74,7 @@
 		<text name="AD_No_Refuel_Station"						text="找不到加油站：" />
 		<text name="AD_No_Repair_Station"						text="找不到維修站：" />
 		<text name="AD_Wrong_Mode_takeover_from_CP"				text="錯誤的AD模式與CP一起工作" />
+		<text name="AD_Unable_to_start_AIJob"					text="Not able to start AI Job" />
 		<text name="AD_MODE_DRIVETO"							text="駕駛" />
 		<text name="AD_MODE_DELIVERTO"							text="送貨" />
 		<text name="AD_MODE_PICKUPANDDELIVER"					text="取貨和送貨" />

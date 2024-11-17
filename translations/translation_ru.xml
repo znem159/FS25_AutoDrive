@@ -74,6 +74,7 @@
 		<text name="AD_No_Refuel_Station"						text="не удалось найти заправочную станцию" />
 		<text name="AD_No_Repair_Station"						text="не смог найти ремонтную станцию для:" />
 		<text name="AD_Wrong_Mode_takeover_from_CP"				text="Неправильный режим AD для совместной работы с CP" />
+		<text name="AD_Unable_to_start_AIJob"					text="Not able to start AI Job" />
 		<text name="AD_MODE_DRIVETO"							text="Перегон" />
 		<text name="AD_MODE_DELIVERTO"							text="Доставка" />
 		<text name="AD_MODE_PICKUPANDDELIVER"					text="Загрузка и доставка" />
