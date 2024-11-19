@@ -7,8 +7,8 @@ function AutoDrive:loadGUI()
 	AutoDrive.gui.ADEnterTargetNameGui = ADEnterTargetNameGui.new()
 	AutoDrive.gui.ADEnterGroupNameGui = ADEnterGroupNameGui.new()
 	AutoDrive.gui.ADEnterDestinationFilterGui = ADEnterDestinationFilterGui.new()
-	--[[
 	AutoDrive.gui.ADRoutesManagerGui = ADRoutesManagerGui:new()
+	--[[
 	AutoDrive.gui.ADNotificationsHistoryGui = ADNotificationsHistoryGui:new()
 	AutoDrive.gui.ADColorSettingsGui = ADColorSettingsGui:new()
 	AutoDrive.gui.ADScanConfirmationGui = ADScanConfirmationGui:new()
@@ -41,13 +41,13 @@ function AutoDrive:loadGUI()
         AutoDrive.debugMsg(nil, "AutoDrive:loadGUI failed count %d", count)
     end
 
-	--[[
 	result = g_gui:loadGui(AutoDrive.directory .. "gui/routesManagerGUI.xml", "ADRoutesManagerGui", AutoDrive.gui.ADRoutesManagerGui)
-
     count = count + 1
     if result == nil then
         AutoDrive.debugMsg(nil, "AutoDrive:loadGUI failed count %d", count)
     end
+
+	--[[
 	result = g_gui:loadGui(AutoDrive.directory .. "gui/notificationsHistoryGUI.xml", "ADNotificationsHistoryGui", AutoDrive.gui.ADNotificationsHistoryGui)
 
     count = count + 1
@@ -179,7 +179,7 @@ end
 
 function AutoDrive.onOpenRoutesManager()
 	if not AutoDrive.gui.ADRoutesManagerGui.isOpen then
-		g_gui:showGui("ADRoutesManagerGui")
+		g_gui:showDialog("ADRoutesManagerGui")
 	end
 end
 
@@ -199,4 +199,11 @@ function AutoDrive.onOpenScanConfirmation()
 	if not AutoDrive.gui.ADScanConfirmationGui.isOpen then
 		g_gui:showGui("ADScanConfirmationGui")
 	end
+end
+
+function AutoDrive.showYesNoDialog(title, text, callback, target, ...)
+	local dlg = g_gui:showDialog("YesNoDialog")
+	dlg.target:setTitle(title)
+	dlg.target.dialogTextElement:setText(text)
+	dlg.target:setCallback(callback, target, ...)
 end

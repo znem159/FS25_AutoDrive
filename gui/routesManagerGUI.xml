@@ -1,34 +1,56 @@
 <?xml version="1.0" encoding="utf-8" standalone="no" ?>
 <GUI onOpen="onOpen" onClose="onClose" onCreate="onCreate">
+    <GuiElement profile="newLayer"/>
+    <Bitmap profile="dialogFullscreenBg" id="dialogBg"/>
+    <GuiElement profile="fs25_dialogBg" size="740px 540px">
+        <ThreePartBitmap profile="fs25_dialogBgMiddleSmall"/>
+        <ThreePartBitmap profile="fs25_dialogBgTopSmall"/>
+        <ThreePartBitmap profile="fs25_dialogBgBottom"/>
+        <BoxLayout profile="fs25_dialogContentContainer" flowDirection="vertical" elementSpacing="10px">
+            <Text profile="ad_common_dialogTitle" text="$l10n_gui_ad_routesManagerTitle"/>
 
-    <GuiElement type="bitmap" profile="yesNoDialogBg" size="740px 540px" screenAlign="topCenter" positionOrigin="topCenter">
-        <GuiElement type="bitmap" profile="dialogHeaderDocked">
-            <GuiElement type="text" profile="dialogHeaderText" text="gui_ad_routesManagerTitle" id="headerText" position="0px 50px" visible="true" textUpperCase="false" onCreate="onCreateAutoDriveText1" />
+            <ThreePartBitmap profile="ad_common_dialogTitleLineSeparator"/>
+            
+            <BoxLayout profile="ad_routeNameBox">
+                <Text profile="fs25_textDefault" text="$l10n_gui_ad_routesManagerTextTitle" textAutoWidth="true"/>
+                <TextInput profile="fs25_dialogTextInput" id="textInputElement" onEnterPressed="onEnterPressed" onEscPressed="onEscPressed" enterWhenClickOutside="false" maxCharacters="20" text="Route 1">
+                    <ThreePartBitmap profile="fs25_textInputBg"/>
+                    <Bitmap profile="fs25_textInputIconBox">
+                        <Bitmap profile="fs25_textInputIcon"/>
+                    </Bitmap>
+                </TextInput>
+            </BoxLayout>
+        
+            <BoxLayout absoluteSizeOffset="25px 120px" margin="10px 0 0 5px">
+                <SmoothList id="routeList" profile="ad_common_list" onSelectionChanged="onListSelectionChanged" onDoubleClick="onDoubleClick">
+                    <ListItem profile="ad_common_listItem">
+                        <Text name="listItemText" profile="ad_common_listItemText"/>
+                        <Text name="listItemDate" profile="ad_common_listItemText" width="100%" textAlignment="right"/>
+                    </ListItem>
+                </SmoothList>
 
-            <GuiElement type="text" profile="dialogTextInput" text="gui_ad_routesManagerTextTitle" position="-160px 0px" textUpperCase="false" onCreate="onCreateAutoDriveText2" />
+                <ThreePartBitmap profile="ad_common_listSliderBox">
+                    <Slider profile="ad_common_listSlider" dataElementId="routeList" />
+                </ThreePartBitmap>
+            </BoxLayout>
 
-            <GuiElement type="textInput" profile="dialogTextInput" id="textInputElement" position="250px 0px" onEnterPressed="onEnterPressed" onEscPressed="onEscPressed" maxCharacters="20" text="Route 1" />
-        </GuiElement>
-
-        <GuiElement type="empty" profile="autoDriveNotificationHistoryNavigationBox" >
-
-            <GuiElement type="list" profile="autoDriveNotificationHistoryList" position="10px -160px" onSelectionChanged="onListSelectionChanged" onDoubleClick="onDoubleClick" id="autoDriveRoutesManagerList">
-                <GuiElement type="listItem" profile="autoDriveNotificationHistoryListItem" id="listItemTemplate">
-                    <GuiElement type="text" profile="autoDriveNotificationHistoryItemText" text="Route 10" name="listItemText" />
-                    <GuiElement type="text" profile="autoDriveNotificationHistoryItemText" textAlignment="right" text="2020/02/27 18:13:44" name="listItemDate" />
-                </GuiElement>
-            </GuiElement>
-
-            <GuiElement type="bitmap" profile="verticalGlassListSliderBackground" size="28px 530px" >
-                <GuiElement type="slider" profile="verticalGlassListSlider" size="16px 518px" dataElementId="autoDriveRoutesManagerList" handleFocus="false" />
-            </GuiElement>
-        </GuiElement>
-
-        <GuiElement type="flowLayout" profile="buttonBoxDocked">
-            <GuiElement type="button" profile="buttonBack" text="$l10n_button_back" onClick="onClickBack" />
-            <GuiElement type="button" profile="buttonOK" text="gui_ad_button_export" onClick="onClickOk" textUpperCase="false" onCreate="onCreateAutoDriveText3" />
-            <GuiElement type="button" profile="buttonCancel" text="gui_ad_button_import" onClick="onClickCancel" textUpperCase="false" onCreate="onCreateAutoDriveText4" />
-            <GuiElement type="button" profile="buttonActivate" text="$l10n_button_delete" onClick="onClickActivate" />
-        </GuiElement>
+            <BoxLayout profile="ad_common_dialogButtonBox">
+                <Button profile="buttonActivate" text="$l10n_button_delete" onClick="onClickActivate" />
+                <Bitmap profile="fs25_dialogButtonBoxSeparator"/>
+                <Button profile="buttonCancel" text="$l10n_button_load" onClick="onClickCancel" />
+                <Bitmap profile="fs25_dialogButtonBoxSeparator"/>
+                <Button profile="buttonOK" text="$l10n_button_save" onClick="onClickOk" />
+                <Bitmap profile="fs25_dialogButtonBoxSeparator"/>
+                <Button profile="buttonBack" text="$l10n_button_back" onClick="onClickBack" />
+            </BoxLayout>
+        </BoxLayout>   
     </GuiElement>
+    <GUIProfiles>
+        <Profile name="ad_routeNameBox" extends="emptyPanel" with="anchorTopCenter">
+            <alignmentY value="middle"/>
+            <alignmentX value="center"/>
+            <height value="40px"/>
+            <elementSpacing value="20px"/>
+        </Profile>
+    </GUIProfiles>
 </GUI>

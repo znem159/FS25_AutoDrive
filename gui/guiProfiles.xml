@@ -286,6 +286,50 @@
         <positionOrigin value="topCenter" />
     </Profile>
 
+
+<!-- Common Profiles -->
+    <Profile name="ad_common_dialogTitle" extends="baseReference" with="anchorTopStretchingX">
+        <textBold value="true"/>
+        <textLayoutMode value="resize" />
+        <textMaxNumLines value="1" />
+        <textSize value="24px"/>
+        <textUpperCase value="true"/>
+        <size value="100% 40px"/>
+    </Profile>
+
+    <Profile name="ad_common_dialogTitleLineSeparator" extends="fs25_lineSeparatorTop">
+    </Profile>
+
+    <Profile name="ad_common_dialogButtonBox" extends="fs25_dialogButtonBox">
+        <absoluteSizeOffset value="0px 0px"/>
+    </Profile>
+
+    <Profile name="ad_common_list" extends="emptyPanel" with="anchorStretchingYStretchingX pivotTopLeft">
+    </Profile>
+
+    <Profile name="ad_common_listItem" extends="baseReference" with="anchorTopStretchingX alternating">
+        <height value="32px"/>
+        <imageColor value="$preset_fs25_colorGrey"/>
+        <imageSelectedColor value="$preset_fs25_colorMainHighlight"/>
+        <alternateBackgroundColor value="$preset_fs25_colorGreyDark_50"/>
+    </Profile>
+
+    <Profile name="ad_common_listItemIcon" extends="baseReference" with="anchorMiddleLeft">
+        <size value="24px 24px"/>
+    </Profile>
+
+    <Profile name="ad_common_listItemText" extends="fs25_textDarkHighlight" with="anchorStretchingYLeft">
+        <textBold value="true"/>
+        <textOffset value="40px 0px"/>
+        <absoluteSizeOffset value="80px 0px"/>
+    </Profile>
+
+    <Profile name="ad_common_listSliderBox" extends="fs25_listSliderBox" with="anchorTopRight">
+    </Profile>
+
+    <Profile name="ad_common_listSlider" extends="fs25_listSlider">
+    </Profile>
+
 <!-- used -->
     <Profile name="autoDriveNotificationHistoryList" extends="list">
         <size value="740px 692px" />
