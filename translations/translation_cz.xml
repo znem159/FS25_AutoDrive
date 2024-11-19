@@ -74,6 +74,7 @@
 		<text name="AD_No_Refuel_Station"						text="nemůžu najít benzinku" />
 		<text name="AD_No_Repair_Station"						text="nemohl najít servisní dílnu pro :" />
 		<text name="AD_Wrong_Mode_takeover_from_CP"				text="Nesprávný režim AD pro spolupráci s CP" />
+		<text name="AD_Unable_to_start_AIJob"					text="Not able to start AI Job" />
 		<text name="AD_MODE_DRIVETO"							text="Jízda" />
 		<text name="AD_MODE_DELIVERTO"							text="Vykládka" />
 		<text name="AD_MODE_PICKUPANDDELIVER"					text="Nakládka a odvoz" />

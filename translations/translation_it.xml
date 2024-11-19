@@ -72,6 +72,7 @@
         <text name="AD_No_Refuel_Station"           		text="Impossibile trovare la stazione di rifornimento" />
         <text name="AD_No_Repair_Station"           		text="Impossibile trovare la stazione di riparazione per: " />
 		<text name="AD_Wrong_Mode_takeover_from_CP"				text="Modalità AD errata per lavorare insieme al CP" />
+		<text name="AD_Unable_to_start_AIJob"					text="Not able to start AI Job" />
         <text name="AD_MODE_DRIVETO"                		text="Guida" />
         <text name="AD_MODE_DELIVERTO"              		text="Consegna" />
         <text name="AD_MODE_PICKUPANDDELIVER"           	text="Carica e consegna" />

@@ -72,6 +72,7 @@
 		<text name="AD_No_Refuel_Station"						text="Nem talált töltőállomást" />
 		<text name="AD_No_Repair_Station"						text="Javítóállomás nem található a következőhöz:" />
 		<text name="AD_Wrong_Mode_takeover_from_CP"				text="Helytelen AD mód a CP-vel való együttműködéshez" />
+		<text name="AD_Unable_to_start_AIJob"					text="Not able to start AI Job" />
 		<text name="AD_MODE_DRIVETO"							text="Sofőr" />
 		<text name="AD_MODE_DELIVERTO"							text="Szállító" />
 		<text name="AD_MODE_PICKUPANDDELIVER"					text="Felrakás és lerakás" />

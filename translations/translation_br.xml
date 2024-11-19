@@ -74,6 +74,7 @@
 		<text name="AD_No_Refuel_Station"						text="não foi possível encontrar posto de combustível:" />
 		<text name="AD_No_Repair_Station"						text="não foi possível encontrar uma oficina de reparo:" />
 		<text name="AD_Wrong_Mode_takeover_from_CP"				text="Modo AD errado para trabalhar em conjunto com CP" />
+		<text name="AD_Unable_to_start_AIJob"					text="Not able to start AI Job" />
 		<text name="AD_MODE_DRIVETO"							text="Motorista" />
 		<text name="AD_MODE_DELIVERTO"							text="Entregar" />
 		<text name="AD_MODE_PICKUPANDDELIVER"					text="Pegar e entregar" />
