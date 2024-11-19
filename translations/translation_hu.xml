@@ -50,14 +50,14 @@
 		<text name="input_ADRepairVehicle"						text="AD: Jármű javítása" />	
 		<text name="input_ADbunkerUnloadType"					text="AD: Pótkocsiba vagy BGA-ba ürítés" />
 		<text name="input_ADSwapTargets"						text="AD: Cél csere" />
-		<text name="input_ADStartCP"							text="AD: Átadás CP/AIVE-nek" />
-		<text name="input_ADToggleCP_AIVE"						text="AD: CP/AIVE váltása" />
+		<text name="input_ADStartHelper"							text="AD: Átadás AI/CP/AIVE-nek" />
+		<text name="input_ADToggleUsedHelper"						text="AD: AI/CP/AIVE váltása" />
 		<text name="input_AD_devAction"                         text="AD: Fejlesztői művelet" />
 		<text name="input_ADToggleAutomaticPickupTarget"		text="AD: Automatikus felvételi cél váltása" />
 		<text name="input_ADToggleAutomaticUnloadTarget"		text="AD: Automatikus lerakási cél váltása" />
 		<text name="input_ADToggleLoadByFillLevel"				text="AD: Töltés váltása töltöttség alapján" />
 		<text name="hud_avoidFruit"								text="AD: Termény kikerülése" />
-		<text name="hud_startCp"								text="AD: CP / AIVE indítása az úticélnál" />
+		<text name="hud_startHelper"								text="AD: AI/CP/AIVE indítása az úticélnál" />
 		<text name="AD_parkVehicle_noPosSet"					text="Járműnek nincs parkolója. Jobb egérgombbal rendeljen hozzá parkolási helyet." />
 		<text name="AD_parkVehicle_selected"					text="Kiválasztott parkolóhely: " />
 		<text name="AD_Driver_of"								text="Sofőr ki" />
@@ -72,7 +72,8 @@
 		<text name="AD_No_Refuel_Station"						text="Nem talált töltőállomást" />
 		<text name="AD_No_Repair_Station"						text="Javítóállomás nem található a következőhöz:" />
 		<text name="AD_Wrong_Mode_takeover_from_CP"				text="Helytelen AD mód a CP-vel való együttműködéshez" />
-		<text name="AD_Unable_to_start_AIJob"					text="Not able to start AI Job" />
+		<text name="AD_Unable_to_start_AIJob"					text="Not able to start AI Helper" />
+		<text name="AD_AIJob_active"							text="AI Helper still active!" />
 		<text name="AD_MODE_DRIVETO"							text="Sofőr" />
 		<text name="AD_MODE_DELIVERTO"							text="Szállító" />
 		<text name="AD_MODE_PICKUPANDDELIVER"					text="Felrakás és lerakás" />

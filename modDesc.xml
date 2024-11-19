@@ -81,8 +81,8 @@ Différents modes d'utilisation ont été ajoutés depuis les premières version
 		<action name="ADIncLoopCounter" category="VEHICLE" ignoreComboMask="false" />
 		<action name="ADDecLoopCounter" category="VEHICLE" ignoreComboMask="false" />
 		<action name="ADSwapTargets" category="VEHICLE" ignoreComboMask="false" />
-		<action name="ADStartCP" category="VEHICLE" ignoreComboMask="false" />
-		<action name="ADToggleCP_AIVE" category="VEHICLE" ignoreComboMask="false" />
+		<action name="ADStartHelper" category="VEHICLE" ignoreComboMask="false" />
+		<action name="ADToggleUsedHelper" category="VEHICLE" ignoreComboMask="false" />
 		<action name="AD_open_notification_history" category="VEHICLE" ignoreComboMask="false" />
 		<action name="AD_continue" category="VEHICLE" ignoreComboMask="false" />
 		<action name="ADParkVehicle" category="VEHICLE" ignoreComboMask="false" />

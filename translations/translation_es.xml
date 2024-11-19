@@ -50,14 +50,14 @@
 		<text name="input_ADRefuelVehicle"						text="AD: Repostar vehículo" />
 		<text name="input_ADRepairVehicle"						text="AD: Reparar vehículo" />	
 		<text name="input_ADSwapTargets"						text="AD: Intercambiar destinos" />
-		<text name="input_ADStartCP"							text="AD: Iniciar CP/AIVE" />
-		<text name="input_ADToggleCP_AIVE"						text="AD: Cambiar a CP/AIVE" />
+		<text name="input_ADStartHelper"							text="AD: Iniciar AI/CP/AIVE" />
+		<text name="input_ADToggleUsedHelper"						text="AD: Cambiar a AI/CP/AIVE" />
 		<text name="input_AD_devAction"                         			text="AD: Funciones DEV" />
 		<text name="input_ADToggleAutomaticPickupTarget"				text="AD: Cambiar a carga automática en destino" />
 		<text name="input_ADToggleAutomaticUnloadTarget"				text="AD: Cambiar a descarga automática en destino" />
 		<text name="input_ADToggleLoadByFillLevel"				text="AD: Alternar carga por nivel de llenado" />
 		<text name="hud_avoidFruit"								text="AD: Evitar destruir cosechas" />
-		<text name="hud_startCp" 								text="AD: Iniciar CP/AIVE en destino" />
+		<text name="hud_startHelper" 								text="AD: Iniciar AI/CP/AIVE en destino" />
 		<text name="AD_parkVehicle_noPosSet"					text="No se ha asignado ningún destino de estacionamiento. Asigna el destino seleccionado actualmente haciendo clic derecho." />
 		<text name="AD_parkVehicle_selected"					text="Destino de estacionamiento elegido: " />
 		<text name="AD_Driver_of"								text="Conductor de" />
@@ -72,7 +72,8 @@
 		<text name="AD_No_Refuel_Station"						text="no puede encontrar estación de repostaje" />
 		<text name="AD_No_Repair_Station"						text="no puede encontrar la estación de reparación:" />
 		<text name="AD_Wrong_Mode_takeover_from_CP"				text="Modo AD incorrecto para trabajar junto con CP" />
-		<text name="AD_Unable_to_start_AIJob"					text="Not able to start AI Job" />
+		<text name="AD_Unable_to_start_AIJob"					text="Not able to start AI Helper" />
+		<text name="AD_AIJob_active"							text="AI Helper still active!" />
 		<text name="AD_MODE_DRIVETO"							text="Conducir" />
 		<text name="AD_MODE_DELIVERTO"							text="Entregar" />
 		<text name="AD_MODE_PICKUPANDDELIVER"					text="Cargar y entregar" />

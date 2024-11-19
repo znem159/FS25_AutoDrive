@@ -51,15 +51,15 @@
 		<text name="input_ADRefuelVehicle"						text="AD: Zatankuj pojazd" />
 		<text name="input_ADRepairVehicle"						text="AD: Napraw pojazd" />	
 		<text name="input_ADSwapTargets"						text="AD: Zamień cele" />
-		<text name="input_ADStartCP"							text="AD: Przekaż do CP/AIVE" />
-		<text name="input_ADToggleCP_AIVE"						text="AD: Przełącz CP/AIVE" />
+		<text name="input_ADStartHelper"							text="AD: Przekaż do AI/CP/AIVE" />
+		<text name="input_ADToggleUsedHelper"						text="AD: Przełącz AI/CP/AIVE" />
 		<text name="input_AD_devAction"                         text="AD: Akcja deweloperska" />
 		<text name="input_AD_open_tipOfTheDay" 					text="AD: Otwórz podpowiedź dnia" />
 		<text name="input_ADToggleAutomaticPickupTarget"				text="AD: Wybierz automatycznie cel ładowania" />
 		<text name="input_ADToggleAutomaticUnloadTarget"				text="AD: Wybierz automatycznie cel rozładowania" />
 		<text name="input_ADToggleLoadByFillLevel"				text="AD: Toggle loading by fill level" />
 		<text name="hud_avoidFruit"								text="AD: Unikaj upraw" />
-		<text name="hud_startCp"								text="AD: Uruchom CP / AIVE po dotarciu do celu" />
+		<text name="hud_startHelper"								text="AD: Uruchom AI/CP/AIVE po dotarciu do celu" />
 		<text name="AD_parkVehicle_noPosSet"					text="Nie przydzielono parkingu." />
 		<text name="AD_parkVehicle_selected"					text="Obecnie wybrany parking: " />
 		<text name="AD_parkVehicle_deleted"					    text="miejsce parkowania skasowane!" />
@@ -75,7 +75,8 @@
 		<text name="AD_No_Refuel_Station"						text="nie znaleziono miejsca napełniania" />
 		<text name="AD_No_Repair_Station"						text="nie znaleziono warsztatu dla:" />
 		<text name="AD_Wrong_Mode_takeover_from_CP"				text="Wrong AD Mode to work together with CP" />
-		<text name="AD_Unable_to_start_AIJob"					text="Not able to start AI Job" />
+		<text name="AD_Unable_to_start_AIJob"					text="Not able to start AI Helper" />
+		<text name="AD_AIJob_active"							text="AI Helper still active!" />
 		<text name="AD_MODE_DRIVETO"							text="Jazda" />
 		<text name="AD_MODE_DELIVERTO"							text="Rozładunek" />
 		<text name="AD_MODE_PICKUPANDDELIVER"					text="Odbiór i rozładunek" />

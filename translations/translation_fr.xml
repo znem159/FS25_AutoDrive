@@ -51,14 +51,14 @@
 		<text name="input_ADRefuelVehicle"						text="AD: Faire le plein du véhicule" />
 		<text name="input_ADRepairVehicle"						text="AD: Réparer le véhicule" />	
 		<text name="input_ADSwapTargets"						text="AD: Echanger les destinations" />
-		<text name="input_ADStartCP"							text="AD: Démarrer le Courseplay ou AIVE" />
-		<text name="input_ADToggleCP_AIVE"						text="AD: Basculer entre Courseplay ou AIVE" />
+		<text name="input_ADStartHelper"							text="AD: Démarrer le Courseplay ou AIVE" />
+		<text name="input_ADToggleUsedHelper"						text="AD: Basculer entre Courseplay ou AIVE" />
 		<text name="input_AD_devAction"                         text="AD: Action du développeur" />
 		<text name="input_ADToggleAutomaticPickupTarget"		text="AD: Choix automatique du point de chargement" />
 		<text name="input_ADToggleAutomaticUnloadTarget"		text="AD: Choix automatique du point de déchargement" />
 		<text name="input_ADToggleLoadByFillLevel"				text="AD: Toggle loading by fill level" />
 		<text name="hud_avoidFruit"								text="AD: Éviter les cultures" />
-		<text name="hud_startCp"								text="AD: Démarrer CP/AIVE à la destination" />
+		<text name="hud_startHelper"								text="AD: Démarrer AI/CP/AIVE à la destination" />
 		<text name="AD_parkVehicle_noPosSet"					text="Pas de parking attribué. Veuillez sélectionner la (Destination actuelle) et corriger avec le clic droit de souris sur le 'P' HUD." />
 		<text name="AD_parkVehicle_selected"					text="Parking assigné: " />
 		<text name="AD_parkVehicle_deleted"					    text="Le parking en destination a été supprimé !" />		
@@ -74,7 +74,8 @@
 		<text name="AD_No_Refuel_Station"						text="n'a pas pu trouver une station essence pour:" />
 		<text name="AD_No_Repair_Station"						text="n'a pas pu trouver un atelier pour:" />
 		<text name="AD_Wrong_Mode_takeover_from_CP"				text="Ce mode AD ne fonctionne en conbinaison avec le CP" />
-		<text name="AD_Unable_to_start_AIJob"					text="Not able to start AI Job" />
+		<text name="AD_Unable_to_start_AIJob"					text="Not able to start AI Helper" />
+		<text name="AD_AIJob_active"							text="AI Helper still active!" />
 		<text name="AD_MODE_DRIVETO"							text="Conduite" />
 		<text name="AD_MODE_DELIVERTO"							text="Livraison" />
 		<text name="AD_MODE_PICKUPANDDELIVER"					text="Chargement et livraison" />

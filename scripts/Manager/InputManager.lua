@@ -43,8 +43,8 @@ ADInputManager.actionsToInputs = {
     {"ADIncLoopCounter", "input_incLoopCounter", true, true},
     {"ADDecLoopCounter", "input_decLoopCounter", true, true},
     {"ADSwapTargets", "input_swapTargets", true, true},
-    {"ADStartCP", "input_startCp", true, true},
-    {"ADToggleCP_AIVE", "input_toggleCP_AIVE", true, true},
+    {"ADStartHelper", "input_startHelper", true, true},
+    {"ADToggleUsedHelper", "input_toggleUsedHelper", true, true},
     {"AD_open_notification_history", "input_openNotificationHistory", false, false},
     -- {"AD_open_colorSettings", "input_openColorSettings", false},
     {"AD_continue", "input_continue", true, true},
@@ -472,17 +472,13 @@ function ADInputManager:input_swapTargets(vehicle)
     end
 end
 
-function ADInputManager:input_startCp(vehicle) -- enable / disable CP or AIVE
-    if vehicle.cpStartStopDriver ~= nil or vehicle.acParameters ~= nil then
-        vehicle.ad.stateModule:toggleStartCP_AIVE()
-    end
+function ADInputManager:input_startHelper(vehicle) -- enable / disable helper passthrough
+    vehicle.ad.stateModule:toggleStartHelper()
 end
 
-function ADInputManager:input_toggleCP_AIVE(vehicle) -- select CP or AIVE
-    if vehicle.cpStartStopDriver ~= nil and vehicle.acParameters ~= nil then
-        vehicle.ad.stateModule:toggleUseCP_AIVE()
-        vehicle.ad.stateModule:setStartCP_AIVE(false) -- disable if changed between CP and AIVE
-    end
+function ADInputManager:input_toggleUsedHelper(vehicle) -- toggle the available helpers
+    vehicle.ad.stateModule:toggleUsedHelper()
+    vehicle.ad.stateModule:setStartHelper(false) -- disable helper if changed
 end
 
 function ADInputManager:input_toggleAutomaticUnloadTarget(vehicle)
