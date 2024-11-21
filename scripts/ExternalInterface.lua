@@ -264,11 +264,11 @@ function AutoDrive:StopCP(vehicle)
                 AutoDrive.debugPrint(vehicleToCheck, AutoDrive.DC_EXTERNALINTERFACEINFO, "AutoDrive:StopCP - cpStartStopDriver")
                 vehicleToCheck:cpStartStopDriver()
             end
-            if vehicleToCheck.ad ~= nil and vehicleToCheck.ad.stateModule ~= nil and vehicleToCheck.ad.stateModule:getUseCP_AIVE() and  vehicleToCheck.ad.stateModule:getStartCP_AIVE() then
+            if vehicleToCheck.ad ~= nil and vehicleToCheck.ad.stateModule ~= nil and vehicleToCheck.ad.stateModule:getUsedHelper() == ADStateModule.HELPER_CP and  vehicleToCheck.ad.stateModule:getStartHelper() then
                 -- CP button active
                 -- deactivate CP button
                 AutoDrive.debugPrint(vehicleToCheck, AutoDrive.DC_EXTERNALINTERFACEINFO, "AutoDrive:StopCP - deactivate CP button")
-                vehicleToCheck.ad.stateModule:setStartCP_AIVE(false)
+                vehicleToCheck.ad.stateModule:setStartHelper(false)
             end
             vehicleToCheck.ad.restartCP = false -- do not continue CP course
         else
@@ -432,7 +432,7 @@ function AutoDrive:onCpFinished()
             self.ad.onRouteToRefuel = false
             self.ad.onRouteToRepair = false
             self.ad.restartCP = false
-            self.ad.stateModule:setStartCP_AIVE(false)
+            self.ad.stateModule:setStartHelper(false)
             local parkDestinationAtJobFinished = self.ad.stateModule:getParkDestinationAtJobFinished()
 
             if parkDestinationAtJobFinished >= 1 then
@@ -475,7 +475,7 @@ function AutoDrive:handleCPFieldWorker(vehicle)
             -- restart CP
             vehicle.ad.restartCP = true
             if not vehicle.ad.stateModule:isActive() then
-                if vehicle.ad.stateModule:getStartCP_AIVE() and vehicle.ad.stateModule:getUseCP_AIVE() then
+                if vehicle.ad.stateModule:getStartHelper() and vehicle.ad.stateModule:getUsedHelper() == ADStateModule.HELPER_CP then
                     -- CP button active
                     if table.contains(AutoDrive.modesToStartFromCP, vehicle.ad.stateModule:getMode()) then
                         -- mode allowed to activate
@@ -485,7 +485,7 @@ function AutoDrive:handleCPFieldWorker(vehicle)
                         -- deactivate CP button
                         AutoDriveMessageEvent.sendMessageOrNotification(vehicle, ADMessagesManager.messageTypes.ERROR, "$l10n_AD_Driver_of; %s: $l10n_AD_Wrong_Mode_takeover_from_CP;", 5000, vehicle.ad.stateModule:getName())
                         vehicle.ad.restartCP = false -- do not continue CP course
-                        vehicle.ad.stateModule:setStartCP_AIVE(false)
+                        vehicle.ad.stateModule:setStartHelper(false)
                     end
                 end
             else
@@ -591,10 +591,11 @@ function AutoDrive:enterVehicleRaycastClickToSwitch(superFunc, x, y)
     superFunc(self, x, y)
 end
 
+-- currently used by CP
 function AutoDrive:getCanAdTakeControl()
     if self.isServer then
         if self.ad and self.ad.stateModule and not self.ad.stateModule:isActive() then
-            return self.ad.stateModule:getStartCP_AIVE() and self.ad.stateModule:getUseCP_AIVE()
+            return self.ad.stateModule:getStartHelper() and self.ad.stateModule:getUsedHelper() == ADStateModule.HELPER_CP
         end
     end
     return false
@@ -884,7 +885,7 @@ function AutoDrive:handleAIFinished(vehicle)
             self.ad.onRouteToRefuel = false
             self.ad.onRouteToRepair = false
             self.ad.restartAIFieldWorker = false
-            self.ad.stateModule:setStartAI(false)
+            self.ad.stateModule:setStartHelper(false)
             local parkDestinationAtJobFinished = self.ad.stateModule:getParkDestinationAtJobFinished()
 
             if parkDestinationAtJobFinished >= 1 then
@@ -917,7 +918,7 @@ function AutoDrive:handleAIFieldWorker(vehicle)
             -- restart AI
             vehicle.ad.restartAIFieldWorker = true
             if not vehicle.ad.stateModule:isActive() then
-                if vehicle.ad.stateModule:getStartAI() then
+                if vehicle.ad.stateModule:getStartHelper() then
                     -- AI button active
                     if table.contains(AutoDrive.modesToStartFromCP, vehicle.ad.stateModule:getMode()) then
                         -- mode allowed to activate
@@ -927,7 +928,7 @@ function AutoDrive:handleAIFieldWorker(vehicle)
                         -- deactivate AI button
                         AutoDriveMessageEvent.sendMessageOrNotification(vehicle, ADMessagesManager.messageTypes.ERROR, "$l10n_AD_Driver_of; %s: $l10n_AD_Wrong_Mode_takeover_from_CP;", 5000, vehicle.ad.stateModule:getName())
                         vehicle.ad.restartAIFieldWorker = false -- do not continue AI job
-                        vehicle.ad.stateModule:setStartAI(false)
+                        vehicle.ad.stateModule:setStartHelper(false)
                     end
                 end
             else

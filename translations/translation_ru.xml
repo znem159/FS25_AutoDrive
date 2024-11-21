@@ -51,14 +51,14 @@
 		<text name="input_ADRefuelVehicle"						text="AD: Заправить технику" />
 		<text name="input_ADRepairVehicle"						text="AD: Ремонтировать технику" />
 		<text name="input_ADSwapTargets"						text="AD: Сменить локации" />
-		<text name="input_ADStartCP"							text="AD: Передать управление CP/AIVE" />
-		<text name="input_ADToggleCP_AIVE"						text="AD: Переключение CP/AIVE" />
+		<text name="input_ADStartHelper"							text="AD: Передать управление AI/CP/AIVE" />
+		<text name="input_ADToggleUsedHelper"						text="AD: Переключение AI/CP/AIVE" />
 		<text name="input_AD_devAction"							text="AD: Действия разработчика" />
 		<text name="input_ADToggleAutomaticPickupTarget"		text="AD: Переключать автоматически цели загрузки" />
 		<text name="input_ADToggleAutomaticUnloadTarget"		text="AD: Переключать автоматически цели разгрузки" />
 		<text name="input_ADToggleLoadByFillLevel"				text="AD: Переключение загрузки по уровню заполнения" />
 		<text name="hud_avoidFruit"								text="AD: Избегать посевов" />
-		<text name="hud_startCp"								text="AD: Запустить CP/AIVE в пункте назначения" />
+		<text name="hud_startHelper"								text="AD: Запустить AI/CP/AIVE в пункте назначения" />
 		<text name="AD_parkVehicle_noPosSet"					text="Место для парковки не назначено. Чтобы назначить выбранную локацию, как место парковки, нажмите правой кнопкой мыши на этой же кнопке." />
 		<text name="AD_parkVehicle_selected"					text="Выбранное место для парковки: " />
 		<text name="AD_parkVehicle_deleted"					    text="место для парковки удалено!" />
@@ -74,6 +74,8 @@
 		<text name="AD_No_Refuel_Station"						text="не удалось найти заправочную станцию" />
 		<text name="AD_No_Repair_Station"						text="не смог найти ремонтную станцию для:" />
 		<text name="AD_Wrong_Mode_takeover_from_CP"				text="Неправильный режим AD для совместной работы с CP" />
+		<text name="AD_Unable_to_start_AIJob"					text="Not able to start AI Helper" />
+		<text name="AD_AIJob_active"							text="AI Helper still active!" />
 		<text name="AD_MODE_DRIVETO"							text="Перегон" />
 		<text name="AD_MODE_DELIVERTO"							text="Доставка" />
 		<text name="AD_MODE_PICKUPANDDELIVER"					text="Загрузка и доставка" />

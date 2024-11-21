@@ -29,7 +29,7 @@ function ADHudButton:readImages()
         path = "input_toggleAutomaticUnloadTarget"
     end
 
-    while counter <= 6 do
+    while counter <= 20 do
         images[counter] = AutoDrive.directory .. "textures/" .. path .. "_" .. counter .. ".dds"
         counter = counter + 1
     end
@@ -151,24 +151,15 @@ function ADHudButton:getNewState(vehicle)
         end
     end
 
-    if self.primaryAction == "input_startCp" then
-        if (vehicle.cpStartStopDriver ~= nil or vehicle.acParameters ~= nil) then
-            if vehicle.ad.stateModule:getStartCP_AIVE() then
-                if vehicle.ad.stateModule:getUseCP_AIVE() then
-                    newState = 2
-                else
-                    newState = 4
-                end
-            else
-                if vehicle.ad.stateModule:getUseCP_AIVE() then
-                    newState = 1
-                else
-                    newState = 3
-                end
-            end
+    if self.primaryAction == "input_startHelper" then
+        local usedHelper = vehicle.ad.stateModule:getUsedHelper()
+        if vehicle.ad.stateModule:getStartHelper() then
+            newState = usedHelper * 2
+        else
+            newState = (usedHelper * 2) - 1
         end
         self.isVisible = (not AutoDrive.isEditorModeEnabled()) or (AutoDrive.getSetting("wideHUD") and AutoDrive.getSetting("addSettingsToHUD"))
-    end  
+    end
 
     if self.primaryAction == "input_bunkerUnloadType" then
         if vehicle.ad.stateModule:getBunkerUnloadTypeIsTrigger() then

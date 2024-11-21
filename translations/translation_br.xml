@@ -51,14 +51,14 @@
 		<text name="input_ADRefuelVehicle"						text="AD: Reabastecer veículo" />
 		<text name="input_ADRepairVehicle"						text="AD: Reparar veículo" />	
 		<text name="input_ADSwapTargets"						text="AD: Trocar destinos" />
-		<text name="input_ADStartCP"							text="AD: Ativar CP/AIVE" />
-		<text name="input_ADToggleCP_AIVE"						text="AD: Alternar CP/AIVE" />
+		<text name="input_ADStartHelper"							text="AD: Ativar AI/CP/AIVE" />
+		<text name="input_ADToggleUsedHelper"						text="AD: Alternar AI/CP/AIVE" />
 		<text name="input_AD_devAction"                         text="AD: Ação Developer" />
 		<text name="input_ADToggleAutomaticPickupTarget"		text="AD: Alternar para coleta automática" />
 		<text name="input_ADToggleAutomaticUnloadTarget"		text="AD: Alternar para descarga automática" />
 		<text name="input_ADToggleLoadByFillLevel"				text="AD: alternar para nível de preenchimento" />
 		<text name="hud_avoidFruit"								text="AD: Evitar plantações" />
-		<text name="hud_startCp"								text="AD: Iniciar CP / AIVE no destino" />
+		<text name="hud_startHelper"								text="AD: Iniciar AI/CP/AIVE no destino" />
 		<text name="AD_parkVehicle_noPosSet"					text="Nenhum destino de estacionamento atribuído." />
 		<text name="AD_parkVehicle_selected"					text="Destino de estacionamento escolhido: " />
 		<text name="AD_parkVehicle_deleted"					    text="destino de estacionamento excluído!" />
@@ -74,6 +74,8 @@
 		<text name="AD_No_Refuel_Station"						text="não foi possível encontrar posto de combustível:" />
 		<text name="AD_No_Repair_Station"						text="não foi possível encontrar uma oficina de reparo:" />
 		<text name="AD_Wrong_Mode_takeover_from_CP"				text="Modo AD errado para trabalhar em conjunto com CP" />
+		<text name="AD_Unable_to_start_AIJob"					text="Not able to start AI Helper" />
+		<text name="AD_AIJob_active"							text="AI Helper still active!" />
 		<text name="AD_MODE_DRIVETO"							text="Motorista" />
 		<text name="AD_MODE_DELIVERTO"							text="Entregar" />
 		<text name="AD_MODE_PICKUPANDDELIVER"					text="Pegar e entregar" />

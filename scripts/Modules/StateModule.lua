@@ -13,6 +13,11 @@ ADStateModule.HIGHEST_MODE = 5
 ADStateModule.BUNKER_UNLOAD_TRIGGER = 1
 ADStateModule.BUNKER_UNLOAD_TRAILER = 2
 
+ADStateModule.HELPER_NONE = 10/2 -- must not be 0
+ADStateModule.HELPER_CP = 1
+ADStateModule.HELPER_AIVE = 2
+ADStateModule.HELPER_AI = 3
+
 function ADStateModule:new(vehicle)
     local o = {}
     setmetatable(o, self)
@@ -53,11 +58,17 @@ function ADStateModule:reset()
     self.currentNeighbourToPointAt = -1
     self.neighbourPoints = {}
 
-    self.startCP_AIVE = false
+    self.startHelper = false
 
-    self.useCP = (self.vehicle.cpStartStopDriver ~= nil)
-
-    self.startAIHelper = false
+    if self.vehicle.getLastJob then
+        self.usedHelper = ADStateModule.HELPER_AI
+    elseif self.vehicle.cpStartStopDriver then
+        self.usedHelper = ADStateModule.HELPER_CP
+    elseif self.vehicle.acParameters then
+        self.usedHelper = ADStateModule.HELPER_AIVE
+    else
+        self.usedHelper = ADStateModule.HELPER_NONE
+    end
 
     self.driverName = g_i18n:getText("UNKNOWN")
     if self.vehicle.getName ~= nil then
@@ -213,8 +224,8 @@ function ADStateModule:writeStream(streamId)
     streamWriteString(streamId, self.currentTaskInfo)
     streamWriteUIntN(streamId, self.currentWayPointId + 1, 20)
     streamWriteUIntN(streamId, self.nextWayPointId + 1, 20)
-    streamWriteBool(streamId, self.startCP_AIVE)
-    streamWriteBool(streamId, self.useCP)
+    streamWriteBool(streamId, self.startHelper)
+    streamWriteUIntN(streamId, self.usedHelper, 3)
     streamWriteString(streamId, self.driverName)
     streamWriteUInt16(streamId, self.remainingDriveTime)
     streamWriteUIntN(streamId, self.bunkerUnloadType, 3)
@@ -245,8 +256,8 @@ function ADStateModule:readStream(streamId)
     self.currentTaskInfo = streamReadString(streamId)
     self.currentWayPointId = streamReadUIntN(streamId, 20) - 1
     self.nextWayPointId = streamReadUIntN(streamId, 20) - 1
-    self.startCP_AIVE = streamReadBool(streamId)
-    self.useCP = streamReadBool(streamId)
+    self.startHelper = streamReadBool(streamId)
+    self.usedHelper = streamReadUIntN(streamId, 3)
     self.driverName = streamReadString(streamId)
     self.remainingDriveTime = streamReadUInt16(streamId)
     self.bunkerUnloadType = streamReadUIntN(streamId, 3)
@@ -279,8 +290,8 @@ function ADStateModule:writeUpdateStream(streamId)
     streamWriteString(streamId, self.currentTaskInfo)
     streamWriteUIntN(streamId, self.currentWayPointId + 1, 20)
     streamWriteUIntN(streamId, self.nextWayPointId + 1, 20)
-    streamWriteBool(streamId, self.startCP_AIVE)
-    streamWriteBool(streamId, self.useCP)
+    streamWriteBool(streamId, self.startHelper)
+    streamWriteUIntN(streamId, self.usedHelper, 3)
     streamWriteString(streamId, self.driverName)
 	streamWriteUInt16(streamId, self.remainingDriveTime)
     streamWriteUIntN(streamId, self.bunkerUnloadType, 3)
@@ -311,8 +322,8 @@ function ADStateModule:readUpdateStream(streamId)
     self.currentTaskInfo = streamReadString(streamId)
     self.currentWayPointId = streamReadUIntN(streamId, 20) - 1
     self.nextWayPointId = streamReadUIntN(streamId, 20) - 1
-    self.startCP_AIVE = streamReadBool(streamId)
-    self.useCP = streamReadBool(streamId)
+    self.startHelper = streamReadBool(streamId)
+    self.usedHelper = streamReadUIntN(streamId, 3)
     self.driverName = streamReadString(streamId)
     self.remainingDriveTime = streamReadUInt16(streamId)
     self.bunkerUnloadType = streamReadUIntN(streamId, 3)
@@ -391,8 +402,8 @@ function ADStateModule:update(dt)
         debug.currentLocalizedTaskInfo = self.currentLocalizedTaskInfo
         debug.currentWayPointId = self.currentWayPointId
         debug.nextWayPointId = self.nextWayPointId
-        debug.startCP_AIVE = self.startCP_AIVE
-        debug.useCP = self.useCP
+        debug.startHelper = self.startHelper
+        debug.usedHelper = self.usedHelper
         debug.driverName = self.driverName
         debug.remainingDriveTime = self.remainingDriveTime
         if self.vehicle.ad.modes[AutoDrive.MODE_UNLOAD].combine ~= nil then
@@ -414,29 +425,59 @@ function ADStateModule:update(dt)
     end
 end
 
-function ADStateModule:toggleStartCP_AIVE()
-    self.startCP_AIVE = not self.startCP_AIVE
+function ADStateModule:toggleStartHelper()
+    self.startHelper = not self.startHelper
     self:raiseDirtyFlag()
 end
 
-function ADStateModule:setStartCP_AIVE(enabled)
-    if enabled ~= self.startCP_AIVE then
-        self.startCP_AIVE = enabled
+function ADStateModule:setStartHelper(enabled)
+    if enabled ~= self.startHelper then
+        self.startHelper = enabled
         self:raiseDirtyFlag()
     end
 end
 
-function ADStateModule:getStartCP_AIVE()
-    return self.startCP_AIVE
+function ADStateModule:getStartHelper()
+    return self.startHelper
 end
 
-function ADStateModule:toggleUseCP_AIVE()
-    self.useCP = not self.useCP
-    self:raiseDirtyFlag()
+function ADStateModule:toggleUsedHelper()
+    local helper = self.usedHelper
+    if self.vehicle.getLastJob and helper == ADStateModule.HELPER_AI then
+        if self.vehicle.cpStartStopDriver then
+            helper = ADStateModule.HELPER_CP
+        elseif self.vehicle.acParameters then
+            helper = ADStateModule.HELPER_AIVE
+        else
+            helper = ADStateModule.HELPER_AI
+        end
+    elseif self.vehicle.cpStartStopDriver and helper == ADStateModule.HELPER_CP then
+        if self.vehicle.acParameters then
+            helper = ADStateModule.HELPER_AIVE
+        elseif self.vehicle.getLastJob then
+            helper = ADStateModule.HELPER_AI
+        else
+            helper = ADStateModule.HELPER_CP
+        end
+    elseif self.vehicle.acParameters and helper == ADStateModule.HELPER_AIVE then
+        if self.vehicle.getLastJob then
+            helper = ADStateModule.HELPER_AI
+        elseif self.vehicle.cpStartStopDriver then
+            helper = ADStateModule.HELPER_CP
+        else
+            helper = ADStateModule.HELPER_AIVE
+        end
+    else
+        helper = ADStateModule.HELPER_NONE
+    end
+    if helper ~= self.usedHelper then
+        self.usedHelper = helper
+        self:raiseDirtyFlag()
+    end
 end
 
-function ADStateModule:getUseCP_AIVE()
-    return self.useCP
+function ADStateModule:getUsedHelper()
+    return self.usedHelper
 end
 
 function ADStateModule:toggleAutomaticUnloadTarget()
@@ -1262,14 +1303,4 @@ function ADStateModule:setActualFarmId(farmId, sendEvent)
             self:raiseDirtyFlag()
         end
     end
-end
-
--- TODO Implement HUD Button for AI
-function ADStateModule:getStartAI()
-    -- return self.startAIHelper
-    return true
-end
-
-function ADStateModule:setStartAI(enabled)
-    self.startAIHelper = enabled
 end

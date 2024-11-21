@@ -50,14 +50,14 @@
 		<text name="input_ADRefuelVehicle"						                                                      text="AD: Refuel vehicle" />
 		<text name="input_ADRepairVehicle"						text="AD: Repair vehicle" />	
         <text name="input_ADSwapTargets"                                                                    text="AD: Hedefleri değiştir"  />
-		<text name="input_ADStartCP"							text="AD: Pass to CP/AIVE" />
-		<text name="input_ADToggleCP_AIVE"						text="AD: Toggle CP/AIVE" />
+		<text name="input_ADStartHelper"							text="AD: Pass to AI/CP/AIVE" />
+		<text name="input_ADToggleUsedHelper"						text="AD: Toggle AI/CP/AIVE" />
 		<text name="input_AD_devAction"                         			                                      text="AD: Developer Action" />
 		<text name="input_ADToggleAutomaticPickupTarget"				text="AD: Toggle automatic pickup target" />
 		<text name="input_ADToggleAutomaticUnloadTarget"				text="AD: Toggle automatic unload target" />
         <text name="input_ADToggleLoadByFillLevel"				text="AD: Toggle loading by fill level" />
         <text name="hud_avoidFruit"                                                                         text="AD: Meyvelerden kaçının"  />
-        <text name="hud_startCp"                                                                            text="AD: CP / AIVE'ı varış noktasında başlatın"  />
+        <text name="hud_startHelper"                                                                            text="AD: AI/CP/AIVE'ı varış noktasında başlatın"  />
         <text name="AD_parkVehicle_noPosSet"                                                                text="Park yeri atanmadı. Lütfen halihazırda seçili olan hedefi sağ fare tuşu ile atayın."  />
         <text name="AD_parkVehicle_selected"                                                                text="Seçilen park yeri:"  />
         <text name="AD_Driver_of"                                                                           text="Sürücüsü"  />
@@ -72,6 +72,8 @@
         <text name="AD_No_Refuel_Station"						                                            text="could not find refuel station" />
 		<text name="AD_No_Repair_Station"						                                            text="could not find repair station for:" />
 		<text name="AD_Wrong_Mode_takeover_from_CP"				text="Wrong AD Mode to work together with CP" />
+		<text name="AD_Unable_to_start_AIJob"					text="Not able to start AI Helper" />
+		<text name="AD_AIJob_active"							text="AI Helper still active!" />
         <text name="AD_MODE_DRIVETO"                                                                        text="Sürüş"  />
         <text name="AD_MODE_DELIVERTO"                                                                      text="Teslim etmek"  />
         <text name="AD_MODE_PICKUPANDDELIVER"                                                               text="Toplama ve Teslim Etme"  />

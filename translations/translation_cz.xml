@@ -51,14 +51,14 @@
 		<text name="input_ADRefuelVehicle"						text="AD: Dotankovat vozidlo" />
 		<text name="input_ADRepairVehicle"						text="AD: Opravit vozidlo" />	
 		<text name="input_ADSwapTargets"						text="AD: Zaměnit cíle" />
-		<text name="input_ADStartCP"							text="AD: Použít CP/AIVE" />
-		<text name="input_ADToggleCP_AIVE"						text="AD: Přepnout CP/AIVE" />
+		<text name="input_ADStartHelper"							text="AD: Použít AI/CP/AIVE" />
+		<text name="input_ADToggleUsedHelper"						text="AD: Přepnout AI/CP/AIVE" />
 		<text name="input_AD_devAction"                         text="AD: Vývojářské Akce" />
 		<text name="input_ADToggleAutomaticPickupTarget"		text="AD: Přepnout cíl automatického vyzvednutí" />
 		<text name="input_ADToggleAutomaticUnloadTarget"		text="AD: Přepnout cíl automatického vyložení" />
 		<text name="input_ADToggleLoadByFillLevel"				text="AD: Přepnout načítání podle úrovně naplnění" />
 		<text name="hud_avoidFruit"								text="AD: Nevjíždět do porostu" />
-		<text name="hud_startCp" 								text="AD: Start CP / AIVE v místě určení" />
+		<text name="hud_startHelper" 								text="AD: Start AI/CP/AIVE v místě určení" />
 		<text name="AD_parkVehicle_noPosSet"					text="Vozidlo nemá parkoviště. Vyberte cíl a stiskněte pravé tlačítko myši." />
 		<text name="AD_parkVehicle_selected"					text="Zvolená parkovací zóna: " />
 		<text name="AD_parkVehicle_deleted"					    text="cíl parkování smazán!" />
@@ -74,6 +74,8 @@
 		<text name="AD_No_Refuel_Station"						text="nemůžu najít benzinku" />
 		<text name="AD_No_Repair_Station"						text="nemohl najít servisní dílnu pro :" />
 		<text name="AD_Wrong_Mode_takeover_from_CP"				text="Nesprávný režim AD pro spolupráci s CP" />
+		<text name="AD_Unable_to_start_AIJob"					text="Not able to start AI Helper" />
+		<text name="AD_AIJob_active"							text="AI Helper still active!" />
 		<text name="AD_MODE_DRIVETO"							text="Jízda" />
 		<text name="AD_MODE_DELIVERTO"							text="Vykládka" />
 		<text name="AD_MODE_PICKUPANDDELIVER"					text="Nakládka a odvoz" />

@@ -84,7 +84,7 @@ function ParkTask:finished(propagate)
     -- avoid activate CP when park position is reached
     self.vehicle.ad.restartCP = false
     self.ad.restartAIFieldWorker = false
-    self.vehicle.ad.stateModule:setStartCP_AIVE(false)
+    self.vehicle.ad.stateModule:setStartHelper(false)
     self.vehicle.ad.taskModule:setCurrentTaskFinished(propagate)
     if self.actualParkDestinationName ~= nil then
         AutoDriveMessageEvent.sendMessageOrNotification(self.vehicle, ADMessagesManager.messageTypes.INFO, "$l10n_AD_Driver_of; %s $l10n_AD_has_reached; %s", 5000, self.vehicle.ad.stateModule:getName(), self.actualParkDestinationName)
