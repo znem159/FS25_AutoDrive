@@ -39,6 +39,7 @@ function ADRoutesManagerGui:refreshItems()
 end
 
 function ADRoutesManagerGui:onDoubleClick(list, section, index, cell)
+    -- Copy route name to textInputElement
     self.textInputElement:setText(self.routes[index].name)
 end
 
