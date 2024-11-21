@@ -944,7 +944,7 @@ function AutoDrive.getPlayerHotspot()
         -- mapHotspot:setOwnerFarmId(0) -- all, visitor etc. ???
 
 --[[
-        mapHotspot.ownerFarmId = g_currentMission.player.farmId
+        mapHotspot.ownerFarmId = AutoDrive.getPlayer().farmId
         mapHotspot.clickArea.area[1] = 0.13
         mapHotspot.clickArea.area[2] = 0.13
         mapHotspot.clickArea.area[3] = 0.74
@@ -977,7 +977,7 @@ function AutoDrive.getTourHotspot()
         local mapHotspot = TourHotspot.new()
 
 --[[
-        mapHotspot.ownerFarmId = g_currentMission.player.farmId
+        mapHotspot.ownerFarmId = AutoDrive.getPlayer().farmId
         mapHotspot.clickArea.area[1] = 0.13
         mapHotspot.clickArea.area[2] = 0.13
         mapHotspot.clickArea.area[3] = 0.74
@@ -1034,7 +1034,7 @@ function AutoDrive.getPlaceableHotspot()
 			local mapHotspot = PlaceableHotspot.new()
 	
 	--[[
-			mapHotspot.ownerFarmId = g_currentMission.player.farmId
+			mapHotspot.ownerFarmId = AutoDrive.getPlayer().farmId
 			mapHotspot.clickArea.area[1] = 0.13
 			mapHotspot.clickArea.area[2] = 0.13
 			mapHotspot.clickArea.area[3] = 0.74

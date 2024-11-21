@@ -167,7 +167,7 @@ function AutoDriveVehicleData:saveToXMLFile(xmlFile, key)
     end
     if actualparkDestination ~= nil and actualparkDestination > 0 then
         AutoDrive.debugPrint(self, AutoDrive.DC_EXTERNALINTERFACEINFO, "AutoDriveVehicleData.saveToXMLFile actualparkDestination %s", tostring(actualparkDestination))
-        local adKey = string.gsub(key, "FS22_AutoDrive.AutoDriveVehicleData", "AutoDrive")
+        local adKey = string.gsub(key, "FS25_AutoDrive.AutoDriveVehicleData", "AutoDrive")
         xmlFile:setValue(adKey .. "#parkDestination", actualparkDestination)
     end
 end

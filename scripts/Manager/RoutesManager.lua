@@ -21,7 +21,7 @@ function ADRoutesManager:load()
     -- defining and creating needed folders
     self.settingsFolder = getUserProfileAppPath() .. "modSettings/"
     createFolder(self.settingsFolder)
-    self.rootFolder = self.settingsFolder .. "FS22_AutoDrive/"
+    self.rootFolder = self.settingsFolder .. "FS25_AutoDrive/"
     createFolder(self.rootFolder)
     self.managerFolder = self.rootFolder .. "routesManager/"
     createFolder(self.managerFolder)
@@ -208,7 +208,7 @@ end
 
 function ADRoutesManager:exportRoutesAsExternalMod()
     local mapName = AutoDrive.loadedMap
-    local exportRootFolder = string.format("%sFS22_AutoDrive_Routes_%s/", self.rootFolder, mapName)
+    local exportRootFolder = string.format("%sFS25_AutoDrive_Routes_%s/", self.rootFolder, mapName)
     createFolder(exportRootFolder)
     local exportRoutesFolder = string.format("%sroutes/", exportRootFolder)
     createFolder(exportRoutesFolder)

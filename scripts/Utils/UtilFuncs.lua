@@ -408,6 +408,25 @@ function AutoDrive.renderTable(posX, posY, textSize, inputTable, maxDepth)
 end
 
 function AutoDrive.dumpTable(inputTable, name, maxDepth, currentDepth)
+
+	local function iterSorted(t)
+		local tkeys = {}
+		for k in pairs(t) do
+			table.insert(tkeys, k)
+		end
+
+		table.sort(tkeys, function (a,b) return tostring(a) < tostring(b) end)
+
+		local i = 0
+		local n = #tkeys
+		return function ()
+					i = i + 1
+					if i <= n then
+						return tkeys[i], t[tkeys[i]]
+				    end
+				end
+	end
+		  
 	maxDepth = maxDepth or 5
 	currentDepth = currentDepth or 0
 	if currentDepth > maxDepth then
@@ -420,9 +439,9 @@ function AutoDrive.dumpTable(inputTable, name, maxDepth, currentDepth)
 
 	table.insert(AutoDrive.seenTables, inputTable)
 
-	for k, v in pairs(inputTable) do
+	for k, v in iterSorted(inputTable) do
 		local newName = string.format("%s.%s", name, k)
-		if type(k) == "number" then
+		if type(k) == "number" or type(k) == "table" then
 			newName = string.format("%s[%s]", name, k)
 		end
 
@@ -430,6 +449,8 @@ function AutoDrive.dumpTable(inputTable, name, maxDepth, currentDepth)
 			if not AutoDrive.seenTables[v] then
 				print(newName .. " = {}")
 				AutoDrive.dumpTable(v, newName, maxDepth, currentDepth+1)
+			else
+				print(newName .. " <seen>")
 			end
 		else
 			print(string.format("%s = %s", newName, v))
@@ -437,7 +458,7 @@ function AutoDrive.dumpTable(inputTable, name, maxDepth, currentDepth)
 	end
 
 	if getmetatable(inputTable) ~= nil then
-		for k, v in pairs(getmetatable(inputTable)) do
+		for k, v in iterSorted(getmetatable(inputTable)) do
 			local newName = string.format("%s.%s", name, k)
 			if type(k) == "number" then
 				newName = string.format("%s[%s]", name, k)
@@ -479,7 +500,7 @@ addConsoleCommand("adDumpTable", "Dump Table to log", "dumpTableToLog", AutoDriv
 
 function AutoDrive:dumpTableToLog(input, ...)
 	local f = getfenv(0).loadstring('return ' .. input)
-	AutoDrive.dumpTable(f(), "Table:", 1)
+	AutoDrive.dumpTable(f(), "Table:" .. input, 1)
 end
 
 function AutoDrive:createSplineInterpolationBetween(startNode, endNode)
