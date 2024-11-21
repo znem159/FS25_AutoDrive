@@ -199,11 +199,15 @@ end
 
 function ADDrivePathModule:isCloseToWaypoint()
     local x, _, z = getWorldTranslation(self.vehicle.components[1].node)
+    if self.vehicle.getAISteeringNode ~= nil then
+        x, _, z = getWorldTranslation(self.vehicle:getAISteeringNode())
+    end
+
     local maxSkipWayPoints = 1
     for i = 0, maxSkipWayPoints do
         if self.wayPoints[self:getCurrentWayPointIndex() + i] ~= nil then
             local distanceToCurrentWp = MathUtil.vector2Length(x - self.wayPoints[self:getCurrentWayPointIndex() + i].x, z - self.wayPoints[self:getCurrentWayPointIndex() + i].z)
-            if distanceToCurrentWp < self.min_distance then --and i == 0
+            if distanceToCurrentWp < 1.8 then--self.min_distance then --and i == 0
                 return true
             end
             -- Check if the angle between vehicle and current wp and current wp to next wp is over 90° - then we should already make the switch
@@ -226,10 +230,15 @@ end
 
 function ADDrivePathModule:followWaypoints(dt)
     local x, y, z = getWorldTranslation(self.vehicle.components[1].node)
+    if self.vehicle.getAISteeringNode ~= nil then
+        x, y, z = getWorldTranslation(self.vehicle:getAISteeringNode())
+    end
+
     local maxSpeedDiff = ADDrivePathModule.MAX_SPEED_DEVIATION
     self.acceleration = 1
     self.distanceToLookAhead = 8
 
+    self.speedLimit = self.vehicle.ad.stateModule:getSpeedLimit()
     if ((g_updateLoopIndex + self.vehicle.id) % AutoDrive.PERF_FRAMES_HIGH == 0) then
         self.speedLimit = self.vehicle.ad.stateModule:getSpeedLimit()
         if AutoDrive.checkIsOnField(x, y, z) then
@@ -293,6 +302,9 @@ function ADDrivePathModule:followWaypoints(dt)
 
     self.targetX, self.targetZ = self:getLookAheadTarget()
     local lx, lz = AIVehicleUtil.getDriveDirection(self.vehicle.components[1].node, self.targetX, y, self.targetZ)
+    if self.vehicle.getAISteeringNode ~= nil then
+        lx, lz = AIVehicleUtil.getDriveDirection(self.vehicle:getAISteeringNode(), self.targetX, y, self.targetZ)
+    end
 
     if self.vehicle.ad.collisionDetectionModule:hasDetectedObstable(dt) then
         self.vehicle.ad.specialDrivingModule:stopVehicle((not self:isOnRoadNetwork()), lx, lz)
@@ -310,9 +322,12 @@ function ADDrivePathModule:followWaypoints(dt)
             self.acceleration = -math.min(0.6, speedDiff * 0.05)
         end
         
-        --print("Speed: " .. (self.vehicle.lastSpeedReal * 3600) .. "/" .. self.speedLimit .. " acc: " .. self.acceleration .. " maxSpeedDiff: " .. maxSpeedDiff)
-        --print("LAD: " .. self.distanceToLookAhead .. " maxAngle: " .. self.maxAngle .. " maxAngleSpeed: " .. self.maxAngleSpeed)
-        --ADDrawingManager:addLineTask(x, y, z, self.targetX, y, self.targetZ, 1, 1, 0, 0)
+        if self.vehicle.getAISteeringNode ~= nil then
+            local aix, aiy, aiz = getWorldTranslation(self.vehicle:getAISteeringNode())            
+            ADDrawingManager:addLineTask(aix, aiy, aiz, self.targetX, y, self.targetZ, 1, 1, 0, 0)
+        else            
+            ADDrawingManager:addLineTask(x, y, z, self.targetX, y, self.targetZ, 1, 1, 0, 0)
+        end
         if self.vehicle.startMotor then
             if not self.vehicle:getIsMotorStarted() and self.vehicle:getCanMotorRun() and not self.vehicle.ad.specialDrivingModule:shouldStopMotor() then
                 self.vehicle:startMotor()
@@ -320,6 +335,9 @@ function ADDrivePathModule:followWaypoints(dt)
         end
         self.vehicle.ad.trailerModule:handleTrailerReversing(false)
         AutoDrive.driveInDirection(self.vehicle, dt, maxAngle, self.acceleration, 0.8, maxAngle, true, true, lx, lz, self.speedLimit, 1)
+        --local worldX, _, worldZ = worldToLocal(self.vehicle.components[1].node, self.targetX, 0, self.targetZ)
+        --print("dt: " .. dt .. " acc: " .. self.acceleration .. " x: " .. worldX .. " z: " .. worldZ .. " speedLimit: " .. self.speedLimit)
+        --AIVehicleUtil.driveToPoint(self.vehicle, dt, self.acceleration, true, true, worldX, worldZ, self.speedLimit)
     end
 end
 
@@ -620,6 +638,10 @@ function ADDrivePathModule:getLookAheadTarget()
     --start driving to the nextWayPoint when closing in on current waypoint in order to avoid harsh steering angles and oversteering
 
     local x, _, z = getWorldTranslation(self.vehicle.components[1].node)
+    if self.vehicle.getAISteeringNode ~= nil then
+        x, _, z = getWorldTranslation(self.vehicle:getAISteeringNode())
+    end
+
     local targetX = x
     local targetZ = z
 
