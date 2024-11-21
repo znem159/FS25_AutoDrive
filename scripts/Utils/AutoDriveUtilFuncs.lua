@@ -863,3 +863,9 @@ function AutoDrive.drawTripod(node, offset)
     ADDrawingManager:addLineTask(nodeX + offset.x, nodeY + offset.y, nodeZ + offset.z, targetX + offset.x, targetY + offset.y, targetZ + offset.z, 1, 0, 0, 1)
 end
 
+function AutoDrive.requestToEnterVehicle(vehicle)
+    local player = AutoDrive.getPlayer()
+    if player then
+        player:requestToEnterVehicle(vehicle)
+    end
+end
