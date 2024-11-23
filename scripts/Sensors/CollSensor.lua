@@ -178,7 +178,7 @@ function ADCollSensor.getMaskFS22()
 end
 
 function ADCollSensor.getMask()
-    return CollisionFlag.DEFAULT + CollisionFlag.STATIC_OBJECT + CollisionFlag.BUILDING + CollisionFlag.DYNAMIC_OBJECT + CollisionFlag.VEHICLE + CollisionFlag.TERRAIN_DELTA + CollisionFlag.TREE
+    return CollisionFlag.DEFAULT + CollisionFlag.STATIC_OBJECT + CollisionFlag.DYNAMIC_OBJECT + CollisionFlag.VEHICLE + CollisionFlag.TERRAIN_DELTA
 --[[
     local mask = 0
      
