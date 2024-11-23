@@ -596,12 +596,14 @@ function AutoDrive:mouseEvent(posX, posY, isDown, isUp, button)
 end
 
 function AutoDrive:update(dt)
-	--[[
-    if AutoDrive.scanDialogState == AutoDrive.SCAN_DIALOG_NONE and ADGraphManager:getWayPointsCount() == 0 then
-        if g_server ~= nil and g_dedicatedServer == nil then
+    if AutoDrive.scanDialogState == AutoDrive.SCAN_DIALOG_NONE then
+		if ADGraphManager:getWayPointsCount() > 0 then
+			-- AutoDrive.debugMsg(nil, "[AD] AutoDrive:update not-new -> SCAN_DIALOG_RESULT_NO")
+			AutoDrive.scanDialogState = AutoDrive.SCAN_DIALOG_RESULT_NO
+		elseif g_server ~= nil and g_dedicatedServer == nil then
             -- open dialog
 			if g_gui.currentGui == nil then
-				-- AutoDrive.debugMsg(nil, "[AD] AutoDrive:update SCAN_DIALOG_OPEN")
+				--AutoDrive.debugMsg(nil, "[AD] AutoDrive:update SCAN_DIALOG_OPEN")
 				AutoDrive.onOpenScanConfirmation()
 				AutoDrive.scanDialogState = AutoDrive.SCAN_DIALOG_OPEN
 			end
@@ -618,20 +620,17 @@ function AutoDrive:update(dt)
     end
 
     if AutoDrive.scanDialogState == AutoDrive.SCAN_DIALOG_RESULT_YES then
-        AutoDrive.scanDialogState = AutoDrive.SCAN_DIALOG_RESULT_DONE
-        -- dialog closed with yes
         -- AutoDrive.debugMsg(nil, "[AD] AutoDrive:update SCAN_DIALOG_RESULT_YES")
-        AutoDrive:adParseSplines()
-        AutoDrive:createJunctionCommand()
+        AutoDrive.scanDialogState = AutoDrive.SCAN_DIALOG_RESULT_DONE
+        -- AutoDrive:adParseSplines()
+        -- AutoDrive:createJunctionCommand()
     end
 
     if AutoDrive.scanDialogState == AutoDrive.SCAN_DIALOG_RESULT_NO then
-        AutoDrive.scanDialogState = AutoDrive.SCAN_DIALOG_RESULT_DONE
-        -- dialog closed with no
         -- AutoDrive.debugMsg(nil, "[AD] AutoDrive:update SCAN_DIALOG_RESULT_NO")
+        AutoDrive.scanDialogState = AutoDrive.SCAN_DIALOG_RESULT_DONE
         AutoDrive.loadStoredXML(true)
     end
-	--]]
 	AutoDrive.setSettingState("showHUD", 2)
 
 	if AutoDrive.isFirstRun == nil then

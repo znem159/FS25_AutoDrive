@@ -29,8 +29,7 @@ function ADEnterDriverNameGui:onOpen()
     end
 end
 
-function ADEnterDriverNameGui:onClickOk()
-    ADEnterDriverNameGui:superClass().onClickOk(self)
+function ADEnterDriverNameGui:onClickRename()
     local controlledVehicle = AutoDrive.getControlledVehicle()
     if controlledVehicle ~= nil then
         AutoDrive.renameDriver(controlledVehicle, self.textInputElement.text)
@@ -38,7 +37,7 @@ function ADEnterDriverNameGui:onClickOk()
     self:onClickBack()
 end
 
-function ADEnterDriverNameGui:onClickCancel()
+function ADEnterDriverNameGui:onClickReset()
     local controlledVehicle = AutoDrive.getControlledVehicle()
     if controlledVehicle ~= nil and controlledVehicle.ad ~= nil then
         self.textInputElement:setText(controlledVehicle.ad.stateModule:getName())
@@ -47,7 +46,7 @@ end
 
 function ADEnterDriverNameGui:onEnterPressed(_, isClick)
     if not isClick then
-        self:onClickOk()
+        self:onClickRename()
     end
 end
 

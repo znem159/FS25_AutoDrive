@@ -38,7 +38,7 @@ function ADEnterDestinationFilterGui:onClickOk()
     self:onClickBack()
 end
 
-function ADEnterDestinationFilterGui:onClickCancel()
+function ADEnterDestinationFilterGui:onClickReset()
     self.textInputElement:setText("")
 end
 

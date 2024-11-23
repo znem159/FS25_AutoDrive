@@ -75,90 +75,6 @@
         </Trait>
     </Traits>
 
-<!-- TODO: used? -->
-    <Profile name="autoDriveDialogBg" extends="dialogBg">
-        <size value="800px 800px" />
-    </Profile>
-
-<!-- TODO: used? -->
-    <Profile name="autoDriveMenuHeader" extends="emptyPanel" with="ADanchorTopCenter">
-        <size value="800px 112px" />
-        <alignmentX value="left" />
-        <alignmentY value="bottom" />
-        <imageColor value="$preset_colorGlassVeryLight" />
-        <flowDirection value="horizontal" />
-        <wrapAround value="true" />
-        <lateralFlowSize value="112px" />
-        <fitToElements value="true" />
-        <autoValidateLayout value="true" />
-        <hasFrame value="false" />
-    </Profile>
-
-<!-- TODO: used? -->
-    <Profile name="autoDriveHeaderSelector" extends="multiTextOptionSettings">
-        <size value="800px 112px" />
-    </Profile>
-
-<!-- TODO: used? -->
-    <Profile name="autoDriveMenuPageTab" extends="listItem">
-        <size value="100px 100px" />
-        <margin value="0px 0px 0px 0px" />
-        <position value="0px 0px" />
-    </Profile>
-
-<!-- TODO: used? -->
-    <Profile name="autoDriveMenuPageTabAlternate" extends="autoDriveMenuPageTab" with="alternateRow" />
-
-<!-- TODO: used? -->
-    <Profile name="autoDrivePagingTabList" extends="list" with="ADCenterScreen">
-        <size value="800px 112px" />
-        <position value="0px 0px" />
-        <itemsPerRow value="6" />
-        <listItemHeight value="112px" />
-        <listItemWidth value="100px" />
-        <listItemPadding value="0px" />
-        <listItemSpacing value="0px" />
-        <fixedHeight value="false" />
-        <fixedWidth value="false" />
-        <margin value="0px 0px 0px 0px" />
-        <rowBackgroundProfile value="autoDriveMenuPageTab" />
-        <rowBackgroundProfileAlternate value="autoDriveMenuPageTabAlternate" />
-    </Profile>
-
-<!-- TODO: used? -->
-    <Profile name="autoDriveFullScreenSpanning" extends="uiElementContainerFullScreenSpanning" with="ADCenterScreen">
-        <size value="800px 680px" />
-        <position value="0px -60px" />
-        <margin value="0px 0px 0px 0px" />
-    </Profile>
-
-<!-- TODO: used? -->
-    <Profile name="autoDriveuiInGameMenuPaging" extends="uiInGameMenuPaging">
-        <size value="800px 680px" />
-        <position value="0px 0px" />
-        <margin value="0px 0px 0px 0px" />
-    </Profile>
-
-<!-- TODO: used? -->
-    <Profile name="autoDriveIngameMenuSettingsBox" extends="ingameMenuSettingsBox" with="ADCenterScreen">
-        <hasFrame value="false" />
-        <size value="800px 680px" />
-        <position value="0px 0px" />
-    </Profile>
-
-<!-- TODO: used? -->
-    <Profile name="autoDriveButtonBoxDocked" extends="buttonBoxDocked">
-<!-- axel -->
-        <size value="1300px 60px" />
-        <position value="150px 20px" />
-    </Profile>
-
-<!-- TODO: used? -->
-    <Profile name="autoDriveingameMenuHelpRowBg" extends="ingameMenuHelpRowBg">
-        <size value="700px 50px" />
-        <position value="80px 20px" />
-    </Profile>
-
 <!-- used -->
     <Profile name="autoDriveDebugSettingsCheckbox" extends="baseReference" with="lightFrame">
         <size value="300px 48px" />
@@ -223,71 +139,28 @@
     </Profile>
 
 <!-- used -->
-    <Profile name="autoDriveRoutesManagerNavigationBox" extends="emptyPanel" with="lightFrame">
-        <size value="720px 600px" />
-        <position value="0px -125px" />
-        <screenAlign value="topCenter" />
-        <positionOrigin value="topCenter" />
-    </Profile>
-
-<!-- used! -->
-    <Profile name="autoDriveRoutesManagerList" extends="list">
-        <size value="692px 600px" />
-        <selectOnScroll value="true" />
-        <screenAlign value="topLeft" />
-        <positionOrigin value="topLeft" />
-        <isHorizontalList value="false" />
-        <itemsPerCol value="13" />
-        <listItemHeight value="46px" />
-        <listItemWidth value="690px" />
-        <rowBackgroundProfile value="autoDriveRoutesManagerListItem" />
-        <rowBackgroundProfileAlternate value="autoDriveRoutesManagerListItemAlternate" />
-    </Profile>
-
-<!-- used -->
-    <Profile name="autoDriveRoutesManagerListItem" extends="listItem">
-        <imageColor value="$preset_colorListRowBackground" />
-        <imageFocusedColor value="$preset_colorMainUI" />
-        <imageSelectedColor value="$preset_colorMainUI" />
-        <size value="690px 46px" />
-        <position value="0px 0px" />
-    </Profile>
-
-<!-- used -->
-    <Profile name="autoDriveRoutesManagerListItemAlternate" extends="autoDriveRoutesManagerListItem" with="alternateRow anchorMiddleLeft" />
-
-<!-- used -->
-    <Profile name="autoDriveRoutesManagerItemText" extends="textDefault">
-        <size value="610px 46px" />
-        <textMaxWidth value="360px" />
-        <textVerticalAlignment value="middle" />
-        <textSize value="16px" />
-        <textBold value="true" />
-        <textOffset value="40px 2px" />
-        <textFocusedOffset value="40px 2px" />
-    </Profile>
-
-<!-- used -->
-    <Profile name="autoDriveRoutesManagerItemDate" extends="textDefault">
-        <size value="610px 46px" />
-        <textMaxWidth value="360px" />
-        <textVerticalAlignment value="middle" />
-        <textSize value="14px" />
-        <textBold value="false" />
-        <textOffset value="40px 2px" />
-        <textFocusedOffset value="40px 2px" />
-        <textAlignment value="right" />
-    </Profile>
-
-<!-- used -->
     <Profile name="autoDriveNotificationHistoryNavigationBox" extends="emptyPanel" with="lightFrame">
         <size value="740px 540px" />
         <screenAlign value="topCenter" />
         <positionOrigin value="topCenter" />
     </Profile>
 
-
 <!-- Common Profiles -->
+    <Profile name="ad_common_dialogContentContainer" extends="fs25_dialogContentContainer">
+        <flowDirection value="vertical" />
+        <elementSpacing value="10px" />
+        <alignmentX value="center" />
+        <position value="4px -10px" />
+        <absoluteSizeOffset value="21px 30px" />
+    </Profile>  
+
+    <Profile name="ad_common_hBox" extends="emptyPanel" with="anchorTopCenter">
+        <flowDirection value="horizontal" />
+        <alignmentX value="center"/>
+        <alignmentY value="middle"/>
+        <elementSpacing value="20px"/>
+    </Profile>
+
     <Profile name="ad_common_dialogTitle" extends="baseReference" with="anchorTopStretchingX">
         <textBold value="true"/>
         <textLayoutMode value="resize" />
@@ -298,10 +171,22 @@
     </Profile>
 
     <Profile name="ad_common_dialogTitleLineSeparator" extends="fs25_lineSeparatorTop">
+        <absoluteSizeOffset value="100px 0" />
+    </Profile>
+
+    <Profile name="ad_common_dialogText" extends="baseReference" with="anchorTopStretchingX">
+        <textMaxNumLines value="5" />
+        <textSize value="16px"/>
     </Profile>
 
     <Profile name="ad_common_dialogButtonBox" extends="fs25_dialogButtonBox">
         <absoluteSizeOffset value="0px 0px"/>
+        <position value="0px 0px"/>
+    </Profile>
+
+    <Profile name="ad_common_dialogButtonBoxOutsideContentContainer" extends="ad_common_dialogButtonBox" with="anchorBottomStretchingX">
+        <position value="-6px 32px" />
+        <absoluteSizeOffset value="20px 0" />
     </Profile>
 
     <Profile name="ad_common_list" extends="emptyPanel" with="anchorStretchingYStretchingX pivotTopLeft">
@@ -344,9 +229,6 @@
         <itemsPerCol value="20" />
         <listItemHeight value="26px" />
         <listItemWidth value="630px" />
-        <!-- <rowBackgroundProfile value="autoDriveRoutesManagerListItem" /> -->
-        <!-- <rowBackgroundProfileAlternate value="autoDriveRoutesManagerListItemAlternate" /> -->
-        <!-- <position value="0px -380px" /> -->
         <position value="0px 0px" />
     </Profile>
 
@@ -357,19 +239,6 @@
         <imageSelectedColor value="$preset_colorMainUI" />
         <size value="690px 25px" />
         <position value="0px 0px" />
-    </Profile>
-
-
-<!-- TODO: used? -->
-    <Profile name="autoDriveNotificationHistoryListItemAlternate" extends="autoDriveRoutesManagerListItem" with="alternateRow anchorMiddleLeft" />
-
-<!-- used -->
-    <Profile name="autoDriveNotificationHistoryItemIcon" extends="baseReference">
-        <size value="26px 26px" />
-        <position value="0px 0px" />
-        <imageFilename value="g_autoDriveUIFilename" />
-        <imageUVs value="0px 768px 256px 256px" />
-        <frameThickness value="0 0 0 0" />
     </Profile>
 
 <!-- used -->
@@ -383,44 +252,4 @@
         <textFocusedOffset value="26px 2px" />
     </Profile>
 
-<!-- used -->
-    <Profile name="autoDriveColorSettingsNavigationBox" extends="emptyPanel" with="lightFrame">
-        <size value="640px 540px" />
-        <screenAlign value="topCenter" />
-        <positionOrigin value="topCenter" />
-    </Profile>
-
-<!-- used -->
-    <Profile name="autoDriveColorSettingsList" extends="list">
-        <size value="692px 692px" />
-        <selectOnScroll value="true" />
-        <screenAlign value="topLeft" />
-        <positionOrigin value="topLeft" />
-        <isHorizontalList value="false" />
-        <itemsPerCol value="15" />
-        <listItemHeight value="46px" />
-        <listItemWidth value="690px" />
-        <rowBackgroundProfile value="autoDriveRoutesManagerListItem" />
-        <rowBackgroundProfileAlternate value="autoDriveRoutesManagerListItemAlternate" />
-    </Profile>
-
-<!-- used -->
-    <Profile name="autoDriveColorSettingsListItem" extends="listItem">
-        <imageColor value="$preset_colorListRowBackground" />
-        <imageFocusedColor value="$preset_colorMainUI" />
-        <imageSelectedColor value="$preset_colorMainUI" />
-        <size value="690px 46px" />
-        <position value="0px 0px" />
-    </Profile>
-
-<!-- used -->
-    <Profile name="autoDriveColorSettingsItemText" extends="textDefault">
-        <size value="692px 46px" />
-        <textMaxWidth value="586px" />
-        <textVerticalAlignment value="middle" />
-        <textSize value="16px" />
-        <textBold value="true" />
-        <textOffset value="46px 2px" />
-        <textFocusedOffset value="46px 2px" />
-    </Profile>
 </GUIProfiles>

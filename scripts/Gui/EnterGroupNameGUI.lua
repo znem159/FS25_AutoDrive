@@ -27,8 +27,6 @@ function ADEnterGroupNameGui:onOpen()
 end
 
 function ADEnterGroupNameGui:onClickOk()
-    ADEnterGroupNameGui:superClass().onClickOk(self)
-
     if  self.textInputElement.text ~= ADGraphManager.debugGroupName then
         -- do not allow user to create debug group
         local groupName = self.textInputElement.text
