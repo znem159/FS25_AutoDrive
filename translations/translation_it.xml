@@ -50,14 +50,14 @@
         <text name="input_ADRefuelVehicle"          		text="AD: Rifornire il veicolo" />
 	<text name="input_ADRepairVehicle"			text="AD: Ripara il veicolo" />	
         <text name="input_ADSwapTargets"            		text="AD: Scambia Destinazione" />
-        <text name="input_ADStartCP"                		text="AD: Passa a CP/AIVE" />
-        <text name="input_ADToggleCP_AIVE"          		text="AD: Attiva/Disattiva CP/AIVE" />
+        <text name="input_ADStartHelper"                		text="AD: Passa a AI/CP/AIVE" />
+        <text name="input_ADToggleUsedHelper"          		text="AD: Attiva/Disattiva AI/CP/AIVE" />
         <text name="input_AD_devAction"             		text="AD: Azione dello sviluppatore" />
         <text name="input_ADToggleAutomaticPickupTarget"    	text="AD: Attiva/Disattiva il target di ritiro automatico" />
         <text name="input_ADToggleAutomaticUnloadTarget"    	text="AD: Attiva/Disattiva obiettivo di scaricamento automatico" />
         <text name="input_ADToggleLoadByFillLevel"				text="AD: Attiva/disattiva il caricamento in base al livello di riempimento" />
         <text name="hud_avoidFruit"                 		text="AD: Evita raccolto" />
-        <text name="hud_startCp"                		text="AD: Avvia CP/AIVE a destinazione" />
+        <text name="hud_startHelper"                		text="AD: Avvia AI/CP/AIVE a destinazione" />
         <text name="AD_parkVehicle_noPosSet"            	text="Nessuna destinazione di parcheggio assegnata. Si prega di assegnare l'obiettivo attualmente selezionato con il tasto destro del mouse." />
         <text name="AD_parkVehicle_selected"            	text="Seleziona Parcheggio veicolo: " />
         <text name="AD_Driver_of"               		text="L'autista di" />
@@ -72,7 +72,8 @@
         <text name="AD_No_Refuel_Station"           		text="Impossibile trovare la stazione di rifornimento" />
         <text name="AD_No_Repair_Station"           		text="Impossibile trovare la stazione di riparazione per: " />
 		<text name="AD_Wrong_Mode_takeover_from_CP"				text="Modalità AD errata per lavorare insieme al CP" />
-		<text name="AD_Unable_to_start_AIJob"					text="Not able to start AI Job" />
+		<text name="AD_Unable_to_start_AIJob"					text="Not able to start AI Helper" />
+		<text name="AD_AIJob_active"							text="AI Helper still active!" />
         <text name="AD_MODE_DRIVETO"                		text="Guida" />
         <text name="AD_MODE_DELIVERTO"              		text="Consegna" />
         <text name="AD_MODE_PICKUPANDDELIVER"           	text="Carica e consegna" />

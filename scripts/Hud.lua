@@ -242,12 +242,11 @@ function AutoDriveHud:createHudAt(hudX, hudY)
 			self:AddSettingsButton("avoidFruit", "gui_ad_avoidFruit", 1, true)
 		else
 			self:AddEditModeButtons()
-			if vehicle ~= nil and vehicle.cpStartStopDriver ~= nil then
+			if vehicle then
+				local usedHelper = vehicle.ad.stateModule:getUsedHelper()
+				local state = (usedHelper * 2) - 1
 				self.buttonCounter = self.buttonCounter - 1
-				self:AddButton("input_startCp", "input_toggleCP_AIVE", nil, nil, "hud_startCp", 1, true)
-			elseif (vehicle ~= nil and vehicle.acParameters ~= nil) then
-				self.buttonCounter = self.buttonCounter - 1
-				self:AddButton("input_startCp", "input_toggleCP_AIVE", nil, nil, "hud_startCp", 3, true)
+				self:AddButton("input_startHelper", "input_toggleUsedHelper", nil, nil, "hud_startHelper", state, true)
 			end
 		end
 
@@ -261,13 +260,10 @@ function AutoDriveHud:createHudAt(hudX, hudY)
 		self:AddEditModeButtons()
 		if AutoDrive.getSetting("addSettingsToHUD") then
 			self.buttonCounter = self.buttonCounter - 5
-
-			if vehicle ~= nil and vehicle.cpStartStopDriver ~= nil then
-				self:AddButton("input_startCp", "input_toggleCP_AIVE", nil, nil, "hud_startCp", 1, true)
-			elseif (vehicle ~= nil and vehicle.acParameters ~= nil) then
-				self:AddButton("input_startCp", "input_toggleCP_AIVE", nil, nil, "hud_startCp", 3, true)
-			else
-				self:AddSettingsButton("enableTrafficDetection", "gui_ad_enableTrafficDetection", 1, true)
+			if vehicle then
+				local usedHelper = vehicle.ad.stateModule:getUsedHelper()
+				local state = (usedHelper * 2) - 1
+				self:AddButton("input_startHelper", "input_toggleUsedHelper", nil, nil, "hud_startHelper", state, true)
 			end
 
 			self:AddSettingsButton("rotateTargets", "gui_ad_rotateTargets", 1, true)
@@ -275,12 +271,11 @@ function AutoDriveHud:createHudAt(hudX, hudY)
 			self:AddSettingsButton("restrictToField", "gui_ad_restrictToField", 1, true)
 			self:AddSettingsButton("avoidFruit", "gui_ad_avoidFruit", 1, true)
 		else
-			if vehicle ~= nil and vehicle.cpStartStopDriver ~= nil then
+			if vehicle then
+				local usedHelper = vehicle.ad.stateModule:getUsedHelper()
+				local state = (usedHelper * 2) - 1
 				self.buttonCounter = self.buttonCounter - 1
-				self:AddButton("input_startCp", "input_toggleCP_AIVE", nil, nil, "hud_startCp", 1, true)
-			elseif (vehicle ~= nil and vehicle.acParameters ~= nil) then
-				self.buttonCounter = self.buttonCounter - 1
-				self:AddButton("input_startCp", "input_toggleCP_AIVE", nil, nil, "hud_startCp", 3, true)
+				self:AddButton("input_startHelper", "input_toggleUsedHelper", nil, nil, "hud_startHelper", state, true)
 			end
 		end
 
@@ -296,11 +291,10 @@ function AutoDriveHud:createHudAt(hudX, hudY)
 	---------- THIRD ROW BUTTONS ---------------------
 	if AutoDrive.getSetting("wideHUD") and AutoDrive.getSetting("addSettingsToHUD") then
 		self:AddEditModeButtons()
-
-		if vehicle ~= nil and vehicle.cpStartStopDriver ~= nil then
-			self:AddButton("input_startCp", "input_toggleCP_AIVE", nil, nil, "hud_startCp", 1, true)
-		elseif (vehicle ~= nil and vehicle.acParameters ~= nil) then
-			self:AddButton("input_startCp", "input_toggleCP_AIVE", nil, nil, "hud_startCp", 3, true)
+		if vehicle then
+			local usedHelper = vehicle.ad.stateModule:getUsedHelper()
+			local state = (usedHelper * 2) - 1
+			self:AddButton("input_startHelper", "input_toggleUsedHelper", nil, nil, "hud_startHelper", state, true)
 		end
 	end
 

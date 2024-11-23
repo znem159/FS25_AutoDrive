@@ -56,7 +56,7 @@ end
 
 function AutoDrive.registerOverwrittenFunctions(vehicleType)
     SpecializationUtil.registerOverwrittenFunction(vehicleType, "getCanMotorRun",                       AutoDrive.getCanMotorRun)
-    SpecializationUtil.registerOverwrittenFunction(vehicleType, "leaveVehicle",                         AutoDrive.leaveVehicle)
+    -- SpecializationUtil.registerOverwrittenFunction(vehicleType, "leaveVehicle",                         AutoDrive.leaveVehicle) -- not available
     SpecializationUtil.registerOverwrittenFunction(vehicleType, "getIsAIActive",                        AutoDrive.getIsAIActive)
     SpecializationUtil.registerOverwrittenFunction(vehicleType, "getIsVehicleControlledByPlayer",       AutoDrive.getIsVehicleControlledByPlayer)
     SpecializationUtil.registerOverwrittenFunction(vehicleType, "getActiveFarm",                        AutoDrive.getActiveFarm)
@@ -1050,6 +1050,16 @@ end
 
 function AutoDrive:startAutoDrive()
     if self.isServer then
+
+        if g_currentMission.aiSystem and g_currentMission.aiSystem.activeJobVehicles then
+            for index, jobVehicle in pairs(g_currentMission.aiSystem.activeJobVehicles) do
+                if self == jobVehicle then
+                    AutoDriveMessageEvent.sendMessageOrNotification(self, ADMessagesManager.messageTypes.ERROR, "$l10n_AD_Driver_of; %s: $l10n_AD_AIJob_active;", 5000, self.ad.stateModule:getName())
+                    return
+                end
+            end
+        end
+
         if not self.ad.stateModule:isActive() then
             self.ad.stateModule:setActive(true)
 
@@ -1170,9 +1180,9 @@ function AutoDrive:stopAutoDrive()
             end
             AutoDrive.updateAutoDriveLights(self, true)
 
-            local isStartingAIVE = (not self.ad.isStoppingWithError and self.ad.stateModule:getStartCP_AIVE() and not self.ad.stateModule:getUseCP_AIVE())
-            local isPassingToCP = not self.ad.isStoppingWithError and (self.ad.restartCP == true or (self.ad.stateModule:getStartCP_AIVE() and self.ad.stateModule:getUseCP_AIVE()))
-            local isPassingToAI = not self.ad.isStoppingWithError and (self.ad.restartAIFieldWorker == true or self.ad.stateModule:getStartAI())
+            local isStartingAIVE = not self.ad.isStoppingWithError and self.ad.stateModule:getStartHelper() and self.ad.stateModule:getUsedHelper() == ADStateModule.HELPER_AIVE
+            local isPassingToCP = not self.ad.isStoppingWithError and (self.ad.restartCP == true or (self.ad.stateModule:getStartHelper() and self.ad.stateModule:getUsedHelper() == ADStateModule.HELPER_CP))
+            local isPassingToAI = not self.ad.isStoppingWithError and (self.ad.restartAIFieldWorker == true or  (self.ad.stateModule:getStartHelper() and self.ad.stateModule:getUsedHelper() == ADStateModule.HELPER_AI))
 
             if not isStartingAIVE and not isPassingToCP and not isPassingToAI then
                 if not AutoDrive:getIsEntered(self) then
@@ -1323,8 +1333,6 @@ function AutoDrive.passToExternalMod_CP(vehicle)
     if vehicle == nil or vehicle.ad == nil or vehicle.ad.stateModule == nil then
         return
     end
-    -- local isStartingAIVE = (not self.ad.isStoppingWithError and self.ad.stateModule:getStartCP_AIVE() and not self.ad.stateModule:getUseCP_AIVE())
-    -- local isPassingToCP = not self.ad.isStoppingWithError and (self.ad.restartCP == true or (self.ad.stateModule:getStartCP_AIVE() and self.ad.stateModule:getUseCP_AIVE()))
     local x, y, z = getWorldTranslation(vehicle.components[1].node)
 
     local point = nil
@@ -1343,10 +1351,10 @@ function AutoDrive.passToExternalMod_CP(vehicle)
 
     if not vehicle.ad.isStoppingWithError and distanceToStart < 30 then
         AutoDrive.debugPrint(vehicle, AutoDrive.DC_EXTERNALINTERFACEINFO, "AutoDrive.passToExternalMod pass to other mod...")
-        if vehicle.ad.stateModule:getStartCP_AIVE() or vehicle.ad.restartCP == true then
+        if vehicle.ad.stateModule:getStartHelper() or vehicle.ad.restartCP == true then
             AutoDrive.debugPrint(vehicle, AutoDrive.DC_EXTERNALINTERFACEINFO, "AutoDrive.passToExternalMod CP / AIVE button enabled or restartCP")
             -- CP / AIVE button enabled
-            if (vehicle.cpStartStopDriver ~= nil and vehicle.ad.stateModule:getUseCP_AIVE()) or vehicle.ad.restartCP == true then
+            if (vehicle.cpStartStopDriver ~= nil and vehicle.ad.stateModule:getUsedHelper() == ADStateModule.HELPER_CP) or vehicle.ad.restartCP == true then
                 -- CP button active
                 vehicle.spec_enterable.isControlled = false
                 if vehicle.ad.restartCP == true then
@@ -1364,7 +1372,7 @@ function AutoDrive.passToExternalMod_CP(vehicle)
                 AutoDrive.debugPrint(vehicle, AutoDrive.DC_EXTERNALINTERFACEINFO, "AutoDrive.passToExternalMod AIVE button active")
                 -- AIVE button active
                 if vehicle.acParameters ~= nil then
-                    vehicle.ad.stateModule:setStartCP_AIVE(false)  -- disable CP / AIVE button
+                    vehicle.ad.stateModule:setStartHelper(false)  -- disable helper button
                     vehicle.acParameters.enabled = true
                     AutoDrive.debugPrint(vehicle, AutoDrive.DC_EXTERNALINTERFACEINFO, "AutoDrive.passToExternalMod pass control to AIVE with startAIVehicle")
                     vehicle:toggleAIVehicle()
@@ -1393,26 +1401,30 @@ function AutoDrive.passToExternalMod(vehicle)
         end
     end
 
-    if (not vehicle.ad.isStoppingWithError and distanceToStart < 30) or vehicle.ad.restartAIFieldWorker == true then
-        AutoDrive.debugPrint(vehicle, AutoDrive.DC_EXTERNALINTERFACEINFO, "AutoDrive.passToExternalMod pass to other mod...")
-        if vehicle.ad.restartAIFieldWorker == true then
-            vehicle.ad.restartAIFieldWorker = false
-        end
-        local fieldJob = vehicle:getLastJob()
-        if fieldJob == nil then
-            -- no job present - generate fielwork job new
-            fieldJob = g_currentMission.aiJobTypeManager:createJob(AIJobType.FIELDWORK)
-        end
+    if (vehicle.getLastJob and vehicle.ad.stateModule:getStartHelper()) or vehicle.ad.restartAIFieldWorker == true then
         local success, errorMessage
-        if fieldJob then
-                -- job present - continue fielwork job
-            fieldJob:applyCurrentState(vehicle, g_currentMission, vehicle:getOwnerFarmId(), false)
-            fieldJob:setValues()
-            success, errorMessage = fieldJob:validate(vehicle:getOwnerFarmId())
-            if success then
-                AutoDrive.debugPrint(vehicle, AutoDrive.DC_EXTERNALINTERFACEINFO, "AutoDrive.passToExternalMod lastJob aiSystem:startJob startJob")
-                g_currentMission.aiSystem:startJob(fieldJob, vehicle:getOwnerFarmId())
-                return
+        if (not vehicle.ad.isStoppingWithError and distanceToStart < 30) then
+            if (vehicle.getIsOnField and vehicle:getIsOnField()) then
+                AutoDrive.debugPrint(vehicle, AutoDrive.DC_EXTERNALINTERFACEINFO, "AutoDrive.passToExternalMod pass to other mod...")
+                if vehicle.ad.restartAIFieldWorker == true then
+                    vehicle.ad.restartAIFieldWorker = false
+                end
+                local fieldJob = vehicle:getLastJob()
+                if fieldJob == nil then
+                    -- no job present - generate fielwork job new
+                    fieldJob = g_currentMission.aiJobTypeManager:createJob(AIJobType.FIELDWORK)
+                end
+                if fieldJob then
+                        -- job present - continue fielwork job
+                    fieldJob:applyCurrentState(vehicle, g_currentMission, vehicle:getOwnerFarmId(), false)
+                    fieldJob:setValues()
+                    success, errorMessage = fieldJob:validate(vehicle:getOwnerFarmId())
+                    if success then
+                        AutoDrive.debugPrint(vehicle, AutoDrive.DC_EXTERNALINTERFACEINFO, "AutoDrive.passToExternalMod lastJob aiSystem:startJob startJob")
+                        g_currentMission.aiSystem:startJob(fieldJob, vehicle:getOwnerFarmId())
+                        return
+                    end
+                end
             end
         end
         AutoDriveMessageEvent.sendMessageOrNotification(vehicle, ADMessagesManager.messageTypes.ERROR, "$l10n_AD_Driver_of; %s: $l10n_AD_Unable_to_start_AIJob;", 5000, vehicle.ad.stateModule:getName())

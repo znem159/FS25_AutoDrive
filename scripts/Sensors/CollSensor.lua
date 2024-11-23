@@ -178,9 +178,10 @@ function ADCollSensor.getMaskFS22()
 end
 
 function ADCollSensor.getMask()
+    return CollisionFlag.DEFAULT + CollisionFlag.STATIC_OBJECT + CollisionFlag.BUILDING + CollisionFlag.DYNAMIC_OBJECT + CollisionFlag.VEHICLE + CollisionFlag.TERRAIN_DELTA + CollisionFlag.TREE
+--[[
     local mask = 0
-
---[[ 
+     
     from collisionMaskFlags.xml
     <flag bit="0" name="DEFAULT" desc="The default bit"/>
     <flag bit="1" name="STATIC_OBJECT" desc="Static object"/>
@@ -210,7 +211,7 @@ function ADCollSensor.getMask()
     <flag bit="30" name="FILLABLE" desc="A fillable node. For trailer fillNodes and unload triggers"/>
     <flag bit="31" name="WATER" desc="A water plane"/>
 
- ]]
+
 
     mask = mask + math.pow(2, 1)
     mask = mask + math.pow(2, 5)
@@ -223,6 +224,7 @@ function ADCollSensor.getMask()
     mask = mask + math.pow(2, 18)
     mask = mask + math.pow(2, 19)
     return mask
+     ]]
 end
 
 function ADCollSensor.getMaskSplines()

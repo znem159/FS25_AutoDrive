@@ -51,14 +51,14 @@
 		<text name="input_ADRefuelVehicle"						text="AD: Refuel vehicle" />
 		<text name="input_ADRepairVehicle"						text="AD: Repair vehicle" />	
 		<text name="input_ADSwapTargets"						text="AD: Swap targets" />
-		<text name="input_ADStartCP"							text="AD: Pass to CP/AIVE" />
-		<text name="input_ADToggleCP_AIVE"						text="AD: Toggle CP/AIVE" />
+		<text name="input_ADStartHelper"						text="AD: Pass to AI/CP/AIVE" />
+		<text name="input_ADToggleUsedHelper"					text="AD: Toggle AI/CP/AIVE" />
 		<text name="input_AD_devAction"                         text="AD: Developer Action" />
 		<text name="input_ADToggleAutomaticPickupTarget"				text="AD: Toggle automatic pickup target" />
 		<text name="input_ADToggleAutomaticUnloadTarget"				text="AD: Toggle automatic unload target" />
 		<text name="input_ADToggleLoadByFillLevel"				text="AD: Toggle loading by fill level" />
 		<text name="hud_avoidFruit"								text="AD: Avoid fruit" />
-		<text name="hud_startCp"								text="AD: Start CP / AIVE at destination" />
+		<text name="hud_startHelper"								text="AD: Start AI/CP/AIVE at destination" />
 		<text name="AD_parkVehicle_noPosSet"					text="No parking destination assigned." />
 		<text name="AD_parkVehicle_selected"					text="Chosen parking destination: " />
 		<text name="AD_parkVehicle_deleted"					    text="parking destination deleted!" />
@@ -74,7 +74,8 @@
 		<text name="AD_No_Refuel_Station"						text="could not find refuel station" />
 		<text name="AD_No_Repair_Station"						text="could not find repair station for:" />
 		<text name="AD_Wrong_Mode_takeover_from_CP"				text="Wrong AD Mode to work together with CP" />
-		<text name="AD_Unable_to_start_AIJob"					text="Not able to start AI Job" />
+		<text name="AD_Unable_to_start_AIJob"					text="Not able to start AI Helper" />
+		<text name="AD_AIJob_active"							text="AI Helper still active!" />
 		<text name="AD_MODE_DRIVETO"							text="Drive" />
 		<text name="AD_MODE_DELIVERTO"							text="Deliver" />
 		<text name="AD_MODE_PICKUPANDDELIVER"					text="Pickup and Deliver" />
