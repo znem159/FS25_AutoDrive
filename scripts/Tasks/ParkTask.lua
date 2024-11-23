@@ -83,7 +83,7 @@ function ParkTask:finished(propagate)
     self.vehicle.ad.onRouteToPark = false
     -- avoid activate CP when park position is reached
     self.vehicle.ad.restartCP = false
-    self.ad.restartAIFieldWorker = false
+    self.vehicle.ad.restartAIFieldWorker = false
     self.vehicle.ad.stateModule:setStartHelper(false)
     self.vehicle.ad.taskModule:setCurrentTaskFinished(propagate)
     if self.actualParkDestinationName ~= nil then

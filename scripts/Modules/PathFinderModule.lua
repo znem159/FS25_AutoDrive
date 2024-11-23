@@ -100,7 +100,7 @@ end
 
 function PathFinderModule:reset()
     PathFinderModule.debugMsg(self.vehicle, "PFM:reset start")
-    self.mask = AutoDrive.collisionMaskTerrain
+    self.mask = AutoDrive.collisionMaskTerrain + CollisionFlag.TREE + CollisionFlag.BUILDING 
     self.steps = 0
     self.grid = {}
     self.wayPoints = {}
@@ -1214,7 +1214,7 @@ function PathFinderModule:checkGridCell(cell)
     if not cell.isRestricted and not cell.hasCollision then
         -- check for obstacles
         local shapeDefinition = self:getShapeDefByDirectionType(cell)   --> return shape for the cell according to direction, on ground level, 2.65m height
-        local ignoreObstaclesUpToHeight = 1
+        local ignoreObstaclesUpToHeight = 0.5
         local shapes = overlapBox(shapeDefinition.x, shapeDefinition.y + ignoreObstaclesUpToHeight, shapeDefinition.z, 0, shapeDefinition.angleRad, 0, shapeDefinition.widthX, shapeDefinition.height - ignoreObstaclesUpToHeight, shapeDefinition.widthZ, "collisionTestCallbackIgnore", nil, self.mask, true, true, true)
         cell.hasCollision = cell.hasCollision or (shapes > 0)
         if cell.hasCollision then
