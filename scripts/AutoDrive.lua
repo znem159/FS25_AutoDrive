@@ -122,7 +122,12 @@ AutoDrive.colors = {
 	ad_color_previewSubPrioDualConnection = {0.3, 0.15, 0, 1},
 	ad_color_previewOk = {0.3, 0.9, 0, 1},
 	ad_color_previewNotOk = {1, 0.1, 0, 1},
-	ad_color_textInputBackground = {0.0227, 0.5346, 0.8519, 1} -- Giants original
+	ad_color_textInputBackground = {0.0227, 0.5346, 0.8519, 1}, -- Giants original
+	ad_color_hudTextDefault = {1, 1, 1, 1},
+	ad_color_hudTextHover = {0.51, 0.67, 0.05, 1},
+	ad_color_hudTextSpecial = {0.66, 0.83, 0.34, 1},
+	ad_color_hudTextHoverSpecial = {0.45, 0.73, 0.05, 1},
+
 }
 
 AutoDrive.currentColors = {} -- this will hold the current colors, derived from default colors above, overwritten by local settings
