@@ -879,36 +879,36 @@ function AutoDrive:setALFillType(vehicle, fillType) -- used by PullDownList
 end
 
 function AutoDrive:handleAIFinished(vehicle)
-    AutoDrive.debugPrint(self, AutoDrive.DC_EXTERNALINTERFACEINFO, "AutoDrive:handleAIFinished start... enableParkAtJobFinished %s", AutoDrive.getSetting("enableParkAtJobFinished", self))
-    if self.isServer then
-        if self.ad and self.ad.stateModule and self.startAutoDrive and AutoDrive.getSetting("enableParkAtJobFinished", self) then
-            self.ad.onRouteToRefuel = false
-            self.ad.onRouteToRepair = false
-            self.ad.restartAIFieldWorker = false
-            self.ad.stateModule:setStartHelper(false)
-            local parkDestinationAtJobFinished = self.ad.stateModule:getParkDestinationAtJobFinished()
+    AutoDrive.debugPrint(vehicle, AutoDrive.DC_EXTERNALINTERFACEINFO, "AutoDrive:handleAIFinished start... enableParkAtJobFinished %s", AutoDrive.getSetting("enableParkAtJobFinished", vehicle))
+    if vehicle.isServer then
+        if vehicle.ad and vehicle.ad.stateModule and vehicle.startAutoDrive and AutoDrive.getSetting("enableParkAtJobFinished", vehicle) then
+            vehicle.ad.onRouteToRefuel = false
+            vehicle.ad.onRouteToRepair = false
+            vehicle.ad.restartAIFieldWorker = false
+            vehicle.ad.stateModule:setStartHelper(false)
+            local parkDestinationAtJobFinished = vehicle.ad.stateModule:getParkDestinationAtJobFinished()
 
             if parkDestinationAtJobFinished >= 1 then
-                AutoDrive.debugPrint(self, AutoDrive.DC_EXTERNALINTERFACEINFO, "AutoDrive:handleAIFinished drive to park position")
-                self.ad.onRouteToPark = true
-                self.ad.stateModule:setMode(AutoDrive.MODE_DRIVETO)
-                self.ad.stateModule:setFirstMarker(parkDestinationAtJobFinished)
-                self.ad.stateModule:getCurrentMode():start()
+                AutoDrive.debugPrint(vehicle, AutoDrive.DC_EXTERNALINTERFACEINFO, "AutoDrive:handleAIFinished drive to park position")
+                vehicle.ad.onRouteToPark = true
+                vehicle.ad.stateModule:setMode(AutoDrive.MODE_DRIVETO)
+                vehicle.ad.stateModule:setFirstMarker(parkDestinationAtJobFinished)
+                vehicle.ad.stateModule:getCurrentMode():start()
             else
-                AutoDriveMessageEvent.sendMessageOrNotification(self, ADMessagesManager.messageTypes.ERROR, "$l10n_AD_Driver_of; %s $l10n_AD_parkVehicle_noPosSet;", 5000, self.ad.stateModule:getName())
+                AutoDriveMessageEvent.sendMessageOrNotification(vehicle, ADMessagesManager.messageTypes.ERROR, "$l10n_AD_Driver_of; %s $l10n_AD_parkVehicle_noPosSet;", 5000, vehicle.ad.stateModule:getName())
                 -- stop vehicle movement
-                self.ad.trailerModule:handleTrailerReversing(false)
-                AutoDrive.driveInDirection(self, 16, 30, 0, 0.2, 20, false, false, 0, 0, 0, 1)
-                self:setCruiseControlState(Drivable.CRUISECONTROL_STATE_OFF)
-                if self.stopMotor ~= nil then
-                    self:stopMotor()
+                vehicle.ad.trailerModule:handleTrailerReversing(false)
+                AutoDrive.driveInDirection(vehicle, 16, 30, 0, 0.2, 20, false, false, 0, 0, 0, 1)
+                vehicle:setCruiseControlState(Drivable.CRUISECONTROL_STATE_OFF)
+                if vehicle.stopMotor ~= nil then
+                    vehicle:stopMotor()
                 end
             end
         end
     else
         Logging.devError("AutoDrive:handleAIFinished() must be called only on the server.")
     end
-    AutoDrive.debugPrint(self, AutoDrive.DC_EXTERNALINTERFACEINFO, "AutoDrive:handleAIFinished end")
+    AutoDrive.debugPrint(vehicle, AutoDrive.DC_EXTERNALINTERFACEINFO, "AutoDrive:handleAIFinished end")
 end
 
 function AutoDrive:handleAIFieldWorker(vehicle)
