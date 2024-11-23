@@ -11,9 +11,9 @@ function AutoDrive:loadGUI()
 	AutoDrive.gui.ADNotificationsHistoryGui = ADNotificationsHistoryGui.new()
 	--[[
 	AutoDrive.gui.ADColorSettingsGui = ADColorSettingsGui:new()
-	AutoDrive.gui.ADScanConfirmationGui = ADScanConfirmationGui:new()
-
 	--]]
+	AutoDrive.gui.ADScanConfirmationGui = ADScanConfirmationGui.new()
+
     local count = 1
     local result = nil
 
@@ -60,14 +60,12 @@ function AutoDrive:loadGUI()
     if result == nil then
         AutoDrive.debugMsg(nil, "AutoDrive:loadGUI failed count %d", count)
     end
+	--]]
 	result = g_gui:loadGui(AutoDrive.directory .. "gui/scanConfirmationGUI.xml", "ADScanConfirmationGui", AutoDrive.gui.ADScanConfirmationGui)
-
     count = count + 1
     if result == nil then
         AutoDrive.debugMsg(nil, "AutoDrive:loadGUI failed count %d", count)
     end
-
-	--]]
 
 	--[[
 	AutoDrive.gui.ADSettingsPage = ADSettingsPage:new()
@@ -197,7 +195,7 @@ end
 
 function AutoDrive.onOpenScanConfirmation()
 	if not AutoDrive.gui.ADScanConfirmationGui.isOpen then
-		g_gui:showGui("ADScanConfirmationGui")
+		g_gui:showDialog("ADScanConfirmationGui")
 	end
 end
 

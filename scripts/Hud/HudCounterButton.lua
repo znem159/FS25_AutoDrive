@@ -56,9 +56,9 @@ function ADHudCounterButton:onDraw(vehicle, uiScale)
     if self.state ~= ADHudCounterButton.STATE_INFINITE then
         local adFontSize = AutoDrive.FONT_SCALE * uiScale
         if self.state == ADHudCounterButton.STATE_ACTIVE then
-            setTextColor(0.16, 0.76, 0.93, 1)
+            setTextColor(unpack(AutoDrive.colors.ad_color_hudTextSpecial))
         else
-            setTextColor(1, 1, 1, 1)
+            setTextColor(unpack(AutoDrive.colors.ad_color_hudTextDefault))
         end
         setTextAlignment(RenderText.ALIGN_CENTER)
         local text = string.format("%d", self.counter)
