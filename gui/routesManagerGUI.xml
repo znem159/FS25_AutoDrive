@@ -38,9 +38,9 @@
             <BoxLayout profile="ad_common_dialogButtonBox">
                 <Button profile="buttonActivate" text="$l10n_button_delete" onClick="onClickDelete" />
                 <Bitmap profile="fs25_dialogButtonBoxSeparator"/>
-                <Button profile="buttonCancel" text="$l10n_button_load" onClick="onClickLoad" />
+                <Button profile="buttonCancel" text="$l10n_gui_ad_button_import" onClick="onClickLoad" />
                 <Bitmap profile="fs25_dialogButtonBoxSeparator"/>
-                <Button profile="buttonOK" text="$l10n_button_save" onClick="onClickSave" />
+                <Button profile="buttonOK" text="$l10n_gui_ad_button_export" onClick="onClickSave" />
                 <Bitmap profile="fs25_dialogButtonBoxSeparator"/>
                 <Button profile="buttonBack" text="$l10n_button_back" onClick="onClickBack" />
             </BoxLayout>
