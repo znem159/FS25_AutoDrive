@@ -179,7 +179,7 @@ function ADTriggerManager.getRefuelTriggers(vehicle, ignoreFillLevel)
                         if hasFill then
                             local isVehicleTrigger = true
                             if AutoDrive.experimentalFeatures.RefuelOnlyAtValidStations == true then
-                                isVehicleTrigger = trigger.triggerNode and CollisionFlag.getHasFlagSet(trigger.triggerNode, CollisionFlag.TRIGGER_VEHICLE)
+                                isVehicleTrigger = trigger.triggerNode and CollisionFlag.getHasMaskFlagSet(trigger.triggerNode, CollisionFlag.FILLABLE) and CollisionFlag.getHasGroupFlagSet(trigger.triggerNode, CollisionFlag.TRIGGER)
                                 AutoDrive.debugPrint(vehicle, AutoDrive.DC_VEHICLEINFO, "ADTriggerManager.getRefuelTriggers hasFill %s isVehicleTrigger %s", tostring(hasFill), tostring(isVehicleTrigger))
                                 if isVehicleTrigger then
                                     local triggerX, _, triggerZ = ADTriggerManager.getTriggerPos(trigger)
