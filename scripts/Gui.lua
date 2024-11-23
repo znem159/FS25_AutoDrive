@@ -76,9 +76,10 @@ function AutoDrive:loadGUI()
 	--[[
 	AutoDrive.gui.ADCombineUnloadSettingsPage = ADSettingsPage:new()
 	AutoDrive.gui.ADEnvironmentSettingsPage = ADSettingsPage:new()
-	AutoDrive.gui.ADDebugSettingsPage = ADDebugSettingsPage:new()
-	AutoDrive.gui.ADExperimentalFeaturesSettingsPage = ADExperimentalFeaturesSettingsPage:new()
 	--]]
+	AutoDrive.gui.ADDebugSettingsPage = ADDebugSettingsPage:new()
+	--AutoDrive.gui.ADExperimentalFeaturesSettingsPage = ADExperimentalFeaturesSettingsPage:new()
+	
 	AutoDrive.gui.ADSettings = ADSettings:new()
 
 	--[[
@@ -109,11 +110,13 @@ function AutoDrive:loadGUI()
     if result == nil then
         AutoDrive.debugMsg(nil, "AutoDrive:loadGUI failed count %d", count)
     end
-	result = g_gui:loadGui(AutoDrive.directory .. "gui/debugSettingsPage.xml", "ADDebugSettingsFrame", AutoDrive.gui.ADDebugSettingsPage, true)
+	--]]
+	result = g_gui:loadGui(AutoDrive.directory .. "gui/debugSettingsPage.xml", "autoDriveDebugSettings", AutoDrive.gui.ADDebugSettingsPage, true)
     count = count + 1
     if result == nil then
         AutoDrive.debugMsg(nil, "AutoDrive:loadGUI failed count %d", count)
     end
+	--[[
 	result = g_gui:loadGui(AutoDrive.directory .. "gui/experimentalFeaturesSettingsPage.xml", "ADExperimentalFeaturesSettingsFrame", AutoDrive.gui.ADExperimentalFeaturesSettingsPage, true)
     count = count + 1
     if result == nil then
