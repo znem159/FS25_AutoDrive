@@ -173,8 +173,9 @@ function AutoDrive:loadMap(name)
 	Logging.info("[AD] Start register later loaded mods...")
     --ADThirdPartyModsManager:load()
 	-- second iteration to register AD to vehicle types which where loaded after AD
-    AutoDriveRegister.register()
+    AutoDriveRegister.registerAutoDrive()
     AutoDriveRegister.registerVehicleData()
+	AutoDriveRegister.registerPlaceableData()
 	Logging.info("[AD] Start register later loaded mods end")
 
 	addConsoleCommand('restartMySavegame', 'Restart my savegame', 'restartMySavegame', self)
@@ -273,6 +274,8 @@ function AutoDrive:loadMap(name)
 	ADMultipleTargetsManager:load()
 	-- AutoDrive.initTelemetry()
 	ADBunkerSiloManager:load()
+
+	AutoDrivePlaceableData:load()
 
 	--InGameMenuAIFrame.onFrameOpen = Utils.appendedFunction(InGameMenuAIFrame.onFrameOpen, AutoDrive.onAIFrameOpen)
 	--InGameMenuAIFrame.onFrameClose = Utils.appendedFunction(InGameMenuAIFrame.onFrameClose, AutoDrive.onAIFrameClose)
@@ -509,6 +512,7 @@ function AutoDrive:init()
 		AutoDrive.selectedWayPointSample = createSample("AutoDrive_selectedWayPoint")
 		loadSample(AutoDrive.selectedWayPointSample, fileName, false)
 	end
+	AutoDrivePlaceableData:setActive(true)
 end
 
 function AutoDrive:saveSavegame()

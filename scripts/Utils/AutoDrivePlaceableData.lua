@@ -259,7 +259,7 @@ function AutoDrivePlaceableData.readGraphFromXml(xmlFile, placeable)
 				id = i,
 				x = wpx,
 				-- y = tnum(yt[i]), -- not required, will be adjusted to terrain
-				y = AutoDrive:getTerrainHeightAtWorldPos(wpx, wpz) + 2,
+				y = AutoDrive:getTerrainHeightAtWorldPos(wpx, wpz),
 				z = wpz,
 				out = {}, 
 				incoming = {}
