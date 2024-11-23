@@ -69,7 +69,6 @@ function ADEnterTargetNameGui:onOpen()
 end
 
 function ADEnterTargetNameGui:onClickOk()
-    ADEnterTargetNameGui:superClass().onClickOk(self)
     if self.edit then
         ADGraphManager:renameMapMarker(self.textInputElement.text, self.editId)
     else
@@ -78,14 +77,12 @@ function ADEnterTargetNameGui:onClickOk()
     self:onClickBack()
 end
 
-function ADEnterTargetNameGui:onClickActivate()
-    ADEnterTargetNameGui:superClass().onClickActivate(self)
+function ADEnterTargetNameGui:onClickDelete()
     ADGraphManager:removeMapMarker(self.editId)
     self:onClickBack()
 end
 
-function ADEnterTargetNameGui:onClickCancel()
-    ADEnterTargetNameGui:superClass().onClickCancel(self)
+function ADEnterTargetNameGui:onClickReset()
     self.textInputElement:setText(self.editName)
 end
 

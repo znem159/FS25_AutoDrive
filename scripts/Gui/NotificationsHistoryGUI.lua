@@ -51,18 +51,14 @@ function ADNotificationsHistoryGui:onDoubleClick(list, section, index, cell)
     end
 end
 
-function ADNotificationsHistoryGui:onClickCancel()
-    -- delete selected
+function ADNotificationsHistoryGui:onClickDeleteSelected()
     if #self.history > 0 then
         local idx = self.notificationsList:getSelectedIndexInSection()
         ADMessagesManager:removeFromHistory(idx)
     end
-    ADNotificationsHistoryGui:superClass().onClickCancel(self)
 end
 
-function ADNotificationsHistoryGui:onClickActivate()
-    -- delete all
+function ADNotificationsHistoryGui:onClickDeleteAll()
     ADMessagesManager:clearHistory()
-    ADNotificationsHistoryGui:superClass().onClickActivate(self)
 end
 

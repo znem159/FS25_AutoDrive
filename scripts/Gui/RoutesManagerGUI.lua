@@ -43,9 +43,7 @@ function ADRoutesManagerGui:onDoubleClick(list, section, index, cell)
     self.textInputElement:setText(self.routes[index].name)
 end
 
-function ADRoutesManagerGui:onClickOk()
-    -- Save route
-    ADRoutesManagerGui:superClass().onClickOk(self)
+function ADRoutesManagerGui:onClickSave()
     local newName = self.textInputElement.text
     if table.f_contains(
             self.routes,
@@ -72,17 +70,14 @@ function ADRoutesManagerGui:onExportDialogCallback(yes)
     end
 end
 
-function ADRoutesManagerGui:onClickCancel()
-    -- Load route
+function ADRoutesManagerGui:onClickLoad()
     if #self.routes > 0 then
         ADRoutesManager:import(self.routes[self.routeList:getSelectedIndexInSection()].name)
         self:onClickBack()
     end
-    ADRoutesManagerGui:superClass().onClickCancel(self)
 end
 
-function ADRoutesManagerGui:onClickActivate()
-    -- Delete route
+function ADRoutesManagerGui:onClickDelete()
     if #self.routes > 0 then
         local idx = self.routeList:getSelectedIndexInSection()
         AutoDrive.showYesNoDialog(
@@ -93,7 +88,6 @@ function ADRoutesManagerGui:onClickActivate()
             idx
         )
     end
-    ADRoutesManagerGui:superClass().onClickActivate(self)
 end
 
 function ADRoutesManagerGui:onDeleteDialogCallback(yes, idx)

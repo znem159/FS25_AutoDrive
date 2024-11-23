@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="utf-8" standalone="no" ?>
 <GUI onOpen="onOpen" onClose="onClose" onCreate="onCreate">
     <GuiElement profile="newLayer"/>
-    <Bitmap profile="dialogFullscreenBg" id="dialogBg"/>
+    <Bitmap profile="dialogFullscreenBg" />
     <GuiElement profile="fs25_dialogBg" size="740px 540px">
         <ThreePartBitmap profile="fs25_dialogBgMiddleSmall"/>
         <ThreePartBitmap profile="fs25_dialogBgTopSmall"/>
         <ThreePartBitmap profile="fs25_dialogBgBottom"/>
-        <BoxLayout profile="fs25_dialogContentContainer" flowDirection="vertical" elementSpacing="10px">
+
+        <BoxLayout profile="ad_common_dialogContentContainer">
             <Text profile="ad_common_dialogTitle" text="$l10n_gui_ad_routesManagerTitle"/>
 
             <ThreePartBitmap profile="ad_common_dialogTitleLineSeparator"/>
             
-            <BoxLayout profile="ad_routeNameBox">
-                <Text profile="fs25_textDefault" text="$l10n_gui_ad_routesManagerTextTitle" textAutoWidth="true"/>
+            <BoxLayout profile="ad_common_hBox" height="40px">
+                <Text profile="ad_common_dialogText" text="$l10n_gui_ad_routesManagerTextTitle" textAutoWidth="true"/>
                 <TextInput profile="fs25_dialogTextInput" id="textInputElement" onEnterPressed="onEnterPressed" onEscPressed="onEscPressed" enterWhenClickOutside="false" maxCharacters="20" text="Route 1">
                     <ThreePartBitmap profile="fs25_textInputBg"/>
                     <Bitmap profile="fs25_textInputIconBox">
@@ -21,8 +22,8 @@
                 </TextInput>
             </BoxLayout>
         
-            <BoxLayout absoluteSizeOffset="25px 120px" margin="10px 0 0 5px">
-                <SmoothList id="routeList" profile="ad_common_list" onSelectionChanged="onListSelectionChanged" onDoubleClick="onDoubleClick">
+            <BoxLayout absoluteSizeOffset="40px 180px" margin="0 0 0 10px">
+                <SmoothList id="routeList" profile="ad_common_list" onDoubleClick="onDoubleClick">
                     <ListItem profile="ad_common_listItem">
                         <Text name="listItemText" profile="ad_common_listItemText"/>
                         <Text name="listItemDate" profile="ad_common_listItemText" width="100%" textAlignment="right"/>
@@ -35,22 +36,14 @@
             </BoxLayout>
 
             <BoxLayout profile="ad_common_dialogButtonBox">
-                <Button profile="buttonActivate" text="$l10n_button_delete" onClick="onClickActivate" />
+                <Button profile="buttonActivate" text="$l10n_button_delete" onClick="onClickDelete" />
                 <Bitmap profile="fs25_dialogButtonBoxSeparator"/>
-                <Button profile="buttonCancel" text="$l10n_button_load" onClick="onClickCancel" />
+                <Button profile="buttonCancel" text="$l10n_gui_ad_button_import" onClick="onClickLoad" />
                 <Bitmap profile="fs25_dialogButtonBoxSeparator"/>
-                <Button profile="buttonOK" text="$l10n_button_save" onClick="onClickOk" />
+                <Button profile="buttonOK" text="$l10n_gui_ad_button_export" onClick="onClickSave" />
                 <Bitmap profile="fs25_dialogButtonBoxSeparator"/>
                 <Button profile="buttonBack" text="$l10n_button_back" onClick="onClickBack" />
             </BoxLayout>
         </BoxLayout>   
     </GuiElement>
-    <GUIProfiles>
-        <Profile name="ad_routeNameBox" extends="emptyPanel" with="anchorTopCenter">
-            <alignmentY value="middle"/>
-            <alignmentX value="center"/>
-            <height value="40px"/>
-            <elementSpacing value="20px"/>
-        </Profile>
-    </GUIProfiles>
 </GUI>
