@@ -59,7 +59,7 @@ function AutoDrivePlaceableData.callBack(result)
 end
 
 function AutoDrivePlaceableData.showError(error)
-	local args = {text = "AutoDrive: Network inconsistent, error code " .. error}
+	local args = {text = g_i18n:getText("gui_ad_adpd_showError ") .. error}
 	local dialog = g_gui:showDialog("InfoDialog")
 	if dialog then
 		dialog.target:setDialogType(Utils.getNoNil(args.dialogType, DialogElement.TYPE_WARNING))
@@ -72,7 +72,7 @@ function AutoDrivePlaceableData.showError(error)
 end
 
 function AutoDrivePlaceableData.showConfirmation()
-	local args = {text = "AutoDrive: Would you like to import the Network from the Placeable "}
+	local args = {text = g_i18n:getText("gui_ad_adpd_showConfirmation")}
 	local dialog = g_gui:showDialog("YesNoDialog")
 	if dialog then
 		dialog.target:setDialogType(Utils.getNoNil(args.dialogType, DialogElement.TYPE_QUESTION))
@@ -110,11 +110,9 @@ function AutoDrivePlaceableData:onFinalizePlacement()
     end
 end
 
-
 function AutoDrivePlaceableData.readGraphFromXml(xmlFile, placeable)
 	AutoDrivePlaceableData.wayPoints = {}
 	AutoDrivePlaceableData.mapMarkers = {}
-	local px, py, pz = placeable:getPosition()
 
 	do
 		local function checkProperty(key)
@@ -252,21 +250,24 @@ function AutoDrivePlaceableData.readGraphFromXml(xmlFile, placeable)
 		local tbin = table.insert
 		local stsp = string.split
 
+		local tempNode = createTransformGroup("tempNode")
+		link(placeable.rootNode, tempNode)
+		local rx, ry, rz = getWorldRotation(placeable.rootNode)
+		setRotation(tempNode, 0, ry, 0)
+
 		for i = 1, waypointsCount do
-			local wpx = tnum(xt[i]) + px
-			local wpz = tnum(zt[i]) + pz
+			setTranslation(tempNode, tnum(xt[i]), 0, tnum(zt[i]))
+			local pointx, pointy, pointz = getWorldTranslation(tempNode)
 			local wp = {
 				id = i,
-				x = wpx,
-				-- y = tnum(yt[i]), -- not required, will be adjusted to terrain
-				y = AutoDrive:getTerrainHeightAtWorldPos(wpx, wpz),
-				z = wpz,
+				x = pointx,
+				y = AutoDrive:getTerrainHeightAtWorldPos(pointx, pointz),
+				z = pointz,
 				out = {}, 
 				incoming = {}
 			}
 			if ot[i] and ot[i] ~= "-1" then
 				for _, out in pairs(stsp(ot[i], ",")) do
-					-- tbin(wp.out, tnum(out))
 					local num = tnum(out) and tnum(out) or 0
 					if num > 0 and num <= waypointsCount then
 						-- avoid inconsistent links
@@ -276,7 +277,6 @@ function AutoDrivePlaceableData.readGraphFromXml(xmlFile, placeable)
 			end
 			if it[i] and it[i] ~= "-1" then
 				for _, incoming in pairs(stsp(it[i], ",")) do
-					-- tbin(wp.incoming, tnum(incoming))
 					local num = tnum(incoming) and tnum(incoming) or 0
 					if num > 0 and num <= waypointsCount then
 						-- avoid inconsistent links
@@ -293,9 +293,11 @@ function AutoDrivePlaceableData.readGraphFromXml(xmlFile, placeable)
 			end
 
 			wp.id = ADGraphManager:getWayPointsCount() + i
-			AutoDrive.dumpTable(wp, "wp", 2)
 			table.insert(AutoDrivePlaceableData.wayPoints, wp) -- collect all waypoints to be created, but do it only at end if everthing is fine
 			i = i + 1
+		end
+		if tempNode then
+			delete(tempNode)
 		end
 	end
 

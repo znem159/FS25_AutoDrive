@@ -257,6 +257,8 @@
 		<text name="gui_ad_noUnloaderAvailable"					text="Kein freier Fahrer mit gleichem Ziel" />
 		<text name="gui_ad_remainingDriveTimeInterval"			text="Fahrzeitanzeigen" />
 		<text name="gui_ad_remainingDriveTimeInterval_tooltip"	text="Für externe mods: Zeit-Intervall zur Berechnung der Restfahrzeit. Bei Performanceproblemen erhöhen oder deaktivieren." />
+		<text name="gui_ad_adpd_showError"						text="AutoDrive: Das Netzwerk ist inkonsistent und kann nicht importiert werden, error code" />
+		<text name="gui_ad_adpd_showConfirmation"				text="AutoDrive: Möchten Sie das AD Netzwerk aus dem Placeable importieren?" />
 
 		<text name="gui_ad_settingsPage_title"					text="Einstellungen - AutoDrive" />
 		<text name="gui_ad_userSettingsPage_title"				text="Benutzereinstellungen - AutoDrive" />
