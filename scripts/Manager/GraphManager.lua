@@ -638,13 +638,18 @@ function ADGraphManager:setConnectionBetween(startNode, endNode, direction, send
 end
 
 function ADGraphManager:createWayPoint(x, y, z, sendEvent)
+    self:createWayPointWithConnections(x, y, z, {}, {}, 0, sendEvent)
+end
+
+function ADGraphManager:createWayPointWithConnections(x, y, z, out, incoming, flags, sendEvent)
     if sendEvent == nil or sendEvent == true then
         -- Propagating waypoint creation all over the network
-        AutoDriveCreateWayPointEvent.sendEvent(x, y, z)
+        AutoDriveCreateWayPointEvent.sendEvent(x, y, z, out, incoming, flags)
     else
+
         local prevId = self:getWayPointsCount()
         local newId = prevId + 1
-        local newWp = self:createNode(newId, x, y, z, {}, {}, 0)
+        local newWp = self:createNode(newId, x, y, z, out, incoming, flags)
         self:setWayPoint(newWp)
         self:markChanges()
 

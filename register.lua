@@ -10,11 +10,12 @@
 
 source(Utils.getFilename("scripts/AutoDrive.lua", g_currentModDirectory))
 source(Utils.getFilename("scripts/Utils/AutoDriveVehicleData.lua", g_currentModDirectory))
+source(Utils.getFilename("scripts/Utils/AutoDrivePlaceableData.lua", g_currentModDirectory))
 source(Utils.getFilename("scripts/Specialization.lua", g_currentModDirectory))
 source(Utils.getFilename("scripts/Sync.lua", g_currentModDirectory))
 source(Utils.getFilename("scripts/XML.lua", g_currentModDirectory))
 source(Utils.getFilename("scripts/Settings.lua", g_currentModDirectory))
---source(Utils.getFilename("scripts/Gui.lua", g_currentModDirectory))
+-- source(Utils.getFilename("scripts/Gui.lua", g_currentModDirectory))
 source(Utils.getFilename("scripts/Hud.lua", g_currentModDirectory))
 source(Utils.getFilename("scripts/ExternalInterface.lua", g_currentModDirectory))
 source(Utils.getFilename("scripts/PathCalculation.lua", g_currentModDirectory))
@@ -157,7 +158,7 @@ if g_specializationManager:getSpecializationByName("AutoDrive") == nil then
     g_specializationManager:addSpecialization("AutoDrive", "AutoDrive", Utils.getFilename("scripts/AutoDrive.lua", g_currentModDirectory), nil)
 end
 
-function AutoDriveRegister.register()
+function AutoDriveRegister.registerAutoDrive()
 
     if AutoDrive == nil then
         Logging.error("[AD] Unable to add specialization 'AutoDrive'")
@@ -201,6 +202,37 @@ function AutoDriveRegister.registerVehicleData()
 				end
 			end
 		end
+	end
+end
+
+if AutoDrive.ADPDSpecName == nil then
+    AutoDrive.ADPDSpecName = g_currentModName .. ".AutoDrivePlaceableData"
+end
+
+if g_placeableSpecializationManager:getSpecializationByName("AutoDrivePlaceableData") == nil then
+	g_placeableSpecializationManager:addSpecialization("AutoDrivePlaceableData", "AutoDrivePlaceableData", Utils.getFilename("scripts/Utils/AutoDrivePlaceableData.lua", g_currentModDirectory), nil)
+end
+
+function AutoDriveRegister.registerPlaceableData()
+
+	if AutoDriveVehicleData == nil then
+		Logging.error("[AutoDriveVehicleData] Unable to add specialization 'AutoDriveVehicleData'")
+		return
+	end
+
+	for placeableType, typeDef in pairs(g_placeableTypeManager.types) do
+        if placeableType == "simplePlaceable" and (not typeDef.hasADPDpec == true) then
+            if AutoDrivePlaceableData.prerequisitesPresent(typeDef.specializations) then
+                if typeDef.specializationsByName[AutoDrive.ADPDSpecName] == nil then
+                    Logging.info("AutoDriveRegister.registerPlaceableData addSpecialization %s"
+                    , tostring(placeableType)
+                    )
+                    g_placeableTypeManager:addSpecialization(placeableType, AutoDrive.ADPDSpecName)
+                    typeDef.hasADPDpec = true
+                    break
+                end
+            end
+        end
 	end
 end
 
@@ -289,8 +321,9 @@ local function check()
                 addModEventListener(AutoDriveRegister)
                 addModEventListener(AutoDrive)
                 -- first iteration to register AD to vehicle types
-                AutoDriveRegister.register()
+                AutoDriveRegister.registerAutoDrive()
                 AutoDriveRegister.registerVehicleData()
+                AutoDriveRegister.registerPlaceableData()
             end
         else
             Logging.error("[AD] ERROR: AutoDriveRegister.check g_currentModName %s", tostring(g_currentModName))
