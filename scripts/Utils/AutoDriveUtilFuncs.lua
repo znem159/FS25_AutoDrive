@@ -616,8 +616,9 @@ end
 function AutoDrive:getAIFrameFarmId()
     local actualFarmId = nil
     if AutoDrive.aiFrameOpen and AutoDrive.aiFrameVehicle and AutoDrive.aiFrameVehicle.ad and AutoDrive.aiFrameVehicle.ad.stateModule then
-        if g_currentMission and g_currentMission.player and g_currentMission.player.farmId and g_currentMission.player.farmId > 0 then
-            actualFarmId = g_currentMission.player.farmId
+        local player = AutoDrive.getPlayer()
+        if player and player.farmId and player.farmId > 0 then
+            actualFarmId = player.farmId
         end
     end
     return actualFarmId
@@ -862,3 +863,9 @@ function AutoDrive.drawTripod(node, offset)
     ADDrawingManager:addLineTask(nodeX + offset.x, nodeY + offset.y, nodeZ + offset.z, targetX + offset.x, targetY + offset.y, targetZ + offset.z, 1, 0, 0, 1)
 end
 
+function AutoDrive.requestToEnterVehicle(vehicle)
+    local player = AutoDrive.getPlayer()
+    if player then
+        player:requestToEnterVehicle(vehicle)
+    end
+end

@@ -100,7 +100,7 @@ end
 
 function PathFinderModule:reset()
     PathFinderModule.debugMsg(self.vehicle, "PFM:reset start")
-    self.mask = AutoDrive.collisionMaskTerrain
+    self.mask = AutoDrive.collisionMaskTerrain + CollisionFlag.TREE + CollisionFlag.BUILDING 
     self.steps = 0
     self.grid = {}
     self.wayPoints = {}
@@ -1214,7 +1214,8 @@ function PathFinderModule:checkGridCell(cell)
     if not cell.isRestricted and not cell.hasCollision then
         -- check for obstacles
         local shapeDefinition = self:getShapeDefByDirectionType(cell)   --> return shape for the cell according to direction, on ground level, 2.65m height
-        local shapes = overlapBox(shapeDefinition.x, shapeDefinition.y + 3, shapeDefinition.z, 0, shapeDefinition.angleRad, 0, shapeDefinition.widthX, shapeDefinition.height, shapeDefinition.widthZ, "collisionTestCallbackIgnore", nil, self.mask, true, true, true)
+        local ignoreObstaclesUpToHeight = 0.5
+        local shapes = overlapBox(shapeDefinition.x, shapeDefinition.y + ignoreObstaclesUpToHeight, shapeDefinition.z, 0, shapeDefinition.angleRad, 0, shapeDefinition.widthX, shapeDefinition.height - ignoreObstaclesUpToHeight, shapeDefinition.widthZ, "collisionTestCallbackIgnore", nil, self.mask, true, true, true)
         cell.hasCollision = cell.hasCollision or (shapes > 0)
         if cell.hasCollision then
             if self.vehicle ~= nil and self.vehicle.ad ~= nil and self.vehicle.ad.debug ~= nil and AutoDrive.debugVehicleMsg ~= nil then
@@ -1489,183 +1490,40 @@ function PathFinderModule:drawDebugForPF()
 
         local worldPos = self:gridLocationToWorldLocation(cell)
 
-        -- local shapes = overlapBox(shapeDefinition.x, shapeDefinition.y + 3, shapeDefinition.z, 0, shapeDefinition.angleRad, 0, shapeDefinition.widthX, shapeDefinition.height, shapeDefinition.widthZ, "collisionTestCallbackIgnore", nil, self.mask, true, true, true)
-        local shapeDefinition = self:getShapeDefByDirectionType(cell)   --> return shape for the cell according to direction, on ground level, 2.65m height
+        local shapeDefinition = self:getShapeDefByDirectionType(cell, true)   --> return shape for the cell according to direction, on ground level, 2.65m height
         local corners = self:getCornersFromShapeDefinition(shapeDefinition)
         local baseY = shapeDefinition.y + 3
 
-        -- corners of shape
-        -- DebugUtil.drawOverlapBox(shapeDefinition.x, shapeDefinition.y + 3, shapeDefinition.z, 0, shapeDefinition.angleRad, 0, shapeDefinition.widthX, shapeDefinition.height, shapeDefinition.widthZ, color_red, color_green, color_blue)
-        for _, corner in pairs(corners) do
-            local point_y = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, corner.x, 1, corner.z)
-            local pointUp_y = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, corner.x, 1, corner.z) + 3
-            -- AutoDriveDM:addLineTask(corner.x, point_y, corner.z, corner.x, pointUp_y, corner.z, 1, color_red, color_green, color_blue)
+        -- cell outline
+        if cell.isOnField then
+            ADDrawingManager:addLineTask(corners[1].x, baseY, corners[1].z, corners[3].x, baseY, corners[3].z, 1, 0, 1, 0) -- green
+            ADDrawingManager:addLineTask(corners[3].x, baseY, corners[3].z, corners[2].x, baseY, corners[2].z, 1, 0, 1, 0)
+            ADDrawingManager:addLineTask(corners[2].x, baseY, corners[2].z, corners[4].x, baseY, corners[4].z, 1, 0, 1, 0)
+            ADDrawingManager:addLineTask(corners[4].x, baseY, corners[4].z, corners[1].x, baseY, corners[1].z, 1, 0, 1, 0)
+        else
+            ADDrawingManager:addLineTask(corners[1].x, baseY, corners[1].z, corners[3].x, baseY, corners[3].z, 1, 1, 0, 0) -- red
+            ADDrawingManager:addLineTask(corners[3].x, baseY, corners[3].z, corners[2].x, baseY, corners[2].z, 1, 1, 0, 0)
+            ADDrawingManager:addLineTask(corners[2].x, baseY, corners[2].z, corners[4].x, baseY, corners[4].z, 1, 1, 0, 0)
+            ADDrawingManager:addLineTask(corners[4].x, baseY, corners[4].z, corners[1].x, baseY, corners[1].z, 1, 1, 0, 0)
         end
-
-        -- restriction, collision line up
-        local pointCenter = self:gridLocationToWorldLocation(cell)
-        local pointCenterUp = {x = pointCenter.x, z = pointCenter.z}
-        pointCenter.y = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, pointCenter.x, 1, pointCenter.z) + 3
-        pointCenterUp.y = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, pointCenterUp.x, 1, pointCenterUp.z) + 6
-
-        local pointA = corners[1]
-        local pointB = corners[2]
-        local pointC = corners[3]
-        local pointD = corners[4]
-        index = 0
-        pointA.y = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, pointA.x, 1, pointA.z) + 1 + (0.1 * index)
-        pointB.y = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, pointB.x, 1, pointB.z) + 1 + (0.1 * index)
-        pointC.y = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, pointC.x, 1, pointC.z) + 1 + (0.1 * index)
-        pointD.y = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, pointD.x, 1, pointD.z) + 1 + (0.1 * index)
-
-        -- cell xz text
-        local cellText = tostring(cell.x) .. " " .. tostring(cell.z)
-        -- Utils.renderTextAtWorldPosition(pointCenter.x, pointCenter.y, pointCenter.z, cellText, getCorrectTextSize(0.013), 0)
-
---[[
+        
         if cell.isRestricted then
-            -- red
-            AutoDriveDM:addLineTask(pointCenter.x, pointCenter.y, pointCenter.z, pointCenterUp.x, pointCenterUp.y, pointCenterUp.z, 1, 1, 0, 0)
-        else
-            if cell.isOnField then
-                -- blue
-                AutoDriveDM:addLineTask(pointCenter.x, pointCenter.y, pointCenter.z, pointCenterUp.x, pointCenterUp.y, pointCenterUp.z, 1, 0, 0, 1)
+            if cell.hasFruit then
+                ADDrawingManager:addLineTask(corners[1].x, baseY, corners[1].z, corners[2].x, baseY, corners[2].z, 1, 0, 1, 1) -- cyan
             else
-                -- green
-                AutoDriveDM:addLineTask(pointCenter.x, pointCenter.y, pointCenter.z, pointCenterUp.x, pointCenterUp.y, pointCenterUp.z, 1, 0, 1, 0)
-            end
-        end
-        local cellIndex = string.format("%d , %d", cell.x, cell.z)
-        Utils.renderTextAtWorldPosition(pointCenter.x, pointCenter.y - 2, pointCenter.z, cellIndex, getCorrectTextSize(0.013), 0)
-
-        if cell.angle then
-            local value = string.format("%.1f", math.deg(cell.angle))
-            if (not cell.hasCollision) and (not cell.isRestricted) then
-                AutoDriveDM:addLineTask(pointA.x, pointA.y, pointA.z, pointB.x, pointB.y, pointB.z, 1, 0, 1, 0)
-                AutoDriveDM:addLineTask(pointC.x, pointC.y, pointC.z, pointD.x, pointD.y, pointD.z, 1, 0, 0, 1)
-            end
-            Utils.renderTextAtWorldPosition(pointCenter.x + (cell.x % 10), pointCenter.y - 1 + (cell.steps % 10 / 5) + (cell.z % 10 / 5), pointCenter.z, value, getCorrectTextSize(0.013), 0)
-        end
-
-        if cell.incoming then
-            local cellIncommingIndex = string.format("%d -> %d , %d", cell.steps, cell.incoming.x, cell.incoming.z)
-            Utils.renderTextAtWorldPosition(pointCenter.x + (cell.x % 10), pointCenter.y - 0 + (cell.steps % 10 / 5) + (cell.z % 10 / 5), pointCenter.z, cellIncommingIndex, getCorrectTextSize(0.013), 0)
-        end
-]]
-        if cell.isRestricted == true then
-            -- any restriction
-            if cell.hasFruit == true then
-                AutoDriveDM:addLineTask(pointA.x, pointA.y, pointA.z, pointB.x, pointB.y, pointB.z, 1, 0, 1, 1) -- cyan
-                Utils.renderTextAtWorldPosition(pointCenter.x, pointB.y + 0.4, pointCenter.z, tostring(cell.fruitValue), getCorrectTextSize(0.013), 0)
-
-            else
-                AutoDriveDM:addLineTask(pointA.x, pointA.y, pointA.z, pointB.x, pointB.y, pointB.z, 1, 1, 0, 0) -- red
+                ADDrawingManager:addLineTask(corners[1].x, baseY, corners[1].z, corners[2].x, baseY, corners[2].z, 1, 1, 0, 0) -- red
             end
         else
-            AutoDriveDM:addLineTask(pointA.x, pointA.y, pointA.z, pointB.x, pointB.y, pointB.z, 1, 0, 1, 0) -- green
+            ADDrawingManager:addLineTask(corners[1].x, baseY, corners[1].z, corners[2].x, baseY, corners[2].z, 1, 0, 1, 0) -- green
         end
-
-        if cell.hasCollision == true then
-            -- ground collision, slope, water
-            if cell.hasVehicleCollision then        -- TODO: hasVehicleCollision ???
-                AutoDriveDM:addLineTask(pointC.x, pointC.y, pointC.z, pointD.x, pointD.y, pointD.z, 1, 0, 0, 1) -- blue
-                AutoDriveDM:addLineTask(pointCenter.x, pointCenter.y, pointCenter.z, pointCenterUp.x, pointCenterUp.y, pointCenterUp.z, 1, 0, 0, 1) -- blue
-            else
-                AutoDriveDM:addLineTask(pointC.x, pointC.y, pointC.z, pointD.x, pointD.y, pointD.z, 1, 1, 1, 0) -- yellow
-                AutoDriveDM:addLineTask(pointCenter.x, pointCenter.y, pointCenter.z, pointCenterUp.x, pointCenterUp.y, pointCenterUp.z, 1, 1, 1, 0) -- yellow
-            end
-        else
-            AutoDriveDM:addLineTask(pointC.x, pointC.y, pointC.z, pointD.x, pointD.y, pointD.z, 1, 1, 0, 1) -- magenta
-            AutoDriveDM:addLineTask(pointCenter.x, pointCenter.y, pointCenter.z, pointCenterUp.x, pointCenterUp.y, pointCenterUp.z, 1, 1, 0, 1) -- magenta
-        end
-
-        for i = 0, 10, 1 do
-            pointCenter.y = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, pointCenter.x, 1, pointCenter.z) + 1 + (i * 0.5)
-            -- AutoDriveDM:addLineTask(pointA.x, pointCenter.y, pointA.z, pointA.x + 0.3, pointCenter.y, pointA.z + 0.3, 1, 1, 1, 1)
-        end
-
---[[
-        -- cross marker with restriction, collision
-        local size = 0.3
-        local pointA = self:gridLocationToWorldLocation(cell)
-        pointA.x = pointA.x + self.vectorX.x * size + self.vectorZ.x * size
-        pointA.z = pointA.z + self.vectorX.z * size + self.vectorZ.z * size
-        pointA.y = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, pointA.x, 1, pointA.z) + 3
-        local pointB = self:gridLocationToWorldLocation(cell)       -- oposide position to pointA !!!
-        pointB.x = pointB.x - self.vectorX.x * size - self.vectorZ.x * size
-        pointB.z = pointB.z - self.vectorX.z * size - self.vectorZ.z * size
-        pointB.y = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, pointB.x, 1, pointB.z) + 3
-        local pointC = self:gridLocationToWorldLocation(cell)
-        pointC.x = pointC.x + self.vectorX.x * size - self.vectorZ.x * size
-        pointC.z = pointC.z + self.vectorX.z * size - self.vectorZ.z * size
-        pointC.y = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, pointC.x, 1, pointC.z) + 3
-        local pointD = self:gridLocationToWorldLocation(cell)
-        pointD.x = pointD.x - self.vectorX.x * size + self.vectorZ.x * size
-        pointD.z = pointD.z - self.vectorX.z * size + self.vectorZ.z * size
-        pointD.y = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, pointD.x, 1, pointD.z) + 3
-
-        -- restriction, collision line up
-        local pointCenter = self:gridLocationToWorldLocation(cell)
-        local pointCenterUp = pointCenter
-        pointCenterUp.y = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, pointCenterUp.x, 1, pointCenterUp.z) + 3
-
-        if cell.isRestricted == true then
-            AutoDriveDM:addLineTask(pointA.x, pointA.y, pointA.z, pointB.x, pointB.y, pointB.z, 1, 1, 0, 0)
-            if cell.hasCollision == true then
-                if cell.hasVehicleCollision then        -- TODO: hasVehicleCollision ???
-                    AutoDriveDM:addLineTask(pointC.x, pointC.y, pointC.z, pointD.x, pointD.y, pointD.z, 1, 0, 0, 1)
-                    AutoDriveDM:addLineTask(pointCenter.x, pointCenter.y, pointCenter.z, pointCenterUp.x, pointCenterUp.y, pointCenterUp.z, 1, 0, 0, 1)
-                else
-                    AutoDriveDM:addLineTask(pointC.x, pointC.y, pointC.z, pointD.x, pointD.y, pointD.z, 1, 1, 1, 0)
-                    AutoDriveDM:addLineTask(pointCenter.x, pointCenter.y, pointCenter.z, pointCenterUp.x, pointCenterUp.y, pointCenterUp.z, 1, 1, 1, 0)
-                end
-            else
-                AutoDriveDM:addLineTask(pointC.x, pointC.y, pointC.z, pointD.x, pointD.y, pointD.z, 1, 1, 0, 1)
-                AutoDriveDM:addLineTask(pointCenter.x, pointCenter.y, pointCenter.z, pointCenterUp.x, pointCenterUp.y, pointCenterUp.z, 1, 1, 0, 1)
-            end
-        else
-            AutoDriveDM:addLineTask(pointA.x, pointA.y, pointA.z, pointB.x, pointB.y, pointB.z, 1, 0, 1, 0)
-            if cell.hasCollision == true then
-                AutoDriveDM:addLineTask(pointC.x, pointC.y, pointC.z, pointD.x, pointD.y, pointD.z, 1, 1, 1, 0)
-                AutoDriveDM:addLineTask(pointCenter.x, pointCenter.y, pointCenter.z, pointCenterUp.x, pointCenterUp.y, pointCenterUp.z, 1, 1, 1, 0)
-            else
-                AutoDriveDM:addLineTask(pointC.x, pointC.y, pointC.z, pointD.x, pointD.y, pointD.z, 1, 1, 0, 1)
-            end
-        end
-]]
-
-        if cell.bordercells > 0 then
-            local pointTarget = self:gridLocationToWorldLocation(cell)
-            local pointTargetUp = self:gridLocationToWorldLocation(cell)
-            pointTarget.y = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, pointTarget.x, 1, pointTarget.z) + 6
-            pointTargetUp.y = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, pointTargetUp.x, 1, pointTargetUp.z) + 10
-            if cell.bordercells == 1 then
-                AutoDriveDM:addLineTask(pointTarget.x, pointTarget.y, pointTarget.z, pointTargetUp.x, pointTargetUp.y, pointTargetUp.z, 1, 1, 0, 0) -- red
-            elseif cell.bordercells == 2 then
-                AutoDriveDM:addLineTask(pointTarget.x, pointTarget.y, pointTarget.z, pointTargetUp.x, pointTargetUp.y, pointTargetUp.z, 1, 0, 1, 0) -- green
-            elseif cell.bordercells > 2 then
-                AutoDriveDM:addLineTask(pointTarget.x, pointTarget.y, pointTarget.z, pointTargetUp.x, pointTargetUp.y, pointTargetUp.z, 1, 0, 0, 1) -- blue
-            end
-        end
-        --[[
-        local gridFactor = PathFinderModule.GRID_SIZE_FACTOR
-        if self.isSecondChasingVehicle then
-            gridFactor = PathFinderModule.GRID_SIZE_FACTOR_SECOND_UNLOADER
-        end
-        local corners = self:getCorners(cell, {x=self.vectorX.x * gridFactor, z=self.vectorX.z * gridFactor}, {x=self.vectorZ.x * gridFactor,z=self.vectorZ.z * gridFactor})
-        local heightOffset = 1
-        AutoDriveDM:addLineTask(corners[1].x, pointA.y+heightOffset, corners[1].z, corners[2].x, pointA.y+heightOffset, corners[2].z, 1, 0, 1, 0)
-        AutoDriveDM:addLineTask(corners[2].x, pointA.y+heightOffset, corners[2].z, corners[3].x, pointA.y+heightOffset, corners[3].z, 1, 1, 0, 0)
-        AutoDriveDM:addLineTask(corners[3].x, pointA.y+heightOffset, corners[3].z, corners[4].x, pointA.y+heightOffset, corners[4].z, 1, 0, 0, 1)
-        AutoDriveDM:addLineTask(corners[4].x, pointA.y+heightOffset, corners[4].z, corners[1].x, pointA.y+heightOffset, corners[1].z, 1, 1, 0, 1)
-
-        local shapeDefinition = self:getShapeDefByDirectionType(cell)
-        local red = 0
         if cell.hasCollision then
-            red = 1
+            if cell.hasVehicleCollision then
+                ADDrawingManager:addLineTask(corners[3].x, baseY, corners[3].z, corners[4].x, baseY, corners[4].z, 1, 1, 0, 1) -- blue
+            else
+                ADDrawingManager:addLineTask(corners[3].x, baseY, corners[3].z, corners[4].x, baseY, corners[4].z, 1, 1, 1, 0) -- yellow
+            end
         end
-        DebugUtil.drawOverlapBox(shapeDefinition.x, shapeDefinition.y + 3, shapeDefinition.z, 0, shapeDefinition.angleRad, 0, shapeDefinition.widthX, shapeDefinition.height, shapeDefinition.widthZ, red, 0, 0)
-        --]]
+         
     end
 
     -- target cell marker
@@ -1780,15 +1638,15 @@ function PathFinderModule:drawDebugForCreatedRoute()
     end
 end
 
-function PathFinderModule:getShapeDefByDirectionType(cell)
+function PathFinderModule:getShapeDefByDirectionType(cell, getDefault)
     local shapeDefinition = {}
     shapeDefinition.angleRad = math.atan2(-self.targetVector.z, self.targetVector.x)
     shapeDefinition.angleRad = AutoDrive.normalizeAngle(shapeDefinition.angleRad)
     local worldPos = self:gridLocationToWorldLocation(cell)
     shapeDefinition.y = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, worldPos.x, 1, worldPos.z)
-    shapeDefinition.height = 2.65
+    shapeDefinition.height = self.vehicle.size.height --2.65
 
-    if cell.direction == self.PP_UP or cell.direction == self.PP_DOWN or cell.direction == self.PP_RIGHT or cell.direction == self.PP_LEFT or cell.direction == -1 then
+    if cell.direction == self.PP_UP or cell.direction == self.PP_DOWN or cell.direction == self.PP_RIGHT or cell.direction == self.PP_LEFT or cell.direction == -1 or getDefault ~= nil then
         --default size:
         shapeDefinition.x = worldPos.x
         shapeDefinition.z = worldPos.z
@@ -2905,7 +2763,7 @@ function PathFinderModule:setupNew(behindStartCell, startCell, targetCell, userd
     self.initNew = true
 end
 
-function PathFinderModule:createWayPointsNew()
+function PathFinderModule:createWayPointsNew()    
     if self.smoothStep == 0 then
         self.wayPoints = {}
         for index, cell in ipairs(self.path) do

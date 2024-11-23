@@ -122,7 +122,12 @@ AutoDrive.colors = {
 	ad_color_previewSubPrioDualConnection = {0.3, 0.15, 0, 1},
 	ad_color_previewOk = {0.3, 0.9, 0, 1},
 	ad_color_previewNotOk = {1, 0.1, 0, 1},
-	ad_color_textInputBackground = {0.0227, 0.5346, 0.8519, 1} -- Giants original
+	ad_color_textInputBackground = {0.0227, 0.5346, 0.8519, 1}, -- Giants original
+	ad_color_hudTextDefault = {1, 1, 1, 1},
+	ad_color_hudTextHover = {0.51, 0.67, 0.05, 1},
+	ad_color_hudTextSpecial = {0.66, 0.83, 0.34, 1},
+	ad_color_hudTextHoverSpecial = {0.45, 0.73, 0.05, 1},
+
 }
 
 AutoDrive.currentColors = {} -- this will hold the current colors, derived from default colors above, overwritten by local settings
@@ -168,9 +173,8 @@ function AutoDrive:loadMap(name)
 	Logging.info("[AD] Start register later loaded mods...")
     --ADThirdPartyModsManager:load()
 	-- second iteration to register AD to vehicle types which where loaded after AD
-    AutoDriveRegister.registerAutoDrive()
+    AutoDriveRegister.register()
     AutoDriveRegister.registerVehicleData()
-	AutoDriveRegister.registerPlaceableData()
 	Logging.info("[AD] Start register later loaded mods end")
 
 	addConsoleCommand('restartMySavegame', 'Restart my savegame', 'restartMySavegame', self)
@@ -180,7 +184,7 @@ function AutoDrive:loadMap(name)
 		AutoDrive.AutoDriveSync:register(false)
 	end
 
-	-- AutoDrive:loadGUI()
+	AutoDrive:loadGUI()
 
 	Logging.info("[AD] Map title: %s", g_currentMission.missionInfo.map.title)
 
@@ -269,8 +273,6 @@ function AutoDrive:loadMap(name)
 	ADMultipleTargetsManager:load()
 	-- AutoDrive.initTelemetry()
 	ADBunkerSiloManager:load()
-
-	AutoDrivePlaceableData:load()
 
 	--InGameMenuAIFrame.onFrameOpen = Utils.appendedFunction(InGameMenuAIFrame.onFrameOpen, AutoDrive.onAIFrameOpen)
 	--InGameMenuAIFrame.onFrameClose = Utils.appendedFunction(InGameMenuAIFrame.onFrameClose, AutoDrive.onAIFrameClose)
@@ -507,7 +509,6 @@ function AutoDrive:init()
 		AutoDrive.selectedWayPointSample = createSample("AutoDrive_selectedWayPoint")
 		loadSample(AutoDrive.selectedWayPointSample, fileName, false)
 	end
-	AutoDrivePlaceableData:setActive(true)
 end
 
 function AutoDrive:saveSavegame()
@@ -600,12 +601,14 @@ function AutoDrive:mouseEvent(posX, posY, isDown, isUp, button)
 end
 
 function AutoDrive:update(dt)
-	--[[
-    if AutoDrive.scanDialogState == AutoDrive.SCAN_DIALOG_NONE and ADGraphManager:getWayPointsCount() == 0 then
-        if g_server ~= nil and g_dedicatedServer == nil then
+    if AutoDrive.scanDialogState == AutoDrive.SCAN_DIALOG_NONE then
+		if ADGraphManager:getWayPointsCount() > 0 then
+			-- AutoDrive.debugMsg(nil, "[AD] AutoDrive:update not-new -> SCAN_DIALOG_RESULT_NO")
+			AutoDrive.scanDialogState = AutoDrive.SCAN_DIALOG_RESULT_NO
+		elseif g_server ~= nil and g_dedicatedServer == nil then
             -- open dialog
 			if g_gui.currentGui == nil then
-				-- AutoDrive.debugMsg(nil, "[AD] AutoDrive:update SCAN_DIALOG_OPEN")
+				--AutoDrive.debugMsg(nil, "[AD] AutoDrive:update SCAN_DIALOG_OPEN")
 				AutoDrive.onOpenScanConfirmation()
 				AutoDrive.scanDialogState = AutoDrive.SCAN_DIALOG_OPEN
 			end
@@ -622,20 +625,17 @@ function AutoDrive:update(dt)
     end
 
     if AutoDrive.scanDialogState == AutoDrive.SCAN_DIALOG_RESULT_YES then
-        AutoDrive.scanDialogState = AutoDrive.SCAN_DIALOG_RESULT_DONE
-        -- dialog closed with yes
         -- AutoDrive.debugMsg(nil, "[AD] AutoDrive:update SCAN_DIALOG_RESULT_YES")
+        AutoDrive.scanDialogState = AutoDrive.SCAN_DIALOG_RESULT_DONE
         AutoDrive:adParseSplines()
         AutoDrive:createJunctionCommand()
     end
 
     if AutoDrive.scanDialogState == AutoDrive.SCAN_DIALOG_RESULT_NO then
-        AutoDrive.scanDialogState = AutoDrive.SCAN_DIALOG_RESULT_DONE
-        -- dialog closed with no
         -- AutoDrive.debugMsg(nil, "[AD] AutoDrive:update SCAN_DIALOG_RESULT_NO")
+        AutoDrive.scanDialogState = AutoDrive.SCAN_DIALOG_RESULT_DONE
         AutoDrive.loadStoredXML(true)
     end
-	--]]
 	AutoDrive.setSettingState("showHUD", 2)
 
 	if AutoDrive.isFirstRun == nil then

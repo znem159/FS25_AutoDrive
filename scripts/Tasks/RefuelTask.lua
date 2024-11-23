@@ -164,7 +164,7 @@ function RefuelTask:startRefueling()
                                 AutoDrive.debugPrint(self.vehicle, AutoDrive.DC_VEHICLEINFO, "RefuelTask:startRefueling isLoading")
                                 self.refuelTrigger.selectedFillType = item.fillType
                                 self.refuelTrigger.autoStart = true
-                                g_effectManager:setFillType(self.refuelTrigger.effects, self.refuelTrigger.selectedFillType)
+                                g_effectManager:setEffectTypeInfo(self.refuelTrigger.effects, self.refuelTrigger.selectedFillType)
                             end
                             if self.refuelTrigger.stoppedTimer == nil then
                                 self.refuelTrigger.stoppedTimer = AutoDriveTON:new()

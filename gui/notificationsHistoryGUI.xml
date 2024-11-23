@@ -1,30 +1,38 @@
 <?xml version="1.0" encoding="utf-8" standalone="no" ?>
 <GUI onOpen="onOpen" onClose="onClose" onCreate="onCreate">
+    <GuiElement profile="newLayer"/>
+    <Bitmap profile="dialogFullscreenBg"/>
+    <GuiElement profile="fs25_dialogBg" size="740px 540px">
+        <ThreePartBitmap profile="fs25_dialogBgMiddleSmall"/>
+        <ThreePartBitmap profile="fs25_dialogBgTopSmall"/>
+        <ThreePartBitmap profile="fs25_dialogBgBottom"/>
 
-    <GuiElement type="bitmap" profile="yesNoDialogBg" size="740px 540px" screenAlign="topCenter" positionOrigin="topCenter">
-        <GuiElement type="bitmap" profile="dialogHeaderDocked">
-            <GuiElement type="text" profile="dialogHeaderText" text="gui_ad_notificationHistoryTitle" textUpperCase="false" id="headerText" visible="true" onCreate="onCreateAutoDriveHeaderText" />
-        </GuiElement>
+        <BoxLayout profile="ad_common_dialogContentContainer">
+            <Text profile="ad_common_dialogTitle" text="$l10n_gui_ad_notificationHistoryTitle"/>
 
-        <GuiElement type="empty" profile="autoDriveNotificationHistoryNavigationBox" >
+            <ThreePartBitmap profile="ad_common_dialogTitleLineSeparator"/>
 
-            <GuiElement type="list" profile="autoDriveNotificationHistoryList" position="10px -160px" onSelectionChanged="onListSelectionChanged" onDoubleClick="onDoubleClick" id="autoDriveNotificationsList">
-                <GuiElement type="listItem" profile="autoDriveNotificationHistoryListItem" id="listItemTemplate">
-                    <GuiElement type="bitmap" profile="autoDriveNotificationHistoryItemIcon" name="listItemIcon" />
-                    <GuiElement type="text" profile="autoDriveNotificationHistoryItemText" text="Notification text" name="listItemText" />
-                </GuiElement>
+            <BoxLayout absoluteSizeOffset="40px 130px" margin="0 0 0 10px">
+                <SmoothList id="notificationsList" profile="ad_common_list" onDoubleClick="onDoubleClick">
+                    <ListItem profile="ad_common_listItem">
+                        <Bitmap name="listItemIcon" profile="ad_common_listItemIcon"/>
+                        <Text name="listItemText" profile="ad_common_listItemText"/>
+                    </ListItem>
+                </SmoothList>
 
-            </GuiElement>
+                <ThreePartBitmap profile="ad_common_listSliderBox">
+                    <Slider profile="ad_common_listSlider" dataElementId="notificationsList"/>
+                </ThreePartBitmap>
+            </BoxLayout>
 
-            <GuiElement type="bitmap" profile="verticalGlassListSliderBackground" size="28px 530px" >
-                <GuiElement type="slider" profile="verticalGlassListSlider" size="16px 518px" dataElementId="autoDriveNotificationsList" handleFocus="false" />
-            </GuiElement>
-        </GuiElement>
-        <GuiElement type="flowLayout" profile="buttonBoxDocked">
-            <GuiElement type="button" profile="buttonBack" text="$l10n_button_back" onClick="onClickBack" />
-            <GuiElement type="button" profile="buttonCancel" text="$l10n_button_delete" onClick="onClickCancel" />
-            <GuiElement type="button" profile="buttonActivate" text="button_delete_all" onClick="onClickActivate" textUpperCase="false" onCreate="onCreateAutoDriveText1" />
-        </GuiElement>
+            <BoxLayout profile="ad_common_dialogButtonBox">
+                <Button profile="buttonActivate" text="$l10n_button_delete_all" onClick="onClickDeleteAll"/>
+                <Bitmap profile="fs25_dialogButtonBoxSeparator"/>
+                <Button profile="buttonCancel" text="$l10n_button_delete" onClick="onClickDeleteSelected"/>
+                <Bitmap profile="fs25_dialogButtonBoxSeparator"/>
+                <Button profile="buttonBack" text="$l10n_button_back" onClick="onClickBack"/>
+            </BoxLayout>
 
+        </BoxLayout>   
     </GuiElement>
 </GUI>

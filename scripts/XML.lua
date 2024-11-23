@@ -3,6 +3,18 @@ function AutoDrive.loadStoredXML(loadInitConfig)
 		return
 	end
 
+	
+	--[[
+	local testFile = loadXMLFile("TestXmlFile", "dataS/guiProfiles.xml")
+	local testFileContent = saveXMLFileToMemory(testFile)
+	print("TestFile: " .. testFileContent)
+	
+	
+	local testFile2 = loadXMLFile("TestXmlFile2", "dataS/scripts/gui/base/TabbedMenu.lua")
+	local testFileContent2 = saveXMLFileToMemory(testFile2)
+	print("TestFile: " .. testFileContent2)
+	--]]
+
 	local xmlFile = AutoDrive.getXMLFile()
 	local xmlFile_new = AutoDrive.getXMLFile_new()
 

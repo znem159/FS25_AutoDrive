@@ -1,181 +1,313 @@
 <?xml version="1.0" encoding="utf-8" standalone="no" ?>
 <GUI name="autoDriveVehicleSettings">
-	<GuiElement type="empty" profile="uiInGameMenuFrame">
+	<GuiElement profile="fs25_menuContainer">
 		<!-- Static page header -->
-		<GuiElement type="empty" profile="ingameMenuFrameHeaderPanel" >
-			<GuiElement type="bitmap" profile="ingameMenuGeneralSettingsHeaderIcon" />
-			<GuiElement type="text" profile="ingameMenuFrameHeaderText" position="80px 0px" text="gui_ad_vehicleSettingsPage_title" textUpperCase="false" id="headerText" visible="true" onCreate="onCreateAutoDriveHeaderText" />
-		</GuiElement>
-		<GuiElement type="bitmap" profile="ingameMenuSettingsBox" id="settingsContainer">
-            <GuiElement type="scrollingLayout" profile="ingameMenuSettingsLayout" id="boxLayout" >
-				<GuiElement type="multiTextOption" profile="multiTextOptionSettings" onCreate="onCreateAutoDriveSetting" onClick="onOptionChange" name="cornerSpeed" toolTipElementId="ingameMenuHelpBoxText">
-					<GuiElement type="button" profile="multiTextOptionSettingsLeft" />
-					<GuiElement type="button" profile="multiTextOptionSettingsRight" />
-					<GuiElement type="text" profile="multiTextOptionSettingsText" />
-					<GuiElement type="text" profile="multiTextOptionSettingsTitle" position="27px 0px" />
-					<GuiElement type="bitmap" profile="multiTextOptionSettingsBg" />
-					<GuiElement type="bitmap" profile="baseReference" position="730px 0px" size="50px 50px"/>
-				</GuiElement>
-				<GuiElement type="multiTextOption" profile="multiTextOptionSettings" onCreate="onCreateAutoDriveSetting" onClick="onOptionChange" name="pipeOffset" toolTipElementId="ingameMenuHelpBoxText">
-					<GuiElement type="button" profile="multiTextOptionSettingsLeft" />
-					<GuiElement type="button" profile="multiTextOptionSettingsRight" />
-					<GuiElement type="text" profile="multiTextOptionSettingsText" />
-					<GuiElement type="text" profile="multiTextOptionSettingsTitle" position="27px 0px" />
-					<GuiElement type="bitmap" profile="multiTextOptionSettingsBg" />
-					<GuiElement type="bitmap" profile="baseReference" position="730px 0px" size="50px 50px"/>
-				</GuiElement>
-				<GuiElement type="multiTextOption" profile="multiTextOptionSettings" onCreate="onCreateAutoDriveSetting" onClick="onOptionChange" name="followDistance" toolTipElementId="ingameMenuHelpBoxText">
-					<GuiElement type="button" profile="multiTextOptionSettingsLeft" />
-					<GuiElement type="button" profile="multiTextOptionSettingsRight" />
-					<GuiElement type="text" profile="multiTextOptionSettingsText" />
-					<GuiElement type="text" profile="multiTextOptionSettingsTitle" position="27px 0px" />
-					<GuiElement type="bitmap" profile="multiTextOptionSettingsBg" />
-					<GuiElement type="bitmap" profile="baseReference" position="730px 0px" size="50px 50px"/>
-				</GuiElement>
-				<GuiElement type="multiTextOption" profile="multiTextOptionSettings" onCreate="onCreateAutoDriveSetting" onClick="onOptionChange" name="unloadFillLevel" toolTipElementId="ingameMenuHelpBoxText">
-					<GuiElement type="button" profile="multiTextOptionSettingsLeft" />
-					<GuiElement type="button" profile="multiTextOptionSettingsRight" />
-					<GuiElement type="text" profile="multiTextOptionSettingsText" />
-					<GuiElement type="text" profile="multiTextOptionSettingsTitle" position="27px 0px" />
-					<GuiElement type="bitmap" profile="multiTextOptionSettingsBg" />
-					<GuiElement type="bitmap" profile="baseReference" position="730px 0px" size="50px 50px"/>
-				</GuiElement>
-				<GuiElement type="multiTextOption" profile="multiTextOptionSettings" onCreate="onCreateAutoDriveSetting" onClick="onOptionChange" name="exitField" toolTipElementId="ingameMenuHelpBoxText">
-					<GuiElement type="button" profile="multiTextOptionSettingsLeft" />
-					<GuiElement type="button" profile="multiTextOptionSettingsRight" />
-					<GuiElement type="text" profile="multiTextOptionSettingsText" />
-					<GuiElement type="text" profile="multiTextOptionSettingsTitle" position="27px 0px" />
-					<GuiElement type="bitmap" profile="multiTextOptionSettingsBg" />
-					<GuiElement type="bitmap" profile="baseReference" position="730px 0px" size="50px 50px"/>
-				</GuiElement>
-				<GuiElement type="multiTextOption" profile="multiTextOptionSettings" onCreate="onCreateAutoDriveSetting" onClick="onOptionChange" name="restrictToField" toolTipElementId="ingameMenuHelpBoxText">
-					<GuiElement type="button" profile="multiTextOptionSettingsLeft" />
-					<GuiElement type="button" profile="multiTextOptionSettingsRight" />
-					<GuiElement type="text" profile="multiTextOptionSettingsText" />
-					<GuiElement type="text" profile="multiTextOptionSettingsTitle" position="27px 0px" />
-					<GuiElement type="bitmap" profile="multiTextOptionSettingsBg" />
-					<GuiElement type="bitmap" profile="baseReference" position="730px 0px" size="50px 50px"/>
-				</GuiElement>
-				<GuiElement type="multiTextOption" profile="multiTextOptionSettings" onCreate="onCreateAutoDriveSetting" onClick="onOptionChange" name="followOnlyOnField" toolTipElementId="ingameMenuHelpBoxText">
-					<GuiElement type="button" profile="multiTextOptionSettingsLeft" />
-					<GuiElement type="button" profile="multiTextOptionSettingsRight" />
-					<GuiElement type="text" profile="multiTextOptionSettingsText" />
-					<GuiElement type="text" profile="multiTextOptionSettingsTitle" position="27px 0px" />
-					<GuiElement type="bitmap" profile="multiTextOptionSettingsBg" />
-					<GuiElement type="bitmap" profile="baseReference" position="730px 0px" size="50px 50px"/>
-				</GuiElement>
-				<GuiElement type="multiTextOption" profile="multiTextOptionSettings" onCreate="onCreateAutoDriveSetting" onClick="onOptionChange" name="avoidFruit" toolTipElementId="ingameMenuHelpBoxText">
-					<GuiElement type="button" profile="multiTextOptionSettingsLeft" />
-					<GuiElement type="button" profile="multiTextOptionSettingsRight" />
-					<GuiElement type="text" profile="multiTextOptionSettingsText" />
-					<GuiElement type="text" profile="multiTextOptionSettingsTitle" position="27px 0px" />
-					<GuiElement type="bitmap" profile="multiTextOptionSettingsBg" />
-					<GuiElement type="bitmap" profile="baseReference" position="730px 0px" size="50px 50px"/>
-				</GuiElement>
-				<GuiElement type="multiTextOption" profile="multiTextOptionSettings" onCreate="onCreateAutoDriveSetting" onClick="onOptionChange" name="parkInField" toolTipElementId="ingameMenuHelpBoxText">
-					<GuiElement type="button" profile="multiTextOptionSettingsLeft" />
-					<GuiElement type="button" profile="multiTextOptionSettingsRight" />
-					<GuiElement type="text" profile="multiTextOptionSettingsText" />
-					<GuiElement type="text" profile="multiTextOptionSettingsTitle" position="27px 0px" />
-					<GuiElement type="bitmap" profile="multiTextOptionSettingsBg" />
-					<GuiElement type="bitmap" profile="baseReference" position="730px 0px" size="50px 50px"/>
-				</GuiElement>
-				<GuiElement type="multiTextOption" profile="multiTextOptionSettings" onCreate="onCreateAutoDriveSetting" onClick="onOptionChange" name="rotateTargets" toolTipElementId="ingameMenuHelpBoxText">
-					<GuiElement type="button" profile="multiTextOptionSettingsLeft" />
-					<GuiElement type="button" profile="multiTextOptionSettingsRight" />
-					<GuiElement type="text" profile="multiTextOptionSettingsText" />
-					<GuiElement type="text" profile="multiTextOptionSettingsTitle" position="27px 0px" />
-					<GuiElement type="bitmap" profile="multiTextOptionSettingsBg" />
-					<GuiElement type="bitmap" profile="baseReference" position="730px 0px" size="50px 50px"/>
-				</GuiElement>
-<!--
-				<GuiElement type="multiTextOption" profile="multiTextOptionSettings" onCreate="onCreateAutoDriveSetting" onClick="onOptionChange" name="shovelWidth" toolTipElementId="ingameMenuHelpBoxText"> 
-					<GuiElement type="button" profile="multiTextOptionSettingsLeft" /> 
-					<GuiElement type="button" profile="multiTextOptionSettingsRight" /> 
-					<GuiElement type="text" profile="multiTextOptionSettingsText" /> 
-					<GuiElement type="text" profile="multiTextOptionSettingsTitle" position="27px 0px" />
-					<GuiElement type="bitmap" profile="multiTextOptionSettingsBg" />
-					<GuiElement type="bitmap" profile="baseReference" position="730px 0px" size="50px 50px"/>
-				</GuiElement> 
-				<GuiElement type="multiTextOption" profile="multiTextOptionSettings" onCreate="onCreateAutoDriveSetting" onClick="onOptionChange" name="shovelHeight" toolTipElementId="ingameMenuHelpBoxText"> 
-					<GuiElement type="button" profile="multiTextOptionSettingsLeft" /> 
-					<GuiElement type="button" profile="multiTextOptionSettingsRight" /> 
-					<GuiElement type="text" profile="multiTextOptionSettingsText" /> 
-					<GuiElement type="text" profile="multiTextOptionSettingsTitle" position="27px 0px" />
-					<GuiElement type="bitmap" profile="multiTextOptionSettingsBg" />
-					<GuiElement type="bitmap" profile="baseReference" position="730px 0px" size="50px 50px"/>
-				</GuiElement>
--->
+		<GuiElement profile="fs25_menuHeaderPanel">
+            <Bitmap profile="fs25_menuHeaderIconBg">
+                <Bitmap profile="fs25_menuHeaderIcon" id="categoryHeaderIcon"/>
+            </Bitmap>
+            <Text profile="fs25_menuHeaderTitle" text="$l10n_gui_ad_vehicleSettingsPage_title" id="categoryHeaderText"/>
+        </GuiElement>
 
-				<GuiElement type="multiTextOption" profile="multiTextOptionSettings" onCreate="onCreateAutoDriveSetting" onClick="onOptionChange" name="autoRefuel" toolTipElementId="ingameMenuHelpBoxText">
-					<GuiElement type="button" profile="multiTextOptionSettingsLeft" />
-					<GuiElement type="button" profile="multiTextOptionSettingsRight" />
-					<GuiElement type="text" profile="multiTextOptionSettingsText" />
-					<GuiElement type="text" profile="multiTextOptionSettingsTitle" position="27px 0px" />
-					<GuiElement type="bitmap" profile="multiTextOptionSettingsBg" />
-					<GuiElement type="bitmap" profile="baseReference" position="730px 0px" size="50px 50px"/>
-				</GuiElement>
-				<GuiElement type="multiTextOption" profile="multiTextOptionSettings" onCreate="onCreateAutoDriveSetting" onClick="onOptionChange" name="autoRepair" toolTipElementId="ingameMenuHelpBoxText">
-					<GuiElement type="button" profile="multiTextOptionSettingsLeft" />
-					<GuiElement type="button" profile="multiTextOptionSettingsRight" />
-					<GuiElement type="text" profile="multiTextOptionSettingsText" />
-					<GuiElement type="text" profile="multiTextOptionSettingsTitle" position="27px 6px" />
-					<GuiElement type="bitmap" profile="multiTextOptionSettingsBg" />
-					<GuiElement type="bitmap" profile="baseReference" position="730px 0px" size="50px 50px"/>
-				</GuiElement>
-				<GuiElement type="multiTextOption" profile="multiTextOptionSettings" onCreate="onCreateAutoDriveSetting" onClick="onOptionChange" name="enableParkAtJobFinished" toolTipElementId="ingameMenuHelpBoxText">
-					<GuiElement type="button" profile="multiTextOptionSettingsLeft" />
-					<GuiElement type="button" profile="multiTextOptionSettingsRight" />
-					<GuiElement type="text" profile="multiTextOptionSettingsText" />
-					<GuiElement type="text" profile="multiTextOptionSettingsTitle" position="27px 0px" />
-					<GuiElement type="bitmap" profile="multiTextOptionSettingsBg" />
-					<GuiElement type="bitmap" profile="baseReference" position="730px 0px" size="50px 50px"/>
-				</GuiElement>
-				<GuiElement type="multiTextOption" profile="multiTextOptionSettings" onCreate="onCreateAutoDriveSetting" onClick="onOptionChange" name="autoTipSide" toolTipElementId="ingameMenuHelpBoxText">
-					<GuiElement type="button" profile="multiTextOptionSettingsLeft" />
-					<GuiElement type="button" profile="multiTextOptionSettingsRight" />
-					<GuiElement type="text" profile="multiTextOptionSettingsText" />
-					<GuiElement type="text" profile="multiTextOptionSettingsTitle" position="27px 0px" />
-					<GuiElement type="bitmap" profile="multiTextOptionSettingsBg" />
-					<GuiElement type="bitmap" profile="baseReference" position="730px 0px" size="50px 50px"/>
-				</GuiElement>
-				<GuiElement type="multiTextOption" profile="multiTextOptionSettings" onCreate="onCreateAutoDriveSetting" onClick="onOptionChange" name="autoTrailerCover" toolTipElementId="ingameMenuHelpBoxText">
-					<GuiElement type="button" profile="multiTextOptionSettingsLeft" />
-					<GuiElement type="button" profile="multiTextOptionSettingsRight" />
-					<GuiElement type="text" profile="multiTextOptionSettingsText" />
-					<GuiElement type="text" profile="multiTextOptionSettingsTitle" position="27px 0px" />
-					<GuiElement type="bitmap" profile="multiTextOptionSettingsBg" />
-					<GuiElement type="bitmap" profile="baseReference" position="730px 0px" size="50px 50px"/>
-				</GuiElement>
- 				<GuiElement type="multiTextOption" profile="multiTextOptionSettings" onCreate="onCreateAutoDriveSetting" onClick="onOptionChange" name="ALUnload" toolTipElementId="ingameMenuHelpBoxText"> 
-					<GuiElement type="button" profile="multiTextOptionSettingsLeft" /> 
-					<GuiElement type="button" profile="multiTextOptionSettingsRight" /> 
-					<GuiElement type="text" profile="multiTextOptionSettingsText" /> 
-					<GuiElement type="text" profile="multiTextOptionSettingsTitle" position="27px 0px" />
-					<GuiElement type="bitmap" profile="multiTextOptionSettingsBg" />
-					<GuiElement type="bitmap" profile="baseReference" position="730px 0px" size="50px 50px"/>
-				</GuiElement> 
-				<GuiElement type="multiTextOption" profile="multiTextOptionSettings" onCreate="onCreateAutoDriveSetting" onClick="onOptionChange" name="ALUnloadWaitTime" toolTipElementId="ingameMenuHelpBoxText"> 
-					<GuiElement type="button" profile="multiTextOptionSettingsLeft" /> 
-					<GuiElement type="button" profile="multiTextOptionSettingsRight" /> 
-					<GuiElement type="text" profile="multiTextOptionSettingsText" /> 
-					<GuiElement type="text" profile="multiTextOptionSettingsTitle" position="27px 0px" />
-					<GuiElement type="bitmap" profile="multiTextOptionSettingsBg" />
-					<GuiElement type="bitmap" profile="baseReference" position="730px 0px" size="50px 50px"/>
-				</GuiElement> 
-				<GuiElement type="multiTextOption" profile="multiTextOptionSettings" onCreate="onCreateAutoDriveSetting" onClick="onOptionChange" name="maxTriggerDistanceVehicle" toolTipElementId="ingameMenuHelpBoxText">
-					<GuiElement type="button" profile="multiTextOptionSettingsLeft" />
-					<GuiElement type="button" profile="multiTextOptionSettingsRight" />
-					<GuiElement type="text" profile="multiTextOptionSettingsText" />
-					<GuiElement type="text" profile="multiTextOptionSettingsTitle" position="27px 0px" />
-					<GuiElement type="bitmap" profile="multiTextOptionSettingsBg" />
-					<GuiElement type="bitmap" profile="baseReference" position="730px 0px" size="50px 50px"/>
-				</GuiElement>
-			</GuiElement>
-		</GuiElement>
-		<GuiElement type="bitmap" profile="ingameMenuHelpRowBg" position="210px -64px" id="ingameMenuHelpBox" visible="false">
-			<GuiElement type="bitmap" profile="ingameMenuHelpRowIcon" />
-			<GuiElement type="text" profile="ingameMenuHelpRowText" id="ingameMenuHelpBoxText" size="1030px 50px" onTextChanged="onIngameMenuHelpTextChanged" />
-		</GuiElement>
+		<ScrollingLayout profile="fs25_settingsLayout" id="boxLayout" >	
+
+				<Text profile="fs25_settingsSectionHeader" name="sectionHeader" text="$l10n_gui_ad_vehicleSettingsPage_title"/>
+
+				<Bitmap profile="fs25_multiTextOptionContainer" id="cornerSpeedBox" onCreate="onCreateAutoDriveSettingRow">
+					<MultiTextOption profile="fs25_settingsMultiTextOption" onClick="onOptionChange" onCreate="onCreateAutoDriveSetting"  name="cornerSpeed"  id="cornerSpeed">
+						<Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_gui_ad_cornerSpeed_tooltip"/>
+					</MultiTextOption>
+					<Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_gui_ad_cornerSpeed"/>
+				</Bitmap>
+				<Bitmap profile="fs25_multiTextOptionContainer" id="pipeOffsetBox" onCreate="onCreateAutoDriveSettingRow">
+					<MultiTextOption profile="fs25_settingsMultiTextOption" onClick="onOptionChange" onCreate="onCreateAutoDriveSetting"  name="pipeOffset"  id="pipeOffset">
+						<Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_gui_ad_pipe_offset"/>
+					</MultiTextOption>
+					<Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_gui_ad_pipe_offset"/>
+				</Bitmap>
+				<Bitmap profile="fs25_multiTextOptionContainer" id="followDistanceBox" onCreate="onCreateAutoDriveSettingRow">
+					<MultiTextOption profile="fs25_settingsMultiTextOption" onClick="onOptionChange" onCreate="onCreateAutoDriveSetting"  name="followDistance"  id="followDistance">
+						<Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_gui_ad_followDistance"/>
+					</MultiTextOption>
+					<Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_gui_ad_followDistance"/>
+				</Bitmap>
+				<Bitmap profile="fs25_multiTextOptionContainer" onCreate="onCreateAutoDriveSettingRow">
+					<MultiTextOption profile="fs25_settingsMultiTextOption" onClick="onOptionChange" onCreate="onCreateAutoDriveSetting"  name="unloadFillLevel"  id="unloadFillLevel">
+						<Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_gui_ad_unloadFillLevel_tooltip"/>
+					</MultiTextOption>
+					<Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_gui_ad_unloadFillLevel"/>
+				</Bitmap>
+				<Bitmap profile="fs25_multiTextOptionContainer" onCreate="onCreateAutoDriveSettingRow">
+					<MultiTextOption profile="fs25_settingsMultiTextOption" onClick="onOptionChange" onCreate="onCreateAutoDriveSetting"  name="exitField"  id="exitField">
+						<Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_gui_ad_exitField_tooltip"/>
+					</MultiTextOption>
+					<Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_gui_ad_exitField"/>
+				</Bitmap>
+				<Bitmap profile="fs25_multiTextOptionContainer" onCreate="onCreateAutoDriveSettingRow">
+					<MultiTextOption profile="fs25_settingsMultiTextOption" onClick="onOptionChange" onCreate="onCreateAutoDriveSetting"  name="restrictToField"  id="restrictToField">
+						<Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_gui_ad_restrictToField_tooltip"/>
+					</MultiTextOption>
+					<Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_gui_ad_restrictToField"/>
+				</Bitmap>
+				<Bitmap profile="fs25_multiTextOptionContainer" onCreate="onCreateAutoDriveSettingRow">
+					<MultiTextOption profile="fs25_settingsMultiTextOption" onClick="onOptionChange" onCreate="onCreateAutoDriveSetting"  name="followOnlyOnField"  id="followOnlyOnField">
+						<Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_gui_ad_followOnlyOnField_tooltip"/>
+					</MultiTextOption>
+					<Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_gui_ad_followOnlyOnField"/>
+				</Bitmap>
+				<Bitmap profile="fs25_multiTextOptionContainer" onCreate="onCreateAutoDriveSettingRow">
+					<MultiTextOption profile="fs25_settingsMultiTextOption" onClick="onOptionChange" onCreate="onCreateAutoDriveSetting"  name="avoidFruit"  id="avoidFruit">
+						<Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_gui_ad_avoidFruit_tooltip"/>
+					</MultiTextOption>
+					<Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_gui_ad_avoidFruit"/>
+				</Bitmap>
+				<Bitmap profile="fs25_multiTextOptionContainer" onCreate="onCreateAutoDriveSettingRow">
+					<MultiTextOption profile="fs25_settingsMultiTextOption" onClick="onOptionChange" onCreate="onCreateAutoDriveSetting"  name="parkInField"  id="parkInField">
+						<Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_gui_ad_parkInField_tooltip"/>
+					</MultiTextOption>
+					<Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_gui_ad_parkInField"/>
+				</Bitmap>
+				<Bitmap profile="fs25_multiTextOptionContainer" onCreate="onCreateAutoDriveSettingRow">
+					<MultiTextOption profile="fs25_settingsMultiTextOption" onClick="onOptionChange" onCreate="onCreateAutoDriveSetting"  name="rotateTargets"  id="rotateTargets">
+						<Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_gui_ad_rotateTargets_tooltip"/>
+					</MultiTextOption>
+					<Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_gui_ad_rotateTargets"/>
+				</Bitmap>
+				<Bitmap profile="fs25_multiTextOptionContainer" onCreate="onCreateAutoDriveSettingRow">
+					<MultiTextOption profile="fs25_settingsMultiTextOption" onClick="onOptionChange" onCreate="onCreateAutoDriveSetting"  name="autoRefuel"  id="autoRefuel">
+						<Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_gui_ad_autoRefuel_tooltip"/>
+					</MultiTextOption>
+					<Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_gui_ad_autoRefuel"/>
+				</Bitmap>
+				<Bitmap profile="fs25_multiTextOptionContainer" onCreate="onCreateAutoDriveSettingRow">
+					<MultiTextOption profile="fs25_settingsMultiTextOption" onClick="onOptionChange" onCreate="onCreateAutoDriveSetting"  name="autoRepair"  id="autoRepair">
+						<Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_gui_ad_autoRepair_tooltip"/>
+					</MultiTextOption>
+					<Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_gui_ad_autoRepair"/>
+				</Bitmap>
+				<Bitmap profile="fs25_multiTextOptionContainer" onCreate="onCreateAutoDriveSettingRow">
+					<MultiTextOption profile="fs25_settingsMultiTextOption" onClick="onOptionChange" onCreate="onCreateAutoDriveSetting"  name="enableParkAtJobFinished"  id="enableParkAtJobFinished">
+						<Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_gui_ad_enableParkAtJobFinished_tooltip"/>
+					</MultiTextOption>
+					<Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_gui_ad_enableParkAtJobFinished"/>
+				</Bitmap>
+				<Bitmap profile="fs25_multiTextOptionContainer" onCreate="onCreateAutoDriveSettingRow">
+					<MultiTextOption profile="fs25_settingsMultiTextOption" onClick="onOptionChange" onCreate="onCreateAutoDriveSetting"  name="autoTipSide"  id="autoTipSide">
+						<Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_gui_ad_autoTipSide_tooltip"/>
+					</MultiTextOption>
+					<Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_gui_ad_autoTipSide"/>
+				</Bitmap>
+				<Bitmap profile="fs25_multiTextOptionContainer" onCreate="onCreateAutoDriveSettingRow">
+					<MultiTextOption profile="fs25_settingsMultiTextOption" onClick="onOptionChange" onCreate="onCreateAutoDriveSetting"  name="autoTrailerCover"  id="autoTrailerCover">
+						<Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_gui_ad_autoTrailerCover_tooltip"/>
+					</MultiTextOption>
+					<Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_gui_ad_autoTrailerCover"/>
+				</Bitmap>
+				<Bitmap profile="fs25_multiTextOptionContainer" onCreate="onCreateAutoDriveSettingRow">
+					<MultiTextOption profile="fs25_settingsMultiTextOption" onClick="onOptionChange" onCreate="onCreateAutoDriveSetting"  name="ALUnload"  id="ALUnload">
+						<Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_gui_ad_ALUnload_tooltip"/>
+					</MultiTextOption>
+					<Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_gui_ad_ALUnload"/>
+				</Bitmap>
+				<Bitmap profile="fs25_multiTextOptionContainer" onCreate="onCreateAutoDriveSettingRow">
+					<MultiTextOption profile="fs25_settingsMultiTextOption" onClick="onOptionChange" onCreate="onCreateAutoDriveSetting"  name="ALUnloadWaitTime"  id="ALUnloadWaitTime">
+						<Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_gui_ad_ALUnloadWaitTime_tooltip"/>
+					</MultiTextOption>
+					<Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_gui_ad_ALUnloadWaitTime"/>
+				</Bitmap>
+				<Bitmap profile="fs25_multiTextOptionContainer" onCreate="onCreateAutoDriveSettingRow">
+					<MultiTextOption profile="fs25_settingsMultiTextOption" onClick="onOptionChange" onCreate="onCreateAutoDriveSetting"  name="maxTriggerDistanceVehicle"  id="maxTriggerDistanceVehicle">
+						<Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_gui_ad_maxTriggerDistance_tooltip"/>
+					</MultiTextOption>
+					<Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_gui_ad_maxTriggerDistance"/>
+				</Bitmap>
+
+
+				<Text profile="fs25_settingsSectionHeader" name="sectionHeader" text="$l10n_gui_ad_settingsPage_title"/>
+				
+				<Bitmap profile="fs25_multiTextOptionContainer" onCreate="onCreateAutoDriveSettingRow">
+					<MultiTextOption profile="fs25_settingsMultiTextOption" onClick="onOptionChange" onCreate="onCreateAutoDriveSetting"  name="lookAheadTurning"  id="lookAheadTurning">
+						<Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_gui_ad_lookahead_turning_tooltip"/>
+					</MultiTextOption>
+					<Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_gui_ad_lookahead_turning"/>
+				</Bitmap>
+				<Bitmap profile="fs25_multiTextOptionContainer" onCreate="onCreateAutoDriveSettingRow">
+					<MultiTextOption profile="fs25_settingsMultiTextOption" onClick="onOptionChange" onCreate="onCreateAutoDriveSetting"  name="mapMarkerDetour"  id="mapMarkerDetour">
+						<Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_gui_ad_mapMarkerDetour_tooltip"/>
+					</MultiTextOption>
+					<Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_gui_ad_mapMarkerDetour"/>
+				</Bitmap>
+				<Bitmap profile="fs25_multiTextOptionContainer" onCreate="onCreateAutoDriveSettingRow">
+					<MultiTextOption profile="fs25_settingsMultiTextOption" onClick="onOptionChange" onCreate="onCreateAutoDriveSetting"  name="continueOnEmptySilo"  id="continueOnEmptySilo">
+						<Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_gui_ad_siloEmpty_tooltip"/>
+					</MultiTextOption>
+					<Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_gui_ad_siloEmpty"/>
+				</Bitmap>
+				<Bitmap profile="fs25_multiTextOptionContainer" onCreate="onCreateAutoDriveSettingRow">
+					<MultiTextOption profile="fs25_settingsMultiTextOption" onClick="onOptionChange" onCreate="onCreateAutoDriveSetting"  name="autoConnectStart"  id="autoConnectStart">
+						<Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_gui_ad_autoConnect_start_tooltip"/>
+					</MultiTextOption>
+					<Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_gui_ad_autoConnect_start"/>
+				</Bitmap>
+				<Bitmap profile="fs25_multiTextOptionContainer" onCreate="onCreateAutoDriveSettingRow">
+					<MultiTextOption profile="fs25_settingsMultiTextOption" onClick="onOptionChange" onCreate="onCreateAutoDriveSetting"  name="autoConnectEnd"  id="autoConnectEnd">
+						<Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_gui_ad_autoConnect_end_tooltip"/>
+					</MultiTextOption>
+					<Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_gui_ad_autoConnect_end"/>
+				</Bitmap>
+				<Bitmap profile="fs25_multiTextOptionContainer" onCreate="onCreateAutoDriveSettingRow">
+					<MultiTextOption profile="fs25_settingsMultiTextOption" onClick="onOptionChange" onCreate="onCreateAutoDriveSetting"  name="driverWages"  id="driverWages">
+						<Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_gui_ad_driverWages_tooltip"/>
+					</MultiTextOption>
+					<Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_gui_ad_driverWages"/>
+				</Bitmap>
+				<Bitmap profile="fs25_multiTextOptionContainer" onCreate="onCreateAutoDriveSettingRow">
+					<MultiTextOption profile="fs25_settingsMultiTextOption" onClick="onOptionChange" onCreate="onCreateAutoDriveSetting"  name="enableTrafficDetection"  id="enableTrafficDetection">
+						<Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_gui_ad_enableTrafficDetection_tooltip"/>
+					</MultiTextOption>
+					<Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_gui_ad_enableTrafficDetection"/>
+				</Bitmap>
+				<Bitmap profile="fs25_multiTextOptionContainer" onCreate="onCreateAutoDriveSettingRow">
+					<MultiTextOption profile="fs25_settingsMultiTextOption" onClick="onOptionChange" onCreate="onCreateAutoDriveSetting"  name="useFolders"  id="useFolders">
+						<Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_gui_ad_useFolders_tooltip"/>
+					</MultiTextOption>
+					<Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_gui_ad_useFolders"/>
+				</Bitmap>
+				<Bitmap profile="fs25_multiTextOptionContainer" onCreate="onCreateAutoDriveSettingRow">
+					<MultiTextOption profile="fs25_settingsMultiTextOption" onClick="onOptionChange" onCreate="onCreateAutoDriveSetting"  name="maxTriggerDistance"  id="maxTriggerDistance">
+						<Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_gui_ad_maxTriggerDistance_tooltip"/>
+					</MultiTextOption>
+					<Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_gui_ad_maxTriggerDistance"/>
+				</Bitmap>
+				<Bitmap profile="fs25_multiTextOptionContainer" onCreate="onCreateAutoDriveSettingRow">
+					<MultiTextOption profile="fs25_settingsMultiTextOption" onClick="onOptionChange" onCreate="onCreateAutoDriveSetting"  name="collisionHeigth"  id="collisionHeigth">
+						<Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_gui_ad_collisionHeigth_tooltip"/>
+					</MultiTextOption>
+					<Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_gui_ad_collisionHeigth"/>
+				</Bitmap>
+				<Bitmap profile="fs25_multiTextOptionContainer" onCreate="onCreateAutoDriveSettingRow">
+					<MultiTextOption profile="fs25_settingsMultiTextOption" onClick="onOptionChange" onCreate="onCreateAutoDriveSetting"  name="pathFinderTime"  id="pathFinderTime">
+						<Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_gui_ad_pathFinderTime_tooltip"/>
+					</MultiTextOption>
+					<Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_gui_ad_pathFinderTime"/>
+				</Bitmap>
+				<Bitmap profile="fs25_multiTextOptionContainer" onCreate="onCreateAutoDriveSettingRow">
+					<MultiTextOption profile="fs25_settingsMultiTextOption" onClick="onOptionChange" onCreate="onCreateAutoDriveSetting"  name="BSMRange"  id="BSMRange">
+						<Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_gui_ad_BSMRange_tooltip"/>
+					</MultiTextOption>
+					<Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_gui_ad_BSMRange"/>
+				</Bitmap>
+
+				
+				<Text profile="fs25_settingsSectionHeader" name="sectionHeader" text="$l10n_gui_ad_userSettingsPage_title"/>
+				
+				<Bitmap profile="fs25_multiTextOptionContainer" onCreate="onCreateAutoDriveSettingRow">
+					<MultiTextOption profile="fs25_settingsMultiTextOption" onClick="onOptionChange" onCreate="onCreateAutoDriveSetting"  name="guiScale"  id="guiScale">
+						<Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_gui_ad_gui_scale_tooltip"/>
+					</MultiTextOption>
+					<Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_gui_ad_gui_scale"/>
+				</Bitmap>
+				<Bitmap profile="fs25_multiTextOptionContainer" onCreate="onCreateAutoDriveSettingRow">
+					<MultiTextOption profile="fs25_settingsMultiTextOption" onClick="onOptionChange" onCreate="onCreateAutoDriveSetting"  name="notifications"  id="notifications">
+						<Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_gui_ad_notifications_tooltip"/>
+					</MultiTextOption>
+					<Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_gui_ad_notifications"/>
+				</Bitmap>
+				<Bitmap profile="fs25_multiTextOptionContainer" onCreate="onCreateAutoDriveSettingRow">
+					<MultiTextOption profile="fs25_settingsMultiTextOption" onClick="onOptionChange" onCreate="onCreateAutoDriveSetting"  name="showHelp"  id="showHelp">
+						<Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_gui_ad_showHelp_tooltip"/>
+					</MultiTextOption>
+					<Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_gui_ad_showHelp"/>
+				</Bitmap>
+				<Bitmap profile="fs25_multiTextOptionContainer" onCreate="onCreateAutoDriveSettingRow">
+					<MultiTextOption profile="fs25_settingsMultiTextOption" onClick="onOptionChange" onCreate="onCreateAutoDriveSetting"  name="showNextPath"  id="showNextPath">
+						<Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_gui_ad_showNextPath_tooltip"/>
+					</MultiTextOption>
+					<Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_gui_ad_showNextPath"/>
+				</Bitmap>
+				<Bitmap profile="fs25_multiTextOptionContainer" onCreate="onCreateAutoDriveSettingRow">
+					<MultiTextOption profile="fs25_settingsMultiTextOption" onClick="onOptionChange" onCreate="onCreateAutoDriveSetting"  name="lineHeight"  id="lineHeight">
+						<Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_gui_ad_lineHeight_tooltip"/>
+					</MultiTextOption>
+					<Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_gui_ad_lineHeight"/>
+				</Bitmap>
+				<Bitmap profile="fs25_multiTextOptionContainer" onCreate="onCreateAutoDriveSettingRow">
+					<MultiTextOption profile="fs25_settingsMultiTextOption" onClick="onOptionChange" onCreate="onCreateAutoDriveSetting"  name="showTooltips"  id="showTooltips">
+						<Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_gui_ad_showTooltips_tooltip"/>
+					</MultiTextOption>
+					<Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_gui_ad_showTooltips"/>
+				</Bitmap>
+				<Bitmap profile="fs25_multiTextOptionContainer" onCreate="onCreateAutoDriveSettingRow">
+					<MultiTextOption profile="fs25_settingsMultiTextOption" onClick="onOptionChange" onCreate="onCreateAutoDriveSetting"  name="showMarkersOnMap"  id="showMarkersOnMap">
+						<Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_gui_ad_showMarkersOnMap_tooltip"/>
+					</MultiTextOption>
+					<Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_gui_ad_showMarkersOnMap"/>
+				</Bitmap>
+				<Bitmap profile="fs25_multiTextOptionContainer" onCreate="onCreateAutoDriveSettingRow">
+					<MultiTextOption profile="fs25_settingsMultiTextOption" onClick="onOptionChange" onCreate="onCreateAutoDriveSetting"  name="switchToMarkersOnMap"  id="switchToMarkersOnMap">
+						<Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_gui_ad_switchToMarkersOnMap_tooltip"/>
+					</MultiTextOption>
+					<Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_gui_ad_switchToMarkersOnMap"/>
+				</Bitmap>
+				<Bitmap profile="fs25_multiTextOptionContainer" onCreate="onCreateAutoDriveSettingRow">
+					<MultiTextOption profile="fs25_settingsMultiTextOption" onClick="onOptionChange" onCreate="onCreateAutoDriveSetting"  name="addSettingsToHUD"  id="addSettingsToHUD">
+						<Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_gui_ad_addSettingsToHUD_tooltip"/>
+					</MultiTextOption>
+					<Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_gui_ad_addSettingsToHUD"/>
+				</Bitmap>
+				<Bitmap profile="fs25_multiTextOptionContainer" onCreate="onCreateAutoDriveSettingRow">
+					<MultiTextOption profile="fs25_settingsMultiTextOption" onClick="onOptionChange" onCreate="onCreateAutoDriveSetting"  name="iconSetToUse"  id="iconSetToUse">
+						<Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_gui_ad_iconSetToUse_tooltip"/>
+					</MultiTextOption>
+					<Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_gui_ad_iconSetToUse"/>
+				</Bitmap>
+				<Bitmap profile="fs25_multiTextOptionContainer" onCreate="onCreateAutoDriveSettingRow">
+					<MultiTextOption profile="fs25_settingsMultiTextOption" onClick="onOptionChange" onCreate="onCreateAutoDriveSetting"  name="wideHUD"  id="wideHUD">
+						<Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_gui_ad_wideHUD_tooltip"/>
+					</MultiTextOption>
+					<Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_gui_ad_wideHUD"/>
+				</Bitmap>
+				<Bitmap profile="fs25_multiTextOptionContainer" onCreate="onCreateAutoDriveSettingRow">
+					<MultiTextOption profile="fs25_settingsMultiTextOption" onClick="onOptionChange" onCreate="onCreateAutoDriveSetting"  name="playSounds"  id="playSounds">
+						<Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_gui_ad_playSounds_tooltip"/>
+					</MultiTextOption>
+					<Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_gui_ad_playSounds"/>
+				</Bitmap>
+				<Bitmap profile="fs25_multiTextOptionContainer" onCreate="onCreateAutoDriveSettingRow">
+					<MultiTextOption profile="fs25_settingsMultiTextOption" onClick="onOptionChange" onCreate="onCreateAutoDriveSetting"  name="scaleLines"  id="scaleLines">
+						<Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_gui_ad_scaleLines_tooltip"/>
+					</MultiTextOption>
+					<Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_gui_ad_scaleLines"/>
+				</Bitmap>
+				<Bitmap profile="fs25_multiTextOptionContainer" onCreate="onCreateAutoDriveSettingRow">
+					<MultiTextOption profile="fs25_settingsMultiTextOption" onClick="onOptionChange" onCreate="onCreateAutoDriveSetting"  name="scaleMarkerText"  id="scaleMarkerText">
+						<Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_gui_ad_scaleMarkerText_tooltip"/>
+					</MultiTextOption>
+					<Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_gui_ad_scaleMarkerText"/>
+				</Bitmap>
+
+
+				<Text profile="fs25_settingsSectionHeader" name="sectionHeader" text="$l10n_gui_ad_combineUnloadSettingsPage_title"/>
+
+				
+				<Bitmap profile="fs25_multiTextOptionContainer" onCreate="onCreateAutoDriveSettingRow">
+					<MultiTextOption profile="fs25_settingsMultiTextOption" onClick="onOptionChange" onCreate="onCreateAutoDriveSetting"  name="preCallLevel"  id="preCallLevel">
+						<Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_gui_ad_preCallLevel_tooltip"/>
+					</MultiTextOption>
+					<Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_gui_ad_preCallLevel"/>
+				</Bitmap>
+				<Bitmap profile="fs25_multiTextOptionContainer" onCreate="onCreateAutoDriveSettingRow">
+					<MultiTextOption profile="fs25_settingsMultiTextOption" onClick="onOptionChange" onCreate="onCreateAutoDriveSetting"  name="callSecondUnloader"  id="callSecondUnloader">
+						<Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_gui_ad_callSecondUnloader_tooltip"/>
+					</MultiTextOption>
+					<Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_gui_ad_callSecondUnloader"/>
+				</Bitmap>
+				<Bitmap profile="fs25_multiTextOptionContainer" onCreate="onCreateAutoDriveSettingRow">
+					<MultiTextOption profile="fs25_settingsMultiTextOption" onClick="onOptionChange" onCreate="onCreateAutoDriveSetting"  name="activeUnloading"  id="activeUnloading">
+						<Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_gui_ad_activeUnloading_tooltip"/>
+					</MultiTextOption>
+					<Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_gui_ad_activeUnloading"/>
+				</Bitmap>
+		</ScrollingLayout>
 	</GuiElement>
 </GUI>

@@ -11,36 +11,7 @@ function AutoDrive:adParseSplines()
 	local startNodes = {}
 	local endNodes = {}
 	local usedSplines = {}
-
-	local aiSplineNode = self:getAiSplinesParentNode()
-	local hasSplines = true
-	local splineIndex = 0
-
-	local splines = {}
-
-	while hasSplines do
-		hasSplines = false
-
-		local spline = g_currentMission.trafficSystem:getSplineByIndex(splineIndex)		
-		if spline ~= nil then
-			hasSplines = true
-			splineIndex = splineIndex + 1
-			if not table.contains(splines, spline) then
-				table.insert(splines, spline)
-			end
-		end
-	end
-
-	if aiSplineNode ~= nil then
-		for i=0, getNumOfChildren(aiSplineNode)-1, 1 do
-			local spline = getChildAt(aiSplineNode, i)
-			if spline ~= nil then
-				if not table.contains(splines, spline) then
-					table.insert(splines, spline)
-				end			
-			end
-		end
-	end
+	local splines = table.clone(g_currentMission.aiSystem.roadSplines)
 
 	for _, spline in pairs(splines) do
 		self:createWaypointsForSpline(startNodes, endNodes, usedSplines, splines, spline)
@@ -51,40 +22,6 @@ function AutoDrive:adParseSplines()
 
 	AutoDrive.startNodes = startNodes
 	AutoDrive.endNodes = endNodes
-
-	--self:createJunctions(startNodes, endNodes, 100, 60)
-end
-
-function AutoDrive:getAiSplinesParentNode()
-	local aiSplineNode = nil
-	local hasSplines = true
-	local splineIndex = 1
-	while hasSplines and aiSplineNode == nil do
-		local spline = g_currentMission.trafficSystem:getSplineByIndex(splineIndex)
-		
-		hasSplines = spline ~= nil
-		
-		if aiSplineNode == nil and spline ~= nil then
-			local parent = getParent(spline) --now we are at trafficSystem
-			if parent ~= nil then
-				-- print("Parent name: " .. getName(parent))
-				parent = getParent(parent) -- now we are at "Splines"
-				if parent ~= nil then
-					-- print("Parent parent name: " .. getName(parent))
-					for i=0, getNumOfChildren(parent)-1, 1 do
-						if string.find(getName(getChildAt(parent, i)), "ai") then
-							aiSplineNode = getChildAt(parent, i)
-							-- print("aiSplineNode name: " .. getName(aiSplineNode))
-						end
-					end
-				end				
-			end
-		end
-
-		splineIndex = splineIndex + 1
-	end
-
-	return aiSplineNode
 end
 
 function AutoDrive:createWaypointsForSpline(startNodes, endNodes, usedSplines, splines, spline)

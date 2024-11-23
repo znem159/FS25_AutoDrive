@@ -577,7 +577,7 @@ function ADTrailerModule:startLoadingAtTrigger(trigger, fillType, fillUnitIndex,
     AutoDrive.debugPrint(self.vehicle, AutoDrive.DC_TRAILERINFO, "ADTrailerModule:startLoadingAtTrigger trigger.isLoading %s", tostring(trigger.isLoading))
     if trigger.isLoading then
         trigger.selectedFillType = fillType
-        g_effectManager:setFillType(trigger.effects, trigger.selectedFillType)
+        g_effectManager:setEffectTypeInfo(trigger.effects, trigger.selectedFillType)
         trigger.autoStart = false
         -- reset trigger load timer
         trigger.stoppedTimer:timer(false, 300)

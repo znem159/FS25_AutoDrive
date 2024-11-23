@@ -1,21 +1,34 @@
 <?xml version="1.0" encoding="utf-8" standalone="no" ?>
 <GUI onOpen="onOpen" onClose="onClose" onCreate="onCreate">
-    <GuiElement type="empty" profile="newLayer" />
-    <GuiElement type="bitmap" profile="dialogFullscreenBg" />
+    <GuiElement profile="newLayer"/>
+    <Bitmap profile="dialogFullscreenBg"/>
+    <GuiElement profile="fs25_dialogBg" size="740px 280px">
+        <ThreePartBitmap profile="fs25_dialogBgMiddleSmall"/>
+        <ThreePartBitmap profile="fs25_dialogBgTopSmall"/>
+        <ThreePartBitmap profile="fs25_dialogBgBottom"/>
 
-    <GuiElement type="bitmap" profile="yesNoDialogBg">
-        <GuiElement type="bitmap" profile="dialogHeaderDocked">
-            <GuiElement type="text" profile="dialogHeaderText" text="gui_ad_enterDriverNameTitle" textUpperCase="false" id="headerText" visible="true" onCreate="onCreateAutoDriveHeaderText" />
-        </GuiElement>
+        <BoxLayout profile="ad_common_dialogContentContainer">
+            <Text profile="ad_common_dialogTitle" text="$l10n_gui_ad_enterDriverNameTitle" />
 
-        <GuiElement type="text" profile="sleepDialogText" text="gui_ad_enterDriverNameText" textUpperCase="false" onCreate="onCreateAutoDriveText1" />
+            <ThreePartBitmap profile="ad_common_dialogTitleLineSeparator" />
 
-        <GuiElement type="textInput" profile="dialogTextInput" id="textInputElement" onEnterPressed="onEnterPressed" onEscPressed="onEscPressed" focusInit="onOpen" maxCharacters="20" />
+            <BoxLayout profile="ad_common_hBox" absoluteSizeOffset="0 120px">
+                <Text profile="ad_common_dialogText" text="$l10n_gui_ad_enterDriverNameText" textAutoWidth="true"/>
+                <TextInput profile="fs25_dialogTextInput" id="textInputElement" onEnterPressed="onEnterPressed" onEscPressed="onEscPressed" enterWhenClickOutside="false" focusInit="onOpen" maxCharacters="20">
+                    <ThreePartBitmap profile="fs25_textInputBg"/>
+                    <Bitmap profile="fs25_textInputIconBox">
+                        <Bitmap profile="fs25_textInputIcon"/>
+                    </Bitmap>
+                </TextInput>
+            </BoxLayout>
 
-        <GuiElement type="flowLayout" profile="buttonBoxDocked">
-            <GuiElement type="button" profile="buttonBack" text="$l10n_button_back" onClick="onClickBack" />
-            <GuiElement type="button" profile="buttonOK" text="$l10n_button_ok" onClick="onClickOk" />
-            <GuiElement type="button" profile="buttonCancel" text="$l10n_button_reset" onClick="onClickCancel" />
-        </GuiElement>
+            <BoxLayout profile="ad_common_dialogButtonBox">
+                <Button profile="buttonCancel" text="$l10n_button_reset" onClick="onClickReset" />
+                <Bitmap profile="fs25_dialogButtonBoxSeparator"/>
+                <Button profile="buttonOK" text="$l10n_button_rename" onClick="onClickRename" />
+                <Bitmap profile="fs25_dialogButtonBoxSeparator"/>
+                <Button profile="buttonBack" text="$l10n_button_back" onClick="onClickBack" />
+            </BoxLayout>
+        </BoxLayout>
     </GuiElement>
 </GUI>
