@@ -77,6 +77,25 @@ end
 
 function AutoDrive.defineMinDistanceByVehicleType(vehicle)
     local min_distance = 1.8
+
+    local steeringX, _, steeringZ = getWorldTranslation(vehicle.components[1].node)
+    if vehicle.getAISteeringNode ~= nil then
+        steeringX, _, steeringZ = getWorldTranslation(vehicle:getAISteeringNode())
+    end
+
+    local _, _, diffZ = worldToLocal(vehicle.components[1].node, steeringX, 0, steeringZ)
+
+    -- diffZ > 0 -> steering node ahead of vehicle center
+    min_distance = (vehicle.size.length / 2) - diffZ
+    -- Get distance from steering node to leading leadingEdge
+
+    print("Min distance for " .. vehicle:getName() .. " is: " .. min_distance)
+
+    return min_distance
+end
+
+function AutoDrive.defineMinDistanceByVehicleTypeOld(vehicle)
+    local min_distance = 1.8
     if
         vehicle.typeDesc == "combine" or vehicle.typeDesc == "harvester" or vehicle.typeName == "combineDrivable" or vehicle.typeName == "selfPropelledMower" or vehicle.typeName == "woodHarvester" or vehicle.typeName == "combineCutterFruitPreparer" or vehicle.typeName == "drivableMixerWagon" or
             vehicle.typeName == "cottonHarvester" or
