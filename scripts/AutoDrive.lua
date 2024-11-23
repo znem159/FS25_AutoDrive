@@ -622,8 +622,8 @@ function AutoDrive:update(dt)
     if AutoDrive.scanDialogState == AutoDrive.SCAN_DIALOG_RESULT_YES then
         -- AutoDrive.debugMsg(nil, "[AD] AutoDrive:update SCAN_DIALOG_RESULT_YES")
         AutoDrive.scanDialogState = AutoDrive.SCAN_DIALOG_RESULT_DONE
-        -- AutoDrive:adParseSplines()
-        -- AutoDrive:createJunctionCommand()
+        AutoDrive:adParseSplines()
+        AutoDrive:createJunctionCommand()
     end
 
     if AutoDrive.scanDialogState == AutoDrive.SCAN_DIALOG_RESULT_NO then
