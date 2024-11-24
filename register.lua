@@ -220,20 +220,67 @@ function AutoDriveRegister.registerPlaceableData()
 		return
 	end
 
+    local validPlaceableTypes =
+    {
+        "baseHusbandry",
+        "beehive",
+        "beehivePalletSpawner",
+        "bunkerSilo",
+        "buyingStation",
+        "buyingStationManure",
+        "chargingStation",
+        "chickenHusbandry",
+        "constructible",
+        "constructibleFarmhouse",
+        "cowHusbandry",
+        "cowHusbandryBarn",
+        "cowHusbandryBarnMilk",
+        "cowHusbandryBarnMilkFeedingRobot",
+        "cowHusbandryPasture",
+        "cowHusbandryPastureStraw",
+        "decoObject",
+        "destructible",
+        "factory",
+        "farmhouse",
+        "garageSolarPanels",
+        "garageWorkshop",
+        "garageWorkshopSolarPanels",
+        "greenhouse",
+        "heapSpawner",
+        "horseHusbandry",
+        "horseHusbandryPasture",
+        "manureHeap",
+        "objectStorage",
+        "pigHusbandry",
+        "pigHusbandryPasture",
+        "productionPoint",
+        "sellingStation",
+        "sheepHusbandry",
+        "silo",
+        "siloExtension",
+        "simplePlaceable",
+        "toolShed",
+        "warehouse",
+        "weighingStation",
+        "workshop"
+    }
+
+    local count = 0
 	for placeableType, typeDef in pairs(g_placeableTypeManager.types) do
-        if placeableType == "simplePlaceable" and (not typeDef.hasADPDpec == true) then
-            if AutoDrivePlaceableData.prerequisitesPresent(typeDef.specializations) then
-                if typeDef.specializationsByName[AutoDrive.ADPDSpecName] == nil then
-                    Logging.info("AutoDriveRegister.registerPlaceableData addSpecialization %s"
-                    , tostring(placeableType)
-                    )
-                    g_placeableTypeManager:addSpecialization(placeableType, AutoDrive.ADPDSpecName)
-                    typeDef.hasADPDpec = true
-                    break
+        for _, validPlaceableType in pairs(validPlaceableTypes) do
+            if placeableType == validPlaceableType and (not typeDef.hasADPDpec == true) then
+                if AutoDrivePlaceableData.prerequisitesPresent(typeDef.specializations) then
+                    if typeDef.specializationsByName[AutoDrive.ADPDSpecName] == nil then
+                        g_placeableTypeManager:addSpecialization(placeableType, AutoDrive.ADPDSpecName)
+                        typeDef.hasADPDpec = true
+                        count = count + 1
+                        break
+                    end
                 end
             end
         end
-	end
+    end
+    Logging.info("AutoDrive registered %d placeable Types.", count)
 end
 
 -- We need this for network debug functions
