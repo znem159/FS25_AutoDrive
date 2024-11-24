@@ -19,8 +19,8 @@ end
 function ADNotificationsHistoryGui:onOpen()
     self:debugMsg("ADNotificationsHistoryGui:onOpen")
     ADNotificationsHistoryGui:superClass().onOpen(self)
-    self:refreshItems()
     self.notificationsList:setDataSource(self)
+    self:refreshItems()
 end
 
 function ADNotificationsHistoryGui:getNumberOfItemsInSection(list, section)

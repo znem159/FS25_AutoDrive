@@ -18,8 +18,8 @@ function ADRoutesManagerGui:onOpen()
     --         end
     --     end
     ADRoutesManagerGui:superClass().onOpen(self)
-    self:refreshItems()
     self.routeList:setDataSource(self)
+    self:refreshItems()
 end
 
 function ADRoutesManagerGui:getNumberOfItemsInSection(list, section)
