@@ -205,3 +205,18 @@ function AutoDrive.showYesNoDialog(title, text, callback, target, ...)
 	dlg.target.dialogTextElement:setText(text)
 	dlg.target:setCallback(callback, target, ...)
 end
+ADGuiDebugMixin = {}
+
+function ADGuiDebugMixin.new()
+    return setmetatable({}, {__index = ADGuiDebugMixin})
+end
+
+function ADGuiDebugMixin:addTo(guiElement)
+    guiElement.debugMsg = ADGuiDebugMixin.debugMsg
+end
+
+function ADGuiDebugMixin:debugMsg(...)
+    if self.debug == true then
+        AutoDrive.debugMsg(nil, ...)
+    end
+end

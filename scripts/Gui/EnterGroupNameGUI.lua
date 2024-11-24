@@ -6,15 +6,18 @@
 -- @date 09/06/2019
 
 ADEnterGroupNameGui = {}
+ADEnterGroupNameGui.debug = false
 
 local ADEnterGroupNameGui_mt = Class(ADEnterGroupNameGui, DialogElement)
 
 function ADEnterGroupNameGui.new(target)
     local self = DialogElement.new(target, ADEnterGroupNameGui_mt)
+    self:include(ADGuiDebugMixin)
     return self
 end
 
 function ADEnterGroupNameGui:onOpen()
+    self:debugMsg("ADEnterGroupNameGui:onOpen")
     ADEnterGroupNameGui:superClass().onOpen(self)
     self.textInputElement.blockTime = 0
     self.textInputElement:onFocusActivate()
@@ -27,6 +30,7 @@ function ADEnterGroupNameGui:onOpen()
 end
 
 function ADEnterGroupNameGui:onClickOk()
+    self:debugMsg("ADEnterGroupNameGui:onClickOk")
     if  self.textInputElement.text ~= ADGraphManager.debugGroupName then
         -- do not allow user to create debug group
         local groupName = self.textInputElement.text
@@ -39,11 +43,13 @@ function ADEnterGroupNameGui:onClickOk()
 end
 
 function ADEnterGroupNameGui:onEnterPressed(_, isClick)
+    self:debugMsg("ADEnterGroupNameGui:onEnterPressed")
     if not isClick then
         self:onClickOk()
     end
 end
 
 function ADEnterGroupNameGui:onEscPressed()
+    self:debugMsg("ADEnterGroupNameGui:onEscPressed")
     self:onClickBack()
 end
