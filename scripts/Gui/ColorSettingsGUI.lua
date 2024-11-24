@@ -1,37 +1,42 @@
 ADColorSettingsGui = {}
-ADColorSettingsGui.CONTROLS = {"listItemTemplate", "autoDriveColorList"}
 ADColorSettingsGui.debug = false
 
-local ADColorSettingsGui_mt = Class(ADColorSettingsGui, ScreenElement)
+local ADColorSettingsGui_mt = Class(ADColorSettingsGui, DialogElement)
 
-function ADColorSettingsGui:new(target)
-    ADColorSettingsGui.debugMsg("ADColorSettingsGui:new") -- 1
-    local element = ScreenElement.new(target, ADColorSettingsGui_mt)
-    element.returnScreenName = ""
-    element.listItems = {}
-    element.rowIndex = 0
-    --element:registerControls(ADColorSettingsGui.CONTROLS)
-    return element
-end
-
-function ADColorSettingsGui:onCreate()
-    ADColorSettingsGui.debugMsg("ADColorSettingsGui:onCreate") -- 2
-    self.listItemTemplate:unlinkElement()
-    self.listItemTemplate:setVisible(false)
+function ADColorSettingsGui.new(target)
+    local self = DialogElement.new(target, ADColorSettingsGui_mt)
+    self:include(ADGuiDebugMixin)
+    self.listItems = {}
+    return self
 end
 
 function ADColorSettingsGui:onOpen()
-    ADColorSettingsGui.debugMsg("ADColorSettingsGui:onOpen") -- 4
-    self:refreshItems()
+    self:debugMsg("ADColorSettingsGui:onOpen")
     ADColorSettingsGui:superClass().onOpen(self)
+    self.colorList:setDataSource(self)
+    self:refreshItems()
+end
+
+function ADColorSettingsGui:getNumberOfItemsInSection(list, section)
+    self:debugMsg("ADColorSettingsGui:getNumberOfItemsInSection")
+    if list == self.colorList then
+        return #self.listItems
+    end
+end
+
+function ADColorSettingsGui:populateCellForItemInSection(list, section, index, cell)
+    self:debugMsg("ADColorSettingsGui:populateCellForItemInSection")
+    if list == self.colorList then
+        local item = self.listItems[index]
+        cell.attributes.listItemText:setText(item.listItemText)
+        cell.target = self
+    end
 end
 
 function ADColorSettingsGui:refreshItems()
-    ADColorSettingsGui.debugMsg("ADColorSettingsGui:refreshItems")   -- 5
+    self:debugMsg("ADColorSettingsGui:refreshItems")
     self.listItems = {}
-    self.rowIndex = 1
     local colorKeys = AutoDrive:getColorKeyNames()
-    self.autoDriveColorList:deleteListItems()
     for _ , v in pairs(colorKeys) do
         table.insert(self.listItems, {key = v, listItemText = g_i18n:getText(v)})
     end
@@ -41,129 +46,52 @@ function ADColorSettingsGui:refreshItems()
             return a.listItemText < b.listItemText
         end
     )
-    for _, listItem in ipairs(self.listItems) do
-        local new = self.listItemTemplate:clone(self.autoDriveColorList)
-        new:setVisible(true)
-        new.elements[1]:setText(listItem.listItemText)
-        new:updateAbsolutePosition()
-    end
+    self.colorList:reloadData()
 end
 
-function ADColorSettingsGui:onListSelectionChanged(rowIndex)
-    ADColorSettingsGui.debugMsg("ADColorSettingsGui:onListSelectionChanged rowIndex %s", tostring(rowIndex)) -- 3 -> rowIndex==0 !!!
-    if rowIndex > 0 then
-        self.rowIndex = rowIndex
-    end
-end
-
-function ADColorSettingsGui:onClickOk()   -- OK
-    ADColorSettingsGui.debugMsg("ADColorSettingsGui:onClickOk self.rowIndex %s", tostring(self.rowIndex))
+function ADColorSettingsGui:assignColor(index)
+    self:debugMsg("ADColorSettingsGui:assignColor index %d", index)
     local controlledVehicle = AutoDrive.getControlledVehicle()
-    if controlledVehicle ~= nil and controlledVehicle.ad ~= nil and controlledVehicle.ad.selectedColorNodeId ~= nil then
-        local colorPoint = ADGraphManager:getWayPointById(controlledVehicle.ad.selectedColorNodeId)
-        if colorPoint ~= nil and colorPoint.colors ~= nil then
-            if self.rowIndex > 0 and self.listItems ~= nil and #self.listItems > 0 then
-                local colorKeyName = self.listItems[self.rowIndex].key
-                ADColorSettingsGui.debugMsg("ADColorSettingsGui:onClickOk colorKeyName %s ", tostring(colorKeyName))
-                AutoDrive:setColorAssignment(colorKeyName, colorPoint.colors[1], colorPoint.colors[2], colorPoint.colors[3])
-                AutoDrive.writeLocalSettingsToXML()
-            end
-        end
+    if controlledVehicle == nil or controlledVehicle.ad == nil or controlledVehicle.ad.selectedColorNodeId == nil then
+        self:debugMsg("ADColorSettingsGui:assignColor no color node id")
+        return
     end
-    ADColorSettingsGui.debugMsg("ADColorSettingsGui:onClickOk end")
-    ADColorSettingsGui:superClass().onClickBack(self)
-end
 
-function ADColorSettingsGui:onClickBack()   -- ESC
-    ADColorSettingsGui.debugMsg("ADColorSettingsGui:onClickBack")
-    ADColorSettingsGui:superClass().onClickBack(self)
-end
-
-function ADColorSettingsGui:onClickReset()
-    ADColorSettingsGui.debugMsg("ADColorSettingsGui:onClickReset")
-    if self.rowIndex > 0 and self.listItems ~= nil and #self.listItems > 0 then
-        local colorKeyName = self.listItems[self.rowIndex].key
-        AutoDrive:resetColorAssignment(colorKeyName)
-        AutoDrive.writeLocalSettingsToXML()
+    local colorPoint = ADGraphManager:getWayPointById(controlledVehicle.ad.selectedColorNodeId)
+    if colorPoint == nil or colorPoint.colors == nil then
+        self:debugMsg("ADColorSettingsGui:assignColor no colors")
+        return
     end
-    ADColorSettingsGui:superClass().onClickBack(self)
+
+    local colorKeyName = self.listItems[index].key
+    self:debugMsg("ADColorSettingsGui:assignColor colorKeyName %s ", tostring(colorKeyName))
+    AutoDrive:setColorAssignment(colorKeyName, colorPoint.colors[1], colorPoint.colors[2], colorPoint.colors[3])
+    AutoDrive.writeLocalSettingsToXML()
 end
 
-function ADColorSettingsGui:onEnterPressed(_, isClick)
-    ADColorSettingsGui.debugMsg("ADColorSettingsGui:onEnterPressed isClick %s", tostring(isClick))
-    if not isClick then
-        -- self:onDoubleClick(self.autoDriveColorList:getSelectedElementIndex())
+function ADColorSettingsGui:onDoubleClick(list, section, index, cell)
+    self:debugMsg("ADColorSettingsGui:onDoubleClick")
+    if index > 0 and index <= #self.listItems then
+        self:assignColor(index)
     end
 end
 
-function ADColorSettingsGui:onEscPressed()
-    ADColorSettingsGui.debugMsg("ADColorSettingsGui:onEscPressed")
+function ADColorSettingsGui:onClickSave()
+    self:debugMsg("ADColorSettingsGui:onClickSave")
+    if #self.listItems > 0 then
+        local index = self.colorList:getSelectedIndexInSection()
+        self:assignColor(index)
+    end
     self:onClickBack()
 end
 
-function ADColorSettingsGui.debugMsg(...)
-    if ADColorSettingsGui.debug == true then
-        AutoDrive.debugMsg(nil, ...)
+function ADColorSettingsGui:onClickResetSelected()
+    self:debugMsg("ADColorSettingsGui:onClickResetSelected")
+    if #self.listItems > 0 then
+        local index = self.colorList:getSelectedIndexInSection()
+        local colorKeyName = self.listItems[index].key
+        AutoDrive:resetColorAssignment(colorKeyName)
+        AutoDrive.writeLocalSettingsToXML()
     end
-end
-
-function ADColorSettingsGui:onCreateAutoDriveHeaderText(box)
-    if self.storedHeaderKey == nil then
-        self.storedHeaderKey = box.text
-    end
-    if self.storedHeaderKey ~= nil then
-
-        local hasText = self.storedHeaderKey ~= nil and self.storedHeaderKey ~= ""
-        if hasText then
-            local text = self.storedHeaderKey
-            if text:sub(1,6) == "$l10n_" then
-                text = text:sub(7)
-            end
-            text = g_i18n:getText(text)
-            box:setTextInternal(text, false, true)
-        end
-    end
-end
-
-function ADColorSettingsGui:onCreateAutoDriveText1(box)
-    if self.storedKey1 == nil then
-        self.storedKey1 = box.text
-    end
-    if self.storedKey1 ~= nil then
-
-        local hasText = self.storedKey1 ~= nil and self.storedKey1 ~= ""
-        if hasText then
-            local text = self.storedKey1
-            if text:sub(1,6) == "$l10n_" then
-                text = text:sub(7)
-            end
-            text = g_i18n:getText(text)
-            box:setTextInternal(text, false, true)
-        end
-    end
-end
-
-function ADColorSettingsGui:onCreateAutoDriveText2(box)
-    if self.storedKey2 == nil then
-        self.storedKey2 = box.text
-    end
-    if self.storedKey2 ~= nil then
-
-        local hasText = self.storedKey2 ~= nil and self.storedKey2 ~= ""
-        if hasText then
-            local text = self.storedKey2
-            if text:sub(1,6) == "$l10n_" then
-                text = text:sub(7)
-            end
-            text = g_i18n:getText(text)
-            box:setTextInternal(text, false, true)
-        end
-    end
-end
-
-function ADColorSettingsGui:copyAttributes(src)
-	ADColorSettingsGui:superClass().copyAttributes(self, src)
-    self.storedHeaderKey = src.storedHeaderKey
-    self.storedKey1 = src.storedKey1
-    self.storedKey2 = src.storedKey2
+    self:onClickBack()
 end
