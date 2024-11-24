@@ -140,7 +140,7 @@ function ADPullDownList:onDraw(vehicle, uiScale)
         local posY = self.position.y + (self.size.height - textHeight) / 2
 
         setTextBold(false)
-        setTextColor(unpack(AutoDrive.colors.ad_color_hudTextDefault))
+        setTextColor(unpack(AutoDrive.currentColors.ad_color_hudTextDefault))
 
         -- TODO: Move this out of onDraw, as it SHOULD NOT be checked at-every-frame-update whether text needs to be rendered in green or not.
         if vehicle.ad.stateModule:isActive() then
@@ -158,7 +158,7 @@ function ADPullDownList:onDraw(vehicle, uiScale)
             end
 
             if actualTarget == targetToCheck then
-                setTextColor(unpack(AutoDrive.colors.ad_color_hudTextHover))
+                setTextColor(unpack(AutoDrive.currentColors.ad_color_hudTextHover))
             end
         end
 
@@ -243,16 +243,16 @@ function ADPullDownList:onDraw(vehicle, uiScale)
                 if self.hovered == self.selected + (i - 1) then
                     -- mouse hovering over selected item
                     if makeSpecial then
-                        setTextColor(unpack(AutoDrive.colors.ad_color_hudTextHoverSpecial))
+                        setTextColor(unpack(AutoDrive.currentColors.ad_color_hudTextHoverSpecial))
                     else
-                        setTextColor(unpack(AutoDrive.colors.ad_color_hudTextHover))
+                        setTextColor(unpack(AutoDrive.currentColors.ad_color_hudTextHover))
                     end
                 else
                     -- other element
                     if makeSpecial then
-                        setTextColor(unpack(AutoDrive.colors.ad_color_hudTextSpecial))
+                        setTextColor(unpack(AutoDrive.currentColors.ad_color_hudTextSpecial))
                     else
-                        setTextColor(unpack(AutoDrive.colors.ad_color_hudTextDefault))
+                        setTextColor(unpack(AutoDrive.currentColors.ad_color_hudTextDefault))
                     end
                 end
 
@@ -270,7 +270,7 @@ function ADPullDownList:onDraw(vehicle, uiScale)
         if AutoDrive.isEditorModeEnabled() and self.dragged ~= nil and self.startedDraggingTimer > 200 then
             if g_lastMousePosX ~= nil and g_lastMousePosY ~= nil then
                 setTextBold(true)
-                setTextColor(unpack(AutoDrive.colors.ad_color_hudTextHover))
+                setTextColor(unpack(AutoDrive.currentColors.ad_color_hudTextHover))
 
                 renderText(g_lastMousePosX, g_lastMousePosY, adFontSize, self.draggedElement.displayName)
             end
