@@ -73,7 +73,7 @@ function ADRecordingModule:stop()
 end
 
 function ADRecordingModule:updateTick(dt, isActiveForInput, isActiveForInputIgnoreSelection, isSelected)
-    if not AutoDrive.experimentalFeatures.RecordWhileNotInVehicle then
+    if not AutoDrive.getSetting("RecordWhileNotInVehicle") then
         if not self.vehicle.ad.stateModule:isInCreationMode() then
             return
         end

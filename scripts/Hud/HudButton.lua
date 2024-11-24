@@ -124,7 +124,7 @@ function ADHudButton:getNewState(vehicle)
     end
 
     if self.primaryAction == "input_routesManager" then
-        if (AutoDrive.experimentalFeatures.enableRoutesManagerOnDediServer == true and g_dedicatedServer ~= nil) or g_dedicatedServer == nil then
+        if (AutoDrive.getSetting("enableRoutesManagerOnDediServer") and g_dedicatedServer ~= nil) or g_dedicatedServer == nil then
             self.isVisible = AutoDrive.isEditorModeEnabled()
         end
     end

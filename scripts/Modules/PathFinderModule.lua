@@ -123,7 +123,7 @@ function PathFinderModule:reset()
     self.chasingVehicle = false
     self.isSecondChasingVehicle = false
 
-    if AutoDrive.experimentalFeatures.NewPathfinder then
+    if AutoDrive.getSetting("Pathfinder") then
         self.PP_UP = 0
         self.PP_UP_LEFT = 1
         self.PP_LEFT = 2

@@ -379,7 +379,7 @@ function AutoDrive:onUpdateTick(dt, isActiveForInput, isActiveForInputIgnoreSele
     if self.isServer then
         self.ad.recordingModule:updateTick(dt, isActiveForInput, isActiveForInputIgnoreSelection, isSelected)
 
-        if AutoDrive.experimentalFeatures.FoldImplements and self.ad.stateModule:isActive() then
+        if AutoDrive.getSetting("FoldImplements", self) and self.ad.stateModule:isActive() then
             -- fold combine ladder if user exit the vehicle #679
             if not AutoDrive.isLadderFolded(self) then
                 AutoDrive.foldLadder(self)
@@ -438,7 +438,7 @@ function AutoDrive:onUpdate(dt)
     if self.isServer and self.ad.stateModule:isActive() then
         self.ad.recordingModule:update(dt)
 
-        if not AutoDrive.experimentalFeatures.FoldImplements or (self.ad.foldStartTime + AutoDrive.foldTimeout < g_time) then
+        if not AutoDrive.getSetting("FoldImplements", self) or (self.ad.foldStartTime + AutoDrive.foldTimeout < g_time) then
             self.ad.taskModule:update(dt)
         else
             -- should fold implements
@@ -753,7 +753,7 @@ function AutoDrive:onEnterVehicle(isControlling)
 end
 
 function AutoDrive:onLeaveVehicle(wasEntered)
-    if not AutoDrive.experimentalFeatures.RecordWhileNotInVehicle then
+    if not AutoDrive.getSetting("RecordWhileNotInVehicle") then
         if self.ad ~= nil and self.ad.stateModule ~= nil then
             self.ad.stateModule:disableCreationMode()
         end
@@ -781,10 +781,7 @@ function AutoDrive:onDrawEditorMode()
     local isActive = self.ad.stateModule:isActive()
     local DrawingManager = ADDrawingManager
 
-    local startNode = self.ad.frontNode
-    if not AutoDrive.experimentalFeatures.redLinePosition then
-        startNode = self.components[1].node
-    end
+    local startNode = self.components[1].node
     local x1, y1, z1 = getWorldTranslation(startNode)
 
     local dy = y1 + 3.5 - AutoDrive.getSetting("lineHeight")

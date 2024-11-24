@@ -1082,6 +1082,78 @@ AutoDrive.settings.BSMRange = {
     isVehicleSpecific = false
 }
 
+AutoDrive.settings.Pathfinder = {
+    values = {0, 1},
+    texts = {"gui_ad_pathfinder_custom", "gui_ad_pathfinder_astar"},
+    default = 2,
+    current = 2,
+    text = "gui_ad_pathfinder",
+    tooltip = "gui_ad_pathfinder_tooltip",
+    translate = true,
+    isVehicleSpecific = false,
+    isUserSpecific = false
+}
+
+AutoDrive.settings.enableRoutesManagerOnDediServer = {
+    values = {false, true},
+    texts = {"gui_ad_no", "gui_ad_yes"},
+    default = 1,
+    current = 1,
+    text = "gui_ad_enableRoutesManagerOnDediServer",
+    tooltip = "gui_ad_enableRoutesManagerOnDediServer_tooltip",
+    translate = true,
+    isVehicleSpecific = false,
+    isUserSpecific = false
+}
+
+AutoDrive.settings.detectSwath = {
+    values = {false, true},
+    texts = {"gui_ad_no", "gui_ad_yes"},
+    default = 2,
+    current = 2,
+    text = "gui_ad_detectSwath",
+    tooltip = "gui_ad_detectSwath_tooltip",
+    translate = true,
+    isVehicleSpecific = true,
+    isUserSpecific = false
+}
+
+AutoDrive.settings.colorAssignmentMode = {
+    values = {false, true},
+    texts = {"gui_ad_no", "gui_ad_yes"},
+    default = 1,
+    current = 1,
+    text = "gui_ad_colorAssignmentMode",
+    tooltip = "gui_ad_colorAssignmentMode_tooltip",
+    translate = true,
+    isVehicleSpecific = false,
+    isUserSpecific = true
+}
+
+AutoDrive.settings.FoldImplements = {
+    values = {false, true},
+    texts = {"gui_ad_no", "gui_ad_yes"},
+    default = 1,
+    current = 1,
+    text = "gui_ad_FoldImplements",
+    tooltip = "gui_ad_FoldImplements_tooltip",
+    translate = true,
+    isVehicleSpecific = true,
+    isUserSpecific = false
+}
+
+AutoDrive.settings.RecordWhileNotInVehicle = {
+    values = {false, true},
+    texts = {"gui_ad_no", "gui_ad_yes"},
+    default = 1,
+    current = 1,
+    text = "gui_ad_RecordWhileNotInVehicle",
+    tooltip = "gui_ad_RecordWhileNotInVehicle_tooltip",
+    translate = true,
+    isVehicleSpecific = false,
+    isUserSpecific = true
+}
+
 function AutoDrive.getSetting(settingName, vehicle)
     if AutoDrive.settings[settingName] ~= nil then
         local setting = AutoDrive.settings[settingName]

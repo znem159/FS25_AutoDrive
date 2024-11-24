@@ -233,7 +233,7 @@ function ADInputManager:input_toggleMouse()
 end
 
 function ADInputManager:input_routesManager()
-    if (AutoDrive.experimentalFeatures.enableRoutesManagerOnDediServer == true and g_dedicatedServer ~= nil) or g_dedicatedServer == nil then
+    if (AutoDrive.getSetting("enableRoutesManagerOnDediServer") and g_dedicatedServer ~= nil) or g_dedicatedServer == nil then
         AutoDrive.onOpenRoutesManager()
     end
 end

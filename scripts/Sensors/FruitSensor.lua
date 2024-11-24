@@ -26,7 +26,7 @@ function ADFruitSensor:onUpdate(dt)
         end
     end
 
-    if AutoDrive.experimentalFeatures.detectSwath then
+    if AutoDrive.getSetting("detectSwath") then
         local fillTypeName = "GRASS_WINDROW"
         local fillTypeIndex = g_fillTypeManager:getFillTypeIndexByName(fillTypeName)
         if fillTypeIndex then

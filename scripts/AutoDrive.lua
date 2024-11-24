@@ -9,13 +9,6 @@ g_autoDriveIconFilename = g_iconsUIFilename
 
 AutoDrive.experimentalFeatures = {}
 -- AutoDrive.experimentalFeatures.telemetryOutput = false
-AutoDrive.experimentalFeatures.enableRoutesManagerOnDediServer = false
-AutoDrive.experimentalFeatures.detectSwath = true
-AutoDrive.experimentalFeatures.colorAssignmentMode = false
-AutoDrive.experimentalFeatures.UTurn = true
-AutoDrive.experimentalFeatures.FoldImplements = true
-AutoDrive.experimentalFeatures.RecordWhileNotInVehicle = false
-AutoDrive.experimentalFeatures.NewPathfinder = true
 
 AutoDrive.automaticUnloadTarget = false
 AutoDrive.automaticPickupTarget = false

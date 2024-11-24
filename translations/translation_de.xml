@@ -259,6 +259,20 @@
 		<text name="gui_ad_remainingDriveTimeInterval_tooltip"	text="Für externe mods: Zeit-Intervall zur Berechnung der Restfahrzeit. Bei Performanceproblemen erhöhen oder deaktivieren." />
 		<text name="gui_ad_adpd_showError"						text="AutoDrive: Das Netzwerk ist inkonsistent und kann nicht importiert werden, error code" />
 		<text name="gui_ad_adpd_showConfirmation"				text="AutoDrive: Möchten Sie das AD Netzwerk aus dem Placeable importieren?" />
+		<text name="gui_ad_pathfinder"							text="Pfadfinde Algorithmus" />
+		<text name="gui_ad_pathfinder_tooltip"					text="Wähle welcher Algorithmus bei freier Pfadfindung (nicht im Streckennetz) genutzt wird" />
+		<text name="gui_ad_pathfinder_astar"					text="A-Stern + Dubbins" />
+		<text name="gui_ad_pathfinder_custom"					text="AutoDrive Spezial" />
+		<text name="gui_ad_enableRoutesManagerOnDediServer"			text="Routenmanager im Server" />
+		<text name="gui_ad_enableRoutesManagerOnDediServer_tooltip"	text="Aktiviert die Nutzung des Routenmanager auf einem dedizierten Server" />
+		<text name="gui_ad_detectSwath"							text="Schwaderkennung" />
+		<text name="gui_ad_detectSwath_tooltip"					text="Legt fest, ob das Fahrzeug Grasschwaden als Frucht erkennt" />
+		<text name="gui_ad_colorAssignmentMode"					text="Personalisierte Farben" />
+		<text name="gui_ad_colorAssignmentMode_tooltip"			text="Erlaubt das Auswählen von nutzerspezifischen Farben für AutoDrive" />
+		<text name="gui_ad_FoldImplements"						text="Anbaugeräte einklappen" />
+		<text name="gui_ad_FoldImplements_tooltip"				text="AutoDrive wird vorm Losfahren auf das Einklappen von Anbaugeräten warten" />
+		<text name="gui_ad_RecordWhileNotInVehicle"				text="Aufnahme ohne Fahrer" />
+		<text name="gui_ad_RecordWhileNotInVehicle_tooltip"		text="AutoDrive wird die Aufnahme nicht beenden, wenn der Fahrer das Fahrzeug verlässt" />
 
 		<text name="gui_ad_settingsPage_title"					text="Einstellungen - AutoDrive" />
 		<text name="gui_ad_userSettingsPage_title"				text="Benutzereinstellungen - AutoDrive" />

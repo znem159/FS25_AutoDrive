@@ -256,7 +256,7 @@ function FollowCombineTask:update(dt)
                 FollowCombineTask.debugMsg(self.vehicle, "FollowCombineTask:update STATE_WAIT_FOR_TURN - combine turn finished - Heading looks good - start chasing again")
                 self.state = FollowCombineTask.STATE_CHASING
                 return
-            elseif self.angleToCombineHeading > 150 and self.angleToCombineHeading < 210 and self.distanceToCombine < 80 and AutoDrive.experimentalFeatures.UTurn == true and self.combine.ad.isHarvester then
+            elseif self.angleToCombineHeading > 150 and self.angleToCombineHeading < 210 and self.distanceToCombine < 80 and self.combine.ad.isHarvester then
                 -- Instead of directly trying a long way around to get behind the harvester, let's wait for him to pass us by and then U-turn
                 FollowCombineTask.debugMsg(self.vehicle, "FollowCombineTask:update STATE_WAIT_FOR_TURN - combine turn finished - Heading inverted - wait for passby, then U-turn")
                 self.state = FollowCombineTask.STATE_WAIT_FOR_COMBINE_TO_PASS_BY

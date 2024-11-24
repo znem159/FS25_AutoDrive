@@ -121,6 +121,19 @@
 					</MultiTextOption>
 					<Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_gui_ad_maxTriggerDistance"/>
 				</Bitmap>
+				<Bitmap profile="fs25_multiTextOptionContainer" onCreate="onCreateAutoDriveSettingRow">
+					<MultiTextOption profile="fs25_settingsMultiTextOption" onClick="onOptionChange" onCreate="onCreateAutoDriveSetting"  name="detectSwath"  id="detectSwath">
+						<Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_gui_ad_detectSwath_tooltip"/>
+					</MultiTextOption>
+					<Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_gui_ad_detectSwath"/>
+				</Bitmap>
+				<Bitmap profile="fs25_multiTextOptionContainer" onCreate="onCreateAutoDriveSettingRow">
+					<MultiTextOption profile="fs25_settingsMultiTextOption" onClick="onOptionChange" onCreate="onCreateAutoDriveSetting"  name="FoldImplements"  id="FoldImplements">
+						<Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_gui_ad_FoldImplements_tooltip"/>
+					</MultiTextOption>
+					<Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_gui_ad_FoldImplements"/>
+				</Bitmap>
+
 
 
 				<Text profile="fs25_settingsSectionHeader" name="sectionHeader" text="$l10n_gui_ad_settingsPage_title"/>
@@ -197,6 +210,18 @@
 					</MultiTextOption>
 					<Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_gui_ad_BSMRange"/>
 				</Bitmap>
+				<Bitmap profile="fs25_multiTextOptionContainer" onCreate="onCreateAutoDriveSettingRow">
+					<MultiTextOption profile="fs25_settingsMultiTextOption" onClick="onOptionChange" onCreate="onCreateAutoDriveSetting"  name="Pathfinder"  id="Pathfinder">
+						<Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_gui_ad_pathfinder_tooltip"/>
+					</MultiTextOption>
+					<Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_gui_ad_pathfinder"/>
+				</Bitmap>
+				<Bitmap profile="fs25_multiTextOptionContainer" onCreate="onCreateAutoDriveSettingRow">
+					<MultiTextOption profile="fs25_settingsMultiTextOption" onClick="onOptionChange" onCreate="onCreateAutoDriveSetting"  name="enableRoutesManagerOnDediServer"  id="enableRoutesManagerOnDediServer">
+						<Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_gui_ad_enableRoutesManagerOnDediServer_tooltip"/>
+					</MultiTextOption>
+					<Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_gui_ad_enableRoutesManagerOnDediServer"/>
+				</Bitmap>			
 
 				
 				<Text profile="fs25_settingsSectionHeader" name="sectionHeader" text="$l10n_gui_ad_userSettingsPage_title"/>
@@ -285,6 +310,19 @@
 					</MultiTextOption>
 					<Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_gui_ad_scaleMarkerText"/>
 				</Bitmap>
+				<Bitmap profile="fs25_multiTextOptionContainer" onCreate="onCreateAutoDriveSettingRow">
+					<MultiTextOption profile="fs25_settingsMultiTextOption" onClick="onOptionChange" onCreate="onCreateAutoDriveSetting"  name="colorAssignmentMode"  id="colorAssignmentMode">
+						<Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_gui_ad_colorAssignmentMode_tooltip"/>
+					</MultiTextOption>
+					<Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_gui_ad_colorAssignmentMode"/>
+				</Bitmap>
+				<Bitmap profile="fs25_multiTextOptionContainer" onCreate="onCreateAutoDriveSettingRow">
+					<MultiTextOption profile="fs25_settingsMultiTextOption" onClick="onOptionChange" onCreate="onCreateAutoDriveSetting"  name="RecordWhileNotInVehicle"  id="RecordWhileNotInVehicle">
+						<Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_gui_ad_RecordWhileNotInVehicle_tooltip"/>
+					</MultiTextOption>
+					<Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_gui_ad_RecordWhileNotInVehicle"/>
+				</Bitmap>
+				
 
 
 				<Text profile="fs25_settingsSectionHeader" name="sectionHeader" text="$l10n_gui_ad_combineUnloadSettingsPage_title"/>
