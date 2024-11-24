@@ -109,7 +109,7 @@ function AutoDrive.readNewInputs()
 		end
 
 		if enterVehicle ~= nil and enterVehicle == true and vehicle ~= AutoDrive.getControlledVehicle() then
-			g_currentMission:requestToEnterVehicle(enterVehicle)
+			AutoDrive.requestToEnterVehicle(enterVehicle)
 		end		
 
 		if continue ~= nil and continue == true then
@@ -129,11 +129,11 @@ end
 
 function AutoDrive.EnterVehicle(vehicle)	
 	AutoDrive.RestoreVehicle = AutoDrive.getControlledVehicle();
-	g_currentMission:requestToEnterVehicle(vehicle)
+	AutoDrive.requestToEnterVehicle(vehicle)
 end
 
 function AutoDrive.GoBackToCurrentVehicle()
-	g_currentMission:requestToEnterVehicle(AutoDrive.RestoreVehicle)
+	AutoDrive.requestToEnterVehicle(AutoDrive.RestoreVehicle)
 end
 
 function AutoDrive.outputTelemetry()

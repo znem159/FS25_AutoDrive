@@ -278,18 +278,18 @@ function ADInputManager:input_start_stop(vehicle, farmId)
                     --Doesn't work yet, if vehicle hasn't been entered before apparently. So we need to check what to call before, to setup all required variables.
                     
                     if otherVehicle.ad.stateModule.activeBeforeSave then
-                        -- g_currentMission:requestToEnterVehicle(otherVehicle)
+                        AutoDrive.requestToEnterVehicle(otherVehicle)
                         otherVehicle.ad.stateModule:setLoopsDone(0)
                         otherVehicle.ad.stateModule:getCurrentMode():start(AutoDrive.USER_PLAYER)
                     end
                     if otherVehicle.ad.stateModule.AIVEActiveBeforeSave and otherVehicle.acParameters ~= nil then
-                        -- g_currentMission:requestToEnterVehicle(otherVehicle)
+                        AutoDrive.requestToEnterVehicle(otherVehicle)
                         otherVehicle.acParameters.enabled = true
                         otherVehicle:toggleAIVehicle()
                     end                    
 				end
 			end
-            -- g_currentMission:requestToEnterVehicle(vehicle)
+            AutoDrive.requestToEnterVehicle(vehicle)
         end
     end
     if vehicle.isServer then

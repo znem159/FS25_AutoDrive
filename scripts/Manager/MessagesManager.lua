@@ -289,6 +289,6 @@ end
 
 function ADMessagesManager:goToVehicle()
     if self.lastNotificationVehicle ~= nil then
-        g_currentMission:requestToEnterVehicle(self.lastNotificationVehicle)
+        AutoDrive.requestToEnterVehicle(self.lastNotificationVehicle)
     end
 end
