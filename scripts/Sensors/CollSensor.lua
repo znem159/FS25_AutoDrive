@@ -178,7 +178,7 @@ function ADCollSensor.getMaskFS22()
 end
 
 function ADCollSensor.getMask()
-    return CollisionFlag.DEFAULT + CollisionFlag.STATIC_OBJECT + CollisionFlag.DYNAMIC_OBJECT + CollisionFlag.VEHICLE + CollisionFlag.TERRAIN_DELTA
+    return CollisionFlag.DEFAULT + CollisionFlag.STATIC_OBJECT + CollisionFlag.DYNAMIC_OBJECT + CollisionFlag.VEHICLE + CollisionFlag.TERRAIN_DELTA + CollisionFlag.TREE + CollisionFlag.BUILDING 
 --[[
     local mask = 0
      
@@ -279,7 +279,7 @@ function ADCollSensor:onUpdate(dt)
         local offsetCompensation = math.max(-math.tan(box.rx) * box.size[3], 0)
 		box.y = math.max(getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, box.x, 300, box.z), box.y) + offsetCompensation
 
-        self.collisionHits = overlapBox(box.x, box.y, box.z, box.rx, box.ry, 0, box.size[1], box.size[2], box.size[3], "collisionTestCallback", self, self.mask, true, true, true) --AIVehicleUtil.COLLISION_MASK --16783599
+        self.collisionHits = overlapBox(box.x, box.y, box.z, box.rx, box.ry, 0, box.size[1], box.size[2], box.size[3], "collisionTestCallback", self, self.mask, true, true, true, true) --AIVehicleUtil.COLLISION_MASK --16783599
 
         --for some reason, I have to call this again if collisionHits > 0 to trigger the callback functions, which check if the hit object is me or is attached to me
         if self.collisionHits > 0 then

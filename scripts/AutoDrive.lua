@@ -8,14 +8,12 @@ g_autoDriveDebugUIFilename = AutoDrive.directory .. "textures/gui_debug_Icons.dd
 g_autoDriveIconFilename = g_iconsUIFilename
 
 AutoDrive.experimentalFeatures = {}
-AutoDrive.experimentalFeatures.redLinePosition = false
 -- AutoDrive.experimentalFeatures.telemetryOutput = false
 AutoDrive.experimentalFeatures.enableRoutesManagerOnDediServer = false
 AutoDrive.experimentalFeatures.detectSwath = true
 AutoDrive.experimentalFeatures.colorAssignmentMode = false
 AutoDrive.experimentalFeatures.UTurn = true
 AutoDrive.experimentalFeatures.FoldImplements = true
-AutoDrive.experimentalFeatures.RefuelOnlyAtValidStations = true
 AutoDrive.experimentalFeatures.RecordWhileNotInVehicle = false
 AutoDrive.experimentalFeatures.NewPathfinder = true
 

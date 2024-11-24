@@ -310,12 +310,7 @@ function AutoDrive:onPostLoad(savegame)
     self.ad.frontNode = createTransformGroup(self:getName() .. "_frontNode")
     link(self.components[1].node, self.ad.frontNode)
     setTranslation(self.ad.frontNode, 0, 0, self.size.length / 2 + self.size.lengthOffset + 0.75)
-    self.ad.frontNodeGizmo = DebugGizmo.new()
-    if self.ad.frontNodeGizmo == nil then
-        Logging.error("[AD] AutoDrive:onPostLoad frontNodeGizmo not creatd!")
-    end
 
-    -- self.ad.debug = RingQueue:new()
     local x, y, z = getWorldTranslation(self.components[1].node)
     self.ad.lastDrawPosition = {x = x, z = z}
 
@@ -552,11 +547,6 @@ function AutoDrive:onDraw()
         if AutoDrive.splineInterpolation ~= nil and AutoDrive.splineInterpolation.valid then
             self:onDrawPreviews()
         end
-    end
-
-    if AutoDrive.experimentalFeatures.redLinePosition and AutoDrive.getDebugChannelIsSet(AutoDrive.DC_VEHICLEINFO) and self.ad.frontNodeGizmo ~= nil then
-        self.ad.frontNodeGizmo:createWithNode(self.ad.frontNode, getName(self.ad.frontNode), false)
-        self.ad.frontNodeGizmo:draw()
     end
 
     local x, y, z = getWorldTranslation(self.components[1].node)

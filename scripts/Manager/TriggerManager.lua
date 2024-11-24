@@ -177,14 +177,11 @@ function ADTriggerManager.getRefuelTriggers(vehicle, ignoreFillLevel)
                     if trigger.fillTypes and trigger.fillTypes[refuelFillType] then
                         hasFill = hasFill or (fillLevels[refuelFillType] and fillLevels[refuelFillType] > 0)
                         if hasFill then
-                            local isVehicleTrigger = true
-                            if AutoDrive.experimentalFeatures.RefuelOnlyAtValidStations == true then
-                                isVehicleTrigger = trigger.triggerNode and CollisionFlag.getHasMaskFlagSet(trigger.triggerNode, CollisionFlag.FILLABLE) and CollisionFlag.getHasGroupFlagSet(trigger.triggerNode, CollisionFlag.TRIGGER)
-                                AutoDrive.debugPrint(vehicle, AutoDrive.DC_VEHICLEINFO, "ADTriggerManager.getRefuelTriggers hasFill %s isVehicleTrigger %s", tostring(hasFill), tostring(isVehicleTrigger))
-                                if isVehicleTrigger then
-                                    local triggerX, _, triggerZ = ADTriggerManager.getTriggerPos(trigger)
-                                    AutoDrive.debugPrint(vehicle, AutoDrive.DC_VEHICLEINFO, "ADTriggerManager.getRefuelTriggers Pos: %s,%s", tostring(triggerX), tostring(triggerZ))
-                                end
+                            local isVehicleTrigger = trigger.triggerNode and CollisionFlag.getHasMaskFlagSet(trigger.triggerNode, CollisionFlag.FILLABLE) and CollisionFlag.getHasGroupFlagSet(trigger.triggerNode, CollisionFlag.TRIGGER)
+                            AutoDrive.debugPrint(vehicle, AutoDrive.DC_VEHICLEINFO, "ADTriggerManager.getRefuelTriggers hasFill %s isVehicleTrigger %s", tostring(hasFill), tostring(isVehicleTrigger))
+                            if isVehicleTrigger then
+                                local triggerX, _, triggerZ = ADTriggerManager.getTriggerPos(trigger)
+                                AutoDrive.debugPrint(vehicle, AutoDrive.DC_VEHICLEINFO, "ADTriggerManager.getRefuelTriggers Pos: %s,%s", tostring(triggerX), tostring(triggerZ))
                             end
                             if isVehicleTrigger and not table.contains(refuelTriggers, trigger) then
                                 table.insert(refuelTriggers, trigger)

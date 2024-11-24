@@ -9,7 +9,7 @@ ADSettings = {}
 
 local ADSettings_mt = Class(ADSettings, TabbedMenu)
 
-ADSettings.CONTROLS = {"autoDriveVehicleSettings"} -- , "autoDriveCombineUnloadSettings", "autoDriveUserSettings", "autoDriveSettings", "autoDriveEnvironmentSettings",  "autoDriveDebugSettings", "autoDriveExperimentalFeaturesSettings"}
+ADSettings.CONTROLS = {"autoDriveVehicleSettings", "autoDriveDebugSettings"} -- , "autoDriveCombineUnloadSettings", "autoDriveUserSettings", "autoDriveSettings", "autoDriveEnvironmentSettings",  "autoDriveDebugSettings", "autoDriveExperimentalFeaturesSettings"}
 
 --- Page tab UV coordinates for display elements.
 --AD specific iconUVs
@@ -29,10 +29,10 @@ ADSettings.TAB_UV = {
 
 ADSettings.TAB_UV = {
     SETTINGS_GENERAL = {0, 0, 64, 64},
-    SETTINGS_VEHICLE = {650, 0, 64, 64},
+    SETTINGS_VEHICLE = {0, 0, 128, 128},
     SETTINGS_USER = {0, 130, 64, 64},
     SETTINGS_UNLOAD = {0, 0, 128, 128},
-    SETTINGS_DEBUG = {588, 140, 64, 64},
+    SETTINGS_DEBUG = {385, 0, 128, 128},
     SETTINGS_EXPFEAT = {0, 270, 64, 64},
     SETTINGS_ENVIRONMENT = {134, 0, 64, 64}
 }
@@ -70,7 +70,6 @@ function ADSettings:onGuiSetupFinished()
 end
 
 function ADSettings:setupPages()    
-    local controlledVehicle = AutoDrive.getControlledVehicle()
     local alwaysEnabled = function()
         return true
     end
@@ -80,6 +79,7 @@ function ADSettings:setupPages()
     end
 
     local vehicleEnabled = function()
+        local controlledVehicle = AutoDrive.getControlledVehicle()
         if g_currentMission ~= nil and controlledVehicle ~= nil and controlledVehicle.ad ~= nil then
             return true
         end
@@ -87,6 +87,7 @@ function ADSettings:setupPages()
     end
 
     local combineEnabled = function()
+        local controlledVehicle = AutoDrive.getControlledVehicle()
         if vehicleEnabled() and (controlledVehicle and controlledVehicle.ad and controlledVehicle.ad.hasCombine) then
             return true
         end
@@ -94,40 +95,27 @@ function ADSettings:setupPages()
     end
 
     local orderedPages = {
-        {self.autoDriveVehicleSettings, vehicleEnabled, g_iconsUIFilename, ADSettings.TAB_UV.SETTINGS_VEHICLE, false},
+        {self.autoDriveVehicleSettings, vehicleEnabled, g_autoDriveDebugUIFilename, ADSettings.TAB_UV.SETTINGS_VEHICLE, false},
         --{self.autoDriveCombineUnloadSettings, combineEnabled, g_autoDriveUIFilename, ADSettings.TAB_UV.SETTINGS_UNLOAD, false},
         --{self.autoDriveUserSettings, alwaysEnabled, g_iconsUIFilename, ADSettings.TAB_UV.SETTINGS_USER, false},
         --{self.autoDriveSettings, alwaysEnabled, g_iconsUIFilename, ADSettings.TAB_UV.SETTINGS_GENERAL, false},
         --{self.autoDriveEnvironmentSettings, vehicleEnabled, g_iconsUIFilename, ADSettings.TAB_UV.SETTINGS_ENVIRONMENT, false},
-        --{self.autoDriveDebugSettings, developmentControlsEnabled, g_iconsUIFilename, ADSettings.TAB_UV.SETTINGS_DEBUG, true},
+        {self.autoDriveDebugSettings, developmentControlsEnabled, g_autoDriveDebugUIFilename, ADSettings.TAB_UV.SETTINGS_DEBUG, true}
         --{self.autoDriveExperimentalFeaturesSettings, alwaysEnabled, g_iconsUIFilename, ADSettings.TAB_UV.SETTINGS_EXPFEAT, true}
     }
 
     for i, pageDef in ipairs(orderedPages) do        
         local page, predicate, uiFilename, iconUVs, isAutonomous = unpack(pageDef)
-        --[[
+        
         local normalizedIconUVs = GuiUtils.getUVs(iconUVs)
-
-        AutoDrive.dumpTable(normalizedIconUVs, "normalizedIconUVs: ", 1)
-        AutoDrive.dumpTable(pageDef, "pageDef: ", 1)
-        AutoDrive.dumpTable(self, "self: ", 2)
-
         local pageRoot, position = self:registerPage(page, i, predicate)
 
-        AutoDrive.dumpTable(self, "self2: ", 2)
-
         self:addPageTab(page, uiFilename, normalizedIconUVs) -- use the global here because the value changes with resolution settings
-        
-        AutoDrive.dumpTable(self, "self3: ", 2)  
-        --]]
+                
         page.isAutonomous = isAutonomous
-        --[[]]
-        -- page.headerIcon:setImageFilename(uiFilename)
-        -- page.headerIcon:setImageUVs(nil, unpack(normalizedIconUVs))
         if page.setupMenuButtonInfo ~= nil then
             page:setupMenuButtonInfo(self)
         end
-        --]]
     end
     
 end
