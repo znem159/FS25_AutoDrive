@@ -89,7 +89,7 @@ function AutoDrive.defineMinDistanceByVehicleType(vehicle)
     min_distance = (vehicle.size.length / 2) - diffZ
     -- Get distance from steering node to leading leadingEdge
 
-    print("Min distance for " .. vehicle:getName() .. " is: " .. min_distance)
+    -- print("Min distance for " .. vehicle:getName() .. " is: " .. min_distance)
 
     return min_distance
 end
