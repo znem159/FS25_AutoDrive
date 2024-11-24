@@ -5,7 +5,8 @@
 
     <Paging profile="uiInGameMenuPaging" onPageChange="onPageChange" onPageUpdate="onPageUpdate" id="pagingElement">
         <FrameReference ref="autoDriveVehicleSettings" name="autoDriveVehicleSettings" id="autoDriveVehicleSettings"/>
-         <!-- <FrameReference ref="ingameMenuSettings" name="ingameMenuSettings" id="pageSettings"/> -->
+        <FrameReference ref="autoDriveDebugSettings" name="autoDriveDebugSettings" id="autoDriveDebugSettings"/>
+        <!-- <FrameReference ref="ingameMenuSettings" name="ingameMenuSettings" id="pageSettings"/> -->
     </Paging>
 
     <Bitmap profile="fs25_tabListContainer" id="header">
