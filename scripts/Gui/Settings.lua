@@ -151,7 +151,12 @@ end
 
 function ADSettings:onClickBack()
     if self:pagesHasChanges() then
-        g_gui:showYesNoDialog({text = g_i18n:getText("gui_ad_settingsClosingDialog_text"), title = g_i18n:getText("gui_ad_settingsClosingDialog_title"), callback = self.onClickBackDialogCallback, target = self})
+        AutoDrive.showYesNoDialog(
+            g_i18n:getText("gui_ad_settingsClosingDialog_title"),
+            g_i18n:getText("gui_ad_settingsClosingDialog_text"),
+            self.onClickBackDialogCallback,
+            self
+        )
     else
         self:onClickBackDialogCallback(true)
     end
