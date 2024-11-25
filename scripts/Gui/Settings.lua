@@ -193,7 +193,7 @@ function ADSettings:onClickSetDefault()
             if setting.isVehicleSpecific and controlledVehicle ~= nil and controlledVehicle.ad ~= nil and controlledVehicle.ad.settings[settingName] ~= nil then
                 newSetting = controlledVehicle.ad.settings[settingName]
                 if controlledVehicle.ad.settings[settingName].new ~= nil then
-                    controlledVehicle.ad.settings[settingName].current = AutoDrive.controlledVehicle.ad.settings[settingName].new
+                    controlledVehicle.ad.settings[settingName].current = controlledVehicle.ad.settings[settingName].new
                 end
                 if (not newSetting.isUserSpecific) and newSetting.new ~= nil and newSetting.new ~= setting.userDefault then
                     -- We could even print this with our debug system, but since GIANTS itself prints every changed config, for the moment we will do the same
