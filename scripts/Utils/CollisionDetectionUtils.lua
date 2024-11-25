@@ -196,7 +196,7 @@ function ADDimensionSensor:new(vehicle)
 end
 
 function ADDimensionSensor:getRealVehicleDimensions()
-    self.mask = AutoDrive.collisionMaskSplines
+    self.mask = AutoDrive.collisionMaskVehicleDimesions
     self.collisionHits = 0
     self.selfHits = 0
     local measureRange = math.max(self.vehicle.size.width + 1, self.vehicle.size.length + 1)
@@ -224,7 +224,7 @@ function ADDimensionSensor:getRealVehicleDimensions()
             if AutoDrive.getDebugChannelIsSet(AutoDrive.DC_SENSORINFO) then
                 -- DebugUtil.drawOverlapBox(x,y,z, rx, ry, rz, 0.1, measureRange, measureRange, 1, 1, 1)
             end
-            self.collisionHits = overlapBox(x,y,z, rx, ry, rz, 0.1, measureRange, measureRange, "getRealVehicleDimensions_Callback", self, self.mask, true, true, true)
+            self.collisionHits = overlapBox(x,y,z, rx, ry, rz, 0.1, measureRange, measureRange, "getRealVehicleDimensions_Callback", self, self.mask, true, true, true, true)
             if self.selfHits == 0 then
                 -- found no collision with vehicle itself
                 if selfHitCount < 5 then

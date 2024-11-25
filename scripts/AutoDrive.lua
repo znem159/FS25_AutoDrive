@@ -213,6 +213,9 @@ function AutoDrive:loadMap(name)
     -- AutoDrive.collisionMaskSplines = ADCollSensor.getMaskSplines()
     AutoDrive.collisionMaskTerrain = ADCollSensor.getMask()
 
+	-- ADDimensionSensor:getRealVehicleDimensions()
+	AutoDrive.collisionMaskVehicleDimesions = CollisionFlag.VEHICLE
+
 	ADGraphManager:load()
 
 	AutoDrive.loadStoredXML()
