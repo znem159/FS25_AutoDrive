@@ -16,7 +16,7 @@
                 <SmoothList id="notificationsList" profile="ad_common_list" onDoubleClick="onDoubleClick">
                     <ListItem profile="ad_common_listItem">
                         <Bitmap name="listItemIcon" profile="ad_common_listItemIcon"/>
-                        <Text name="listItemText" profile="ad_common_listItemText"/>
+                        <Text name="listItemText" profile="ad_common_listItemText" width="100%"/>
                     </ListItem>
                 </SmoothList>
 
