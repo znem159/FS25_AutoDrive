@@ -1105,27 +1105,28 @@ function AutoDrive.createColorSelectionWayPoints(vehicle)
         local startNode = vehicle.ad.frontNode
         local x1, _, z1 = getWorldTranslation(startNode)
         local y1 = AutoDrive:getTerrainHeightAtWorldPos(x1, z1)
-        local z= 19
-        for blue = 0, z do
-            for red = 1, 2*blue+1 do
-                local b = 1-(blue/z)
-                local r = 0
-                if b < 1 then
-                    r = (red-1)/(2*blue+1-1) * (1-b)
-                    if r > (1-b) then
-                        r = (1-b)
-                    end
-                end
-                local g = 0
-                if (b + r) < 1 then
-                    g = 1 - (b + r)
-                end
-                
-                local colors = {r, g, b}
-                local rx, _, rz = localDirectionToWorld(startNode, blue-red, 0, blue+2)
+
+		local function hsv_to_rgb(h, s, v)
+			local p = v * (1 - s)
+			local q = v - p
+			local r = math.clamp(3 * math.abs((h / 180) % 2 - 1) - 1, 0, 1)
+			local g = math.clamp(3 * math.abs(((h - 120) / 180) % 2 - 1) - 1, 0, 1)
+			local b = math.clamp(3 * math.abs(((h + 120) / 180) % 2 - 1) - 1, 0, 1)
+			return { p + q * r, p + q * g, p + q * b }
+		end
+
+		for sv = 0, 100, 5 do
+			local s = math.clamp(sv / 50, 0, 1)
+			local v = math.clamp((100 - sv) / 50, 0, 1)
+			for h = 0, 359, 600/math.max(sv, 1) do
+				local h_rad = h * math.pi / 180
+				local colors = hsv_to_rgb(h, s, v)
+				local x = math.cos(h_rad) * sv / 15
+                local y = math.sin(h_rad) * sv / 15
+                local rx, _, rz = localDirectionToWorld(startNode, x, 0, y)
                 ADGraphManager:createWayPointColored(x1 + rx, y1 + 1, z1 + rz, colors)
-            end
-        end
+			end
+		end
     end
 end
 

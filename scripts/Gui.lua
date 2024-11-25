@@ -9,9 +9,7 @@ function AutoDrive:loadGUI()
 	AutoDrive.gui.ADEnterDestinationFilterGui = ADEnterDestinationFilterGui.new()
 	AutoDrive.gui.ADRoutesManagerGui = ADRoutesManagerGui.new()
 	AutoDrive.gui.ADNotificationsHistoryGui = ADNotificationsHistoryGui.new()
-	--[[
 	AutoDrive.gui.ADColorSettingsGui = ADColorSettingsGui:new()
-	--]]
 	AutoDrive.gui.ADScanConfirmationGui = ADScanConfirmationGui.new()
 
     local count = 1
@@ -53,14 +51,12 @@ function AutoDrive:loadGUI()
         AutoDrive.debugMsg(nil, "AutoDrive:loadGUI failed count %d", count)
     end
 
-	--[[
 	result = g_gui:loadGui(AutoDrive.directory .. "gui/colorSettingsGUI.xml", "ADColorSettingsGui", AutoDrive.gui.ADColorSettingsGui)
-
     count = count + 1
     if result == nil then
         AutoDrive.debugMsg(nil, "AutoDrive:loadGUI failed count %d", count)
     end
-	--]]
+
 	result = g_gui:loadGui(AutoDrive.directory .. "gui/scanConfirmationGUI.xml", "ADScanConfirmationGui", AutoDrive.gui.ADScanConfirmationGui)
     count = count + 1
     if result == nil then
@@ -192,7 +188,7 @@ end
 
 function AutoDrive.onOpenColorSettings()
 	if not AutoDrive.gui.ADColorSettingsGui.isOpen then
-		g_gui:showGui("ADColorSettingsGui")
+		g_gui:showDialog("ADColorSettingsGui")
 	end
 end
 
@@ -207,4 +203,19 @@ function AutoDrive.showYesNoDialog(title, text, callback, target, ...)
 	dlg.target:setTitle(title)
 	dlg.target.dialogTextElement:setText(text)
 	dlg.target:setCallback(callback, target, ...)
+end
+ADGuiDebugMixin = {}
+
+function ADGuiDebugMixin.new()
+    return setmetatable({}, {__index = ADGuiDebugMixin})
+end
+
+function ADGuiDebugMixin:addTo(guiElement)
+    guiElement.debugMsg = ADGuiDebugMixin.debugMsg
+end
+
+function ADGuiDebugMixin:debugMsg(...)
+    if self.debug == true then
+        AutoDrive.debugMsg(nil, ...)
+    end
 end

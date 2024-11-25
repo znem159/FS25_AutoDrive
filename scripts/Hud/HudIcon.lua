@@ -38,7 +38,7 @@ function ADHudIcon:onDrawHeader(vehicle, uiScale)
     end
 
     setTextBold(false)
-    setTextColor(unpack(AutoDrive.colors.ad_color_hudTextDefault))
+    setTextColor(unpack(AutoDrive.currentColors.ad_color_hudTextDefault))
     setTextAlignment(RenderText.ALIGN_LEFT)
     self:renderDefaultText(vehicle, uiScale, adFontSize, adPosX, adPosY)
     if AutoDrive.Hud.isShowingTips then

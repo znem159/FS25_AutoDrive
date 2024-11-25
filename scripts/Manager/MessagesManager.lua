@@ -255,7 +255,7 @@ end
 function ADMessagesManager:drawHud(hud)
     setTextAlignment(RenderText.ALIGN_CENTER)
     setTextBold(false)
-    setTextColor(unpack(AutoDrive.colors.ad_color_hudTextDefault))
+    setTextColor(unpack(AutoDrive.currentColors.ad_color_hudTextDefault))
     renderText(hud.posX, hud.posY, getCorrectTextSize(hud.textSize), hud.text)
     hud.backgroundOverlay:render()
     hud.headerOverlay:render()

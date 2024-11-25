@@ -6,11 +6,13 @@
 -- @date 08/08/2019
 
 ADEnterTargetNameGui = {}
+ADEnterTargetNameGui.debug = false
 
 local ADEnterTargetNameGui_mt = Class(ADEnterTargetNameGui, DialogElement)
 
 function ADEnterTargetNameGui.new(target)
     local self = DialogElement.new(target, ADEnterTargetNameGui_mt)
+    self:include(ADGuiDebugMixin)
     self.editName = nil
     self.editId = nil
     self.edit = false
@@ -18,6 +20,7 @@ function ADEnterTargetNameGui.new(target)
 end
 
 function ADEnterTargetNameGui:onOpen()
+    self:debugMsg("ADEnterTargetNameGui:onOpen")
     ADEnterTargetNameGui:superClass().onOpen(self)
     self.textInputElement.blockTime = 0
     self.textInputElement:onFocusActivate()
@@ -69,6 +72,7 @@ function ADEnterTargetNameGui:onOpen()
 end
 
 function ADEnterTargetNameGui:onClickOk()
+    self:debugMsg("ADEnterTargetNameGui:onClickOk")
     if self.edit then
         ADGraphManager:renameMapMarker(self.textInputElement.text, self.editId)
     else
@@ -78,20 +82,24 @@ function ADEnterTargetNameGui:onClickOk()
 end
 
 function ADEnterTargetNameGui:onClickDelete()
+    self:debugMsg("ADEnterTargetNameGui:onClickDelete")
     ADGraphManager:removeMapMarker(self.editId)
     self:onClickBack()
 end
 
 function ADEnterTargetNameGui:onClickReset()
+    self:debugMsg("ADEnterTargetNameGui:onClickReset")
     self.textInputElement:setText(self.editName)
 end
 
 function ADEnterTargetNameGui:onEnterPressed(_, isClick)
+    self:debugMsg("ADEnterTargetNameGui:onEnterPressed")
     if not isClick then
         self:onClickOk()
     end
 end
 
 function ADEnterTargetNameGui:onEscPressed()
+    self:debugMsg("ADEnterTargetNameGui:onEscPressed")
     self:onClickBack()
 end

@@ -314,8 +314,12 @@
 		<text name="ad_color_previewSubPrioSingleConnection"    text="17 curve preview OK, secondary single-way connection" />
 		<text name="ad_color_previewSubPrioDualConnection" 	    text="18 curve preview OK, secondary dual-way connection" />
 		<text name="ad_color_previewOk" 			            text="19 vista previa de la curva OK, sin colisión" />
-    <text name="ad_color_previewNotOk" 			            text="20 vista previa de la curva no OK, tiene colisión" />
+		<text name="ad_color_previewNotOk" 			            text="20 vista previa de la curva no OK, tiene colisión" />
 		<text name="ad_color_textInputBackground" 			    text="21 Fondo para entradas de texto, objetivos, etc." />
+		<text name="ad_color_hudTextDefault"					text="22 HUD text, normal items" />
+		<text name="ad_color_hudTextHover"					    text="23 HUD text, hovering on normal items" />
+		<text name="ad_color_hudTextSpecial"					text="24 HUD text, active items and folders" />
+		<text name="ad_color_hudTextHoverSpecial"				text="25 HUD text, hovering on active items and folders" />
 
 		<text name="button_delete_all" 							text="Eliminar todas" />
 		<text name="button_reset_selected" 					    text="Resetear seleccionados" />
