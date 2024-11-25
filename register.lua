@@ -125,6 +125,7 @@ source(Utils.getFilename("scripts/Modes/CombineUnloaderMode.lua", g_currentModDi
 
 source(Utils.getFilename("scripts/Sensors/VirtualSensors.lua", g_currentModDirectory))
 source(Utils.getFilename("scripts/Sensors/CollSensor.lua", g_currentModDirectory))
+source(Utils.getFilename("scripts/Sensors/CollSensorSplit.lua", g_currentModDirectory))
 source(Utils.getFilename("scripts/Sensors/FruitSensor.lua", g_currentModDirectory))
 source(Utils.getFilename("scripts/Sensors/FieldSensor.lua", g_currentModDirectory))
 
