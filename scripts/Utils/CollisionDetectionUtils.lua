@@ -196,7 +196,7 @@ function ADDimensionSensor:new(vehicle)
 end
 
 function ADDimensionSensor:getRealVehicleDimensions()
-    self.mask = AutoDrive.collisionMaskSplines
+    self.mask = CollisionFlag.VEHICLE --AutoDrive.collisionMaskSplines
     self.collisionHits = 0
     self.selfHits = 0
     local measureRange = math.max(self.vehicle.size.width + 1, self.vehicle.size.length + 1)
@@ -297,9 +297,10 @@ function ADDimensionSensor:getRealVehicleDimensions_Callback(transformId)
         local collisionObject = g_currentMission.nodeToObject[transformId]
         if collisionObject ~= nil and collisionObject == self.vehicle then
             self.selfHits = self.selfHits + 1
+            return true
         end
     end
-    return true
+    return false
 end
 
 function AutoDrive.getVehicleDimensions(vehicle, force)
