@@ -47,7 +47,7 @@ function ADSensor:addSensorsToVehicle(vehicle)
     sensorParameters.minDynamicLength = 0.2
     sensorParameters.position = ADSensor.POS_FRONT
     sensorParameters.width = vehicle.size.width * 0.75
-    local frontSensorDynamicShort = ADCollSensor:new(vehicle, sensorParameters)
+    local frontSensorDynamicShort = ADCollSensorSplit:new(vehicle, sensorParameters)
     --frontSensorDynamicShort.drawDebug = true --test
     --frontSensorDynamicShort.enabled = true --test
     vehicle.ad.sensors["frontSensorDynamicShort"] = frontSensorDynamicShort
