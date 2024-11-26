@@ -24,7 +24,7 @@ AutoDrive.drawDistance = getViewDistanceCoeff() * 50
 
 -- AutoDrive.STAT_NAMES = {"driversTraveledDistance", "driversHired"}
 -- for _, statName in pairs(AutoDrive.STAT_NAMES) do
-	-- table.insert(FarmStats.STAT_NAMES, statName)
+-- table.insert(FarmStats.STAT_NAMES, statName)
 -- end
 
 AutoDrive.MODE_DRIVETO = 1
@@ -69,7 +69,7 @@ AutoDrive.SCAN_DIALOG_RESULT_NO = 3
 AutoDrive.SCAN_DIALOG_RESULT_DONE = 4
 AutoDrive.scanDialogState = AutoDrive.SCAN_DIALOG_NONE
 
-AutoDrive.foldTimeout = 30000 -- 30 s time to fold all implements
+AutoDrive.foldTimeout = 30000         -- 30 s time to fold all implements
 AutoDrive.MAX_BUNKERSILO_LENGTH = 100 -- length of bunker silo where speed should be lowered
 
 -- number of frames for performance modulo operation
@@ -93,61 +93,61 @@ AutoDrive.USER_GIANTS = 2
 AutoDrive.USER_CP = 3
 
 AutoDrive.colors = {
-	ad_color_singleConnection = {0, 1, 0, 1},
-	ad_color_dualConnection = {0, 0, 1, 1},
-	ad_color_reverseConnection = {0, 0.569, 0.835, 1},
-	ad_color_default = {1, 0, 0, 0.3},
-	ad_color_subPrioSingleConnection = {1, 0.531, 0.14, 1},
-	ad_color_subPrioDualConnection = {0.389, 0.177, 0, 1},
-	ad_color_subPrioNode = {1, 0.531, 0.14, 0.3},
-	ad_color_hoveredNode = {0, 0, 1, 0.15},
-	ad_color_previousNode = {1, 0.2195, 0.6524, 0.5}, --GOLDHOFER_PINK1
-	ad_color_nextNode = {1, 0.7, 0, 0.5},
-	ad_color_selectedNode = {0, 1, 0, 0.15},
-	ad_color_currentConnection = {1, 1, 1, 1},
-	ad_color_closestLine = {1, 0, 0, 1},
-	ad_color_editorHeightLine = {1, 1, 1, 1},
-	ad_color_previewSingleConnection = {0.3, 0.9, 0, 1},
-	ad_color_previewDualConnection = {0, 0, 0.9, 1},
-	ad_color_previewSubPrioSingleConnection = {0.9, 0.4, 0.1, 1},
-	ad_color_previewSubPrioDualConnection = {0.3, 0.15, 0, 1},
-	ad_color_previewOk = {0.3, 0.9, 0, 1},
-	ad_color_previewNotOk = {1, 0.1, 0, 1},
-	ad_color_textInputBackground = {0.0227, 0.5346, 0.8519, 1}, -- Giants original
-	ad_color_hudTextDefault = {1, 1, 1, 1},
-	ad_color_hudTextHover = {0.51, 0.67, 0.05, 1},
-	ad_color_hudTextSpecial = {0.66, 0.83, 0.34, 1},
-	ad_color_hudTextHoverSpecial = {0.45, 0.73, 0.05, 1},
+	ad_color_singleConnection = { 0, 1, 0, 1 },
+	ad_color_dualConnection = { 0, 0, 1, 1 },
+	ad_color_reverseConnection = { 0, 0.569, 0.835, 1 },
+	ad_color_default = { 1, 0, 0, 0.3 },
+	ad_color_subPrioSingleConnection = { 1, 0.531, 0.14, 1 },
+	ad_color_subPrioDualConnection = { 0.389, 0.177, 0, 1 },
+	ad_color_subPrioNode = { 1, 0.531, 0.14, 0.3 },
+	ad_color_hoveredNode = { 0, 0, 1, 0.15 },
+	ad_color_previousNode = { 1, 0.2195, 0.6524, 0.5 }, --GOLDHOFER_PINK1
+	ad_color_nextNode = { 1, 0.7, 0, 0.5 },
+	ad_color_selectedNode = { 0, 1, 0, 0.15 },
+	ad_color_currentConnection = { 1, 1, 1, 1 },
+	ad_color_closestLine = { 1, 0, 0, 1 },
+	ad_color_editorHeightLine = { 1, 1, 1, 1 },
+	ad_color_previewSingleConnection = { 0.3, 0.9, 0, 1 },
+	ad_color_previewDualConnection = { 0, 0, 0.9, 1 },
+	ad_color_previewSubPrioSingleConnection = { 0.9, 0.4, 0.1, 1 },
+	ad_color_previewSubPrioDualConnection = { 0.3, 0.15, 0, 1 },
+	ad_color_previewOk = { 0.3, 0.9, 0, 1 },
+	ad_color_previewNotOk = { 1, 0.1, 0, 1 },
+	ad_color_textInputBackground = { 0.0227, 0.5346, 0.8519, 1 }, -- Giants original
+	ad_color_hudTextDefault = { 1, 1, 1, 1 },
+	ad_color_hudTextHover = { 0.51, 0.67, 0.05, 1 },
+	ad_color_hudTextSpecial = { 0.66, 0.83, 0.34, 1 },
+	ad_color_hudTextHoverSpecial = { 0.45, 0.73, 0.05, 1 },
 
 }
 
 AutoDrive.currentColors = {} -- this will hold the current colors, derived from default colors above, overwritten by local settings
 
 AutoDrive.fuelFillTypes = {
-    "DIESEL",
-    "METHANE",
-    "ELECTRICCHARGE",
-    "DEF",
-    "AIR"
+	"DIESEL",
+	"METHANE",
+	"ELECTRICCHARGE",
+	"DEF",
+	"AIR"
 }
 
 AutoDrive.nonFillableFillTypes = { -- these fillTypes should not be transported
-    "AIR"
+	"AIR"
 }
 
 AutoDrive.seedFillTypes = {
-    'SEEDS',
-    'FERTILIZER',
-    'LIQUIDFERTILIZER'
+	'SEEDS',
+	'FERTILIZER',
+	'LIQUIDFERTILIZER'
 }
 
 AutoDrive.modesToStartFromCP = {
-    -- AutoDrive.MODE_DRIVETO, not allowed
-    AutoDrive.MODE_PICKUPANDDELIVER,
-    -- AutoDrive.MODE_DELIVERTO, not allowed
-    AutoDrive.MODE_LOAD,
-    AutoDrive.MODE_UNLOAD
-    -- AutoDrive.MODE_BGA not allowed
+	-- AutoDrive.MODE_DRIVETO, not allowed
+	AutoDrive.MODE_PICKUPANDDELIVER,
+	-- AutoDrive.MODE_DELIVERTO, not allowed
+	AutoDrive.MODE_LOAD,
+	AutoDrive.MODE_UNLOAD
+	-- AutoDrive.MODE_BGA not allowed
 }
 
 function AutoDrive:onAllModsLoaded()
@@ -162,10 +162,10 @@ end
 
 function AutoDrive:loadMap(name)
 	Logging.info("[AD] Start register later loaded mods...")
-    --ADThirdPartyModsManager:load()
+	--ADThirdPartyModsManager:load()
 	-- second iteration to register AD to vehicle types which where loaded after AD
-    AutoDriveRegister.registerAutoDrive()
-    AutoDriveRegister.registerVehicleData()
+	AutoDriveRegister.registerAutoDrive()
+	AutoDriveRegister.registerVehicleData()
 	AutoDriveRegister.registerPlaceableData()
 	Logging.info("[AD] Start register later loaded mods end")
 
@@ -207,19 +207,19 @@ function AutoDrive:loadMap(name)
 		AutoDrive.errorMsg(nil, "AutoDrive:loadMap file not exist ->%s<- !", tostring(gameXmlFilePath))
 	end
 
-    -- calculate the collision masks only once
-    -- AutoDrive.collisionMaskFS19 = ADCollSensor.getMaskFS19()
-    -- AutoDrive.collisionMaskTerrain = ADCollSensor.getMaskTerrain()
-    -- AutoDrive.collisionMaskSplines = ADCollSensor.getMaskSplines()
-    AutoDrive.collisionMaskTerrain = ADCollSensor.getMask()
+	-- calculate the collision masks only once
+	-- AutoDrive.collisionMaskFS19 = ADCollSensor.getMaskFS19()
+	-- AutoDrive.collisionMaskTerrain = ADCollSensor.getMaskTerrain()
+	-- AutoDrive.collisionMaskSplines = ADCollSensor.getMaskSplines()
+	AutoDrive.collisionMaskTerrain = ADCollSensor.getMask()
 
 	ADGraphManager:load()
 
 	AutoDrive.loadStoredXML()
 
-    AutoDrive:resetColorAssignment(0, true)     -- set default colors
+	AutoDrive:resetColorAssignment(0, true) -- set default colors
 
-    AutoDrive.readLocalSettingsFromXML()
+	AutoDrive.readLocalSettingsFromXML()
 
 	ADUserDataManager:load()
 
@@ -258,7 +258,7 @@ function AutoDrive:loadMap(name)
 
 	ADHarvestManager:load()
 
-    ADScheduler:load()
+	ADScheduler:load()
 
 	ADInputManager:load()
 
@@ -268,70 +268,66 @@ function AutoDrive:loadMap(name)
 
 	AutoDrivePlaceableData:load()
 
-	--InGameMenuAIFrame.onFrameOpen = Utils.appendedFunction(InGameMenuAIFrame.onFrameOpen, AutoDrive.onAIFrameOpen)
-	--InGameMenuAIFrame.onFrameClose = Utils.appendedFunction(InGameMenuAIFrame.onFrameClose, AutoDrive.onAIFrameClose)
-	--InGameMenuAIFrame.refreshContextInput = Utils.appendedFunction(InGameMenuAIFrame.refreshContextInput, AutoDrive.refreshContextInputAIFrame)
-	--BaseMission.draw = Utils.appendedFunction(BaseMission.draw, AutoDrive.drawBaseMission)
+	InGameMenuMapFrame.refreshContextInput = Utils.appendedFunction(InGameMenuMapFrame.refreshContextInput, AutoDrive.refreshContextInputMapFrame)
+	BaseMission.draw = Utils.appendedFunction(BaseMission.draw, AutoDrive.drawBaseMission)
 	PlaceableHotspot.getCategory = Utils.overwrittenFunction(PlaceableHotspot.getCategory, AutoDrive.PlaceableHotspotGetCategory)
-	--InGameMenuAIFrame.setMapSelectionItem = Utils.overwrittenFunction(InGameMenuAIFrame.setMapSelectionItem, AutoDrive.InGameMenuAIFrameSetMapSelectionItem)
+	InGameMenuMapFrame.setMapSelectionItem = Utils.overwrittenFunction(InGameMenuMapFrame.setMapSelectionItem, AutoDrive.InGameMenuMapFrameSetMapSelectionItem)
 	MapHotspot.getRenderLast = Utils.overwrittenFunction(MapHotspot.getRenderLast, AutoDrive.MapHotspotGetRenderLast)
-	
-    --AutoDrive.dumpTable(g_currentMission, "g_currentMission:", 4)
+
 end
 
-function AutoDrive:onAIFrameOpen()
-	AutoDrive.aiFrameOpen = true
-	AutoDrive.aiFrame = self
-	AutoDrive.aiFrameVehicle = AutoDrive.getControlledVehicle()
-end
-
-function AutoDrive:onAIFrameClose()
-	AutoDrive.aiFrameOpen = false
-	AutoDrive.aiFrame = nil
-	AutoDrive.aiFrameVehicle = nil
-end
-
-function AutoDrive:refreshContextInputAIFrame()
+function AutoDrive:refreshContextInputMapFrame()
 	if AutoDrive.aiFrameOpen then
 		local hotspot = self.currentHotspot
 		if hotspot ~= nil then
 			local vehicle = InGameMenuMapUtil.getHotspotVehicle(hotspot)
 			local allowed = g_currentMission.accessHandler:canPlayerAccess(vehicle, g_currentMission.playerSystem.getLocalPlayer())
 			if vehicle ~= nil and vehicle.ad ~= nil and vehicle.ad.stateModule ~= nil and allowed then
-                AutoDrive.aiFrameVehicle = vehicle
-                AutoDrive.Hud.lastUIScale = 0
-            end
+				AutoDrive.aiFrameVehicle = vehicle
+				AutoDrive.Hud.lastUIScale = 0
+			end
 		end
 	end
 end
 
 function AutoDrive:drawBaseMission()
-	if AutoDrive.aiFrameOpen then
+	local menuOpen = g_inGameMenu.isOpen
+	local correctPage = g_inGameMenu.pageMapOverview ~= nil and g_inGameMenu.pageMapOverview == g_inGameMenu.currentPage
+	local correctTab =  g_inGameMenu.mapOverviewSelector ~= nil and g_inGameMenu.mapOverviewSelector.state == g_inGameMenu.pageMapOverview.AI_WORKER_LIST
+
+	if menuOpen and correctPage and correctTab then
+		if not AutoDrive.aiFrameOpen then
+			AutoDrive.aiFrameOpen = true
+			AutoDrive.aiFrameVehicle = AutoDrive.getControlledVehicle()
+		end
 		AutoDrive:drawRouteOnMap()
 		AutoDrive.drawNetworkOnMap()
 		if AutoDrive.aiFrameVehicle ~= nil then
-            if AutoDrive.aiFrameVehicle.ad and AutoDrive.aiFrameVehicle.ad.stateModule then
-                if AutoDrive.Hud ~= nil then
-                    if AutoDrive.getSetting("showHUD") then
-                        AutoDrive.Hud:drawHud(AutoDrive.aiFrameVehicle)
-                    end
-                end
-            end
+		    if AutoDrive.aiFrameVehicle.ad and AutoDrive.aiFrameVehicle.ad.stateModule then
+		        if AutoDrive.Hud ~= nil then
+		            if AutoDrive.getSetting("showHUD") then
+		                AutoDrive.Hud:drawHud(AutoDrive.aiFrameVehicle)
+		            end
+		        end
+		    end
 		end
+	else
+		AutoDrive.aiFrameOpen = false
+		AutoDrive.aiFrameVehicle = nil
 	end
 end
 
 function AutoDrive:PlaceableHotspotGetCategory()
 	if self.isADMarker then
-		return MapHotspot.CATEGORY_STEERABLE--MapHotspot.CATEGORY_PLAYER
+		return MapHotspot.CATEGORY_STEERABLE --MapHotspot.CATEGORY_PLAYER
 	end
 	return PlaceableHotspot.CATEGORY_MAPPING[self.placeableType]
 end
 
-function AutoDrive:InGameMenuAIFrameSetMapSelectionItem(superFunc, hotspot)
+function AutoDrive:InGameMenuMapFrameSetMapSelectionItem(superFunc, hotspot)
 	if hotspot ~= nil and hotspot.isADMarker and AutoDrive.aiFrameOpen then
 		if AutoDrive.getSetting("showMarkersOnMap") and AutoDrive.getSetting("switchToMarkersOnMap") then
-            local vehicle = AutoDrive.getADFocusVehicle()
+			local vehicle = AutoDrive.getADFocusVehicle()
 			if vehicle ~= nil then
 				AutoDriveHudInputEventEvent:sendFirstMarkerEvent(vehicle, hotspot.markerID)
 				return
@@ -349,7 +345,7 @@ function AutoDrive:MapHotspotGetRenderLast(superFunc)
 end
 
 function AutoDrive.drawRouteOnMap()
-	if AutoDrive.aiFrame == nil then
+	if not AutoDrive.aiFrameOpen then
 		return
 	end
 	local vehicle = AutoDrive.getADFocusVehicle()
@@ -375,7 +371,7 @@ function AutoDrive.drawRouteOnMap()
 
 					if startX and startY and endX and endY then
 						dx2D = endX - startX;
-						dy2D = ( endY - startY ) / g_screenAspectRatio;
+						dy2D = (endY - startY) / g_screenAspectRatio;
 						width = MathUtil.vector2Length(dx2D, dy2D);
 
 						dx = wp.x - lastWp.x;
@@ -383,12 +379,12 @@ function AutoDrive.drawRouteOnMap()
 						rotation = MathUtil.getYRotationFromDirection(dx, dz) - math.pi * 0.5;
 
 						local lineThickness = 2 / g_screenHeight
-						setOverlayColor( AutoDrive.courseOverlayId, 0.3, 0.5, 0.56, 1)
-						setOverlayRotation( AutoDrive.courseOverlayId, rotation, 0, 0)
+						setOverlayColor(AutoDrive.courseOverlayId, 0.3, 0.5, 0.56, 1)
+						setOverlayRotation(AutoDrive.courseOverlayId, rotation, 0, 0)
 
-						renderOverlay( AutoDrive.courseOverlayId, startX, startY, width, lineThickness )
+						renderOverlay(AutoDrive.courseOverlayId, startX, startY, width, lineThickness)
 					end
-					setOverlayRotation( AutoDrive.courseOverlayId, 0, 0, 0 ) -- reset overlay rotation
+					setOverlayRotation(AutoDrive.courseOverlayId, 0, 0, 0) -- reset overlay rotation
 				end
 				lastWp = wp
 			end
@@ -398,7 +394,7 @@ function AutoDrive.drawRouteOnMap()
 end
 
 function AutoDrive.drawNetworkOnMap()
-	if AutoDrive.aiFrame == nil then
+	if not AutoDrive.aiFrameOpen then
 		return
 	end
 
@@ -413,8 +409,8 @@ function AutoDrive.drawNetworkOnMap()
 	local dx, dz, dx2D, dy2D, width, rotation, r, g, b
 
 	local isSubPrio = function(pointToTest)
-        return bitAND(pointToTest.flags, AutoDrive.FLAG_SUBPRIO) > 0
-    end
+		return bitAND(pointToTest.flags, AutoDrive.FLAG_SUBPRIO) > 0
+	end
 
 	local network = ADGraphManager:getWayPoints()
 	if network ~= nil then
@@ -427,7 +423,7 @@ function AutoDrive.drawNetworkOnMap()
 
 					if startX and startY and endX and endY then
 						dx2D = endX - startX;
-						dy2D = ( endY - startY ) / g_screenAspectRatio;
+						dy2D = (endY - startY) / g_screenAspectRatio;
 						width = MathUtil.vector2Length(dx2D, dy2D);
 
 						dx = outNode.x - node.x;
@@ -449,12 +445,12 @@ function AutoDrive.drawNetworkOnMap()
 						elseif ADGraphManager:isReverseRoad(node, outNode) then
 							r, g, b, a = unpack(AutoDrive.currentColors.ad_color_reverseConnection)
 						end
-						setOverlayColor( AutoDrive.courseOverlayId,  r, g, b, a)
-						setOverlayRotation( AutoDrive.courseOverlayId, rotation, 0, 0)
+						setOverlayColor(AutoDrive.courseOverlayId, r, g, b, a)
+						setOverlayRotation(AutoDrive.courseOverlayId, rotation, 0, 0)
 
-						renderOverlay( AutoDrive.courseOverlayId, startX, startY, width, lineThickness )
+						renderOverlay(AutoDrive.courseOverlayId, startX, startY, width, lineThickness)
 					end
-					setOverlayRotation( AutoDrive.courseOverlayId, 0, 0, 0 ) -- reset overlay rotation
+					setOverlayRotation(AutoDrive.courseOverlayId, 0, 0, 0) -- reset overlay rotation
 				end
 			end
 		end
@@ -462,16 +458,16 @@ function AutoDrive.drawNetworkOnMap()
 end
 
 function AutoDrive.getScreenPosFromWorldPos(worldX, worldZ)
-	local objectX = (worldX + AutoDrive.aiFrame.ingameMapBase.worldCenterOffsetX) / AutoDrive.aiFrame.ingameMapBase.worldSizeX * 0.5 + 0.25
-	local objectZ = (worldZ + AutoDrive.aiFrame.ingameMapBase.worldCenterOffsetZ) / AutoDrive.aiFrame.ingameMapBase.worldSizeZ * 0.5 + 0.25
-	local x, y, _, _ = AutoDrive.aiFrame.ingameMapBase.layout:getMapObjectPosition(objectX, objectZ, 0, 0, 0, true)
+	local objectX = (worldX + g_inGameMenu.baseIngameMap.worldCenterOffsetX) / g_inGameMenu.baseIngameMap.worldSizeX * 0.5 + 0.25
+	local objectZ = (worldZ + g_inGameMenu.baseIngameMap.worldCenterOffsetZ) / g_inGameMenu.baseIngameMap.worldSizeZ * 0.5 + 0.25
+	local x, y, _, _ = g_inGameMenu.baseIngameMap.layout:getMapObjectPosition(objectX, objectZ, 0, 0, 0, true)
 
 	return x, y
 end
 
 function AutoDrive:init()
 
-    -- AutoDrive.debugMsg(nil, "[AD] AutoDrive:init start...")
+	-- AutoDrive.debugMsg(nil, "[AD] AutoDrive:init start...")
 
 	if g_server == nil then
 		-- Here we could ask to server the initial sync
@@ -483,23 +479,23 @@ function AutoDrive:init()
 	AutoDrive:registerDestinationListener(AutoDrive, AutoDrive.updateDestinationsMapHotspots)
 
 	if AutoDrive.notificationSample == nil then
-		local fileName = Utils.getFilename( "sounds/notification_ok.ogg", AutoDrive.directory)
+		local fileName = Utils.getFilename("sounds/notification_ok.ogg", AutoDrive.directory)
 		AutoDrive.notificationSample = createSample("AutoDrive_Notification_ok")
 		loadSample(AutoDrive.notificationSample, fileName, false)
 
-		fileName = Utils.getFilename( "sounds/notification_warning.ogg", AutoDrive.directory)
+		fileName = Utils.getFilename("sounds/notification_warning.ogg", AutoDrive.directory)
 		AutoDrive.notificationWarningSample = createSample("AutoDrive_Notification_warning")
 		loadSample(AutoDrive.notificationWarningSample, fileName, false)
 
-		fileName = Utils.getFilename( "sounds/click_up.ogg", AutoDrive.directory)
+		fileName = Utils.getFilename("sounds/click_up.ogg", AutoDrive.directory)
 		AutoDrive.mouseClickSample = createSample("AutoDrive_mouseClick")
 		loadSample(AutoDrive.mouseClickSample, fileName, false)
 
-		fileName = Utils.getFilename( "sounds/recordWaypoint.ogg", AutoDrive.directory)
+		fileName = Utils.getFilename("sounds/recordWaypoint.ogg", AutoDrive.directory)
 		AutoDrive.recordWaypointSample = createSample("AutoDrive_recordWaypoint")
 		loadSample(AutoDrive.recordWaypointSample, fileName, false)
 
-		fileName = Utils.getFilename( "sounds/selectedWayPoint.ogg", AutoDrive.directory)
+		fileName = Utils.getFilename("sounds/selectedWayPoint.ogg", AutoDrive.directory)
 		AutoDrive.selectedWayPointSample = createSample("AutoDrive_selectedWayPoint")
 		loadSample(AutoDrive.selectedWayPointSample, fileName, false)
 	end
@@ -507,14 +503,14 @@ function AutoDrive:init()
 end
 
 function AutoDrive:saveSavegame()
---    Logging.info("[AD] AutoDrive:saveSavegame start")
+	--    Logging.info("[AD] AutoDrive:saveSavegame start")
 	if g_server ~= nil then
---        Logging.info("[AD] AutoDrive:saveSavegame g_server ~= nil start")
-        AutoDrive.saveToXML()
+		--        Logging.info("[AD] AutoDrive:saveSavegame g_server ~= nil start")
+		AutoDrive.saveToXML()
 		ADUserDataManager:saveToXml()
---        Logging.info("[AD] AutoDrive:saveSavegame g_server ~= nil end")
+		--        Logging.info("[AD] AutoDrive:saveSavegame g_server ~= nil end")
 	end
---    Logging.info("[AD] AutoDrive:saveSavegame end")
+	--    Logging.info("[AD] AutoDrive:saveSavegame end")
 end
 
 function AutoDrive:deleteMap()
@@ -543,23 +539,23 @@ function AutoDrive:keyEvent(unicode, sym, modifier, isDown)
 	AutoDrive.rightCTRLmodifierKeyPressed = bitAND(modifier, Input.MOD_RCTRL) > 0
 	AutoDrive.rightSHIFTmodifierKeyPressed = bitAND(modifier, Input.MOD_RSHIFT) > 0
 
-    if AutoDrive.isInExtendedEditorMode() then
-        if (AutoDrive.rightCTRLmodifierKeyPressed and AutoDrive.toggleSphrere == true) then
-            AutoDrive.toggleSphrere = false
-        elseif (AutoDrive.rightCTRLmodifierKeyPressed and AutoDrive.toggleSphrere == false) then
-            AutoDrive.toggleSphrere = true
-        end
+	if AutoDrive.isInExtendedEditorMode() then
+		if (AutoDrive.rightCTRLmodifierKeyPressed and AutoDrive.toggleSphrere == true) then
+			AutoDrive.toggleSphrere = false
+		elseif (AutoDrive.rightCTRLmodifierKeyPressed and AutoDrive.toggleSphrere == false) then
+			AutoDrive.toggleSphrere = true
+		end
 
-        if (AutoDrive.leftCTRLmodifierKeyPressed or AutoDrive.leftALTmodifierKeyPressed) then
-            AutoDrive.enableSphrere = true
-        else
-            AutoDrive.enableSphrere = AutoDrive.toggleSphrere
-        end
-    end
+		if (AutoDrive.leftCTRLmodifierKeyPressed or AutoDrive.leftALTmodifierKeyPressed) then
+			AutoDrive.enableSphrere = true
+		else
+			AutoDrive.enableSphrere = AutoDrive.toggleSphrere
+		end
+	end
 end
 
 function AutoDrive:mouseEvent(posX, posY, isDown, isUp, button)
-    local vehicle = AutoDrive.getADFocusVehicle()
+	local vehicle = AutoDrive.getADFocusVehicle()
 	local mouseActiveForAutoDrive = (g_gui.currentGui == nil or AutoDrive.aiFrameOpen) and (g_inputBinding:getShowMouseCursor() == true)
 
 	if not mouseActiveForAutoDrive then
@@ -578,11 +574,11 @@ function AutoDrive:mouseEvent(posX, posY, isDown, isUp, button)
 	end
 
 	if (isDown or AutoDrive.lastButtonDown == button) or button == 0 or button > 3 then
-        if vehicle and vehicle.ad and vehicle.ad.stateModule then
-            if AutoDrive.getSetting("showHUD") then
-                -- pass event to vehicle with active HUD
-                AutoDrive.Hud:mouseEvent(vehicle, posX, posY, isDown, isUp, button)
-            end
+		if vehicle and vehicle.ad and vehicle.ad.stateModule then
+			if AutoDrive.getSetting("showHUD") then
+				-- pass event to vehicle with active HUD
+				AutoDrive.Hud:mouseEvent(vehicle, posX, posY, isDown, isUp, button)
+			end
 		end
 
 		ADMessagesManager:mouseEvent(posX, posY, isDown, isUp, button)
@@ -596,49 +592,49 @@ function AutoDrive:mouseEvent(posX, posY, isDown, isUp, button)
 end
 
 function AutoDrive:update(dt)
-    if AutoDrive.scanDialogState == AutoDrive.SCAN_DIALOG_NONE then
+	if AutoDrive.scanDialogState == AutoDrive.SCAN_DIALOG_NONE then
 		if ADGraphManager:getWayPointsCount() > 0 then
 			-- AutoDrive.debugMsg(nil, "[AD] AutoDrive:update not-new -> SCAN_DIALOG_RESULT_NO")
 			AutoDrive.scanDialogState = AutoDrive.SCAN_DIALOG_RESULT_NO
 		elseif g_server ~= nil and g_dedicatedServer == nil then
-            -- open dialog
+			-- open dialog
 			if g_gui.currentGui == nil then
 				--AutoDrive.debugMsg(nil, "[AD] AutoDrive:update SCAN_DIALOG_OPEN")
 				AutoDrive.onOpenScanConfirmation()
 				AutoDrive.scanDialogState = AutoDrive.SCAN_DIALOG_OPEN
 			end
 			return
-        else
-            -- AutoDrive.debugMsg(nil, "[AD] AutoDrive:update dedi -> SCAN_DIALOG_RESULT_NO")
-            AutoDrive.scanDialogState = AutoDrive.SCAN_DIALOG_RESULT_NO
-        end
-    end
+		else
+			-- AutoDrive.debugMsg(nil, "[AD] AutoDrive:update dedi -> SCAN_DIALOG_RESULT_NO")
+			AutoDrive.scanDialogState = AutoDrive.SCAN_DIALOG_RESULT_NO
+		end
+	end
 
-    if AutoDrive.scanDialogState == AutoDrive.SCAN_DIALOG_OPEN then
-        -- dialog still open
-        return
-    end
+	if AutoDrive.scanDialogState == AutoDrive.SCAN_DIALOG_OPEN then
+		-- dialog still open
+		return
+	end
 
-    if AutoDrive.scanDialogState == AutoDrive.SCAN_DIALOG_RESULT_YES then
-        -- AutoDrive.debugMsg(nil, "[AD] AutoDrive:update SCAN_DIALOG_RESULT_YES")
-        AutoDrive.scanDialogState = AutoDrive.SCAN_DIALOG_RESULT_DONE
-        AutoDrive:adParseSplines()
-        AutoDrive:createJunctionCommand()
-    end
+	if AutoDrive.scanDialogState == AutoDrive.SCAN_DIALOG_RESULT_YES then
+		-- AutoDrive.debugMsg(nil, "[AD] AutoDrive:update SCAN_DIALOG_RESULT_YES")
+		AutoDrive.scanDialogState = AutoDrive.SCAN_DIALOG_RESULT_DONE
+		AutoDrive:adParseSplines()
+		AutoDrive:createJunctionCommand()
+	end
 
-    if AutoDrive.scanDialogState == AutoDrive.SCAN_DIALOG_RESULT_NO then
-        -- AutoDrive.debugMsg(nil, "[AD] AutoDrive:update SCAN_DIALOG_RESULT_NO")
-        AutoDrive.scanDialogState = AutoDrive.SCAN_DIALOG_RESULT_DONE
-        AutoDrive.loadStoredXML(true)
-    end
+	if AutoDrive.scanDialogState == AutoDrive.SCAN_DIALOG_RESULT_NO then
+		-- AutoDrive.debugMsg(nil, "[AD] AutoDrive:update SCAN_DIALOG_RESULT_NO")
+		AutoDrive.scanDialogState = AutoDrive.SCAN_DIALOG_RESULT_DONE
+		AutoDrive.loadStoredXML(true)
+	end
 	AutoDrive.setSettingState("showHUD", 2)
 
 	if AutoDrive.isFirstRun == nil then
 		AutoDrive.isFirstRun = false
 		self:init()
-                if AutoDrive.devAutoDriveInit ~= nil then
-                    AutoDrive.devAutoDriveInit()
-                end
+		if AutoDrive.devAutoDriveInit ~= nil then
+			AutoDrive.devAutoDriveInit()
+		end
 	end
 
 	if AutoDrive.getDebugChannelIsSet(AutoDrive.DC_NETWORKINFO) then
@@ -650,9 +646,9 @@ function AutoDrive:update(dt)
 		AutoDrive.debugDrawBoundingBoxForVehicles()
 	end
 
-    if AutoDrive.getSetting("showHUD") then
-        AutoDrive.Hud:update(dt)
-    end
+	if AutoDrive.getSetting("showHUD") then
+		AutoDrive.Hud:update(dt)
+	end
 
 	if g_server ~= nil then
 		ADHarvestManager:update(dt)
@@ -674,28 +670,28 @@ end
 
 function AutoDrive:preRemoveVehicle(vehicle)
 	if vehicle.ad ~= nil and vehicle.ad.stateModule ~= nil then
-        if vehicle.ad.stateModule:isActive() then
-            vehicle:stopAutoDrive()
-        end
-        vehicle.ad.stateModule:disableCreationMode()
+		if vehicle.ad.stateModule:isActive() then
+			vehicle:stopAutoDrive()
+		end
+		vehicle.ad.stateModule:disableCreationMode()
 	end
 end
 
 function AutoDrive:FarmStats_saveToXMLFile(xmlFile, key)
-    if not xmlFile:hasProperty(key) then
-        return
-    end
+	if not xmlFile:hasProperty(key) then
+		return
+	end
 	-- key = key .. ".statistics"
 	-- if self.statistics.driversTraveledDistance ~= nil then
-		-- setXMLFloat(xmlFile, key .. ".driversTraveledDistance", self.statistics.driversTraveledDistance.total)
+	-- setXMLFloat(xmlFile, key .. ".driversTraveledDistance", self.statistics.driversTraveledDistance.total)
 	-- end
 end
 
 function AutoDrive:FarmStats_loadFromXMLFile(xmlFileName, key)
 	local xmlFile = XMLFile.load("TempXML", xmlFileName)
-    if xmlFile == nil then
-        return false
-    end
+	if xmlFile == nil then
+		return false
+	end
 
 	key = key .. ".statistics"
 	-- self.statistics["driversTraveledDistance"].total = Utils.getNoNil(getXMLFloat(xmlFile, key .. ".driversTraveledDistance"), 0)
