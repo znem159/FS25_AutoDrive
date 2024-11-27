@@ -366,10 +366,10 @@ function AutoDrive.drawRouteOnMap()
 		for index, wp in pairs(WPs) do
 			if skips == 0 then
 				if lastWp ~= nil and index >= currentWp then
-					local startX, startY, _, _ = AutoDrive.getScreenPosFromWorldPos(lastWp.x, lastWp.z)
-					local endX, endY, _, _ = AutoDrive.getScreenPosFromWorldPos(wp.x, wp.z)
+					local startX, startY, startVisible = AutoDrive.getScreenPosFromWorldPos(lastWp.x, lastWp.z)
+					local endX, endY, endVisible = AutoDrive.getScreenPosFromWorldPos(wp.x, wp.z)
 
-					if startX and startY and endX and endY then
+					if startX and startY and startVisible and endX and endY and endVisible then
 						dx2D = endX - startX;
 						dy2D = (endY - startY) / g_screenAspectRatio;
 						width = MathUtil.vector2Length(dx2D, dy2D);
@@ -418,10 +418,10 @@ function AutoDrive.drawNetworkOnMap()
 			if node.out ~= nil then
 				for _, outNodeId in pairs(node.out) do
 					local outNode = network[outNodeId]
-					local startX, startY, _, _ = AutoDrive.getScreenPosFromWorldPos(node.x, node.z)
-					local endX, endY, _, _ = AutoDrive.getScreenPosFromWorldPos(outNode.x, outNode.z)
+					local startX, startY, startVisible = AutoDrive.getScreenPosFromWorldPos(node.x, node.z)
+					local endX, endY, endVisible = AutoDrive.getScreenPosFromWorldPos(outNode.x, outNode.z)
 
-					if startX and startY and endX and endY then
+					if startX and startY and startVisible and endX and endY and endVisible then
 						dx2D = endX - startX;
 						dy2D = (endY - startY) / g_screenAspectRatio;
 						width = MathUtil.vector2Length(dx2D, dy2D);
@@ -462,7 +462,13 @@ function AutoDrive.getScreenPosFromWorldPos(worldX, worldZ)
 	local objectZ = (worldZ + g_inGameMenu.baseIngameMap.worldCenterOffsetZ) / g_inGameMenu.baseIngameMap.worldSizeZ * 0.5 + 0.25
 	local x, y, _, _ = g_inGameMenu.baseIngameMap.layout:getMapObjectPosition(objectX, objectZ, 0, 0, 0, true)
 
-	return x, y
+	local clipMinX = g_inGameMenu.pageMapOverview.ingameMap.absoluteSizeOffset[1]
+	local clipMinY = g_inGameMenu.pageMapOverview.ingameMap.absoluteSizeOffset[2]
+	local clipMaxX = g_inGameMenu.pageMapOverview.ingameMap.absSize[1] + clipMinX
+	local clipMaxY = g_inGameMenu.pageMapOverview.ingameMap.absSize[2] + clipMinY
+	local visible = x >= clipMinX and x <= clipMaxX and y >= clipMinY and y <= clipMaxY
+
+	return x, y, visible
 end
 
 function AutoDrive:init()
