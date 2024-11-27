@@ -17,8 +17,21 @@ function DriveToDestinationTask:setUp()
         self.vehicle.ad.trainModule:setPathTo(self.destinationID)
     elseif ADGraphManager:getDistanceFromNetwork(self.vehicle) > 30 then
         self.state = DriveToDestinationTask.STATE_PATHPLANNING
-        self.vehicle.ad.pathFinderModule:reset()
-        self.vehicle.ad.pathFinderModule:startPathPlanningToNetwork(self.destinationID)
+        print("DriveToDestinationTask - distanc to network > 30")
+        
+        self.wayPoints = self.vehicle.ad.MGPF:startPathPlanningToNetwork(self.destinationID)
+        if not AutoDrive.isEditorModeEnabled() then
+            if self.wayPoints == nil or #self.wayPoints == 0 then            
+                Logging.error("[AutoDrive] Could not calculate path - shutting down")
+                self:finished(ADTaskModule.DONT_PROPAGATE)
+                self.vehicle:stopAutoDrive()
+                AutoDriveMessageEvent.sendMessageOrNotification(self.vehicle, ADMessagesManager.messageTypes.ERROR, "$l10n_AD_Driver_of; %s $l10n_AD_cannot_find_path;", 5000, self.vehicle.ad.stateModule:getName())
+            else
+                self.vehicle.ad.drivePathModule:setWayPoints(self.wayPoints)
+                --self.vehicle.ad.drivePathModule:appendPathTo(self.wayPoints[#self.wayPoints], self.destinationID)
+                self.state = DriveToDestinationTask.STATE_DRIVING
+            end
+        end
     else
         self.state = DriveToDestinationTask.STATE_DRIVING
         self.vehicle.ad.drivePathModule:setPathTo(self.destinationID)
@@ -28,7 +41,10 @@ function DriveToDestinationTask:setUp()
 end
 
 function DriveToDestinationTask:update(dt)
-    if self.state == DriveToDestinationTask.STATE_PATHPLANNING then
+    if self.state == DriveToDestinationTask.STATE_PATHPLANNING then        
+        self.wayPoints = self.vehicle.ad.MGPF:startPathPlanningToNetwork(self.destinationID)
+        --[[
+
         if self.vehicle.ad.pathFinderModule:hasFinished() then
             self.wayPoints = self.vehicle.ad.pathFinderModule:getPath()
             if self.wayPoints == nil or #self.wayPoints == 0 then
@@ -46,6 +62,7 @@ function DriveToDestinationTask:update(dt)
             self.vehicle.ad.specialDrivingModule:stopVehicle()
             self.vehicle.ad.specialDrivingModule:update(dt)
         end
+        --]]
     else
         if self.vehicle.ad.drivePathModule:isTargetReached() then
             self:finished()
@@ -63,10 +80,10 @@ function DriveToDestinationTask:finished(propagate)
 end
 
 function DriveToDestinationTask:getI18nInfo()
-    if self.state == DriveToDestinationTask.STATE_PATHPLANNING then
-        local actualState, maxStates, steps, max_pathfinder_steps = self.vehicle.ad.pathFinderModule:getCurrentState()
-        return "$l10n_AD_task_pathfinding;" .. string.format(" %d / %d - %d / %d", actualState, maxStates, steps, max_pathfinder_steps)
-    else
+    --if self.state == DriveToDestinationTask.STATE_PATHPLANNING then
+        --local actualState, maxStates, steps, max_pathfinder_steps = self.vehicle.ad.pathFinderModule:getCurrentState()
+        --return "$l10n_AD_task_pathfinding;" .. string.format(" %d / %d - %d / %d", actualState, maxStates, steps, max_pathfinder_steps)
+    --else
         return "$l10n_AD_task_drive_to_destination;"
-    end
+    --end
 end

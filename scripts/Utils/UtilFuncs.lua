@@ -76,7 +76,7 @@ function AutoDrive:getTerrainHeightAtWorldPos(x, z, startingHeight)
 	-- get a starting height with the basic function
 	local startHeight = startingHeight or getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, x, 1, z)
 	-- do a raycast from a bit above y
-	raycastClosest(x, startHeight + 3, z, 0, -1, 0, 5, "getTerrainHeightAtWorldPos_Callback", self, 12)
+	raycastClosest(x, startHeight + 3, z, 0, -1, 0, 5, "getTerrainHeightAtWorldPos_Callback", self, CollisionFlag.TERRAIN)
 	return self.raycastHeight or startHeight
 end
 
@@ -1246,4 +1246,12 @@ function AutoDrive.stringToNumberList(text, sep)
 		end
 	end
 	return list
+end
+
+function AutoDrive.normalizeVector(vector2D)
+	local vecLength = math.sqrt(vector2D.x * vector2D.x + vector2D.z * vector2D.z)
+	return { 
+		x = vector2D.x / vecLength,
+		z = vector2D.z / vecLength
+	}
 end
