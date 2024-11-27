@@ -299,6 +299,7 @@ function AutoDrive:drawBaseMission()
 		if not AutoDrive.aiFrameOpen then
 			AutoDrive.aiFrameOpen = true
 			AutoDrive.aiFrameVehicle = AutoDrive.getControlledVehicle()
+			AutoDrive.aiNetworkOnMapCache = nil
 		end
 		AutoDrive:drawRouteOnMap()
 		AutoDrive.drawNetworkOnMap()
@@ -314,6 +315,7 @@ function AutoDrive:drawBaseMission()
 	else
 		AutoDrive.aiFrameOpen = false
 		AutoDrive.aiFrameVehicle = nil
+		AutoDrive.aiNetworkOnMapCache = nil
 	end
 end
 
@@ -393,18 +395,11 @@ function AutoDrive.drawRouteOnMap()
 	end
 end
 
-function AutoDrive.drawNetworkOnMap()
-	if not AutoDrive.aiFrameOpen then
+function AutoDrive.createNetworkOnMapCache()
+	if AutoDrive.aiNetworkOnMapCache ~= nil then
 		return
 	end
-
-	if not AutoDrive.isEditorModeEnabled() then
-		return
-	end
-
-	if AutoDrive.courseOverlayId == nil then
-		AutoDrive.courseOverlayId = createImageOverlay('data/shared/default_normal.dds')
-	end
+	local cache = {}
 
 	local dx, dz, dx2D, dy2D, width, rotation, r, g, b
 
@@ -414,23 +409,18 @@ function AutoDrive.drawNetworkOnMap()
 
 	local network = ADGraphManager:getWayPoints()
 	if network ~= nil then
-		for index, node in pairs(network) do
+		for _, node in pairs(network) do
 			if node.out ~= nil then
 				for _, outNodeId in pairs(node.out) do
 					local outNode = network[outNodeId]
-					local startX, startY, startVisible = AutoDrive.getScreenPosFromWorldPos(node.x, node.z)
-					local endX, endY, endVisible = AutoDrive.getScreenPosFromWorldPos(outNode.x, outNode.z)
+					local startX, startY = AutoDrive.getScaledWorldPos(node.x, node.z)
+					local endX, endY = AutoDrive.getScaledWorldPos(outNode.x, outNode.z)
 
-					if startX and startY and startVisible and endX and endY and endVisible then
-						dx2D = endX - startX;
-						dy2D = (endY - startY) / g_screenAspectRatio;
-						width = MathUtil.vector2Length(dx2D, dy2D);
-
+					if startX and startY and endX and endY then
 						dx = outNode.x - node.x;
 						dz = outNode.z - node.z;
 						rotation = MathUtil.getYRotationFromDirection(dx, dz) - math.pi * 0.5;
 
-						local lineThickness = 2 / g_screenHeight
 						local r, g, b, a = unpack(AutoDrive.currentColors.ad_color_singleConnection)
 
 						if isSubPrio(outNode) then
@@ -445,29 +435,73 @@ function AutoDrive.drawNetworkOnMap()
 						elseif ADGraphManager:isReverseRoad(node, outNode) then
 							r, g, b, a = unpack(AutoDrive.currentColors.ad_color_reverseConnection)
 						end
-						setOverlayColor(AutoDrive.courseOverlayId, r, g, b, a)
-						setOverlayRotation(AutoDrive.courseOverlayId, rotation, 0, 0)
 
-						renderOverlay(AutoDrive.courseOverlayId, startX, startY, width, lineThickness)
+						table.insert(cache, { 
+							startX = startX, startY = startY, endX = endX, endY = endY, rotation = rotation,
+							r = r, g = g, b = b, a = a
+						})
 					end
-					setOverlayRotation(AutoDrive.courseOverlayId, 0, 0, 0) -- reset overlay rotation
 				end
 			end
 		end
 	end
+	AutoDrive.aiNetworkOnMapCache = cache
 end
 
-function AutoDrive.getScreenPosFromWorldPos(worldX, worldZ)
+function AutoDrive.drawNetworkOnMap()
+	if not AutoDrive.aiFrameOpen then
+		return
+	end
+
+	if not AutoDrive.isEditorModeEnabled() then
+		return
+	end
+
+	if AutoDrive.courseOverlayId == nil then
+		AutoDrive.courseOverlayId = createImageOverlay('data/shared/default_normal.dds')
+	end
+
+	AutoDrive.createNetworkOnMapCache()
+	
+	local dx2D, dy2D, length
+	local lineThickness = 2 / g_screenHeight
+
+
+	for _, item in pairs(AutoDrive.aiNetworkOnMapCache) do
+		local startX, startY, startVisible = AutoDrive.getScreenPosFromScaledWorldPos(item.startX, item.startY)
+		local endX, endY, endVisible = AutoDrive.getScreenPosFromScaledWorldPos(item.endX, item.endY)
+		if startVisible and endVisible then
+			dx2D = endX - startX;
+			dy2D = (endY - startY) / g_screenAspectRatio;
+			length = MathUtil.vector2Length(dx2D, dy2D);
+
+			setOverlayColor(AutoDrive.courseOverlayId, item.r, item.g, item.b, item.a)
+			setOverlayRotation(AutoDrive.courseOverlayId, item.rotation, 0, 0)
+			renderOverlay(AutoDrive.courseOverlayId, startX, startY, length, lineThickness)
+		end
+	end
+end
+
+function AutoDrive.getScaledWorldPos(worldX, worldZ)
 	local objectX = (worldX + g_inGameMenu.baseIngameMap.worldCenterOffsetX) / g_inGameMenu.baseIngameMap.worldSizeX * 0.5 + 0.25
 	local objectZ = (worldZ + g_inGameMenu.baseIngameMap.worldCenterOffsetZ) / g_inGameMenu.baseIngameMap.worldSizeZ * 0.5 + 0.25
-	local x, y, _, _ = g_inGameMenu.baseIngameMap.layout:getMapObjectPosition(objectX, objectZ, 0, 0, 0, true)
+	return objectX, objectZ
+end
 
+function AutoDrive.getScreenPosFromScaledWorldPos(scaledWorldX, scaledWorldZ)
+	local x, y, _, _ = g_inGameMenu.baseIngameMap.layout:getMapObjectPosition(scaledWorldX, scaledWorldZ, 0, 0, 0, true)
 	local clipMinX = g_inGameMenu.pageMapOverview.ingameMap.absoluteSizeOffset[1]
 	local clipMinY = g_inGameMenu.pageMapOverview.ingameMap.absoluteSizeOffset[2]
 	local clipMaxX = g_inGameMenu.pageMapOverview.ingameMap.absSize[1] + clipMinX
 	local clipMaxY = g_inGameMenu.pageMapOverview.ingameMap.absSize[2] + clipMinY
 	local visible = x >= clipMinX and x <= clipMaxX and y >= clipMinY and y <= clipMaxY
+	return x, y, visible
+end
 
+
+function AutoDrive.getScreenPosFromWorldPos(worldX, worldZ)
+	local scaledX, scaledZ = AutoDrive.getScaledWorldPos(worldX, worldZ)
+	local x, y, visible = AutoDrive.getScreenPosFromScaledWorldPos(scaledX, scaledZ)
 	return x, y, visible
 end
 
