@@ -437,10 +437,6 @@ end
 function AutoDrive:onUpdate(dt)
     if self.isServer and self.ad.stateModule:isActive() then
         self.ad.recordingModule:update(dt)
-        --local targetWpId = self.ad.stateModule:getSecondWayPoint()
-        --local targetNode = ADGraphManager:getWayPointById(targetWpId)
-
-        --self.ad.MGPF:startPathPlanningTo(self, targetNode.x, targetNode.z, 0, AutoDrive.getDriverRadius(self, true))
         
         if not AutoDrive.getSetting("FoldImplements", self) or (self.ad.foldStartTime + AutoDrive.foldTimeout < g_time) then
             self.ad.taskModule:update(dt)
@@ -478,11 +474,6 @@ function AutoDrive:onUpdate(dt)
     self.ad.stateModule:update(dt)
 
     ADSensor:handleSensors(self, dt)
-
-    if self.ad.MGPF == nil then
-        self.ad.MGPF = MGPF:new(self)    
-    end
-
 
     if not self.ad.stateModule:isActive() and self.ad.taskModule:getNumberOfTasks() > 0 then
         self.ad.taskModule:abortAllTasks()

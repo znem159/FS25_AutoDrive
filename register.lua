@@ -70,7 +70,6 @@ source(Utils.getFilename("scripts/Utils/AutoDriveUtilFuncs.lua", g_currentModDir
 source(Utils.getFilename("scripts/Utils/SortedQueue.lua", g_currentModDirectory))
 source(Utils.getFilename("scripts/Utils/DevFuncs.lua", g_currentModDirectory))
 source(Utils.getFilename("scripts/Utils/TrafficSplineUtils.lua", g_currentModDirectory))
-source(Utils.getFilename("scripts/Utils/MacGyverPathFinder.lua", g_currentModDirectory))
 
 source(Utils.getFilename("scripts/Manager/RoutesManager.lua", g_currentModDirectory))
 source(Utils.getFilename("scripts/Manager/DrawingManager.lua", g_currentModDirectory))
@@ -148,6 +147,10 @@ source(Utils.getFilename("scripts/Tasks/Turns/AbstractTurn.lua", g_currentModDir
 source(Utils.getFilename("scripts/Tasks/Turns/ReverseOffsetTurn.lua", g_currentModDirectory))
 source(Utils.getFilename("scripts/Tasks/Turns/OffsetTurn.lua", g_currentModDirectory))
 source(Utils.getFilename("scripts/Tasks/Turns/ForwardOffsetTurn.lua", g_currentModDirectory))
+
+source(Utils.getFilename("scripts/Pathfinder/PathfinderAStarDubins.lua", g_currentModDirectory))
+source(Utils.getFilename("scripts/Pathfinder/PathfinderLegacy.lua", g_currentModDirectory))
+source(Utils.getFilename("scripts/Pathfinder/PathFinderTreeCrawler.lua", g_currentModDirectory))
 
 AutoDriveRegister = {}
 AutoDriveRegister.version = g_modManager:getModByName(g_currentModName).version

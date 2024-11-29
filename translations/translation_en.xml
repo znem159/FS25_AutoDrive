@@ -257,6 +257,7 @@
 		<text name="gui_ad_pathfinder_tooltip"					text="Choose which pathfinder algorithm is used (when not on network)" />
 		<text name="gui_ad_pathfinder_astar"					text="A-Star + Dubins" />
 		<text name="gui_ad_pathfinder_custom"					text="AutoDrive Custom" />
+		<text name="gui_ad_pathfinder_treeCrawler"				text="AutoDrive TreeCrawler" />
 		<text name="gui_ad_enableRoutesManagerOnDediServer"			text="Routemanager on Server" />
 		<text name="gui_ad_enableRoutesManagerOnDediServer_tooltip"	text="Enable route manager on dedicated servers" />
 		<text name="gui_ad_detectSwath"							text="Swath detection" />

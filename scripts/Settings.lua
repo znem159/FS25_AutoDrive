@@ -1083,8 +1083,8 @@ AutoDrive.settings.BSMRange = {
 }
 
 AutoDrive.settings.Pathfinder = {
-    values = {0, 1},
-    texts = {"gui_ad_pathfinder_custom", "gui_ad_pathfinder_astar"},
+    values = {0, 1, 2},
+    texts = {"gui_ad_pathfinder_custom", "gui_ad_pathfinder_astar", "gui_ad_pathfinder_treeCrawler"},
     default = 2,
     current = 2,
     text = "gui_ad_pathfinder",

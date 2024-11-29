@@ -64,21 +64,10 @@ function UnloadAtDestinationTask:update(dt)
         if self.vehicle.ad.pathFinderModule:hasFinished() then
             self.wayPoints = self.vehicle.ad.pathFinderModule:getPath()
             if self.wayPoints == nil or #self.wayPoints == 0 then
-                if self.vehicle.ad.pathFinderModule:isTargetBlocked() then
-                    -- If the selected field exit isn't reachable, try the closest one
-                    self.vehicle.ad.pathFinderModule:reset()
-                    self.vehicle.ad.pathFinderModule:startPathPlanningToNetwork(self.vehicle.ad.stateModule:getSecondWayPoint())
-                elseif self.vehicle.ad.pathFinderModule:timedOut() or self.vehicle.ad.pathFinderModule:isBlocked() then
-                    -- Add some delay to give the situation some room to clear itself
-                    self.vehicle.ad.modes[AutoDrive.MODE_UNLOAD]:notifyAboutFailedPathfinder()
-                    self.vehicle.ad.pathFinderModule:reset()
-                    self.vehicle.ad.pathFinderModule:startPathPlanningToNetwork(self.vehicle.ad.stateModule:getSecondWayPoint())
-                    self.vehicle.ad.pathFinderModule:addDelayTimer(10000)
-                else
-                    self.vehicle.ad.pathFinderModule:reset()
-                    self.vehicle.ad.pathFinderModule:startPathPlanningToNetwork(self.vehicle.ad.stateModule:getSecondWayPoint())
-                end
-
+                self.vehicle.ad.pathFinderModule:reset()
+                self.vehicle.ad.pathFinderModule:addDelayTimer(10000)
+                self.vehicle.ad.pathFinderModule:startPathPlanningToNetwork(self.vehicle.ad.stateModule:getSecondWayPoint())
+                
                 Logging.error("[AutoDrive] Could not calculate path - shutting down")
                 self.vehicle.ad.taskModule:abortAllTasks()
                 self.vehicle:stopAutoDrive()

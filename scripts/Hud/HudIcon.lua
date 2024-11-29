@@ -61,11 +61,13 @@ function ADHudIcon:renderDefaultText(vehicle, uiScale, fontSize, posX, posY)
         textToShow = textToShow .. " - " .. taskInfo
     end
 
+    --[[ TODO after Pathfinder refactor
     if AutoDrive.isEditorModeEnabled() and AutoDrive.getDebugChannelIsSet(AutoDrive.DC_PATHINFO) then
         if vehicle.ad.pathFinderModule.steps > 0 then
             textToShow = textToShow .. " - " .. "Fallback: " .. tostring(vehicle.ad.pathFinderModule.fallBackMode)
         end
     end
+    --]]
 
     local lines = self:splitTextByLength(textToShow, fontSize, self.size.width - 4 * AutoDrive.Hud.gapWidth - 3 * AutoDrive.Hud.headerIconWidth)
     

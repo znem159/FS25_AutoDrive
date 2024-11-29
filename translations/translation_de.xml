@@ -263,6 +263,7 @@
 		<text name="gui_ad_pathfinder_tooltip"					text="Wähle welcher Algorithmus bei freier Pfadfindung (nicht im Streckennetz) genutzt wird" />
 		<text name="gui_ad_pathfinder_astar"					text="A-Stern + Dubins" />
 		<text name="gui_ad_pathfinder_custom"					text="AutoDrive Spezial" />
+		<text name="gui_ad_pathfinder_treeCrawler"				text="AutoDrive TreeCrawler" />
 		<text name="gui_ad_enableRoutesManagerOnDediServer"			text="Routenmanager im Server" />
 		<text name="gui_ad_enableRoutesManagerOnDediServer_tooltip"	text="Aktiviert die Nutzung des Routenmanager auf einem dedizierten Server" />
 		<text name="gui_ad_detectSwath"							text="Schwaderkennung" />
