@@ -251,6 +251,21 @@
 		<text name="gui_ad_remainingDriveTimeInterval_tooltip"	text="Para mods externos: Intervalo para calcular el tiempo de conducción restante. En caso de problemas con el aumento de rendimiento o desactivar." />
 		<text name="gui_ad_adpd_showError"						text="AutoDrive: The Network is inconsistent and could not be imported, error code" />
 		<text name="gui_ad_adpd_showConfirmation"				text="AutoDrive: Would you like to import the AD Network from the Placeable?" />
+		<text name="gui_ad_pathfinder"							text="Pathfinder algorithm" />
+		<text name="gui_ad_pathfinder_tooltip"					text="Choose which pathfinder algorithm is used (when not on network)" />
+		<text name="gui_ad_pathfinder_astar"					text="A-Star + Dubins" />
+		<text name="gui_ad_pathfinder_custom"					text="AutoDrive Custom" />
+		<text name="gui_ad_pathfinder_treeCrawler"				text="AutoDrive TreeCrawler" />
+		<text name="gui_ad_enableRoutesManagerOnDediServer"			text="Routemanager on Server" />
+		<text name="gui_ad_enableRoutesManagerOnDediServer_tooltip"	text="Enable route manager on dedicated servers" />
+		<text name="gui_ad_detectSwath"							text="Swath detection" />
+		<text name="gui_ad_detectSwath_tooltip"					text="Decides if swaths are detected as fruit on field" />
+		<text name="gui_ad_colorAssignmentMode"					text="Custom colors" />
+		<text name="gui_ad_colorAssignmentMode_tooltip"			text="Enables selection of custom colors for AutoDrive" />
+		<text name="gui_ad_FoldImplements"						text="Fold implements" />
+		<text name="gui_ad_FoldImplements_tooltip"				text="AutoDrive will wait for implements to fold up before starting" />
+		<text name="gui_ad_RecordWhileNotInVehicle"				text="Record without driver" />
+		<text name="gui_ad_RecordWhileNotInVehicle_tooltip"		text="AutoDrive will keep recording if driver leaves the vehicle" />	
 
 		<text name="gui_ad_settingsPage_title"					text="Ajustes - AutoDrive" />
 		<text name="gui_ad_userSettingsPage_title"				text="Ajustes de usuario - AutoDrive" />

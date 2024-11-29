@@ -72,7 +72,7 @@ function ExitFieldTask:startPathPlanning()
                 -- initiate pathFinder only if distance to closest wayPoint is enought to find a path
                 local vecToNextPoint = {x = wayPoints[2].x - closestNode.x, z = wayPoints[2].z - closestNode.z}
                 self.vehicle.ad.pathFinderModule:reset()
-                self.vehicle.ad.pathFinderModule:startPathPlanningToWayPoint(closest)
+                self.vehicle.ad.pathFinderModule:startPathPlanningToWayPointWithTargetVector(closest, vecToNextPoint)
             else
                 -- close to network, set task finished
                 self:finished()
@@ -86,11 +86,13 @@ function ExitFieldTask:startPathPlanning()
         local targetNode = ADGraphManager:getWayPointById(self.vehicle.ad.stateModule:getFirstWayPoint())
         local wayPoints = ADGraphManager:pathFromTo(self.vehicle.ad.stateModule:getFirstWayPoint(), self.vehicle.ad.stateModule:getSecondWayPoint())
         if wayPoints ~= nil and #wayPoints > 1 then
+            local vecToNextPoint = {x = wayPoints[2].x - targetNode.x, z = wayPoints[2].z - targetNode.z}
             if AutoDrive.getSetting("exitField", self.vehicle) == 1 and #wayPoints > 6 then
                 targetNode = wayPoints[5]
+                vecToNextPoint = {x = wayPoints[6].x - targetNode.x, z = wayPoints[6].z - targetNode.z}
             end
             self.vehicle.ad.pathFinderModule:reset()
-            self.vehicle.ad.pathFinderModule:startPathPlanningToWayPoint(targetNode.id)
+            self.vehicle.ad.pathFinderModule:startPathPlanningToWayPointWithTargetVector(targetNode.id, vecToNextPoint)
         else
             AutoDriveMessageEvent.sendMessageOrNotification(self.vehicle, ADMessagesManager.messageTypes.WARN, "$l10n_AD_Driver_of; %s $l10n_AD_cannot_find_path;", 5000, self.vehicle.ad.stateModule:getName())
             self.vehicle.ad.taskModule:abortAllTasks()

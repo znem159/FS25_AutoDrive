@@ -160,6 +160,25 @@ function PathFinderModule:startPathPlanningToNetwork(destinationId)
     self:startPathPlanningToWayPoint(closest, destinationId)
 end
 
+function PathFinderModule:startPathPlanningToWayPointWithTargetVector(wayPointId, targetVector)    
+    local targetNode = ADGraphManager:getWayPointById(wayPointId)
+    self.appendWayPoints = {}
+
+    local pathfinderTask = {
+        targetPoint = targetNode,
+        targetVector = targetVector,
+        toNetwork = true,
+        toPipe = false,
+        fruitToCheckFor = nil,
+        wayPointsToAppend = self.appendWayPoints,
+        fallBackMode = PathFinderModule.NO_FALLBACK,
+        chasingVehicle = false,
+        isSecondChasingVehicle = false
+    }
+
+    self:startPathPlanningTo(pathfinderTask)
+end
+
 function PathFinderModule:startPathPlanningToWayPoint(wayPointId, destinationId)
     PathFinderModule.debugMsg(self.vehicle, "PathFinderModule:startPathPlanningToWayPoint destinationId %s"
         , tostring(destinationId)

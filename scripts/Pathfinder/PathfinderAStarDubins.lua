@@ -59,7 +59,7 @@ end
 
 function PathFinderAStarDubins:startPathPlanningTo(pathfinderTask)
     --targetPoint, targetVector, toNetwork, toPipe, fruitToCheckFor, wayPointsToAppend, fallBackMode, chasingVehicle, isSecondChasingVehicle
-    self.fallBackMode = pathfinderTask.fallbackMode
+    self.fallBackMode = pathfinderTask.fallBackMode
     self.targetVector = pathfinderTask.targetVector
     local vehicleWorldX, vehicleWorldY, vehicleWorldZ = getWorldTranslation(self.vehicle.components[1].node)
     local vehicleRx, _, vehicleRz = localDirectionToWorld(self.vehicle.components[1].node, 0, 0, 1)
