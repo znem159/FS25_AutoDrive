@@ -215,8 +215,8 @@ function PathFinderTreeCrawler:createLeaveAt(x, y, z, rotY, parent, scaleIndexDi
     leave.corners[2] =  {x = x + ( leave.vectorX.x/2 - leave.vectorZ.x/2), z = z + ( leave.vectorX.z/2 - leave.vectorZ.z/2)}
     leave.corners[3] =  {x = x + (-leave.vectorX.x/2 + leave.vectorZ.x/2), z = z + (-leave.vectorX.z/2 + leave.vectorZ.z/2)}
     leave.corners[4] =  {x = x + ( leave.vectorX.x/2 + leave.vectorZ.x/2), z = z + ( leave.vectorX.z/2 + leave.vectorZ.z/2)}
-    self:checkLeave(leave)
     leave.parent = parent
+    self:checkLeave(leave)
 
     local gridKey = string.format("%.1f|%.1f", leave.x, leave.z)
     --print("creating leave with gridkey: " .. gridKey)
@@ -321,8 +321,14 @@ function PathFinderTreeCrawler:checkLeave(leave)
     end
 
     if not leave.restricted and leave.parent ~= nil then
-        -- check for up/down is to big or below water level        
-        leave.restricted = self:checkSlopeAngle(leave.x, leave.z, leave.parent.x, leave.parent.z)  --> true if up/down or roll is to big or below water level
+        -- check for up/down is to big or below water level
+        --local length = MathUtil.vector3Length(leave.x - leave.parent.x, leave.y - leave.parent.y, leave.z - leave.parent.z)
+        local slopeAngle = math.atan2(math.abs(leave.y - leave.parent.y) , self.stepSize)   
+        leave.restricted = math.abs(slopeAngle) > PathFinderModule.SLOPE_DETECTION_THRESHOLD   
+        if leave.depth < 5 then
+            print("leave.depth: " .. leave.depth .. " slopeAngle: " .. slopeAngle .. " threshold: " .. PathFinderModule.SLOPE_DETECTION_THRESHOLD)            
+        end
+        --leave.restricted = self:checkSlopeAngle(leave.x, leave.z, leave.parent.x, leave.parent.z)
     end
 
     if not leave.restricted then
