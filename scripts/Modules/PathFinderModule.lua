@@ -143,6 +143,11 @@ function PathFinderModule:isBlocked()
 end
 
 function PathFinderModule:getPath()
+    local generatedPath = self.currentPathfinder:getPath()
+    if generatedPath == nil then
+        return {}
+    end
+    
     return self.currentPathfinder:getPath()
 end
 
