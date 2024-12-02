@@ -65,24 +65,17 @@ function EmptyHarvesterTask:update(dt)
         self.reverseStartLocation = {x = x, y = y, z = z}
         self.state = EmptyHarvesterTask.STATE_REVERSING
     end
-
+    
     if self.state == EmptyHarvesterTask.STATE_PATHPLANNING then
         if self.vehicle.ad.pathFinderModule:hasFinished() then
             self.wayPoints = self.vehicle.ad.pathFinderModule:getPath()
             self.vehicle.ad.drivePathModule:setWayPoints(self.wayPoints)
             if self.wayPoints == nil or #self.wayPoints == 0 then
-                -- If the target/pipe location is blocked, we can issue a notification and stop the task - Otherwise we pause a moment and retry
-                if self.vehicle.ad.pathFinderModule:isTargetBlocked() then
-                    self:finished(ADTaskModule.DONT_PROPAGATE)
-                    self.vehicle:stopAutoDrive()
-                    AutoDriveMessageEvent.sendMessageOrNotification(self.vehicle, ADMessagesManager.messageTypes.WARN, "$l10n_AD_Driver_of; %s $l10n_AD_cannot_find_path; %s", 5000, self.vehicle.ad.stateModule:getName(), self.combine.ad.stateModule:getName())
-                    return
-                else
-                    self.vehicle.ad.modes[AutoDrive.MODE_UNLOAD]:notifyAboutFailedPathfinder()
-                    self.vehicle.ad.pathFinderModule:reset()
-                    self.vehicle.ad.pathFinderModule:startPathPlanningToPipe(self.combine, false)
-                    self.vehicle.ad.pathFinderModule:addDelayTimer(10000)
-                end
+                -- If the target/pipe location is blocked, we can issue a notification and stop the task - Otherwise we pause a moment and retry                
+                self.vehicle.ad.modes[AutoDrive.MODE_UNLOAD]:notifyAboutFailedPathfinder()
+                self.vehicle.ad.pathFinderModule:reset()
+                self.vehicle.ad.pathFinderModule:startPathPlanningToPipe(self.combine, false)
+                self.vehicle.ad.pathFinderModule:addDelayTimer(10000)
             else
                 self.state = EmptyHarvesterTask.STATE_DRIVING
                 return
