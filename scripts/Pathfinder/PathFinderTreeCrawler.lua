@@ -34,7 +34,7 @@ function PathFinderTreeCrawler:new(vehicle)
 	setmetatable(o, self)
     self.__index = self
 
-    o.mask = CollisionFlag.DEFAULT + CollisionFlag.STATIC_OBJECT + CollisionFlag.DYNAMIC_OBJECT + CollisionFlag.VEHICLE + CollisionFlag.TERRAIN_DELTA + CollisionFlag.TREE + CollisionFlag.BUILDING + CollisionFlag.WATER
+    o.mask = CollisionFlag.DEFAULT + CollisionFlag.STATIC_OBJECT + CollisionFlag.DYNAMIC_OBJECT + CollisionFlag.VEHICLE + CollisionFlag.TERRAIN_DELTA + CollisionFlag.TREE + CollisionFlag.BUILDING + CollisionFlag.WATER + CollisionFlag.TRAFFIC_VEHICLE
     o.stepSize = 3.0    
     o.groundClearance = 0.5
     o.vehicle = vehicle
