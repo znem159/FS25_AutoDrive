@@ -870,10 +870,6 @@ function AutoDriveHud:createMapHotspot(vehicle)
 		vehicle.ad.mapHotspot:setOwnerFarmId(vehicle:getOwnerFarmId())
 	end
 	vehicle.ad.mapHotspot.textOffsetY = textOffsetY
-
-	vehicle.ad.mapHotspot.icon = Overlay.new(AIHotspot.FILENAME, 0, 0, getNormalizedScreenValues(40, 40))
-	vehicle.ad.mapHotspot.icon:setUVs(AIHotspot.UVS)
-
 	g_currentMission.hud:addMapHotspot(vehicle.ad.mapHotspot)
 end
 
