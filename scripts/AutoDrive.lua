@@ -635,10 +635,14 @@ function AutoDrive:mouseEvent(posX, posY, isDown, isUp, button)
 end
 
 function AutoDrive:handleScanDialog()
+	if AutoDrive.scanDialogState == AutoDrive.SCAN_DIALOG_RESULT_DONE then
+		return true
+	end
+
 	if AutoDrive.scanDialogState == AutoDrive.SCAN_DIALOG_NONE then
 		if ADGraphManager:getWayPointsCount() > 0 then
 			-- AutoDrive.debugMsg(nil, "[AD] AutoDrive:update not-new -> SCAN_DIALOG_RESULT_NO")
-			AutoDrive.scanDialogState = AutoDrive.SCAN_DIALOG_RESULT_NO
+			AutoDrive.scanDialogState = AutoDrive.SCAN_DIALOG_RESULT_DONE
 			return true
 		elseif g_server ~= nil and g_dedicatedServer == nil then
 			-- open dialog
@@ -674,6 +678,7 @@ function AutoDrive:handleScanDialog()
 		if ADGraphManager:getWayPointsCount() == 0 then
 			AutoDrive.loadStoredXML(true)
 		end
+		return true
 	end
 end
 
