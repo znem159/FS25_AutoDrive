@@ -11,7 +11,7 @@ AutoDrive.mouseWheelActive = false
 AutoDriveHud.debug = false
 
 AutoDriveHud.defaultHeaderHeight = 0.016
-AutoDriveHud.extendedHeaderHeight = 0.180
+AutoDriveHud.extendedHeaderHeight = 0.200
 
 function AutoDriveHud:new()
 	local o = {}
