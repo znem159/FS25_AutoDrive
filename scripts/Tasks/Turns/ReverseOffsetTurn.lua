@@ -46,16 +46,16 @@ function ReverseOffsetTurn:generateTurn()
         self.generationStep = 1
     elseif self.generationStep == 1 then        
         local vehX, vehY, vehZ = getWorldTranslation(vehicle.components[1].node)
-        local dirX, _, dirZ = localDirectionToWorld(vehicle.components[1].node, 0, 0, -1)
+        local dirX, _, dirZ = AutoDrive.localDirectionToWorld(vehicle, 0, 0, -1)
         local reverseNodes = self.task:generateStraight({x=vehX, y=vehY, z=vehZ}, {x=dirX, z=dirZ}, AutoDrive.getTractorTrainLength(vehicle, true, true) + ReverseOffsetTurn.MAX_INITIAL_REVERSING_DISTANCE, true)
         for i, node in pairs(reverseNodes) do
             table.insert(self.path, node)
         end
         self.generationStep = 2
     elseif self.generationStep == 2 then
-        local dirX, _, dirZ = localDirectionToWorld(vehicle.components[1].node, 0, 0, 1)
+        local dirX, _, dirZ = AutoDrive.localDirectionToWorld(vehicle, 0, 0, 1)
         local startDirZ = {x=dirX, z=dirZ}
-        dirX, _, dirZ = localDirectionToWorld(vehicle.components[1].node, 1, 0, 0)
+        dirX, _, dirZ = AutoDrive.localDirectionToWorld(vehicle, 1, 0, 0)
         local startDirX = {x=dirX, z=dirZ}
         local reversedLength = ReverseOffsetTurn.MAX_INITIAL_REVERSING_DISTANCE
         local turnStart = AutoDrive.createWayPointRelativeToVehicle(vehicle, 0, -reversedLength)
@@ -68,7 +68,7 @@ function ReverseOffsetTurn:generateTurn()
             self.failed = true
         end
     elseif self.generationStep == 3 then
-        local dirX, _, dirZ = localDirectionToWorld(vehicle.components[1].node, 0, 0, -1)
+        local dirX, _, dirZ = AutoDrive.localDirectionToWorld(vehicle, 0, 0, -1)
         local straightenTrailerNodes = self.task:generateStraight(self.path[#self.path], {x=dirX, z=dirZ}, (ReverseOffsetTurn.MAX_INITIAL_REVERSING_DISTANCE + AutoDrive.getTractorTrainLength(vehicle, true, true)) * 0.75, false)
         for i, node in pairs(straightenTrailerNodes) do
             table.insert(self.path, node)

@@ -66,7 +66,7 @@ function DriveToVehicleTask:finished(propagate)
         local breadCrumbs = self.targetVehicle.ad.modes[AutoDrive.MODE_UNLOAD]:getBreadCrumbs()
         local x, _, z = getWorldTranslation(self.vehicle.components[1].node)        
         for _, breadCrumb in ipairs(breadCrumbs.items) do
-            local _, _, diffZ = worldToLocal(self.vehicle.components[1].node, breadCrumb.x, breadCrumb.y, breadCrumb.z)
+            local _, _, diffZ = AutoDrive.worldToLocal(self.vehicle, breadCrumb.x, breadCrumb.y, breadCrumb.z)
             if diffZ > 1 and MathUtil.vector2Length(x - breadCrumb.x, z - breadCrumb.z) < 5 then
                 closeToBreadCrumbs = true
                 break

@@ -45,7 +45,7 @@ function ForwardOffsetTurn:generateTurn()
     elseif self.generationStep == 1 then
         local offsetX, offsetZ = self.task:getUturnOffsetValues(self.turnParameters.targetLeft)
         local targetPoints = self.task:generateReverseToCombineSection()
-        local _, _, diffZ = worldToLocal(vehicle.components[1].node, targetPoints[1].x, targetPoints[1].y, targetPoints[1].z)
+        local _, _, diffZ = AutoDrive.worldToLocal(vehicle, targetPoints[1].x, targetPoints[1].y, targetPoints[1].z)
         AutoDrive.debugPrint(self.vehicle, AutoDrive.DC_COMBINEINFO, "ForwardOffsetTurn:generateTurn - offsetZ: " .. offsetZ .. " diffZ: " .. diffZ)
         offsetZ = math.max(offsetZ, diffZ)
 

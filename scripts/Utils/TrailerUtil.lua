@@ -482,7 +482,7 @@ function AutoDrive.getMostBackImplementOf(vehicle)
         for _, implement in pairs(vehicle:getAttachedImplements()) do
             if implement ~= nil and implement.object ~= nil and implement.object ~= vehicle then
                 local implementX, implementY, implementZ = getWorldTranslation(implement.object.components[1].node)
-                local _, _, diffZ = worldToLocal(vehicle.components[1].node, implementX, implementY, implementZ)
+                local _, _, diffZ = AutoDrive.worldToLocal(vehicle, implementX, implementY, implementZ)
                 if diffZ < backDistance then
                     backDistance = diffZ
                     mostBackImplement = implement.object
@@ -626,7 +626,7 @@ function AutoDrive.findGrainBackDoorTipSideIndex(vehicle, trailer)
         local currentDischargeNode = trailer:getCurrentDischargeNode()
         if currentDischargeNode then
             local tx, ty, tz = getWorldTranslation(currentDischargeNode.node)
-            local _, _, diffZ = worldToLocal(trailer.components[1].node, tx, ty, tz + 50)
+            local _, _, diffZ = AutoDrive.worldToLocal(trailer, tx, ty, tz + 50)
             -- get the 2 most back doors
             if diffZ < backDistance1 and currentDischargeNode and currentDischargeNode.effects and table.count(currentDischargeNode.effects) > 0 then
                 backDistance1 = diffZ

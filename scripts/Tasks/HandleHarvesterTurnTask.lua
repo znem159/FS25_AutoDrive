@@ -23,7 +23,7 @@ function HandleHarvesterTurnTask:new(vehicle, combine)
     o.triedAllTurnsAfterTurnEnded = false
 
     local x, y, z = getWorldTranslation(vehicle.components[1].node)
-    local diffX, _, diffZ = worldToLocal(combine.components[1].node, x, y, z)
+    local diffX, _, diffZ = AutoDrive.worldToLocal(combine, x, y, z)
     local turnLeft = AutoDrive.sign(diffX) >= 0
     local targetPosition = o:getHarvesterEndTurnPosition()
 
@@ -34,20 +34,20 @@ function HandleHarvesterTurnTask:new(vehicle, combine)
     end
 
     if AutoDrive.combineIsTurning(o.combine) then
-        diffX, _, diffZ = worldToLocal(vehicle.components[1].node, targetPosition.x, targetPosition.y, targetPosition.z)
+        diffX, _, diffZ = AutoDrive.worldToLocal(vehicle, targetPosition.x, targetPosition.y, targetPosition.z)
         turnLeft = AutoDrive.sign(diffX) >= 0
     end
 
-    local dirX, _, dirZ = localDirectionToWorld(combine.components[1].node, 0, 0, -1)
+    local dirX, _, dirZ =  AutoDrive.localDirectionToWorld(combine, 0, 0, -1)
     local targetDirZ = {x=dirX, z=dirZ}
-    dirX, _, dirZ = localDirectionToWorld(combine.components[1].node, -1, 0, 0)
+    dirX, _, dirZ =  AutoDrive.localDirectionToWorld(combine, -1, 0, 0)
     local targetDirX = {x=dirX, z=dirZ}
 
-    local startPosX, startPosY, startPosZ = localToWorld(vehicle.components[1].node, 0, 0, 0.5 + vehicle.size.length / 2)
+    local startPosX, startPosY, startPosZ = AutoDrive.localToWorld(vehicle, 0, 0, 0.5 + vehicle.size.length / 2)
     local startPos = { x=startPosX, y=startPosY, z=startPosZ}
-    dirX, _, dirZ = localDirectionToWorld(vehicle.components[1].node, 0, 0, 1)
+    dirX, _, dirZ =  AutoDrive.localDirectionToWorld(vehicle, 0, 0, 1)
     local startDirZ = {x=dirX, z=dirZ}
-    dirX, _, dirZ = localDirectionToWorld(vehicle.components[1].node, 1, 0, 0)
+    dirX, _, dirZ =  AutoDrive.localDirectionToWorld(vehicle, 1, 0, 0)
     local startDirX = {x=dirX, z=dirZ}
 
     o.turnParameters = {
@@ -308,7 +308,7 @@ end
 
 function HandleHarvesterTurnTask:generateReverseToCombineSection()
     local x, y, z = getWorldTranslation(self.vehicle.components[1].node)
-    local diffX, _, diffZ = worldToLocal(self.combine.components[1].node, x, y, z)
+    local diffX, _, diffZ = AutoDrive.worldToLocal(self.combine, x, y, z)
 
     local nodes = {}
 

@@ -2,7 +2,7 @@
 -- negative X -> right
 function AutoDrive.createWayPointRelativeToVehicle(vehicle, offsetX, offsetZ)
     local wayPoint = {}
-    wayPoint.x, wayPoint.y, wayPoint.z = localToWorld(vehicle.components[1].node, offsetX, 0, offsetZ)
+    wayPoint.x, wayPoint.y, wayPoint.z = AutoDrive.localToWorld(vehicle, offsetX, 0, offsetZ)
     return wayPoint
 end
 
@@ -16,7 +16,7 @@ function AutoDrive.createWayPointRelativeToDischargeNode(vehicle, offsetX, offse
         referenceAxis = vehicle.components[2].node
     end
     local node = AutoDrive.getDischargeNode(vehicle)
-    local worldOffsetX, worldOffsetY, worldOffsetZ = localDirectionToWorld(referenceAxis, offsetX, 0, offsetZ)
+    local worldOffsetX, worldOffsetY, worldOffsetZ = AutoDrive.localDirectionToWorld(vehicle, offsetX, 0, offsetZ, referenceAxis)
     local x, y, z = getWorldTranslation(node)
     wayPoint.x, wayPoint.y, wayPoint.z = x + worldOffsetX, y + worldOffsetY, z + worldOffsetZ
     return wayPoint
@@ -83,7 +83,7 @@ function AutoDrive.defineMinDistanceByVehicleType(vehicle)
         steeringX, _, steeringZ = getWorldTranslation(vehicle:getAISteeringNode())
     end
 
-    local _, _, diffZ = worldToLocal(vehicle.components[1].node, steeringX, 0, steeringZ)
+    local _, _, diffZ = AutoDrive.worldToLocal(vehicle, steeringX, 0, steeringZ)
 
     -- diffZ > 0 -> steering node ahead of vehicle center
     min_distance = (vehicle.size.length / 2) - diffZ
@@ -313,7 +313,7 @@ function AutoDrive.getVehicleLeadingEdge(vehicle)
     local implements = AutoDrive.getAllImplements(vehicle)
     for _, implement in pairs(implements) do
         local implementX, implementY, implementZ = getWorldTranslation(implement.components[1].node)
-        local _, _, diffZ = worldToLocal(vehicle.components[1].node, implementX, implementY, implementZ)
+        local _, _, diffZ = AutoDrive.worldToLocal(vehicle, implementX, implementY, implementZ)
         if diffZ > 0 and implement.size.length ~= nil then
             leadingEdge = math.max(leadingEdge, diffZ + (implement.size.length / 2) - (vehicle.size.length / 2))
         end
@@ -815,7 +815,7 @@ function AutoDrive.isImplementAllowedForReverseDriving(vehicle,implement)
         and AttacherJoints.JOINTTYPE_SEMITRAILER == implement.spec_attachable.attacherJoint.jointType
     then
         local implementX, implementY, implementZ = getWorldTranslation(implement.components[1].node)
-        local _, _, diffZ = worldToLocal(vehicle.components[1].node, implementX, implementY, implementZ)
+        local _, _, diffZ = AutoDrive.worldToLocal(vehicle, implementX, implementY, implementZ)
         if diffZ < -3 then
             return true
         end

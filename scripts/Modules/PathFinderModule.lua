@@ -234,9 +234,9 @@ function PathFinderModule:startPathPlanningToPipe(combine, chasing)
         )
     )
     local _, worldY, _ = getWorldTranslation(combine.components[1].node)
-    local rx, _, rz = localDirectionToWorld(combine.components[1].node, 0, 0, 1)
+    local rx, _, rz =  AutoDrive.localDirectionToWorld(combine, 0, 0, 1)
     if combine.components[2] ~= nil and combine.components[2].node ~= nil then
-        rx, _, rz = localDirectionToWorld(combine.components[2].node, 0, 0, 1)
+        rx, _, rz =  AutoDrive.localDirectionToWorld(combine, 0, 0, 1, combine.components[2].node)
     end
     local combineVector = {x = rx, z = rz}
 
@@ -339,7 +339,7 @@ function PathFinderModule:startPathPlanningToVehicle(targetVehicle, targetDistan
         )
     )
     local worldX, worldY, worldZ = getWorldTranslation(targetVehicle.components[1].node)
-    local rx, _, rz = localDirectionToWorld(targetVehicle.components[1].node, 0, 0, 1)
+    local rx, _, rz =  AutoDrive.localDirectionToWorld(targetVehicle, 0, 0, 1)
     local targetVector = {x = rx, z = rz}
 
     local wpBehind = {x = worldX - targetDistance * rx, y = worldY, z = worldZ - targetDistance * rz}
@@ -373,7 +373,7 @@ function PathFinderModule:startPathPlanningTo(targetPoint, targetVector)
     end
     self.targetVector = targetVector
     local vehicleWorldX, vehicleWorldY, vehicleWorldZ = getWorldTranslation(self.vehicle.components[1].node)
-    local vehicleRx, _, vehicleRz = localDirectionToWorld(self.vehicle.components[1].node, 0, 0, 1)
+    local vehicleRx, _, vehicleRz =  AutoDrive.localDirectionToWorld(self.vehicle, 0, 0, 1)
     local vehicleVector = {x = vehicleRx, z = vehicleRz}
     self.startX = vehicleWorldX + self.PATHFINDER_START_DISTANCE * vehicleRx
     self.startZ = vehicleWorldZ + self.PATHFINDER_START_DISTANCE * vehicleRz
@@ -411,7 +411,7 @@ function PathFinderModule:startPathPlanningTo(targetPoint, targetVector)
     self.startCell.bordercells = 0
     self.currentCell = nil
 
-    local vehicleBehindX, _, vehicleBehindZ = localDirectionToWorld(self.vehicle.components[1].node, 0, 0, -self.minTurnRadius)
+    local vehicleBehindX, _, vehicleBehindZ =  AutoDrive.localDirectionToWorld(self.vehicle, 0, 0, -self.minTurnRadius)
     local vehicleBehindVector = {x = vehicleBehindX, z = vehicleBehindZ}
     self.behindStartCell = self:worldLocationToGridLocation(vehicleWorldX + vehicleBehindX, vehicleWorldZ + vehicleBehindZ)
     self.behindStartCell.direction = self:worldDirectionToGridDirection(vehicleBehindVector, vehicleVector)

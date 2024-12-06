@@ -1128,14 +1128,6 @@ function AutoDrive:onFillTypeSelection(fillType)
     AutoDrive.debugPrint(nil, AutoDrive.DC_VEHICLEINFO, "AutoDrive:onFillTypeSelection end")
 end
 
-function AutoDrive.driveInDirection(self, dt, steeringAngleLimit, acceleration, slowAcceleration, slowAngleLimit, allowedToDrive, moveForwards, lx, lz, maxSpeed, slowDownFactor)
-	-- Having to set this so that the bug in driveInDirection doesn't occur
-	self.motor = self:getMotor()
-	self.cruiseControl = {}
-	self.cruiseControl.state = self:getCruiseControlState()
-	AIVehicleUtil.driveInDirection(self, dt, steeringAngleLimit, acceleration, slowAcceleration, slowAngleLimit, allowedToDrive, moveForwards, lx, lz, maxSpeed, slowDownFactor)
-end
-
 function AutoDrive.sign(x)
 	if x < 0 then
 		return -1
@@ -1246,4 +1238,88 @@ function AutoDrive.stringToNumberList(text, sep)
 		end
 	end
 	return list
+end
+
+AutoDrive.debugTransform = false
+
+function AutoDrive.isReverseDriving(vehicle)
+	return 	vehicle.spec_reverseDriving ~= nil and vehicle.spec_reverseDriving.hasReverseDriving and vehicle.spec_reverseDriving.isReverseDriving
+end
+
+
+function AutoDrive.localToLocalForReverseDriving(vehicle, x, z)
+	if AutoDrive.isReverseDriving(vehicle) then
+		return -x, -z
+	else
+		return x, z
+	end
+end
+
+function AutoDrive.selectVehicleNode(vehicle, node_or_identifier)
+	if node_or_identifier == nil then
+		return vehicle.components[1].node
+	end
+	if type(node_or_identifier) == "number" then
+		return node_or_identifier
+	end
+end
+
+function AutoDrive.localToWorld(vehicle, x, y, z, node_or_identifier)
+	AutoDrive.debugTransformMsg(vehicle, "AutoDrive:localToWorld(%f, %f, %f)", x, y, z)
+	x, z = AutoDrive.localToLocalForReverseDriving(vehicle, x, z)
+	local node = AutoDrive.selectVehicleNode(vehicle, node_or_identifier)
+	return localToWorld(node, x, y, z)
+end
+
+
+function AutoDrive.worldToLocal(vehicle, x, y, z, node_or_identifier)
+	AutoDrive.debugTransformMsg(vehicle, "AutoDrive:worldToLocal(%f, %f, %f)", x, y, z)
+	local node = AutoDrive.selectVehicleNode(vehicle, node_or_identifier)
+	local localX, localY, localZ = worldToLocal(node, x, y, z)
+	localX, localZ = AutoDrive.localToLocalForReverseDriving(vehicle, localX, localZ)
+	return localX, localY, localZ
+end
+
+function AutoDrive.localDirectionToWorld(vehicle, x, y, z, node_or_identifier)
+	AutoDrive.debugTransformMsg(vehicle, "AutoDrive:localDirectionToWorld(%f, %f, %f)", x, y, z)
+	x, z = AutoDrive.localToLocalForReverseDriving(vehicle, x, z)
+	local node = AutoDrive.selectVehicleNode(vehicle, node_or_identifier)
+	return localDirectionToWorld(node, x, y, z)
+end
+
+function AutoDrive.worldDirectionToLocal(vehicle, x, y, z, node_or_identifier)
+	AutoDrive.debugTransformMsg(vehicle, "AutoDrive:worldDirectionToLocal(%f, %f, %f)", x, y, z)
+	local node = AutoDrive.selectVehicleNode(vehicle, node_or_identifier)
+	local localX, localY, localZ = worldDirectionToLocal(node, x, y, z)
+	localX, localZ = AutoDrive.localToLocalForReverseDriving(vehicle, localX, localZ)
+	return localX, localY, localZ
+end
+
+function AutoDrive.getDriveDirection(vehicle, x, y, z, node_or_identifier)
+	AutoDrive.debugTransformMsg(vehicle, "AutoDrive:localDirectionToWorld(%f, %f, %f)", x, y, z)
+	local node = AutoDrive.selectVehicleNode(vehicle, node_or_identifier)
+	local directionX, directionZ = AIVehicleUtil.getDriveDirection(node, x, y, z)
+	return AutoDrive.localToLocalForReverseDriving(vehicle, directionX, directionZ)
+end
+
+function AutoDrive.driveInDirection(self, dt, steeringAngleLimit, acceleration, slowAcceleration, slowAngleLimit, allowedToDrive, moveForwards, lx, lz, maxSpeed, slowDownFactor)
+	-- Having to set this so that the bug in driveInDirection doesn't occur
+	self.motor = self:getMotor()
+	self.cruiseControl = {}
+	self.cruiseControl.state = self:getCruiseControlState()
+	lx, lz = AutoDrive.localToLocalForReverseDriving(self, lx, lz)
+	AutoDrive.debugTransformMsg(self, "AutoDrive:driveInDirection(%f, %f), limit=%f, slow_limit=%f, accel=%f, slow_accel=%f, allowed=%s, forwards=%s, speed=%f, slowdown=%f", 
+	                            lx, lz, steeringAngleLimit, slowAngleLimit, acceleration, slowAcceleration, tostring(allowedToDrive), tostring(moveForwards), maxSpeed, slowDownFactor)
+	if AutoDrive.isReverseDriving(self) then
+		-- AIVehicleUtil.driveInDirection does not handle steering while reverse driving correctly
+		AIVehicleUtil.driveToPoint(self, dt, acceleration, allowedToDrive, moveForwards, lx*10, lz*10, maxSpeed, false)
+	else
+		AIVehicleUtil.driveInDirection(self, dt, steeringAngleLimit, acceleration, slowAcceleration, slowAngleLimit, allowedToDrive, moveForwards, lx, lz, maxSpeed, slowDownFactor)
+	end
+end
+
+function AutoDrive.debugTransformMsg(vehicle, debugText, ...)
+    if AutoDrive.debugTransform == true then
+        AutoDrive.debugMsg(vehicle, debugText, ...)
+    end
 end

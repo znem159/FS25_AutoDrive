@@ -306,9 +306,9 @@ function ADDrivePathModule:followWaypoints(dt)
     end
 
     self.targetX, self.targetZ = self:getLookAheadTarget()
-    local lx, lz = AIVehicleUtil.getDriveDirection(self.vehicle.components[1].node, self.targetX, y, self.targetZ)
+    local lx, lz = AutoDrive.getDriveDirection(self.vehicle, self.targetX, y, self.targetZ)
     if self.vehicle.getAISteeringNode ~= nil then
-        lx, lz = AIVehicleUtil.getDriveDirection(self.vehicle:getAISteeringNode(), self.targetX, y, self.targetZ)
+        lx, lz = AutoDrive.getDriveDirection(self.vehicle, self.targetX, y, self.targetZ, self.vehicle:getAISteeringNode())
     end
 
     if self.vehicle.ad.collisionDetectionModule:hasDetectedObstable(dt) then
@@ -340,7 +340,7 @@ function ADDrivePathModule:followWaypoints(dt)
         end
         self.vehicle.ad.trailerModule:handleTrailerReversing(false)
         AutoDrive.driveInDirection(self.vehicle, dt, maxAngle, self.acceleration, 0.8, maxAngle, true, true, lx, lz, self.speedLimit, 1)
-        --local worldX, _, worldZ = worldToLocal(self.vehicle.components[1].node, self.targetX, 0, self.targetZ)
+        --local worldX, _, worldZ = AutoDrive.worldToLocal(self.vehicle, self.targetX, 0, self.targetZ)
         --print("dt: " .. dt .. " acc: " .. self.acceleration .. " x: " .. worldX .. " z: " .. worldZ .. " speedLimit: " .. self.speedLimit)
         --AIVehicleUtil.driveToPoint(self.vehicle, dt, self.acceleration, true, true, worldX, worldZ, self.speedLimit)
     end

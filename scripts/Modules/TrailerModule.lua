@@ -103,7 +103,7 @@ function ADTrailerModule:getBunkerSiloSpeed()
             local unloadTimeInMS = fillLevel / dischargeSpeed
 
             local dischargeNodeX, dischargeNodeY, dischargeNodeZ = getWorldTranslation(dischargeNode.node)
-            local rx, _, rz = localDirectionToWorld(trailer.components[1].node, 0, 0, 1)
+            local rx, _, rz =  AutoDrive.localDirectionToWorld(trailer, 0, 0, 1)
             local normalVector = {x = -rz, z = rx}
 
             --                                                                                  vecW

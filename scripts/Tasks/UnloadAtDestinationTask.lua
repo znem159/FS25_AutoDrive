@@ -219,7 +219,7 @@ function UnloadAtDestinationTask:isBaleUnloadFinished(dt)
     if self.baleTrailer and self.baleTrailer.getIsAutomaticBaleUnloadingInProgress then
         local unloading = self.baleTrailer:getIsAutomaticBaleUnloadingInProgress()
         if self.baleUnloadForwardsTarget == nil then
-            local x, y, z = localToWorld(self.vehicle.components[1].node, 0, 0 , UnloadAtDestinationTask.BALE_UNLOAD_DISTANCE)
+            local x, y, z = AutoDrive.localToWorld(self.vehicle, 0, 0 , UnloadAtDestinationTask.BALE_UNLOAD_DISTANCE)
             self.baleUnloadForwardsTarget = {x=x, y=y, z=z}
         end
         if self.waitForBaleUnloadTimer:timer(true, UnloadAtDestinationTask.WAIT_FOR_BALE_UNLOAD, dt) then

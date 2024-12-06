@@ -22,7 +22,7 @@ function FollowVehicleTask:setUp()
         local x, _, z = getWorldTranslation(self.vehicle.components[1].node)
         local indexToAttachTo = nil
         for index, breadCrumb in ipairs(breadCrumbs.items) do
-            local _, _, diffZ = worldToLocal(self.vehicle.components[1].node, breadCrumb.x, breadCrumb.y, breadCrumb.z)
+            local _, _, diffZ = AutoDrive.worldToLocal(self.vehicle, breadCrumb.x, breadCrumb.y, breadCrumb.z)
             if diffZ > 1 and MathUtil.vector2Length(x - breadCrumb.x, z - breadCrumb.z) < 15 then
                 indexToAttachTo = index
                 --AutoDrive.debugPrint(self.vehicle, AutoDrive.DC_COMBINEINFO, "FollowVehicleTask:setUp() Found breadcrumb to attach to during setup! Index: " .. index)

@@ -129,8 +129,8 @@ function ADCollSensorSplit:buildBoxShape(x, y, z, width, height, length, vecZ, v
     box.downLeft[2] = box.center[2]
     box.downLeft[3] = box.center[3] - vecX.z * box.size[1] - vecZ.z * box.size[3]
 
-    box.dirX, box.dirY, box.dirZ = localDirectionToWorld(vehicle.components[1].node, 0, 0, 1)
-    box.zx, box.zy, box.zz = localDirectionToWorld(vehicle.components[1].node, vecZ.x, 0, vecZ.z)
+    box.dirX, box.dirY, box.dirZ =  AutoDrive.localDirectionToWorld(vehicle, 0, 0, 1)
+    box.zx, box.zy, box.zz =  AutoDrive.localDirectionToWorld(vehicle, vecZ.x, 0, vecZ.z)
     
     box.ry = math.atan2(box.zx, box.zz)
 
@@ -143,12 +143,12 @@ function ADCollSensorSplit:buildBoxShape(x, y, z, width, height, length, vecZ, v
         end
     end
     box.rx = -MathUtil.getYRotationFromDirection(box.dirY, 1) * self.frontFactor - math.rad(angleOffset)
-    box.x, box.y, box.z = localToWorld(vehicle.components[1].node, box.center[1], box.center[2], box.center[3])
+    box.x, box.y, box.z = AutoDrive.localToWorld(vehicle, box.center[1], box.center[2], box.center[3])
 
-    box.topLeft.x, box.topLeft.y, box.topLeft.z = localToWorld(vehicle.components[1].node, box.topLeft[1], box.topLeft[2], box.topLeft[3])
-    box.topRight.x, box.topRight.y, box.topRight.z = localToWorld(vehicle.components[1].node, box.topRight[1], box.topRight[2], box.topRight[3])
-    box.downRight.x, box.downRight.y, box.downRight.z = localToWorld(vehicle.components[1].node, box.downRight[1], box.downRight[2], box.downRight[3])
-    box.downLeft.x, box.downLeft.y, box.downLeft.z = localToWorld(vehicle.components[1].node, box.downLeft[1], box.downLeft[2], box.downLeft[3])
+    box.topLeft.x, box.topLeft.y, box.topLeft.z = AutoDrive.localToWorld(vehicle, box.topLeft[1], box.topLeft[2], box.topLeft[3])
+    box.topRight.x, box.topRight.y, box.topRight.z = AutoDrive.localToWorld(vehicle, box.topRight[1], box.topRight[2], box.topRight[3])
+    box.downRight.x, box.downRight.y, box.downRight.z = AutoDrive.localToWorld(vehicle, box.downRight[1], box.downRight[2], box.downRight[3])
+    box.downLeft.x, box.downLeft.y, box.downLeft.z = AutoDrive.localToWorld(vehicle, box.downLeft[1], box.downLeft[2], box.downLeft[3])
 
     return box
 end
@@ -159,7 +159,7 @@ function ADCollSensorSplit:getBoxShapes()
     local width, length = AutoDrive.getVehicleDimensions(vehicle, false)
 
     local frontCenterPoint = {}
-    frontCenterPoint.x, frontCenterPoint.y, frontCenterPoint.z = worldToLocal(self.vehicle.components[1].node, 0, 0, AutoDrive.getVehicleLeadingEdge(self.vehicle))
+    frontCenterPoint.x, frontCenterPoint.y, frontCenterPoint.z = AutoDrive.worldToLocal(self.vehicle, 0, 0, AutoDrive.getVehicleLeadingEdge(self.vehicle))
     
     local lookAheadDistance = math.clamp(vehicle.lastSpeedReal * 3600 * 15.5 / 40, self.minDynamicLength, 16)
     

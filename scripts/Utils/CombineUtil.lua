@@ -143,7 +143,7 @@ function AutoDrive.getPipeSide(combine)
     local combineNode = AutoDrive.getPipeRoot(combine)
     local dischargeNode = AutoDrive.getDischargeNode(combine)
     local dischargeX, dichargeY, dischargeZ = getWorldTranslation(dischargeNode)
-    local diffX, _, _ = worldToLocal(combineNode, dischargeX, dichargeY, dischargeZ)
+    local diffX, _, _ = AutoDrive.worldToLocal(combine, dischargeX, dichargeY, dischargeZ, combineNode)
     if combine.ad ~= nil and (combine.ad.isFixedPipeChopper or combine.ad.isHarvester) and AutoDrive.isPipeOut(combine) then
         combine.ad.storedPipeSide = AutoDrive.sign(diffX)
     end
@@ -164,7 +164,7 @@ function AutoDrive.getPipeLength(combine)
     if (combine.ad.isFixedPipeChopper or combine.ad.isHarvester) and AutoDrive.isPipeOut(combine) then
         local combineNode = AutoDrive.getPipeRoot(combine)
         local dischargeX, dichargeY, dischargeZ = getWorldTranslation(AutoDrive.getDischargeNode(combine))
-        local diffX, _, _ = worldToLocal(combineNode, dischargeX, dichargeY, dischargeZ)
+        local diffX, _, _ = AutoDrive.worldToLocal(combine, dischargeX, dichargeY, dischargeZ, combineNode)
         length = math.abs(diffX)
 
         -- Store pipe length for 'normal' harvesters
@@ -251,7 +251,7 @@ function AutoDrive.getFrontToolWidth(vehicle, forced)
     for _, implement in pairs(implements) do
         --Check if tool is in front of vehicle
         local toolX, toolY, toolZ = getWorldTranslation(implement.components[1].node)
-        local _, _, offsetZ =  worldToLocal(vehicle.components[1].node, toolX, toolY, toolZ)
+        local _, _, offsetZ =  AutoDrive.worldToLocal(vehicle, toolX, toolY, toolZ)
         if offsetZ > 0 then
             widthOfFrontTool = math.max(widthOfFrontTool, AutoDrive.getAIMarkerWidth(implement))
         end
@@ -262,7 +262,7 @@ function AutoDrive.getFrontToolWidth(vehicle, forced)
         for _, implement in pairs(implements) do
             --Check if tool is in front of vehicle
             local toolX, toolY, toolZ = getWorldTranslation(implement.components[1].node)
-            local _, _, offsetZ =  worldToLocal(vehicle.components[1].node, toolX, toolY, toolZ)
+            local _, _, offsetZ =  AutoDrive.worldToLocal(vehicle, toolX, toolY, toolZ)
             if offsetZ > 0 then
                 widthOfFrontTool = math.max(widthOfFrontTool, AutoDrive.getAISizeMarkerWidth(implement))
             end
@@ -275,7 +275,7 @@ function AutoDrive.getFrontToolWidth(vehicle, forced)
             if implement.size.width ~= nil then
                 --Check if tool is in front of vehicle
                 local toolX, toolY, toolZ = getWorldTranslation(implement.components[1].node)
-                local _, _, offsetZ =  worldToLocal(vehicle.components[1].node, toolX, toolY, toolZ)
+                local _, _, offsetZ =  AutoDrive.worldToLocal(vehicle, toolX, toolY, toolZ)
                 if offsetZ > 0 then
                     widthOfFrontTool = math.abs(implement.size.width)
                 end
@@ -301,7 +301,7 @@ function AutoDrive.getFrontToolLength(vehicle)
         if implement.size.width ~= nil then
             --Check if tool is in front of vehicle
             local toolX, toolY, toolZ = getWorldTranslation(implement.components[1].node)
-            local _, _, offsetZ =  worldToLocal(vehicle.components[1].node, toolX, toolY, toolZ)
+            local _, _, offsetZ =  AutoDrive.worldToLocal(vehicle, toolX, toolY, toolZ)
             if offsetZ > 0 then
                 lengthOfFrontTool = math.abs(implement.size.length)
             end
@@ -324,7 +324,7 @@ function AutoDrive.getLengthOfFieldInFront(vehicle, onlyWithFruit, maxRange, ste
     local foundField = true
     local fruitType = nil
     while foundField do
-        local worldPosX, _, worldPosZ = localToWorld(vehicle.components[1].node, 0, 0, length + stepLength)
+        local worldPosX, _, worldPosZ = AutoDrive.localToWorld(vehicle, 0, 0, length + stepLength)
         foundField = AutoDrive.checkIsOnField(worldPosX, 0, worldPosZ)
 
         if acceptOnlyWithFruit then
@@ -356,11 +356,11 @@ end
 --    v
 function AutoDrive.getCornersForAreaRelativeToVehicle(vehicle, xOffset, zOffset, width, length)
     local corners = {}
-    local worldPosX, _, worldPosZ = localToWorld(vehicle.components[1].node, xOffset - width/2, 0, zOffset)
+    local worldPosX, _, worldPosZ = AutoDrive.localToWorld(vehicle, xOffset - width/2, 0, zOffset)
     corners[1] = { x = worldPosX, z = worldPosZ}
-    worldPosX, _, worldPosZ = localToWorld(vehicle.components[1].node, xOffset + width/2, 0, zOffset)
+    worldPosX, _, worldPosZ = AutoDrive.localToWorld(vehicle, xOffset + width/2, 0, zOffset)
     corners[2] = { x = worldPosX, z = worldPosZ}
-    worldPosX, _, worldPosZ = localToWorld(vehicle.components[1].node, xOffset - width/2, 0, zOffset + length)
+    worldPosX, _, worldPosZ = AutoDrive.localToWorld(vehicle, xOffset - width/2, 0, zOffset + length)
     corners[3] = { x = worldPosX, z = worldPosZ}
 
     return corners

@@ -80,11 +80,11 @@ function ADSpecialDrivingModule:stopAndHoldVehicle(dt)
 
     if lx == nil or lz == nil then
         --If no target was provided, aim in front of te vehicle to prevent steering maneuvers
-        local rx, _, rz = localDirectionToWorld(self.vehicle.components[1].node, 0, 0, 1)
+        local rx, _, rz =  AutoDrive.localDirectionToWorld(self.vehicle, 0, 0, 1)
         x = x + rx
         z = z + rz
 
-        lx, lz = AIVehicleUtil.getDriveDirection(self.vehicle.components[1].node, x, y, z)
+        lx, lz = AutoDrive.getDriveDirection(self.vehicle, x, y, z)
     end
 
     self.stoppedTimer:timer(self.vehicle.lastSpeedReal < 0.00028 and (self.vehicle.ad.trailerModule:getCanStopMotor()), 10000, dt)
@@ -111,8 +111,8 @@ function ADSpecialDrivingModule:driveForward(dt)
     local speed = 8
     local acc = 0.6
 
-    local targetX, targetY, targetZ = localToWorld(self.vehicle.components[1].node, 0, 0, 20)
-    local lx, lz = AIVehicleUtil.getDriveDirection(self.vehicle.components[1].node, targetX, targetY, targetZ)
+    local targetX, targetY, targetZ = AutoDrive.localToWorld(self.vehicle, 0, 0, 20)
+    local lx, lz = AutoDrive.getDriveDirection(self.vehicle, targetX, targetY, targetZ)
 
     self:releaseVehicle()
     if self.vehicle.startMotor then
@@ -134,8 +134,8 @@ function ADSpecialDrivingModule:driveReverse(dt, maxSpeed, maxAcceleration, guid
         self:stopAndHoldVehicle(dt)
     else
         if guided ~= true then
-            local targetX, targetY, targetZ = localToWorld(self.vehicle.components[1].node, 0, 0, -20)
-            local lx, lz = AIVehicleUtil.getDriveDirection(self.vehicle.components[1].node, targetX, targetY, targetZ)
+            local targetX, targetY, targetZ = AutoDrive.localToWorld(self.vehicle, 0, 0, -20)
+            local lx, lz = AutoDrive.getDriveDirection(self.vehicle, targetX, targetY, targetZ)
 
             self:releaseVehicle()
             if self.vehicle.startMotor then
@@ -151,7 +151,7 @@ function ADSpecialDrivingModule:driveReverse(dt, maxSpeed, maxAcceleration, guid
             AutoDrive.smootherDriving = storedSmootherDriving
         else
             if self.reverseTarget == nil then
-                local x, y, z = localToWorld(self.vehicle.components[1].node, 0, 0 , -100)
+                local x, y, z = AutoDrive.localToWorld(self.vehicle, 0, 0 , -100)
                 self.reverseTarget = {x=x, y=y, z=z}
             end
             self.vehicle.ad.specialDrivingModule:reverseToTargetLocation(dt, self.reverseTarget, maxSpeed)
@@ -177,7 +177,7 @@ function ADSpecialDrivingModule:driveToPoint(dt, point, maxFollowSpeed, checkDyn
 
     --print("Targetspeed: " .. speed .. " distance: " .. self.distanceToChasePos .. " maxFollowSpeed: " .. maxFollowSpeed)
 
-    local lx, lz = AIVehicleUtil.getDriveDirection(self.vehicle.components[1].node, point.x, point.y, point.z)
+    local lx, lz = AutoDrive.getDriveDirection(self.vehicle, point.x, point.y, point.z)
 
     if checkDynamicCollision and (self.vehicle.ad.collisionDetectionModule:hasDetectedObstable(dt) or self.vehicle.ad.sensors.frontSensor:pollInfo()) then
         self:stopVehicle(true, lx, lz)
@@ -269,11 +269,11 @@ end
 
 function ADSpecialDrivingModule:getBasicStates()
     self.x, self.y, self.z = getWorldTranslation(self.vehicle:getAIDirectionNode())
-    self.vehicleVecX, _, self.vehicleVecZ = localDirectionToWorld(self.vehicle:getAIDirectionNode(), 0, 0, 1)
+    self.vehicleVecX, _, self.vehicleVecZ = AutoDrive.localDirectionToWorld(self.vehicle, 0, 0, 1, self.vehicle:getAIDirectionNode())
     self.rNx, self.rNy, self.rNz = getWorldTranslation(self.reverseNode)
-    self.targetX, self.targetY, self.targetZ = localToWorld(self.vehicle:getAIDirectionNode(), 0, 0, 5)
-    self.trailerVecX, _, self.trailerVecZ = localDirectionToWorld(self.reverseNode, 0, 0, 1)
-    self.trailerRearVecX, _, self.trailerRearVecZ = localDirectionToWorld(self.reverseNode, 0, 0, -1)
+    self.targetX, self.targetY, self.targetZ = AutoDrive.localToWorld(self.vehicle, 0, 0, 5, self.vehicle:getAIDirectionNode())
+    self.trailerVecX, _, self.trailerVecZ = AutoDrive.localDirectionToWorld(self.vehicle, 0, 0, 1, self.reverseNode)
+    self.trailerRearVecX, _, self.trailerRearVecZ = AutoDrive.localDirectionToWorld(self.vehicle, 0, 0, -1, self.reverseNode)
     self.vecToPoint = {x = self.reverseTarget.x - self.rNx, z = self.reverseTarget.z - self.rNz}
     self.angleToTrailer = AutoDrive.angleBetween({x = self.vehicleVecX, z = self.vehicleVecZ}, {x = self.trailerVecX, z = self.trailerVecZ})
     self.angleToPoint = AutoDrive.angleBetween({x = self.trailerRearVecX, z = self.trailerRearVecZ}, {x = self.vecToPoint.x, z = self.vecToPoint.z})
@@ -283,7 +283,7 @@ function ADSpecialDrivingModule:getBasicStates()
         self.angleToTrailer = -math.deg(self.vehicle.rotatedTime)
     end
 
-    self.trailerX, self.trailerY, self.trailerZ = localToWorld(self.reverseNode, 0, 0, 5)
+    self.trailerX, self.trailerY, self.trailerZ = AutoDrive.localToWorld(self.vehicle, 0, 0, 5, self.reverseNode)
     --ADDrawingManager:addLineTask(self.x, self.y+3, self.z, self.targetX, self.targetY+3, self.targetZ, 1, 1, 1, 1)
     --ADDrawingManager:addLineTask(self.rNx, self.rNy + 3, self.rNz, self.trailerX, self.trailerY + 3, self.trailerZ, 1, 1, 1, 1)
     --ADDrawingManager:addLineTask(self.reverseTarget.x, self.reverseTarget.y + 1, self.reverseTarget.z, self.trailerX, self.trailerY + 3, self.trailerZ, 1, 1, 1, 1)
@@ -340,7 +340,7 @@ function ADSpecialDrivingModule:getReverseNode()
             -- and AutoDrive.isImplementAllowedForReverseDriving(self.vehicle, implement)                    -- whitelist of implements allowed as reverse node
         then
             local implementX, implementY, implementZ = getWorldTranslation(implement.components[1].node)
-            local _, _, diffZ = worldToLocal(self.vehicle.components[1].node, implementX, implementY, implementZ)
+            local _, _, diffZ = AutoDrive.worldToLocal(self.vehicle, implementX, implementY, implementZ)
             -- Logging.info("[AD] ADSpecialDrivingModule:getReverseNode diffZ %s ", tostring(diffZ))
             if diffZ < 0 then
             -- if diffZ < 0 and math.abs(diffZ) >= (self.vehicle.size.length / 2) then
@@ -374,7 +374,7 @@ function ADSpecialDrivingModule:getReverseNode()
                         if centerX ~= nil and centerZ ~= nil then
                             local vehX, _, vehZ = getWorldTranslation(self.vehicle.components[1].node)
                             local implX, _, implZ = getWorldTranslation(implement.components[1].node)
-                            local trailerVecX, _, trailerVecZ = localDirectionToWorld(implement.components[1].node, 0, 0, 1)
+                            local trailerVecX, _, trailerVecZ =  AutoDrive.localDirectionToWorld(implement, 0, 0, 1)
                             local angleToVeh = AutoDrive.angleBetween({x = vehX - implX, z = vehZ - implZ}, {x = trailerVecX, z = trailerVecZ})
                             setTranslation(implement.ad.reverseNode, centerX, 0, centerZ)
                             if angleToVeh > 60 then
@@ -401,7 +401,7 @@ function ADSpecialDrivingModule:getReverseNode()
         -- no implement with steeringCenterNode found
         if self.vehicle.spec_wheels and self.vehicle.spec_wheels.steeringCenterNode then
             local steeringCenterX, steeringCenterY, steeringCenterZ = getWorldTranslation(self.vehicle.spec_wheels.steeringCenterNode)
-            local _, _, diffZ = worldToLocal(self.vehicle.components[1].node, steeringCenterX, steeringCenterY, steeringCenterZ)
+            local _, _, diffZ = AutoDrive.worldToLocal(self.vehicle, steeringCenterX, steeringCenterY, steeringCenterZ)
             -- use the more back node
             if diffZ < 0 then
                 reverseNode = self.vehicle.spec_wheels.steeringCenterNode
@@ -467,7 +467,7 @@ function ADSpecialDrivingModule:reverseToPoint(dt, maxSpeed)
 
     local node = self.vehicle:getAIDirectionNode()
 
-    local rx, _, rz = localDirectionToWorld(node, offsetX, 0, offsetZ)
+    local rx, _, rz = AutoDrive.localDirectionToWorld(self.vehicle, offsetX, 0, offsetZ, node)
     local targetX = self.x + rx
     local targetZ = self.z + rz
 
@@ -475,7 +475,7 @@ function ADSpecialDrivingModule:reverseToPoint(dt, maxSpeed)
         targetX = self.reverseTarget.x
         targetZ = self.reverseTarget.z
     end
-    local lx, lz = AIVehicleUtil.getDriveDirection(node, targetX, self.y, targetZ)
+    local lx, lz = AutoDrive.getDriveDirection(self.vehicle, targetX, self.y, targetZ, node)
     if self.reverseSolo then
         lx = -lx
         lz = -lz

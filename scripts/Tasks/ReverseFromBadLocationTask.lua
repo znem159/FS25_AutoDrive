@@ -41,7 +41,7 @@ function ReverseFromBadLocationTask:update(dt)
                 xOffset = -50
             end
 
-            local x, y, z = localToWorld(self.vehicle.components[1].node, xOffset, 0 , -100)
+            local x, y, z = AutoDrive.localToWorld(self.vehicle, xOffset, 0 , -100)
             self.reverseTarget = {x=x, y=y, z=z}
         end
 
@@ -54,7 +54,7 @@ function ReverseFromBadLocationTask:update(dt)
         elseif rightFrontBlocked and not leftFrontBlocked then
             xOffset = 70
         end
-        local x, y, z = localToWorld(self.vehicle.components[1].node, xOffset, 0 , 30)
+        local x, y, z = AutoDrive.localToWorld(self.vehicle, xOffset, 0 , 30)
         self.forwardsTarget = {x=x, y=y, z=z}
         self.vehicle.ad.specialDrivingModule:driveToPoint(dt, self.forwardsTarget, 8, false, 0.5, 8)
     else

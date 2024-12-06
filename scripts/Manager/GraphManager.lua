@@ -901,7 +901,7 @@ function ADGraphManager:findMatchingWayPointForVehicle(vehicle)
     local startNode = vehicle.ad.frontNode
     --returns waypoint closest to vehicle position and with the most suited heading
     local x1, _, z1 = getWorldTranslation(startNode)
-    local rx, _, rz = localDirectionToWorld(startNode, 0, 0, 1)
+    local rx, _, rz = AutoDrive.localDirectionToWorld(vehicle, 0, 0, 1, startNode)
     local vehicleVector = {x = rx, z = rz}
     local point = {x = x1, z = z1}
 
@@ -1445,7 +1445,7 @@ function ADGraphManager:getBestOutPoints(vehicle, nodeId)
     if toCheck.out ~= nil then
         for _, outId in pairs(toCheck.out) do
             local out = self.wayPoints[outId]
-            local _, _, offsetZ = worldToLocal(vehicle.components[1].node, out.x, y, out.z)
+            local _, _, offsetZ = AutoDrive.worldToLocal(vehicle, out.x, y, out.z)
             if out ~= nil and baseDistance < MathUtil.vector2Length(out.x - x, out.z - z) and offsetZ > 0 then
                 table.insert(neighbors, out.id)
             end

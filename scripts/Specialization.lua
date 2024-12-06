@@ -1734,7 +1734,7 @@ function AutoDrive:generateUTurn(left)
             for i = 1, (resolution + 1) do
                 local circlePoint = {   x = -math.cos((i-1) * math.pi / resolution) * radius + radius,
                                         y = math.sin((i-1) * math.pi / resolution) * radius }
-                local worldX, _, worldZ = localToWorld(self.components[1].node, circlePoint.x, 0, circlePoint.y)
+                local worldX, _, worldZ = AutoDrive.localToWorld(self, circlePoint.x, 0, circlePoint.y)
                 local point = { x = worldX, y = vehY, z = worldZ }
                 local rayCastResult = AutoDrive:getTerrainHeightAtWorldPos(worldX, worldZ)
                 point.y = rayCastResult or point.y
@@ -1746,17 +1746,17 @@ function AutoDrive:generateUTurn(left)
 
                 table.insert(points, point)
             end
-            local worldX, _, worldZ = localToWorld(self.components[1].node, 2*radius, 0, -1)
+            local worldX, _, worldZ = AutoDrive.localToWorld(self, 2*radius, 0, -1)
             table.insert(points, {x=worldX, y=vehY, z=worldZ})
-            worldX, _, worldZ = localToWorld(self.components[1].node, 2*radius, 0, -4)
+            worldX, _, worldZ = AutoDrive.localToWorld(self, 2*radius, 0, -4)
             table.insert(points, {x=worldX, y=vehY, z=worldZ})
-            worldX, _, worldZ = localToWorld(self.components[1].node, 2*radius, 0, -8)
+            worldX, _, worldZ = AutoDrive.localToWorld(self, 2*radius, 0, -8)
             table.insert(points, {x=worldX, y=vehY, z=worldZ})
         else
             for i = 1, (resolution + 1) do
                 local circlePoint = {   x = math.cos((i-1) * math.pi / resolution) * radius - radius,
                                         y = math.sin((i-1) * math.pi / resolution) * radius }
-                local worldX, _, worldZ = localToWorld(self.components[1].node, circlePoint.x, 0, circlePoint.y)
+                local worldX, _, worldZ = AutoDrive.localToWorld(self, circlePoint.x, 0, circlePoint.y)
                 local point = { x = worldX, y = vehY, z = worldZ }
                 local rayCastResult = AutoDrive:getTerrainHeightAtWorldPos(worldX, worldZ)
                 point.y = rayCastResult or point.y
@@ -1768,11 +1768,11 @@ function AutoDrive:generateUTurn(left)
 
                 table.insert(points, point)
             end
-            local worldX, _, worldZ = localToWorld(self.components[1].node, -2*radius, 0, -1)
+            local worldX, _, worldZ = AutoDrive.localToWorld(self, -2*radius, 0, -1)
             table.insert(points, {x=worldX, y=vehY, z=worldZ})
-            worldX, _, worldZ = localToWorld(self.components[1].node, -2*radius, 0, -4)
+            worldX, _, worldZ = AutoDrive.localToWorld(self, -2*radius, 0, -4)
             table.insert(points, {x=worldX, y=vehY, z=worldZ})
-            worldX, _, worldZ = localToWorld(self.components[1].node, -2*radius, 0, -8)
+            worldX, _, worldZ = AutoDrive.localToWorld(self, -2*radius, 0, -8)
             table.insert(points, {x=worldX, y=vehY, z=worldZ})
         end
 
@@ -1832,7 +1832,7 @@ function AutoDrive:generateUTurn(left)
     end
 
     -- Coll check with large box
-    --local centerX, centerY, centerZ = localToWorld(vehicle.components[1].node, radius, 0, radius/2)
+    --local centerX, centerY, centerZ = AutoDrive.localToWorld(vehicle, radius, 0, radius/2)
     --local shapes = overlapBox(centerX, centerY+3, centerZ, angleX, angleRad, 0, widthX, height, length, "collisionTestCallbackIgnore", nil, mask, true, true, true)
 end
 

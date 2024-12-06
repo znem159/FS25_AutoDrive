@@ -52,7 +52,7 @@ function OffsetTurn:generateTurn()
             self.failed = true
         end
     elseif self.generationStep == 2 then
-        local dirX, _, dirZ = localDirectionToWorld(vehicle.components[1].node, 0, 0, -1)
+        local dirX, _, dirZ =  AutoDrive.localDirectionToWorld(vehicle, 0, 0, -1)
         local straightenTrailerNodes = self.task:generateStraight(self.path[#self.path], {x=dirX, z=dirZ}, (OffsetTurn.MAX_STRAIGHTENING_DISTANCE + AutoDrive.getTractorTrainLength(vehicle, true, true)) * 0.75, false)
         for i, node in pairs(straightenTrailerNodes) do
             table.insert(self.path, node)

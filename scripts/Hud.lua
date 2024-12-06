@@ -1119,7 +1119,7 @@ function AutoDrive.createColorSelectionWayPoints(vehicle)
 				local colors = hsv_to_rgb(h, s, v)
 				local x = math.cos(h_rad) * sv / 15
                 local y = math.sin(h_rad) * sv / 15
-                local rx, _, rz = localDirectionToWorld(startNode, x, 0, y)
+                local rx, _, rz = AutoDrive.localDirectionToWorld(vehicle, x, 0, y, startNode)
                 ADGraphManager:createWayPointColored(x1 + rx, y1 + 1, z1 + rz, colors)
 			end
 		end

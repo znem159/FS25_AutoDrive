@@ -816,7 +816,7 @@ function UnloadBGATask:isAlmostInBunkerSiloArea(distanceToCheck)
 
     local x, y, z = getWorldTranslation(self.vehicle.components[1].node)
     --create bounding box to check for vehicle
-    local rx, _, rz = localDirectionToWorld(self.vehicle.components[1].node, math.sin(self.vehicle.rotatedTime), 0, math.cos(self.vehicle.rotatedTime))
+    local rx, _, rz =  AutoDrive.localDirectionToWorld(self.vehicle, math.sin(self.vehicle.rotatedTime), 0, math.cos(self.vehicle.rotatedTime))
     local vehicleVector = {x = rx, z = rz}
     local width = self.vehicle.size.width
     local length = self.vehicle.size.length
@@ -959,43 +959,40 @@ function UnloadBGATask:handleDriveStrategy(dt)
         local acc = 0.4
         local allowedToDrive = true
 
-        local node = self.vehicle.components[1].node
         local offsetZ = -5
         local offsetX = 5
         if self.driveStrategy == self.DRIVESTRATEGY_REVERSE_LEFT then
             offsetX = -5
         end
-        local x, y, z = getWorldTranslation(node)
-        local rx, _, rz = localDirectionToWorld(node, offsetX, 0, offsetZ)
+        local x, y, z = getWorldTranslation(self.vehicle.components[1].node)
+        local rx, _, rz = AutoDrive.localDirectionToWorld(self.vehicle, offsetX, 0, offsetZ)
         x = x + rx
         z = z + rz
-        local lx, lz = AIVehicleUtil.getDriveDirection(node, x, y, z)
+        local lx, lz = AutoDrive.getDriveDirection(self.vehicle, x, y, z)
         self:driveInDirection(dt, 30, acc, 0.2, 20, allowedToDrive, false, lx, lz, finalSpeed, 1)
     elseif self.driveStrategy == self.DRIVESTRATEGY_FORWARD_LEFT or self.driveStrategy == self.DRIVESTRATEGY_FORWARD_RIGHT then
         local finalSpeed = 8
         local acc = 0.4
         local allowedToDrive = true
 
-        local node = self.vehicle.components[1].node
         local offsetZ = 5
         local offsetX = 5
         if self.driveStrategy == self.DRIVESTRATEGY_FORWARD_LEFT then
             offsetX = -5
         end
-        local x, y, z = getWorldTranslation(node)
-        local rx, _, rz = localDirectionToWorld(node, offsetX, 0, offsetZ)
+        local x, y, z = getWorldTranslation(self.vehicle.components[1].node)
+        local rx, _, rz = AutoDrive.localDirectionToWorld(self.vehicle, offsetX, 0, offsetZ)
         x = x + rx
         z = z + rz
-        local lx, lz = AIVehicleUtil.getDriveDirection(node, x, y, z)
+        local lx, lz = AutoDrive.getDriveDirection(self.vehicle, x, y, z)
         self:driveInDirection(dt, 30, acc, 0.2, 20, allowedToDrive, true, lx, lz, finalSpeed, 1)
     else
         local finalSpeed = 10
         local acc = 0.6
         local allowedToDrive = true
 
-        local node = self.vehicle.components[1].node
-        local _, y, _ = getWorldTranslation(node)
-        local lx, lz = AIVehicleUtil.getDriveDirection(node, self.targetPoint.x, y, self.targetPoint.z)
+        local _, y, _ = getWorldTranslation(self.vehicle.components[1].node)
+        local lx, lz = AutoDrive.getDriveDirection(self.vehicle, self.targetPoint.x, y, self.targetPoint.z)
         local driveForwards = true
         if self.driveStrategy == self.DRIVESTRATEGY_REVERSE then
             lx = -lx
@@ -1024,10 +1021,10 @@ end
 function UnloadBGATask:getDriveStrategyToTrailerInit(dt)
     local xT, _, zT = getWorldTranslation(self.targetTrailer.components[1].node)
 
-    local rx, _, rz = localDirectionToWorld(self.targetTrailer.components[1].node, 1, 0, 0)
+    local rx, _, rz =  AutoDrive.localDirectionToWorld(self.targetTrailer, 1, 0, 0)
     local offSideLeft = {x = xT + rx * 10, z = zT + rz * 10}
 
-    local lx, _, lz = localDirectionToWorld(self.targetTrailer.components[1].node, -1, 0, 0)
+    local lx, _, lz =  AutoDrive.localDirectionToWorld(self.targetTrailer, -1, 0, 0)
     local offSideRight = {x = xT + lx * 10, z = zT + lz * 10}
 
     local x, _, z = getWorldTranslation(self.vehicle.components[1].node)
@@ -1111,10 +1108,10 @@ end
 
 function UnloadBGATask:getAngleToTarget()
     local x, _, z = getWorldTranslation(self.vehicle.components[1].node)
-    local rx, _, rz = localDirectionToWorld(self.vehicle.components[1].node, 0, 0, 1)
+    local rx, _, rz =  AutoDrive.localDirectionToWorld(self.vehicle, 0, 0, 1)
     if self.vehicle.spec_articulatedAxis ~= nil and self.vehicle.spec_articulatedAxis.rotSpeed ~= nil then
-        rx, _, rz = localDirectionToWorld(self.vehicle.components[1].node, MathUtil.sign(self.vehicle.spec_articulatedAxis.rotSpeed) * math.sin(self.vehicle.rotatedTime), 0, math.cos(self.vehicle.rotatedTime))
-        rx, _, rz = localDirectionToWorld(self.vehicle.components[1].node, MathUtil.sign(self.vehicle.spec_articulatedAxis.rotSpeed) * math.sin(self.vehicle.rotatedTime) / 2, 0, (1 + math.cos(self.vehicle.rotatedTime)) / 2)
+        rx, _, rz =  AutoDrive.localDirectionToWorld(self.vehicle, MathUtil.sign(self.vehicle.spec_articulatedAxis.rotSpeed) * math.sin(self.vehicle.rotatedTime), 0, math.cos(self.vehicle.rotatedTime))
+        rx, _, rz =  AutoDrive.localDirectionToWorld(self.vehicle, MathUtil.sign(self.vehicle.spec_articulatedAxis.rotSpeed) * math.sin(self.vehicle.rotatedTime) / 2, 0, (1 + math.cos(self.vehicle.rotatedTime)) / 2)
     end
     local vehicleVector = {x = rx, z = rz}
 
@@ -1196,9 +1193,8 @@ function UnloadBGATask:reverseFromBGALoad(dt)
     local acc = 1
     local allowedToDrive = true
 
-    local node = self.vehicle.components[1].node
-    local x, y, z = getWorldTranslation(node)
-    local lx, lz = AIVehicleUtil.getDriveDirection(node, self.targetPoint.x, y, self.targetPoint.z)
+    local x, y, z = getWorldTranslation(self.vehicle.components[1].node)
+    local lx, lz = AutoDrive.getDriveDirection(self.vehicle, self.targetPoint.x, y, self.targetPoint.z)
     AutoDrive.driveInDirection(self.vehicle, dt, 30, acc, 0.2, 20, allowedToDrive, false, -lx, -lz, finalSpeed, 1)
 
     if math.sqrt(math.pow(x - self.targetPointClose.x, 2) + math.pow(z - self.targetPointClose.z, 2)) < 5 then
@@ -1319,12 +1315,11 @@ function UnloadBGATask:reverseFromBGAUnload(dt)
     local acc = 1
     local allowedToDrive = true
 
-    local node = self.vehicle.components[1].node
-    local x, _, z = getWorldTranslation(node)
-    local rx, _, rz = localDirectionToWorld(node, 0, 0, -1)
+    local x, _, z = getWorldTranslation(self.vehicle.components[1].node)
+    local rx, _, rz = AutoDrive.localDirectionToWorld(self.vehicle, 0, 0, -1)
     x = x + rx
     z = z + rz
-    --local lx, lz = AIVehicleUtil.getDriveDirection(node, x, y, z)
+    --local lx, lz = AutoDrive.getDriveDirection(self.vehicle, x, y, z)
     AutoDrive.driveInDirection(self.vehicle, dt, 30, acc, 0.2, 20, allowedToDrive, false, nil, nil, finalSpeed, 1)
 
     if self.shovelUnloadPosition ~= nil then

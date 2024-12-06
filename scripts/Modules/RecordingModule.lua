@@ -37,7 +37,7 @@ function ADRecordingModule:start(dual, subPrio)
     self.drivingReverse = (self.vehicle.lastSpeedReal * self.vehicle.movingDirection) < 0
     local x1, y1, z1 = getWorldTranslation(self:getRecordingPoint())
     if self.drivingReverse then
-        x1, y1, z1 = localToWorld(self.vehicle.ad.specialDrivingModule:getReverseNode(), 0, 0, rearOffset)
+        x1, y1, z1 = AutoDrive.localToWorld(self.vehicle, 0, 0, rearOffset, self.vehicle.ad.specialDrivingModule:getReverseNode())
     end
     self.lastWp = ADGraphManager:recordWayPoint(x1, y1, z1, false, false, self.drivingReverse, 0, self.flags)
     self.lastWpPosition = {}
@@ -88,8 +88,8 @@ function ADRecordingModule:updateTick(dt, isActiveForInput, isActiveForInputIgno
     end
 
     local vehicleX, _, vehicleZ = getWorldTranslation(self.vehicle.components[1].node)
-    local reverseX, _, reverseZ = localToWorld(self.vehicle.ad.specialDrivingModule:getReverseNode(), 0, 0, rearOffset)
-    local _, _, diffZ = worldToLocal(self.vehicle.components[1].node, self.lastWpPosition.x, self.lastWpPosition.y, self.lastWpPosition.z)
+    local reverseX, _, reverseZ = AutoDrive.localToWorld(self.vehicle, 0, 0, rearOffset, self.vehicle.ad.specialDrivingModule:getReverseNode())
+    local _, _, diffZ = AutoDrive.worldToLocal(self.vehicle, self.lastWpPosition.x, self.lastWpPosition.y, self.lastWpPosition.z)
 
     self.drivingReverse = self.isRecordingReverse
     if self.isRecordingReverse and (diffZ < -1) then
@@ -100,7 +100,7 @@ function ADRecordingModule:updateTick(dt, isActiveForInput, isActiveForInputIgno
     local x, y, z = getWorldTranslation(self:getRecordingPoint())
 
     if self.drivingReverse then
-        x, y, z = localToWorld(self.vehicle.ad.specialDrivingModule:getReverseNode(), 0, 0, rearOffset)
+        x, y, z = AutoDrive.localToWorld(self.vehicle, 0, 0, rearOffset, self.vehicle.ad.specialDrivingModule:getReverseNode())
     end
 
     local minDistanceToLastWayPoint = true

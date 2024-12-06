@@ -353,11 +353,11 @@ function FollowCombineTask:update(dt)
             return
         else
             local cx, cy, cz = getWorldTranslation(self.combine.components[1].node)
-            local _, _, offsetZ = worldToLocal(self.vehicle.components[1].node, cx, cy, cz)
+            local _, _, offsetZ = AutoDrive.worldToLocal(self.vehicle, cx, cy, cz)
             if offsetZ <= -10 then
                 FollowCombineTask.debugMsg(self.vehicle, "FollowCombineTask:update STATE_WAIT_FOR_COMBINE_TO_PASS_BY - combine passed us. Calculate U-turn now")
-                local cx, cy, cz = getWorldTranslation(self.combine.components[1].node)        
-                local offsetX, _, _ = worldToLocal(self.vehicle.components[1].node, cx, cy, cz)
+                local cx, cy, cz = getWorldTranslation(self.combine.components[1].node)
+                local offsetX, _, _ = AutoDrive.worldToLocal(self.vehicle, cx, cy, cz)
                 self.vehicle:generateUTurn(offsetX > 0)
                 self.state = FollowCombineTask.STATE_GENERATE_UTURN_PATH
                 return
@@ -413,7 +413,7 @@ function FollowCombineTask:startPathPlanningForCircling()
     end
 
     local targetPos = AutoDrive.createWayPointRelativeToVehicle(self.vehicle, sideOffset, 0)
-    local directionX, directionY, directionZ = localToWorld(self.vehicle.components[1].node, 0, 0, 0)
+    local directionX, directionY, directionZ = AutoDrive.localToWorld(self.vehicle, 0, 0, 0)
     local direction = {x = directionX - targetPos.x, z = directionZ - targetPos.z}
     self.vehicle.ad.pathFinderModule:reset()
     self.vehicle.ad.pathFinderModule:startPathPlanningTo(targetPos, direction)
@@ -475,7 +475,7 @@ end
 function FollowCombineTask:shouldWaitForChasePos(dt)
     local angle = self:getAngleToChasePos()
     self.angleWrongTimer:timer(angle > 50, 3000, dt)
-    local _, _, diffZ = worldToLocal(self.vehicle.components[1].node, self.chasePos.x, self.chasePos.y, self.chasePos.z)
+    local _, _, diffZ = AutoDrive.worldToLocal(self.vehicle, self.chasePos.x, self.chasePos.y, self.chasePos.z)
     return self.angleWrongTimer:done() or  diffZ <= -1 --or (not self.combine.ad.sensors.frontSensorFruit:pollInfo())
 end
 
@@ -483,9 +483,9 @@ function FollowCombineTask:isCaughtCurrentChaseSide()
     local caught = false
     local angle = self:getAngleToChasePos()
     local vehicleX, vehicleY, vehicleZ = getWorldTranslation(self.vehicle.components[1].node)
-    local _, _, diffZ = worldToLocal(self.vehicle.components[1].node, self.chasePos.x, self.chasePos.y, self.chasePos.z)
+    local _, _, diffZ = AutoDrive.worldToLocal(self.vehicle, self.chasePos.x, self.chasePos.y, self.chasePos.z)
 
-    local diffX, _, _ = worldToLocal(self.combine.components[1].node, vehicleX, vehicleY, vehicleZ)
+    local diffX, _, _ = AutoDrive.worldToLocal(self.combine, vehicleX, vehicleY, vehicleZ)
     if ((angle < 15 and diffZ >= 0) or (angle > 165 and diffZ < 0)) and (self.angleToCombineHeading < 15) and (AutoDrive.sign(diffX) == self.chaseSide or self.chaseSide == AutoDrive.CHASEPOS_REAR) then
         caught = true
     end
@@ -498,22 +498,22 @@ function FollowCombineTask:getAngleToCombineHeading()
         return math.huge
     end
 
-    local combineRx, _, combineRz = localDirectionToWorld(self.combine:getAIDirectionNode(), 0, 0, 1)
-    local rx, _, rz = localDirectionToWorld(self.vehicle.components[1].node, 0, 0, 1)
+    local combineRx, _, combineRz = AutoDrive.localDirectionToWorld(self.combine, 0, 0, 1, self.combine:getAIDirectionNode())
+    local rx, _, rz =  AutoDrive.localDirectionToWorld(self.vehicle, 0, 0, 1)
 
     return math.abs(AutoDrive.angleBetween({x = rx, z = rz}, {x = combineRx, z = combineRz}))
 end
 
 function FollowCombineTask:getAngleToChasePos()
     local worldX, _, worldZ = getWorldTranslation(self.vehicle.components[1].node)
-    local rx, _, rz = localDirectionToWorld(self.vehicle.components[1].node, 0, 0, 1)
+    local rx, _, rz =  AutoDrive.localDirectionToWorld(self.vehicle, 0, 0, 1)
     local angle = math.abs(AutoDrive.angleBetween({x = rx, z = rz}, {x = self.chasePos.x - worldX, z = self.chasePos.z - worldZ}))
     return angle
 end
 
 function FollowCombineTask:getAngleToCobine()
     local worldX, _, worldZ = getWorldTranslation(self.vehicle.components[1].node)
-    local rx, _, rz = localDirectionToWorld(self.vehicle.components[1].node, 0, 0, 1)
+    local rx, _, rz =  AutoDrive.localDirectionToWorld(self.vehicle, 0, 0, 1)
     local referenceAxis = self.combine.components[1].node
     if self.combine.components[2] ~= nil and self.combine.components[2].node ~= nil then
         referenceAxis = self.combine.components[2].node

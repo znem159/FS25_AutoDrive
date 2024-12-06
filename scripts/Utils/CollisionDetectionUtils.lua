@@ -95,7 +95,7 @@ end
 
 function AutoDrive.getBoundingBoxForVehicleAtPosition(vehicle, position, force)
     local x, y, z = position.x, position.y, position.z
-    local rx, _, rz = localDirectionToWorld(vehicle.components[1].node, 0, 0, 1)
+    local rx, _, rz = AutoDrive.localDirectionToWorld(vehicle, 0, 0, 1)
     local width, length = AutoDrive.getVehicleDimensions(vehicle, force)
     local lengthOffset = vehicle.size.lengthOffset
     local vehicleVector = {x = rx, z = rz}
@@ -219,7 +219,7 @@ function ADDimensionSensor:getRealVehicleDimensions()
             step = -step
         end
         for distance = dimStart, dimEnd, step do
-            local x,y,z = localToWorld(self.vehicle.components[1].node, distance, self.vehicle.size.height / 2, 0)
+            local x,y,z = AutoDrive.localToWorld(self.vehicle, distance, self.vehicle.size.height / 2, 0)
             self.selfHits = 0
             if AutoDrive.getDebugChannelIsSet(AutoDrive.DC_SENSORINFO) then
                 -- DebugUtil.drawOverlapBox(x,y,z, rx, ry, rz, 0.1, measureRange, measureRange, 1, 1, 1)
@@ -256,7 +256,7 @@ function ADDimensionSensor:getRealVehicleDimensions()
             step = -step
         end
         for distance = dimStart, dimEnd, step do
-            local x,y,z = localToWorld(self.vehicle.components[1].node, 0, self.vehicle.size.height / 2, distance)
+            local x,y,z = AutoDrive.localToWorld(self.vehicle, 0, self.vehicle.size.height / 2, distance)
             self.selfHits = 0
             if AutoDrive.getDebugChannelIsSet(AutoDrive.DC_SENSORINFO) then
                 -- DebugUtil.drawOverlapBox(x,y,z, rx, ry, rz, measureRange, measureRange, 0.1, 1, 1, 1)

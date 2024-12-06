@@ -101,14 +101,14 @@ end
 
 function CombineUnloaderMode:leaveBreadCrumbs()
     local x, y, z = getWorldTranslation(self.vehicle.components[1].node)
-    local rx, _, rz = localDirectionToWorld(self.vehicle.components[1].node, 0, 0, 1)
+    local rx, _, rz = AutoDrive.localDirectionToWorld(self.vehicle, 0, 0, 1)
 
     if self.lastBreadCrumb == nil then
         self.lastBreadCrumb = {x = x, y = y, z = z, dirX = rx, dirZ = rz}
         self.breadCrumbs:Enqueue(self.lastBreadCrumb)
     else
         if (self.vehicle.lastSpeedReal * self.vehicle.movingDirection) > 0 then
-            local _, _, diffZ = worldToLocal(self.vehicle.components[1].node, self.lastBreadCrumb.x, self.lastBreadCrumb.y, self.lastBreadCrumb.z)
+            local _, _, diffZ = AutoDrive.worldToLocal(self.vehicle, self.lastBreadCrumb.x, self.lastBreadCrumb.y, self.lastBreadCrumb.z)
             local vec1 = {x = x - self.lastBreadCrumb.x, z = z - self.lastBreadCrumb.z}
             local angleToNewPoint = AutoDrive.angleBetween({x = self.lastBreadCrumb.dirX, z = self.lastBreadCrumb.dirZ}, vec1)
             local minDistance = 2.5
@@ -401,8 +401,8 @@ function CombineUnloaderMode:getUnloaderOnSide()
     local vehicleX, vehicleY, vehicleZ = getWorldTranslation(self.vehicle.components[1].node)
     -- local combineX, combineY, combineZ = getWorldTranslation(self.combine.components[1].node)
 
-    --local diffX, _, _ = worldToLocal(self.vehicle.components[1].node, combineX, combineY, combineZ)
-    local diffX, _, diffZ = worldToLocal(self.combine.components[1].node, vehicleX, vehicleY, vehicleZ)
+    --local diffX, _, _ = AutoDrive.worldToLocal(self.vehicle, combineX, combineY, combineZ)
+    local diffX, _, diffZ = AutoDrive.worldToLocal(self.combine, vehicleX, vehicleY, vehicleZ)
     local leftright = AutoDrive.CHASEPOS_UNKNOWN
     local frontback = AutoDrive.CHASEPOS_FRONT
     -- If we're not clearly on one side or the other of the combine, we don't
@@ -437,9 +437,8 @@ function CombineUnloaderMode:isUnloaderOnCorrectSide(chaseSide)
 end
 
 function CombineUnloaderMode:getPipeSlopeCorrection2()
-    self.combineNode = self.combine.components[1].node
     local dischargeX, dichargeY, dischargeZ = getWorldTranslation(AutoDrive.getDischargeNode(self.combine))
-    local diffX, diffY, _ = worldToLocal(self.combineNode, dischargeX, dichargeY, dischargeZ)
+    local diffX, diffY, _ = AutoDrive.worldToLocal(self.combine, dischargeX, dichargeY, dischargeZ)
     if math.abs(diffX) < self.combine.size.width / 2 then
         -- Some pipes curl up so tight they cause a collisions.
         -- We just don't try to correct in this case.
@@ -450,7 +449,7 @@ function CombineUnloaderMode:getPipeSlopeCorrection2()
     -- It would be nice if we could use the discharge node direction and the terrain under the harveser,
     -- but discharge node rotations are untrustworthy.
     local wux, wuy, wuz = getTerrainNormalAtWorldPos(g_currentMission.terrainRootNode, dischargeX, dichargeY - heightUnderPipe, dischargeZ)
-    local ux, uy, uz = worldDirectionToLocal(self.combineNode, wux, wuy, wuz)
+    local ux, uy, uz = AutoDrive.worldDirectionToLocal(self.combine, wux, wuy, wuz)
 
     -- This is backwards from the usual order of these variables, but I need deviation from 0 and pi, not
     -- pi/2 and 3pi/4, so we adjust the coordinate system
@@ -468,7 +467,6 @@ function CombineUnloaderMode:getPipeSlopeCorrection2()
 end
 
 function CombineUnloaderMode:getPipeSlopeCorrection1()
-    self.combineNode = self.combine.components[1].node
     self.combineX, self.combineY, self.combineZ = getWorldTranslation(self.combineNode)
     local nodeX, nodeY, nodeZ = getWorldTranslation(AutoDrive.getDischargeNode(self.combine))
     local heightUnderCombine = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, self.combineX, self.combineY, self.combineZ)
@@ -567,9 +565,9 @@ function CombineUnloaderMode:getPipeChaseWayPoint(offsetX, offsetZ)
         pipeSide = 1
     end
     local pipeOffset = AutoDrive.getSetting("pipeOffset", self.vehicle)
-    local worldOffsetX1, worldOffsetY1, worldOffsetZ1 = localDirectionToWorld(dischargeNode, 0, -diffY, 0)
-    local targetDistX, _, targetDistZ = worldToLocal(combinePipeRootNode, targetX + worldOffsetX1, targetY + worldOffsetY1, targetZ + worldOffsetZ1)
-    local worldOffsetX2, worldOffsetY2, worldOffsetZ2 = localDirectionToWorld(combinePipeRootNode, targetDistX + (offsetX or 0) + (pipeSide * pipeOffset), 0, targetDistZ + (offsetZ or 0))
+    local worldOffsetX1, worldOffsetY1, worldOffsetZ1 = AutoDrive.localDirectionToWorld(self.combine, 0, -diffY, 0, dischargeNode)
+    local targetDistX, _, targetDistZ = AutoDrive.worldToLocal(self.combine, targetX + worldOffsetX1, targetY + worldOffsetY1, targetZ + worldOffsetZ1, combinePipeRootNode)
+    local worldOffsetX2, worldOffsetY2, worldOffsetZ2 = AutoDrive.localDirectionToWorld(self.combine, targetDistX + (offsetX or 0) + (pipeSide * pipeOffset), 0, targetDistZ + (offsetZ or 0), combinePipeRootNode)
     wayPoint.x = combineX + worldOffsetX2
     wayPoint.y = combineY + worldOffsetY2
     wayPoint.z = combineZ + worldOffsetZ2
@@ -578,11 +576,11 @@ end
 
 function CombineUnloaderMode:getDynamicSideChaseOffsetZ()
     local nodeX, nodeY, nodeZ = getWorldTranslation(AutoDrive.getDischargeNode(self.combine))
-    local _, _, pipeZOffsetToCombine = worldToLocal(self.combine.components[1].node, nodeX, nodeY, nodeZ)
+    local _, _, pipeZOffsetToCombine = AutoDrive.worldToLocal(self.combine, nodeX, nodeY, nodeZ)
 
     local targetX, targetY, targetZ = getWorldTranslation(self.targetFillNode)
 
-    local _, _, vehicleZOffsetToTarget = worldToLocal(self.vehicle.components[1].node, targetX, targetY, targetZ)
+    local _, _, vehicleZOffsetToTarget = AutoDrive.worldToLocal(self.vehicle, targetX, targetY, targetZ)
 
     local sideChaseTermZ = pipeZOffsetToCombine - vehicleZOffsetToTarget
 
@@ -592,7 +590,7 @@ end
 function CombineUnloaderMode:getDynamicSideChaseOffsetZ_fromDischargeNode(planningPhase)
     local targetX, targetY, targetZ = getWorldTranslation(self.targetFillNode)
     
-    local _, _, vehicleZOffsetToTarget = worldToLocal(self.vehicle.components[1].node, targetX, targetY, targetZ)
+    local _, _, vehicleZOffsetToTarget = AutoDrive.worldToLocal(self.vehicle, targetX, targetY, targetZ)
     local offset = -vehicleZOffsetToTarget
     if planningPhase then
         offset = offset + (self.vehicle.size.length/2)
@@ -605,12 +603,11 @@ function CombineUnloaderMode:getDynamicSideChaseOffsetZ_FS19()
     local pipeZOffsetToCombine = 0
     if AutoDrive.isPipeOut(self.combine) then
         local nodeX, nodeY, nodeZ = getWorldTranslation(AutoDrive.getDischargeNode(self.combine))
-        local _, _, diffZ = worldToLocal(self.combine.components[1].node, nodeX, nodeY, nodeZ)
+        local _, _, diffZ = AutoDrive.worldToLocal(self.combine, nodeX, nodeY, nodeZ)
         pipeZOffsetToCombine = diffZ
     end
     local vehicleX, vehicleY, vehicleZ = getWorldTranslation(self.vehicle.components[1].node)
 
-    local targetNode = self.targetTrailer.components[1].node
 --[[
     -- AimTargetNode - not used as it not always fit to the fill area of trailers
     if self.targetTrailer.getFillUnitAutoAimTargetNode ~= nil then
@@ -621,7 +618,7 @@ function CombineUnloaderMode:getDynamicSideChaseOffsetZ_FS19()
         end
     end
 ]]
-    local _, _, diffZ = worldToLocal(targetNode, vehicleX, vehicleY, vehicleZ)
+    local _, _, diffZ = AutoDrive.worldToLocal(self.targetTrailer, vehicleX, vehicleY, vehicleZ)
 
     -- We gradually move the chase node forward as a function of fill level because it's pretty and
     -- helps the sugarcane harvester. We start at at the front of the trailer. We use an exponential
@@ -688,8 +685,7 @@ function CombineUnloaderMode:getRearChaseOffsetZ(planningPhase)
 end
 
 function CombineUnloaderMode:getPipeChasePosition(planningPhase)
-    self.combineNode = self.combine.components[1].node
-    self.combineX, self.combineY, self.combineZ = getWorldTranslation(self.combineNode)
+    self.combineX, self.combineY, self.combineZ = getWorldTranslation(self.combine.components[1].node)
 
     local chaseNode
     local sideIndex = AutoDrive.CHASEPOS_REAR
@@ -813,8 +809,8 @@ function CombineUnloaderMode:getAngleToCombineHeading()
         return math.huge
     end
 
-    local combineRx, _, combineRz = localDirectionToWorld(self.combine.components[1].node, 0, 0, 1)
-    local rx, _, rz = localDirectionToWorld(self.vehicle.components[1].node, 0, 0, 1)
+    local combineRx, _, combineRz = AutoDrive.localDirectionToWorld(self.combine, 0, 0, 1)
+    local rx, _, rz = AutoDrive.localDirectionToWorld(self.vehicle, 0, 0, 1)
 
     return math.abs(AutoDrive.angleBetween({x = rx, z = rz}, {x = combineRx, z = combineRz}))
 end
@@ -826,14 +822,14 @@ function CombineUnloaderMode:getAngleToCombine()
 
     local vehicleX, _, vehicleZ = getWorldTranslation(self.vehicle.components[1].node)
     local combineX, _, combineZ = getWorldTranslation(self.combine.components[1].node)
-    local rx, _, rz = localDirectionToWorld(self.vehicle.components[1].node, 0, 0, 1)
+    local rx, _, rz =  AutoDrive.localDirectionToWorld(self.vehicle, 0, 0, 1)
 
     return math.abs(AutoDrive.angleBetween({x = rx, z = rz}, {x = combineX - vehicleX, z = combineZ - vehicleZ}))
 end
 
 function CombineUnloaderMode:getAngleToChasePos(chasePos)
     local worldX, _, worldZ = getWorldTranslation(self.vehicle.components[1].node)
-    local rx, _, rz = localDirectionToWorld(self.vehicle.components[1].node, 0, 0, 1)
+    local rx, _, rz =  AutoDrive.localDirectionToWorld(self.vehicle, 0, 0, 1)
     local angle = AutoDrive.angleBetween({x = rx, z = rz}, {x = chasePos.x - worldX, z = chasePos.z - worldZ})
 
     return angle
