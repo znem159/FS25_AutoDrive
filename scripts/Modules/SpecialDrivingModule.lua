@@ -458,7 +458,7 @@ function ADSpecialDrivingModule:reverseToPoint(dt, maxSpeed)
     --print("p: " .. p * self.pFactor .. " i: " .. (self.i * self.iFactor) .. " d: " .. (d * self.dFactor))
     --print("targetAngleToTrailer: " .. targetAngleToTrailer .. " targetDiff: " .. targetDiff .. "  offsetX" .. offsetX)
 
-    local speed = 5 + (6 * math.clamp((5 / math.max(self.steeringAngle, math.abs(self.angleToTrailer))), 0, 1))
+    local speed = 5 + (6 * math.clamp((5 / math.max(1, self.steeringAngle, math.abs(self.angleToTrailer))), 0, 1))
     local acc = 0.4
 
     if vehicleIsTruck then
