@@ -332,10 +332,10 @@ AutoDrive.settings.followDistance = {
 }
 
 AutoDrive.settings.lookAheadTurning = {
-    values = {2, 3, 4, 5, 6, 7, 8},
-    texts = {"2 m", "3 m", "4 m", "5 m", "6 m", "7 m", "8 m"},
-    default = 4,
-    current = 4,
+    values = {4, 5, 6, 7, 8, 10, 12},
+    texts = {"4 m", "5 m", "6 m", "7 m", "8 m", "10 m", "12 m"},
+    default = 5,
+    current = 5,
     text = "gui_ad_lookahead_turning",
     tooltip = "gui_ad_lookahead_turning_tooltip",
     translate = false,

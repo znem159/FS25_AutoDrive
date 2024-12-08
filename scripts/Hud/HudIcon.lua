@@ -28,7 +28,7 @@ function ADHudIcon:onDraw(vehicle, uiScale)
 end
 
 function ADHudIcon:onDrawHeader(vehicle, uiScale)
-    local adFontSize = 0.009 * uiScale
+    local adFontSize = 0.011 * uiScale
     local textHeight = getTextHeight(adFontSize, "text")
     local adPosX = self.position.x + AutoDrive.Hud.gapWidth
     local adPosY = self.position.y + (self.size.height - textHeight) / 2
@@ -37,18 +37,18 @@ function ADHudIcon:onDrawHeader(vehicle, uiScale)
         adPosY = self.position.y + (AutoDrive.Hud.gapHeight)
     end
 
-    setTextBold(false)
-    setTextColor(unpack(AutoDrive.currentColors.ad_color_hudTextDefault))
+    setTextBold(true)
+    setTextColor(table.unpack(AutoDrive.currentColors.ad_color_hudTextDefault))
     setTextAlignment(RenderText.ALIGN_LEFT)
-    self:renderDefaultText(vehicle, uiScale, adFontSize, adPosX, adPosY)
+    self:renderDefaultText(vehicle, adFontSize, adPosX, adPosY)
     if AutoDrive.Hud.isShowingTips then
         adPosY = adPosY + textHeight + AutoDrive.Hud.gapHeight
-        adPosY = adPosY + (textHeight + AutoDrive.Hud.gapHeight) * (self.lastLineCount - 1)        
+        adPosY = adPosY + (textHeight + AutoDrive.Hud.gapHeight) * (self.lastLineCount - 1)
         self:renderEditorTips(textHeight, adFontSize, adPosX, adPosY)
     end
 end
 
-function ADHudIcon:renderDefaultText(vehicle, uiScale, fontSize, posX, posY)  
+function ADHudIcon:renderDefaultText(vehicle, fontSize, posX, posY)
     local textHeight = getTextHeight(fontSize, "text")
     local textToShow = "AutoDrive"
     textToShow = textToShow .. " - " .. AutoDrive.version

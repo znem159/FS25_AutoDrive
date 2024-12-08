@@ -24,12 +24,6 @@ function ADEnterTargetNameGui:onOpen()
     ADEnterTargetNameGui:superClass().onOpen(self)
     self.textInputElement.blockTime = 0
     self.textInputElement:onFocusActivate()
-    -- This does not work, the background is messed up.
-    -- if self.textInputElement.overlay and self.textInputElement.overlay.colorFocused then
-    --     if AutoDrive.currentColors and AutoDrive.currentColors.ad_color_textInputBackground then
-    --         self.textInputElement.overlay.colorFocused = AutoDrive.currentColors.ad_color_textInputBackground
-    --     end
-    -- end
     self.editName = nil
     self.editId = nil
     self.edit = false

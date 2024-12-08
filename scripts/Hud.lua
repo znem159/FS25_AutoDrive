@@ -11,7 +11,7 @@ AutoDrive.mouseWheelActive = false
 AutoDriveHud.debug = false
 
 AutoDriveHud.defaultHeaderHeight = 0.016
-AutoDriveHud.extendedHeaderHeight = 0.180
+AutoDriveHud.extendedHeaderHeight = 0.200
 
 function AutoDriveHud:new()
 	local o = {}
@@ -494,7 +494,7 @@ function AutoDriveHud:mouseEvent(vehicle, posX, posY, isDown, isUp, button)
 				AutoDrive.moveNodeToMousePos(vehicle.ad.nodeToMoveId)
 			end
 			if vehicle.ad.hoveredNodeId ~= nil then
-				if vehicle.ad.selectedNodeId ~= nil then
+				if vehicle.ad.selectedNodeId ~= nil and vehicle.ad.selectedNodeId ~= vehicle.ad.hoveredNodeId then
 					AutoDrive:createSplineInterpolationBetween(ADGraphManager:getWayPointById(vehicle.ad.selectedNodeId), ADGraphManager:getWayPointById(vehicle.ad.hoveredNodeId))
 				end
 

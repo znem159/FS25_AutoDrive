@@ -350,11 +350,11 @@ function ADSpecialDrivingModule:getReverseNode()
                 local centerX, centerZ = 0,0
                 local wheelCount = 0
                 for _, wheel in pairs(implement.spec_wheels.wheels) do
-                    validWheel = (wheel.isSynchronized and wheel.hasGroundContact)
+                    validWheel = (wheel.physics.isSynchronized and wheel.physics.hasGroundContact)
                     hasSynchronizedWheels = hasSynchronizedWheels or validWheel
                     if validWheel then
                         wheelCount = wheelCount + 1
-                        local posX, _, posZ = localToLocal(wheel.node, implement.components[1].node, wheel.positionX, wheel.positionY, wheel.positionZ)
+                        local posX, _, posZ = localToLocal(wheel.node, implement.components[1].node, wheel.physics.positionX, wheel.physics.positionY, wheel.physics.positionZ)
                         centerX = centerX + posX
                         centerZ = centerZ + posZ
                     end
@@ -458,7 +458,7 @@ function ADSpecialDrivingModule:reverseToPoint(dt, maxSpeed)
     --print("p: " .. p * self.pFactor .. " i: " .. (self.i * self.iFactor) .. " d: " .. (d * self.dFactor))
     --print("targetAngleToTrailer: " .. targetAngleToTrailer .. " targetDiff: " .. targetDiff .. "  offsetX" .. offsetX)
 
-    local speed = 5 + (6 * math.clamp((5 / math.max(self.steeringAngle, math.abs(self.angleToTrailer))), 0, 1))
+    local speed = 5 + (6 * math.clamp((5 / math.max(1, self.steeringAngle, math.abs(self.angleToTrailer))), 0, 1))
     local acc = 0.4
 
     if vehicleIsTruck then
