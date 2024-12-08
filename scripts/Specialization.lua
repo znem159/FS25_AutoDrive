@@ -1646,8 +1646,8 @@ function AutoDrive:updateAutoDriveLights(switchOff)
             isInBunkerSilo = AutoDrive.isVehicleInBunkerSiloArea(self)
         end
 
-        if self.updateAILights ~= nil then
-            self:updateAILights(isOnField or isInRangeToLoadUnloadTarget or isInBunkerSilo)
+        if self.updateAutomaticLights ~= nil then
+            self:updateAutomaticLights(not g_currentMission.environment.isSunOn, isOnField or isInRangeToLoadUnloadTarget or isInBunkerSilo)
         end
 
         if self.setTurnLightState then
