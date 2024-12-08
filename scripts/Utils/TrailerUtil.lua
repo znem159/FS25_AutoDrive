@@ -344,7 +344,7 @@ function AutoDrive.getTrailersOfImplement(vehicle, attachedImplement, onlyDischa
         end
         if attachedImplement.getAttachedImplements ~= nil then
             for _, implement in pairs(attachedImplement:getAttachedImplements()) do
-                local trailers = AutoDrive.getTrailersOfImplement(vehicle, implement.object)
+                local trailers = AutoDrive.getTrailersOfImplement(vehicle, implement.object, onlyDischargeable)
                 if trailers then
                     if trailersOfImplement == nil then
                         trailersOfImplement = {}
@@ -653,6 +653,43 @@ function AutoDrive.findGrainBackDoorTipSideIndex(vehicle, trailer)
     return trailer.ad.grainDoorSideIndex, trailer.ad.backDoorSideIndex
 end
 
+---
+function AutoDrive:updateTrailerRaycast(dischargeNode)
+    local spec = self.spec_dischargeable
+    local raycast = dischargeNode.raycast
+
+    if raycast.node == nil then
+        return
+    end
+
+    dischargeNode.lastDischargeObject = dischargeNode.dischargeObject
+
+    dischargeNode.raycastDischargeObject = nil
+    dischargeNode.raycastDischargeHitObject = nil
+    dischargeNode.raycastDischargeHitObjectUnitIndex = nil
+    dischargeNode.raycastDischargeHitTerrain = false
+    dischargeNode.raycastDischargeShape = nil
+    dischargeNode.raycastDischargeDistance = math.huge
+    dischargeNode.raycastDischargeFillUnitIndex = nil
+    dischargeNode.raycastDischargeHit = false
+    dischargeNode.raycastDischargeFailedReason = nil
+
+    local x, y, z = getWorldTranslation(raycast.node)
+    local dx, dy, dz = 0, -1, 0
+
+    y = y + raycast.yOffset
+
+    if not raycast.useWorldNegYDirection then
+        dx, dy, dz = localDirectionToWorld(raycast.node, 0, -1, 0)
+    end
+
+    spec.currentRaycastDischargeNode = dischargeNode
+    spec.currentRaycast = raycast
+    spec.isAsyncRaycastActive = true
+
+    raycastAll(x, y, z, dx, dy, dz, dischargeNode.maxDistance, "raycastCallbackDischargeNode", self, spec.raycastCollisionMask)
+end
+
 function AutoDrive.findAndSetBestTipPoint(vehicle, trailer)
     local dischargeCondition = true
     if trailer.getCanDischargeToObject ~= nil and trailer.getCurrentDischargeNode ~= nil then
@@ -663,6 +700,7 @@ function AutoDrive.findAndSetBestTipPoint(vehicle, trailer)
         if spec == nil then
             return
         end
+
         local currentDischargeNodeIndex = trailer:getCurrentDischargeNode().index
         local grainDoorSideIndex, backDoorSideIndex = AutoDrive.findGrainBackDoorTipSideIndex(vehicle, trailer)
         if grainDoorSideIndex > 0 then
@@ -670,7 +708,7 @@ function AutoDrive.findAndSetBestTipPoint(vehicle, trailer)
             if spec.preferedTipSideIndex ~= backDoorSideIndex then
                 if trailer:getCanTogglePreferdTipSide() then
                     trailer:setPreferedTipSide(backDoorSideIndex)
-                    trailer:updateRaycast(trailer:getCurrentDischargeNode())
+                    AutoDrive.updateTrailerRaycast(trailer, trailer:getCurrentDischargeNode())
                 end
             end
         end
@@ -679,9 +717,16 @@ function AutoDrive.findAndSetBestTipPoint(vehicle, trailer)
                 -- avoid grain door if back door available
                 local tipSide = spec.tipSides[i]
                 trailer:setCurrentDischargeNodeIndex(tipSide.dischargeNodeIndex)
+
+                --if trailer:getCanTogglePreferdTipSide() then
+                    --trailer:setPreferedTipSide(i)
+                --end
+
                 local currentDischargeNode = trailer:getCurrentDischargeNode()
+                
                 if currentDischargeNode and currentDischargeNode.effects and table.count(currentDischargeNode.effects) > 0 then
-                    trailer:updateRaycast(trailer:getCurrentDischargeNode())
+                    AutoDrive.updateTrailerRaycast(trailer, trailer:getCurrentDischargeNode())
+                    --trailer:updateRaycast(trailer:getCurrentDischargeNode())
                     if trailer:getCanDischargeToObject(trailer:getCurrentDischargeNode()) then
                         if trailer:getCanTogglePreferdTipSide() then
                             trailer:setPreferedTipSide(i)
@@ -693,7 +738,7 @@ function AutoDrive.findAndSetBestTipPoint(vehicle, trailer)
                 end
             end
         end
-        trailer:setCurrentDischargeNodeIndex(currentDischargeNodeIndex)
+        trailer:setCurrentDischargeNodeIndex(currentDischargeNodeIndex)        
     end
 end
 
