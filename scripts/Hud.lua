@@ -494,7 +494,7 @@ function AutoDriveHud:mouseEvent(vehicle, posX, posY, isDown, isUp, button)
 				AutoDrive.moveNodeToMousePos(vehicle.ad.nodeToMoveId)
 			end
 			if vehicle.ad.hoveredNodeId ~= nil then
-				if vehicle.ad.selectedNodeId ~= nil then
+				if vehicle.ad.selectedNodeId ~= nil and vehicle.ad.selectedNodeId ~= vehicle.ad.hoveredNodeId then
 					AutoDrive:createSplineInterpolationBetween(ADGraphManager:getWayPointById(vehicle.ad.selectedNodeId), ADGraphManager:getWayPointById(vehicle.ad.hoveredNodeId))
 				end
 
