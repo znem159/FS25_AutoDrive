@@ -604,7 +604,7 @@ end
 function UnloadBGATask:checkIfAllWheelsOnGround()
     local spec = self.vehicle.spec_wheels    
     for _, wheel in pairs(spec.wheels) do
-        if not wheel.hasGroundContact then
+        if not wheel.physics.hasGroundContact then
             return false
         end
     end
