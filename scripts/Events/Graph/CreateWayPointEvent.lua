@@ -26,7 +26,7 @@ function AutoDriveCreateWayPointEvent:writeStream(streamId, connection)
 
 	local count = self.out and #self.out or 0
 	streamWriteUInt16(streamId, count)
-	if self.out and self.out > 0 then
+	if self.out and #self.out > 0 then
 		for _, out in pairs(self.out) do
 			streamWriteUIntN(streamId, out + 1, 24)
 		end
@@ -34,7 +34,7 @@ function AutoDriveCreateWayPointEvent:writeStream(streamId, connection)
 
 	count = self.incoming and #self.incoming or 0
 	streamWriteUInt16(streamId, count)
-	if self.incoming and self.incoming > 0 then
+	if self.incoming and #self.incoming > 0 then
 		for _, incoming in pairs(self.incoming) do
 			streamWriteUIntN(streamId, incoming + 1, 24)
 		end
