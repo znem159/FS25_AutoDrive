@@ -45,6 +45,11 @@ function ADDrivePathModule:reset()
     self.distanceToTarget = math.huge
     self.speedLimit = 0
     self.lastUsedWayPoint = nil
+
+    -- increase steering speed
+    if self.vehicle.spec_aiJobVehicle ~= nil then
+        self.vehicle.spec_aiJobVehicle.aiSteeringSpeed = 0.004
+    end
 end
 
 function ADDrivePathModule:setPathTo(wayPointId)
