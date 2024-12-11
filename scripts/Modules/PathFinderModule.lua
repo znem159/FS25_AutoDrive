@@ -100,7 +100,7 @@ end
 
 function PathFinderModule:reset()
     PathFinderModule.debugMsg(self.vehicle, "PFM:reset start")
-    self.mask = AutoDrive.collisionMaskTerrain + CollisionFlag.TREE + CollisionFlag.BUILDING 
+    self.mask = AutoDrive.collisionMaskTerrain
     self.steps = 0
     self.grid = {}
     self.wayPoints = {}
@@ -122,6 +122,7 @@ function PathFinderModule:reset()
     self.goingToPipe = false
     self.chasingVehicle = false
     self.isSecondChasingVehicle = false
+    self.max_pathfinder_steps = 0
 
     if AutoDrive.getSetting("Pathfinder") == 1 then
         self.PP_UP = 0
