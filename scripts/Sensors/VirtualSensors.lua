@@ -292,6 +292,7 @@ function ADSensor:getBoxShape()
     local vecX = {x = vecZ.z, z = -vecZ.x}
 
     if self.frontFactor == -1 then
+        -- ADSensor.POS_REAR
         vecZ = {x = vecZ.x, z = -vecZ.z}
     end
 
@@ -301,7 +302,7 @@ function ADSensor:getBoxShape()
     if self.position == ADSensor.POS_FRONT_LEFT or self.position == ADSensor.POS_FRONT_RIGHT then
         boxYPos = 2.25
     end
-    if self.position == ADSensor.POS_FRONT and self.dynamicLength == true then
+    if (self.position == ADSensor.POS_FRONT or self.position == ADSensor.POS_REAR) and self.dynamicLength == true then
         boxYPos = AutoDrive.getSetting("collisionHeigth", self.vehicle) or 2
     end
 
