@@ -473,12 +473,13 @@ function AutoDrive:handleCPFieldWorker(vehicle)
     if vehicle.isServer then
         if vehicle.ad and vehicle.ad.stateModule and vehicle.startAutoDrive then
             -- restart CP
-            vehicle.ad.restartCP = true
+            vehicle.ad.restartCP = false
             if not vehicle.ad.stateModule:isActive() then
                 if vehicle.ad.stateModule:getStartHelper() and vehicle.ad.stateModule:getUsedHelper() == ADStateModule.HELPER_CP then
                     -- CP button active
                     if table.contains(AutoDrive.modesToStartFromCP, vehicle.ad.stateModule:getMode()) then
                         -- mode allowed to activate
+                        vehicle.ad.restartCP = true
                         AutoDrive.debugPrint(vehicle, AutoDrive.DC_EXTERNALINTERFACEINFO, "AutoDrive:handleCPFieldWorker start AD")
                         vehicle.ad.stateModule:getCurrentMode():start()
                     else
@@ -522,9 +523,10 @@ function AutoDrive:onCpFull()
     AutoDrive:handleCPFieldWorker(self)
 end
 
-function AutoDrive:onCpFuelEmpty()
+function AutoDrive:onCpFuelEmpty() -- refuel
     AutoDrive.debugPrint(self, AutoDrive.DC_EXTERNALINTERFACEINFO, "AutoDrive:onCpFuelEmpty start... autoRefuel %s", AutoDrive.getSetting("autoRefuel", self))
     if self.isServer then
+        self.ad.restartCP = false
         if self.ad and self.ad.stateModule and self.startAutoDrive and AutoDrive.getSetting("autoRefuel", self) then
 
             local refuelDestination = ADTriggerManager.getClosestRefuelDestination(self, true)
@@ -550,10 +552,11 @@ function AutoDrive:onCpFuelEmpty()
     AutoDrive.debugPrint(self, AutoDrive.DC_EXTERNALINTERFACEINFO, "AutoDrive:onCpFuelEmpty end")
 end
 
-function AutoDrive:onCpBroken()
+function AutoDrive:onCpBroken() -- repair
     AutoDrive.debugPrint(self, AutoDrive.DC_EXTERNALINTERFACEINFO, "AutoDrive:onCpBroken start... autoRepair %s", tostring(AutoDrive.getSetting("autoRepair", self)))
 
     if self.isServer then
+        self.ad.restartCP = false
         if self.ad and self.ad.stateModule and self.startAutoDrive and AutoDrive.getSetting("autoRepair", self) then
             local repairDestinationMarkerNodeID = AutoDrive:getClosestRepairTrigger(self)
             AutoDrive.debugPrint(self, AutoDrive.DC_EXTERNALINTERFACEINFO,"AutoDrive:onCpBroken repairDestinationMarkerNodeID %s", tostring(repairDestinationMarkerNodeID))
@@ -884,8 +887,7 @@ function AutoDrive:handleAIFinished(vehicle)
         if vehicle.ad and vehicle.ad.stateModule and vehicle.startAutoDrive and AutoDrive.getSetting("enableParkAtJobFinished", vehicle) then
             vehicle.ad.onRouteToRefuel = false
             vehicle.ad.onRouteToRepair = false
-            vehicle.ad.restartAIFieldWorker = false
-            vehicle.ad.stateModule:setStartHelper(false)
+            vehicle.ad.stateModule:setStartHelper(false) -- do not continue AI job
             local parkDestinationAtJobFinished = vehicle.ad.stateModule:getParkDestinationAtJobFinished()
 
             if parkDestinationAtJobFinished >= 1 then
@@ -916,7 +918,6 @@ function AutoDrive:handleAIFieldWorker(vehicle)
     if vehicle.isServer then
         if vehicle.ad and vehicle.ad.stateModule and vehicle.startAutoDrive then
             -- restart AI
-            vehicle.ad.restartAIFieldWorker = true
             if not vehicle.ad.stateModule:isActive() then
                 if vehicle.ad.stateModule:getStartHelper() then
                     -- AI button active
@@ -927,8 +928,7 @@ function AutoDrive:handleAIFieldWorker(vehicle)
                     else
                         -- deactivate AI button
                         AutoDriveMessageEvent.sendMessageOrNotification(vehicle, ADMessagesManager.messageTypes.ERROR, "$l10n_AD_Driver_of; %s: $l10n_AD_Wrong_Mode_takeover_from_CP;", 5000, vehicle.ad.stateModule:getName())
-                        vehicle.ad.restartAIFieldWorker = false -- do not continue AI job
-                        vehicle.ad.stateModule:setStartHelper(false)
+                        vehicle.ad.stateModule:setStartHelper(false) -- do not continue AI job
                     end
                 end
             else
@@ -941,7 +941,14 @@ function AutoDrive:handleAIFieldWorker(vehicle)
     AutoDrive.debugPrint(vehicle, AutoDrive.DC_EXTERNALINTERFACEINFO, "AutoDrive:handleAIFieldWorker end")
 end
 
-function AutoDrive:onAIJobFinished()
+function AutoDrive:onAIJobFinished(arg1, arg2)
+    -- AutoDrive.debugMsg(vehicle, "AutoDrive:onAIJobFinished arg1 %s arg2 %s "
+    -- , tostring(arg1)
+    -- , tostring(arg2)
+    -- )
+    if arg1 then
+        -- AutoDrive.dumpTable(arg1, "arg1", 4)
+    end
     AutoDrive.debugPrint(self, AutoDrive.DC_EXTERNALINTERFACEINFO, "AutoDrive:onAIJobFinished start...")
     local rootVehicle = self.getRootVehicle and self:getRootVehicle()
     if rootVehicle then

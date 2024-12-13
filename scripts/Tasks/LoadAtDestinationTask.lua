@@ -22,16 +22,8 @@ function LoadAtDestinationTask:setUp()
         self.vehicle.ad.trainModule:setPathTo(self.destinationID)
     elseif ADGraphManager:getDistanceFromNetwork(self.vehicle) > 30 then
         self.state = LoadAtDestinationTask.STATE_PATHPLANNING
-        --if self.vehicle.ad.restartCP == true then
-            --if self.vehicle.ad.stateModule:getMode() == AutoDrive.MODE_LOAD then
-                --self.vehicle.ad.pathFinderModule:startPathPlanningToWayPoint(self.vehicle.ad.stateModule:getFirstWayPoint(), self.destinationID)
-            --else
-                --self.vehicle.ad.pathFinderModule:startPathPlanningToWayPoint(self.vehicle.ad.stateModule:getSecondWayPoint(), self.destinationID)
-            --end
-        --else
-            self.vehicle.ad.pathFinderModule:reset()
-            self.vehicle.ad.pathFinderModule:startPathPlanningToNetwork(self.destinationID)
-        --end
+        self.vehicle.ad.pathFinderModule:reset()
+        self.vehicle.ad.pathFinderModule:startPathPlanningToNetwork(self.destinationID)
     else
         self.state = LoadAtDestinationTask.STATE_DRIVING
         self.vehicle.ad.drivePathModule:setPathTo(self.destinationID)
@@ -74,9 +66,7 @@ function LoadAtDestinationTask:update(dt)
             AutoDrive.debugPrint(self.vehicle, AutoDrive.DC_VEHICLEINFO, "LoadAtDestinationTask:update isTargetReached")
             AutoDrive.setTrailerCoverOpen(self.vehicle, self.trailers, true)
 
-            if (self.vehicle.ad.restartCP or self.vehicle.ad.restartAIFieldWorker or self.vehicle.ad.stateModule:getStartHelper())
-                and self.vehicle.ad.stateModule:getMode() == AutoDrive.MODE_PICKUPANDDELIVER
-            then
+            if (self.vehicle.ad.stateModule:getCanRestartHelper() and self.vehicle.ad.stateModule:getMode() == AutoDrive.MODE_PICKUPANDDELIVER) then
                 AutoDrive.debugPrint(self.vehicle, AutoDrive.DC_VEHICLEINFO, "LoadAtDestinationTask:update stopAutoDrive")
                 -- pass over to CP
                 self.vehicle:stopAutoDrive()
@@ -130,9 +120,7 @@ function LoadAtDestinationTask:update(dt)
         else
             AutoDrive.debugPrint(self.vehicle, AutoDrive.DC_VEHICLEINFO, "LoadAtDestinationTask:update NOT isTargetReached")
 
-            if not ((self.vehicle.ad.restartCP or self.vehicle.ad.restartAIFieldWorker or self.vehicle.ad.stateModule:getStartHelper())
-                    and self.vehicle.ad.stateModule:getMode() == AutoDrive.MODE_PICKUPANDDELIVER)
-            then
+            if not (self.vehicle.ad.stateModule:getCanRestartHelper() and self.vehicle.ad.stateModule:getMode() == AutoDrive.MODE_PICKUPANDDELIVER) then
                 -- need to try loading if CP is not active
                 self.vehicle.ad.trailerModule:update(dt)
             end

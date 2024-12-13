@@ -480,6 +480,12 @@ function ADStateModule:getUsedHelper()
     return self.usedHelper
 end
 
+-- define helpers which may be restarted
+function ADStateModule:getCanRestartHelper()
+    return self:getStartHelper() and (self:getUsedHelper() == ADStateModule.HELPER_AI
+        or self:getUsedHelper() == ADStateModule.HELPER_CP)
+end
+
 function ADStateModule:toggleAutomaticUnloadTarget()
     if self.vehicle.spec_locomotive then
         return

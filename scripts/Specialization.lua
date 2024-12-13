@@ -1168,8 +1168,8 @@ function AutoDrive:stopAutoDrive()
             AutoDrive.updateAutoDriveLights(self, true)
 
             local isStartingAIVE = not self.ad.isStoppingWithError and self.ad.stateModule:getStartHelper() and self.ad.stateModule:getUsedHelper() == ADStateModule.HELPER_AIVE
-            local isPassingToCP = not self.ad.isStoppingWithError and (self.ad.restartCP == true or (self.ad.stateModule:getStartHelper() and self.ad.stateModule:getUsedHelper() == ADStateModule.HELPER_CP))
-            local isPassingToAI = not self.ad.isStoppingWithError and (self.ad.restartAIFieldWorker == true or  (self.ad.stateModule:getStartHelper() and self.ad.stateModule:getUsedHelper() == ADStateModule.HELPER_AI))
+            local isPassingToCP = not self.ad.isStoppingWithError and self.ad.stateModule:getStartHelper() and self.ad.stateModule:getUsedHelper() == ADStateModule.HELPER_CP
+            local isPassingToAI = not self.ad.isStoppingWithError and self.ad.stateModule:getStartHelper() and self.ad.stateModule:getUsedHelper() == ADStateModule.HELPER_AI
 
             if not isStartingAIVE and not isPassingToCP and not isPassingToAI then
                 if not AutoDrive:getIsEntered(self) then
@@ -1194,7 +1194,15 @@ function AutoDrive:stopAutoDrive()
             AutoDriveStartStopEvent:sendStopEvent(self, isPassingToCP or isPassingToAI, isStartingAIVE)
 
 			-- currently the pass to CP is only working correct from this call
-            AutoDrive.passToExternalMod(self)
+            if self.ad.stateModule:getStartHelper() then
+                if  self.ad.stateModule:getUsedHelper() == ADStateModule.HELPER_CP then
+                    AutoDrive.passToExternalMod_CP(self)
+                elseif  self.ad.stateModule:getUsedHelper() == ADStateModule.HELPER_AIVE then
+                    AutoDrive.passToExternalMod_AIVE(self)
+                elseif  self.ad.stateModule:getUsedHelper() == ADStateModule.HELPER_AI then
+                    AutoDrive.passToExternalMod_AI(self)
+                end
+            end
         end
     else
         Logging.devError("AutoDrive:stopAutoDrive() must be called only on the server.")
@@ -1323,7 +1331,7 @@ function AutoDrive.passToExternalMod_CP(vehicle)
     local x, y, z = getWorldTranslation(vehicle.components[1].node)
 
     local point = nil
-    local distanceToStart = 0
+    local distanceToStart = math.huge
     if
         vehicle.ad ~= nil and ADGraphManager.getWayPointById ~= nil and vehicle.ad.stateModule ~= nil and vehicle.ad.stateModule.getFirstMarker ~= nil and vehicle.ad.stateModule:getFirstMarker() ~= nil and vehicle.ad.stateModule:getFirstMarker() ~= 0 and
             vehicle.ad.stateModule:getFirstMarker().id ~= nil
@@ -1337,39 +1345,57 @@ function AutoDrive.passToExternalMod_CP(vehicle)
     local isControlled = vehicle:getIsControlled()
 
     if not vehicle.ad.isStoppingWithError and distanceToStart < 30 then
-        AutoDrive.debugPrint(vehicle, AutoDrive.DC_EXTERNALINTERFACEINFO, "AutoDrive.passToExternalMod pass to other mod...")
-        if vehicle.ad.stateModule:getStartHelper() or vehicle.ad.restartCP == true then
-            AutoDrive.debugPrint(vehicle, AutoDrive.DC_EXTERNALINTERFACEINFO, "AutoDrive.passToExternalMod CP / AIVE button enabled or restartCP")
-            -- CP / AIVE button enabled
-            if (vehicle.cpStartStopDriver ~= nil and vehicle.ad.stateModule:getUsedHelper() == ADStateModule.HELPER_CP) or vehicle.ad.restartCP == true then
-                -- CP button active
-                vehicle.spec_enterable.isControlled = false
-                if vehicle.ad.restartCP == true then
-                    -- restart CP to continue
-                    vehicle.ad.restartCP = false
-                    AutoDrive.debugPrint(vehicle, AutoDrive.DC_EXTERNALINTERFACEINFO, "AutoDrive.passToExternalMod pass control to CP with restart")
-                    AutoDrive:RestartCP(vehicle)
-                else
-                    -- start CP from beginning
-                    AutoDrive.debugPrint(vehicle, AutoDrive.DC_EXTERNALINTERFACEINFO, "AutoDrive.passToExternalMod pass control to CP with start")
-                    AutoDrive:StartCP(vehicle)
-                end
-                vehicle.spec_enterable.isControlled = isControlled
+        AutoDrive.debugPrint(vehicle, AutoDrive.DC_EXTERNALINTERFACEINFO, "AutoDrive.passToExternalMod_CP")
+        -- CP button enabled
+        if (vehicle.cpStartStopDriver ~= nil and vehicle.ad.stateModule:getUsedHelper() == ADStateModule.HELPER_CP) then
+            -- CP button active
+            vehicle.spec_enterable.isControlled = false
+            if vehicle.ad.restartCP == true then
+                -- restart CP to continue
+                vehicle.ad.restartCP = false
+                AutoDrive.debugPrint(vehicle, AutoDrive.DC_EXTERNALINTERFACEINFO, "AutoDrive.passToExternalMod_CP pass control to CP with restart")
+                AutoDrive:RestartCP(vehicle)
             else
-                AutoDrive.debugPrint(vehicle, AutoDrive.DC_EXTERNALINTERFACEINFO, "AutoDrive.passToExternalMod AIVE button active")
-                -- AIVE button active
-                if vehicle.acParameters ~= nil then
-                    vehicle.ad.stateModule:setStartHelper(false)  -- disable helper button
-                    vehicle.acParameters.enabled = true
-                    AutoDrive.debugPrint(vehicle, AutoDrive.DC_EXTERNALINTERFACEINFO, "AutoDrive.passToExternalMod pass control to AIVE with startAIVehicle")
-                    vehicle:toggleAIVehicle()
-                end
+                -- start CP from beginning
+                AutoDrive.debugPrint(vehicle, AutoDrive.DC_EXTERNALINTERFACEINFO, "AutoDrive.passToExternalMod_CP pass control to CP with start")
+                AutoDrive:StartCP(vehicle)
             end
+            vehicle.spec_enterable.isControlled = isControlled
         end
     end
 end
 
-function AutoDrive.passToExternalMod(vehicle)
+function AutoDrive.passToExternalMod_AIVE(vehicle)
+    if vehicle == nil or vehicle.ad == nil or vehicle.ad.stateModule == nil then
+        return
+    end
+    local x, _, z = getWorldTranslation(vehicle.components[1].node)
+
+    local point = nil
+    local distanceToStart = math.huge
+    if
+        vehicle.ad ~= nil and ADGraphManager.getWayPointById ~= nil and vehicle.ad.stateModule ~= nil and vehicle.ad.stateModule.getFirstMarker ~= nil and vehicle.ad.stateModule:getFirstMarker() ~= nil and vehicle.ad.stateModule:getFirstMarker() ~= 0 and
+            vehicle.ad.stateModule:getFirstMarker().id ~= nil
+     then
+        point = ADGraphManager:getWayPointById(vehicle.ad.stateModule:getFirstMarker().id)
+        if point ~= nil then
+            distanceToStart = MathUtil.vector2Length(x - point.x, z - point.z)
+        end
+    end
+
+    if not vehicle.ad.isStoppingWithError and distanceToStart < 30 then
+        AutoDrive.debugPrint(vehicle, AutoDrive.DC_EXTERNALINTERFACEINFO, "AutoDrive.passToExternalMod_AIVE AIVE button active")
+        -- AIVE button active
+        if vehicle.acParameters ~= nil then
+            vehicle.ad.stateModule:setStartHelper(false)  -- disable helper button
+            vehicle.acParameters.enabled = true
+            AutoDrive.debugPrint(vehicle, AutoDrive.DC_EXTERNALINTERFACEINFO, "AutoDrive.passToExternalMod_AIVE pass control to AIVE with startAIVehicle")
+            vehicle:toggleAIVehicle()
+        end
+    end
+end
+
+function AutoDrive.passToExternalMod_AI(vehicle)
     if vehicle == nil or vehicle.ad == nil or vehicle.ad.stateModule == nil then
         return
     end
@@ -1377,7 +1403,7 @@ function AutoDrive.passToExternalMod(vehicle)
     local x, y, z = getWorldTranslation(vehicle.components[1].node)
 
     local point = nil
-    local distanceToStart = 0
+    local distanceToStart = math.huge
     if
         vehicle.ad ~= nil and ADGraphManager.getWayPointById ~= nil and vehicle.ad.stateModule ~= nil and vehicle.ad.stateModule.getFirstMarker ~= nil 
         and vehicle.ad.stateModule:getFirstMarker() ~= nil and vehicle.ad.stateModule:getFirstMarker() ~= 0 and vehicle.ad.stateModule:getFirstMarker().id ~= nil
@@ -1388,14 +1414,11 @@ function AutoDrive.passToExternalMod(vehicle)
         end
     end
 
-    if (vehicle.getLastJob and vehicle.ad.stateModule:getStartHelper()) or vehicle.ad.restartAIFieldWorker == true then
-        local success, errorMessage
-        if (not vehicle.ad.isStoppingWithError and distanceToStart < 30) then
+    if (not vehicle.ad.isStoppingWithError and distanceToStart < 30) then
+        if vehicle.getLastJob then
+            local success, errorMessage
             if (vehicle.getIsOnField and vehicle:getIsOnField()) then
                 AutoDrive.debugPrint(vehicle, AutoDrive.DC_EXTERNALINTERFACEINFO, "AutoDrive.passToExternalMod pass to other mod...")
-                if vehicle.ad.restartAIFieldWorker == true then
-                    vehicle.ad.restartAIFieldWorker = false
-                end
                 local fieldJob = vehicle:getLastJob()
                 if fieldJob == nil then
                     -- no job present - generate fielwork job new
@@ -1413,6 +1436,8 @@ function AutoDrive.passToExternalMod(vehicle)
                     end
                 end
             end
+        else
+            return
         end
         AutoDriveMessageEvent.sendMessageOrNotification(vehicle, ADMessagesManager.messageTypes.ERROR, "$l10n_AD_Driver_of; %s: $l10n_AD_Unable_to_start_AIJob;", 5000, vehicle.ad.stateModule:getName())
         AutoDrive.debugPrint(vehicle, AutoDrive.DC_EXTERNALINTERFACEINFO, "AutoDrive.passToExternalMod lastJob aiSystem:startJob errorMessage: %s"
