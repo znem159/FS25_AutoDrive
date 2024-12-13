@@ -20,7 +20,7 @@ AutoDrive.developmentControls = false
 AutoDrive.mapHotspotsBuffer = {}
 
 AutoDrive.drawHeight = 0.3
-AutoDrive.drawDistance = getViewDistanceCoeff() * 50
+AutoDrive.drawDistance = getViewDistanceCoeff() * 100
 
 -- AutoDrive.STAT_NAMES = {"driversTraveledDistance", "driversHired"}
 -- for _, statName in pairs(AutoDrive.STAT_NAMES) do
