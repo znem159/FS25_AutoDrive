@@ -296,17 +296,22 @@ end
 function AutoDrive:drawBaseMission()
 	local menuOpen = g_inGameMenu.isOpen
 	local correctPage = g_inGameMenu.pageMapOverview ~= nil and g_inGameMenu.pageMapOverview == g_inGameMenu.currentPage
-	local correctTab =  g_inGameMenu.mapOverviewSelector ~= nil and g_inGameMenu.mapOverviewSelector.state == g_inGameMenu.pageMapOverview.AI_WORKER_LIST
+	local isNewJobTab =  g_inGameMenu.mapOverviewSelector ~= nil and g_inGameMenu.mapOverviewSelector.state == g_inGameMenu.pageMapOverview.AI_CREATE_JOB
+	local isWorkerListTab =  g_inGameMenu.mapOverviewSelector ~= nil and g_inGameMenu.mapOverviewSelector.state == g_inGameMenu.pageMapOverview.AI_WORKER_LIST
 
-	if menuOpen and correctPage and correctTab then
+	if menuOpen and correctPage then
 		if not AutoDrive.aiFrameOpen then
 			AutoDrive.aiFrameOpen = true
 			AutoDrive.aiFrameVehicle = AutoDrive.getControlledVehicle()
 			AutoDrive.aiNetworkOnMapCache = nil
 		end
-		AutoDrive:drawRouteOnMap()
-		AutoDrive.drawNetworkOnMap()
-		if AutoDrive.aiFrameVehicle ~= nil then
+		if isWorkerListTab then
+			AutoDrive:drawRouteOnMap()
+		end
+		if isNewJobTab then
+			AutoDrive.drawNetworkOnMap()
+		end
+		if (isNewJobTab or isWorkerListTab) and AutoDrive.aiFrameVehicle ~= nil then
 		    if AutoDrive.aiFrameVehicle.ad and AutoDrive.aiFrameVehicle.ad.stateModule then
 		        if AutoDrive.Hud ~= nil then
 		            if AutoDrive.getSetting("showHUD") then
