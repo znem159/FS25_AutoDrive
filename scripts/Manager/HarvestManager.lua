@@ -154,21 +154,32 @@ function ADHarvestManager:update(dt)
                     end
                 end
             --end
-
-            if (harvester.ad ~= nil and harvester.ad.noMovementTimer ~= nil and harvester.lastSpeedReal ~= nil) then
-                harvester.ad.noMovementTimer:timer((harvester.lastSpeedReal <= 0.0004), 3000, dt)
-
-                local vehicleSteering = false --harvester.rotatedTime ~= nil and (math.deg(harvester.rotatedTime) > 10)
-                if (not vehicleSteering) and ((harvester.lastSpeedReal * harvester.movingDirection) >= 0.0004) then
-                    harvester.ad.driveForwardTimer:timer(true, 4000, dt)
-                else
-                    harvester.ad.driveForwardTimer:timer(false)
-                end
-            end
         else
             table.removeValue(self.harvesters, harvester)
         end
     end
+
+    local function updateMovementTimers(harvester)
+        if harvester == nil or harvester.ad == nil or harvester.ad.noMovementTimer == nil or harvester.lastSpeedReal == nil then
+            return
+        end
+
+        harvester.ad.noMovementTimer:timer((harvester.lastSpeedReal <= 0.0004), 3000, dt)
+        if ((harvester.lastSpeedReal * harvester.movingDirection) >= 0.0004) then
+            harvester.ad.driveForwardTimer:timer(true, 4000, dt)
+        else
+            harvester.ad.driveForwardTimer:timer(false)
+        end
+    end
+    
+    for _, harvester in pairs(self.harvesters) do
+        updateMovementTimers(harvester)
+    end
+    for _, harvester in pairs(self.idleHarvesters) do
+        updateMovementTimers(harvester)
+    end
+
+
 
     if AutoDrive.getDebugChannelIsSet(AutoDrive.DC_COMBINEINFO) then
         local debug = {}
