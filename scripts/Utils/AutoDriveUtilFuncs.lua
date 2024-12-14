@@ -836,6 +836,7 @@ function AutoDrive.getControlledVehicle()
     end
  ]]
 
+--[[
    if g_currentMission and g_currentMission.vehicleSystem and AutoDrive.getAllVehicles() then
         for index, vehicle in pairs(AutoDrive.getAllVehicles()) do
             -- if vehicle.getIsControlled and vehicle:getIsControlled() then
@@ -844,11 +845,13 @@ function AutoDrive.getControlledVehicle()
             if vehicle.getIsControlled and vehicle:getIsControlled() then
                 return vehicle
             end
-            
+
         end
     end
 
     return nil
+]]
+    return g_localPlayer and g_localPlayer.getCurrentVehicle and g_localPlayer:getCurrentVehicle()
 end
 
 function AutoDrive.setEnteredVehicle(vehicle)
