@@ -59,7 +59,7 @@ function AutoDrivePlaceableData.callBack(result)
 end
 
 function AutoDrivePlaceableData.showError(error)
-	local args = {text = g_i18n:getText("gui_ad_adpd_showError ") .. error}
+	local args = {text = g_i18n:getText("gui_ad_adpd_showError") .. " " .. error}
 	local dialog = g_gui:showDialog("InfoDialog")
 	if dialog then
 		dialog.target:setDialogType(Utils.getNoNil(args.dialogType, DialogElement.TYPE_WARNING))
@@ -117,6 +117,7 @@ function AutoDrivePlaceableData.readGraphFromXml(xmlFile, placeable)
 	do
 		local function checkProperty(key)
 			if not hasXMLProperty(xmlFile, key) then
+				AutoDrive.debugMsg(nil, "ERROR AutoDrivePlaceableData.readGraphFromXml no property for key %s ", tostring(key))
 				return -1
 			end
 		end
@@ -124,10 +125,12 @@ function AutoDrivePlaceableData.readGraphFromXml(xmlFile, placeable)
 		local function checkString(key)
 			local tempString = getXMLString(xmlFile, key)
 			if tempString == nil then
+				AutoDrive.debugMsg(nil, "ERROR AutoDrivePlaceableData.readGraphFromXml no value for key %s ", tostring(key))
 				return -2
 			end
 			local xTable = tempString:split(",")
 			if #xTable == 0 then
+				AutoDrive.debugMsg(nil, "ERROR AutoDrivePlaceableData.readGraphFromXml no values for key %s ", tostring(key))
 				return -3
 			end
 		end
@@ -165,9 +168,7 @@ function AutoDrivePlaceableData.readGraphFromXml(xmlFile, placeable)
 		local ft = getXMLString(xmlFile, key):split(",")
 
         if #xt == 0 or #yt == 0 or #zt == 0 or #ot == 0 or #it == 0 or #ft == 0 or #xt ~= #yt or #xt ~= #zt or #xt ~= #ot or #xt ~= #it or #xt ~= #ft then
-			AutoDrive.debugMsg(nil, "ERROR AutoDrivePlaceableData:readGraphFromXml invalid consitency key %s"
-			, tostring(key)
-			)
+			AutoDrive.debugMsg(nil, "ERROR AutoDrivePlaceableData:readGraphFromXml invalid consitency for key %s", tostring(key))
 			if #xt == 0 then
 				AutoDrive.debugMsg(nil, "ERROR AutoDrivePlaceableData:readGraphFromXml invalid consitency #xt == 0")
 			end
@@ -222,16 +223,18 @@ function AutoDrivePlaceableData.readGraphFromXml(xmlFile, placeable)
                 mapMarker = nil
                 break
             end
-            if mapMarker.id > waypointsCount then -- invalid marker id
-                return -5
+            if mapMarker.id > waypointsCount or mapMarker.id < 1 then -- invalid marker id
+				AutoDrive.debugMsg(nil, "ERROR AutoDrivePlaceableData.readGraphFromXml invalid marker id %s ", tostring(mapMarker.id))
+				return -5
             end
 
-			mapMarker.id = ADGraphManager:getWayPointsCount() + mapMarkerCounter
+			mapMarker.id = mapMarker.id + ADGraphManager:getWayPointsCount()
 
 			mapMarker.name = getXMLString(xmlFile, "placeable.AutoDrive.mapmarker.mm" .. mapMarkerCounter .. ".name")
             if mapMarker.name then
                 mapMarker.name = (#ADGraphManager:getMapMarkers() + 1) .. "_" .. mapMarker.name -- add the # in front to avoid multiple same names
 			else
+				AutoDrive.debugMsg(nil, "ERROR AutoDrivePlaceableData.readGraphFromXml missing marker name")
 				return -6
             end
             mapMarker.group = "All"
