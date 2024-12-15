@@ -36,7 +36,7 @@ function ADDebugSettingsPage:onCreateAutoDriveDebugSettingRow(element, channel)
     if self.skipRow == 0 then
         element:setImageColor(nil, 0.04231, 0.04231, 0.04231, 1)    
     else
-        element:setImageColor(nil, 0.020, 0.020, 0.020, 0.5)
+        element:setImageColor(nil, 0.02956, 0.02956, 0.02956, 0.5)
     end
     self.skipRow = (self.skipRow + 1) % 2
 

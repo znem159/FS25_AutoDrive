@@ -2,6 +2,9 @@ function AutoDrive:loadGUI()
 	GuiOverlay.loadOverlay = AutoDrive.overwrittenStaticFunction(GuiOverlay.loadOverlay, AutoDrive.GuiOverlay_loadOverlay)
 
 	g_gui:loadProfiles(AutoDrive.directory .. "gui/guiProfiles.xml")
+	g_overlayManager:addTextureConfigFile(g_autoDriveDebugUIConfigPath, "ad_gui_debug")
+	g_overlayManager:addTextureConfigFile(g_autoDriveUIConfigPath, "ad_gui")
+
 	AutoDrive.gui = {}
 	AutoDrive.gui.ADEnterDriverNameGui = ADEnterDriverNameGui.new()
 	AutoDrive.gui.ADEnterTargetNameGui = ADEnterTargetNameGui.new()
@@ -63,62 +66,50 @@ function AutoDrive:loadGUI()
         AutoDrive.debugMsg(nil, "AutoDrive:loadGUI failed count %d", count)
     end
 
-	--[[
-	AutoDrive.gui.ADSettingsPage = ADSettingsPage:new()
-	
+	AutoDrive.gui.ADGlobalSettingsPage = ADSettingsPage:new()
 	AutoDrive.gui.ADUserSettingsPage = ADSettingsPage:new()
-	--]]
 	AutoDrive.gui.ADVehicleSettingsPage = ADSettingsPage:new()
-	--[[
 	AutoDrive.gui.ADCombineUnloadSettingsPage = ADSettingsPage:new()
 	AutoDrive.gui.ADEnvironmentSettingsPage = ADSettingsPage:new()
-	--]]
 	AutoDrive.gui.ADDebugSettingsPage = ADDebugSettingsPage:new()
-	--AutoDrive.gui.ADExperimentalFeaturesSettingsPage = ADExperimentalFeaturesSettingsPage:new()
-	
+
 	AutoDrive.gui.ADSettings = ADSettings:new()
 
-	--[[
-	result = g_gui:loadGui(AutoDrive.directory .. "gui/settingsPage.xml", "ADSettingsFrame", AutoDrive.gui.ADSettingsPage, true)
+	result = g_gui:loadGui(AutoDrive.directory .. "gui/globalSettingsPage.xml", "autoDriveGlobalSettings", AutoDrive.gui.ADGlobalSettingsPage, true)
     count = count + 1
     if result == nil then
         AutoDrive.debugMsg(nil, "AutoDrive:loadGUI failed count %d", count)
     end
-	result = g_gui:loadGui(AutoDrive.directory .. "gui/userSettingsPage.xml", "ADUserSettingsFrame", AutoDrive.gui.ADUserSettingsPage, true)
+
+	result = g_gui:loadGui(AutoDrive.directory .. "gui/userSettingsPage.xml", "autoDriveUserSettings", AutoDrive.gui.ADUserSettingsPage, true)
     count = count + 1
     if result == nil then
         AutoDrive.debugMsg(nil, "AutoDrive:loadGUI failed count %d", count)
     end
-	--]]
+
 	result = g_gui:loadGui(AutoDrive.directory .. "gui/vehicleSettingsPage.xml", "autoDriveVehicleSettings", AutoDrive.gui.ADVehicleSettingsPage, true)
     count = count + 1
     if result == nil then
         AutoDrive.debugMsg(nil, "AutoDrive:loadGUI failed count %d", count)
     end
-	--[[
-	result = g_gui:loadGui(AutoDrive.directory .. "gui/combineUnloadSettingsPage.xml", "ADCombineUnloadSettingsFrame", AutoDrive.gui.ADCombineUnloadSettingsPage, true)
+
+	result = g_gui:loadGui(AutoDrive.directory .. "gui/combineUnloadSettingsPage.xml", "autoDriveCombineUnloadSettings", AutoDrive.gui.ADCombineUnloadSettingsPage, true)
     count = count + 1
     if result == nil then
         AutoDrive.debugMsg(nil, "AutoDrive:loadGUI failed count %d", count)
     end
-	result = g_gui:loadGui(AutoDrive.directory .. "gui/environmentSettingsPage.xml", "ADEnvironmentSettingsFrame", AutoDrive.gui.ADEnvironmentSettingsPage, true)
+
+	result = g_gui:loadGui(AutoDrive.directory .. "gui/environmentSettingsPage.xml", "autoDriveEnvironmentSettings", AutoDrive.gui.ADEnvironmentSettingsPage, true)
     count = count + 1
     if result == nil then
         AutoDrive.debugMsg(nil, "AutoDrive:loadGUI failed count %d", count)
     end
-	--]]
+
 	result = g_gui:loadGui(AutoDrive.directory .. "gui/debugSettingsPage.xml", "autoDriveDebugSettings", AutoDrive.gui.ADDebugSettingsPage, true)
     count = count + 1
     if result == nil then
         AutoDrive.debugMsg(nil, "AutoDrive:loadGUI failed count %d", count)
     end
-	--[[
-	result = g_gui:loadGui(AutoDrive.directory .. "gui/experimentalFeaturesSettingsPage.xml", "ADExperimentalFeaturesSettingsFrame", AutoDrive.gui.ADExperimentalFeaturesSettingsPage, true)
-    count = count + 1
-    if result == nil then
-        AutoDrive.debugMsg(nil, "AutoDrive:loadGUI failed count %d", count)
-    end
-	--]]
 
 	result = g_gui:loadGui(AutoDrive.directory .. "gui/settings.xml", "ADSettings", AutoDrive.gui.ADSettings)
     count = count + 1

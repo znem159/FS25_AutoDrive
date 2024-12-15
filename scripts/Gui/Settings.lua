@@ -9,43 +9,17 @@ ADSettings = {}
 
 local ADSettings_mt = Class(ADSettings, TabbedMenu)
 
-ADSettings.CONTROLS = {"autoDriveVehicleSettings", "autoDriveDebugSettings"} -- , "autoDriveCombineUnloadSettings", "autoDriveUserSettings", "autoDriveSettings", "autoDriveEnvironmentSettings",  "autoDriveDebugSettings", "autoDriveExperimentalFeaturesSettings"}
-
---- Page tab UV coordinates for display elements.
---AD specific iconUVs
---[[
-ADSettings.TAB_UV = {
-    SETTINGS_GENERAL = {385, 0, 128, 128},
-    SETTINGS_VEHICLE = {0, 209, 65, 65},
-    SETTINGS_USER = {457, 210, 60, 60},
-    SETTINGS_UNLOAD = {0, 0, 128, 128},
-    SETTINGS_LOAD = {0, 129, 128, 128},
-    SETTINGS_NAVIGATION = {0, 257, 128, 128},
-    SETTINGS_DEBUG = {0, 128, 128, 128},
-    SETTINGS_EXPFEAT = {128, 128, 128, 128},
-    SETTINGS_ENVIRONMENT = {65, 144, 65, 65}
+ADSettings.CONTROLS = {
+    "autoDriveGlobalSettings",
+    "autoDriveUserSettings",
+    "autoDriveVehicleSettings",
+    "autoDriveCombineUnloadSettings",
+    "autoDriveEnvironmentSettings",
+    "autoDriveDebugSettings",
 }
-]]
 
-ADSettings.TAB_UV = {
-    SETTINGS_GENERAL = {0, 0, 64, 64},
-    SETTINGS_VEHICLE = {0, 0, 128, 128},
-    SETTINGS_USER = {0, 130, 64, 64},
-    SETTINGS_UNLOAD = {0, 0, 128, 128},
-    SETTINGS_DEBUG = {385, 0, 128, 128},
-    SETTINGS_EXPFEAT = {0, 270, 64, 64},
-    SETTINGS_ENVIRONMENT = {134, 0, 64, 64}
-}
 
 -- AD specific iconUVs
---[[
-ADSettings.ICON_UVa= {
-    GLOBAL = {12, 157, 40, 40},
-    VEHICLE = {136, 151, 51, 51},
-    USER = {462, 215, 50, 50}
-}
-]]
-
 ADSettings.ICON_UV = {
     GLOBAL = {0, 0, 64, 64},
     VEHICLE = {260, 0, 64, 64},
@@ -95,22 +69,20 @@ function ADSettings:setupPages()
     end
 
     local orderedPages = {
-        {self.autoDriveVehicleSettings, vehicleEnabled, g_autoDriveDebugUIFilename, ADSettings.TAB_UV.SETTINGS_VEHICLE, false},
-        --{self.autoDriveCombineUnloadSettings, combineEnabled, g_autoDriveUIFilename, ADSettings.TAB_UV.SETTINGS_UNLOAD, false},
-        --{self.autoDriveUserSettings, alwaysEnabled, g_iconsUIFilename, ADSettings.TAB_UV.SETTINGS_USER, false},
-        --{self.autoDriveSettings, alwaysEnabled, g_iconsUIFilename, ADSettings.TAB_UV.SETTINGS_GENERAL, false},
-        --{self.autoDriveEnvironmentSettings, vehicleEnabled, g_iconsUIFilename, ADSettings.TAB_UV.SETTINGS_ENVIRONMENT, false},
-        {self.autoDriveDebugSettings, developmentControlsEnabled, g_autoDriveDebugUIFilename, ADSettings.TAB_UV.SETTINGS_DEBUG, true}
-        --{self.autoDriveExperimentalFeaturesSettings, alwaysEnabled, g_iconsUIFilename, ADSettings.TAB_UV.SETTINGS_EXPFEAT, true}
+        {self.autoDriveGlobalSettings, alwaysEnabled, "gui.icon_options_generalSettings2", false},
+        {self.autoDriveUserSettings, alwaysEnabled, "gui.wardrobe_character", false},
+        {self.autoDriveVehicleSettings, vehicleEnabled, "gui.icon_options_gameSettings2", false},
+        {self.autoDriveCombineUnloadSettings, combineEnabled, "ad_gui.combine", false},
+        {self.autoDriveEnvironmentSettings, vehicleEnabled, "gui.icon_weather_partiallyCloudy", false},
+        {self.autoDriveDebugSettings, developmentControlsEnabled, "ad_gui_debug.settings_debug", true},
     }
 
     for i, pageDef in ipairs(orderedPages) do        
-        local page, predicate, uiFilename, iconUVs, isAutonomous = unpack(pageDef)
-        
-        local normalizedIconUVs = GuiUtils.getUVs(iconUVs)
+        local page, predicate, iconUVs, isAutonomous = table.unpack(pageDef)
+        local slice = g_overlayManager:getSliceInfoById(iconUVs)
         local pageRoot, position = self:registerPage(page, i, predicate)
 
-        self:addPageTab(page, uiFilename, normalizedIconUVs) -- use the global here because the value changes with resolution settings
+        self:addPageTab(page, slice.filename, slice.uvs) -- use the global here because the value changes with resolution settings
                 
         page.isAutonomous = isAutonomous
         if page.setupMenuButtonInfo ~= nil then
