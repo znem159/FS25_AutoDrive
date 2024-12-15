@@ -617,8 +617,7 @@ function AutoDrive:hasAL(object)
     if (object.spec_universalAutoload ~= nil) then
         local rootVehicle = object.getRootVehicle and object:getRootVehicle()
         if rootVehicle and not rootVehicle.spec_locomotive then
-            -- use only bulk trailers of trains for now
-            ret = ret or object.spec_universalAutoload.isAutoloadEnabled
+            ret = ret or object.spec_universalAutoload.isAutoloadAvailable
         end
     end
     return ret
