@@ -6,43 +6,33 @@
 -- @date 03/12/2019
 
 ADDebugSettingsPage = {}
+ADDebugSettingsPage.debug = false
 
 local ADDebugSettingsPage_mt = Class(ADDebugSettingsPage, TabbedMenuFrameElement)
 
-ADDebugSettingsPage.CONTROLS = {"settingsContainer", "headerIcon", "boxLayout"}
-
-function ADDebugSettingsPage:new(target)
-    local element = TabbedMenuFrameElement.new(target, ADDebugSettingsPage_mt)
-    element.returnScreenName = ""
-    element.debugElements = {}
-    element.skipRow = 0
-
-    element.lastDebugChannelMask = AutoDrive.currentDebugChannelMask
-    return element
+function ADDebugSettingsPage.new(target)
+    local self = TabbedMenuFrameElement.new(target, ADDebugSettingsPage_mt)
+    self:include(ADGuiDebugMixin)
+    self.debugElements = {}
+    self.isEvenRow = false
+    self.lastDebugChannelMask = AutoDrive.currentDebugChannelMask
+    return self
 end
 
 function ADDebugSettingsPage:onFrameOpen()
+    self:debugMsg("ADDebugSettingsPage:onFrameOpen")
     ADDebugSettingsPage:superClass().onFrameOpen(self)
     self:updateDebugElements()
 	FocusManager:setFocus(self.boxLayout)
 end
 
-function ADDebugSettingsPage:onFrameClose()
-    ADDebugSettingsPage:superClass().onFrameClose(self)
-end
-
-
 function ADDebugSettingsPage:onCreateAutoDriveDebugSettingRow(element, channel)
-    if self.skipRow == 0 then
-        element:setImageColor(nil, 0.04231, 0.04231, 0.04231, 1)    
-    else
-        element:setImageColor(nil, 0.02956, 0.02956, 0.02956, 0.5)
-    end
-    self.skipRow = (self.skipRow + 1) % 2
+    self:debugMsg("ADDebugSettingsPage:onCreateAutoDriveDebugSettingRow, channel=%d, isEvenRow=%s", channel, tostring(self.isEvenRow))
+    element:setImageColor(nil, table.unpack(InGameMenuSettingsFrame.COLOR_ALTERNATING[self.isEvenRow]))
+    self.isEvenRow = not self.isEvenRow
 
     element.toggle = element.elements[1]
-    element.toggle.debugChannel = tonumber(channel)    
-    
+    element.toggle.debugChannel = tonumber(channel)
     table.insert(self.debugElements, element)
 end
 
@@ -55,6 +45,7 @@ function ADDebugSettingsPage:update(dt)
 end
 
 function ADDebugSettingsPage:onClickDebug(value, toggle)
+    self:debugMsg("ADDebugSettingsPage:onClickDebug, channel=%d", toggle.debugChannel)
     AutoDrive:setDebugChannel(toggle.debugChannel)
 end
 
@@ -70,22 +61,7 @@ function ADDebugSettingsPage:updateDebugElements()
 end
 
 function ADDebugSettingsPage:setupMenuButtonInfo(parent)
+    self:debugMsg("ADDebugSettingsPage:setupMenuButtonInfo")
     local menuButtonInfo = {{inputAction = InputAction.MENU_BACK, text = g_i18n:getText("button_back"), callback = parent:makeSelfCallback(parent.onButtonBack), showWhenPaused = true}}
     self:setMenuButtonInfo(menuButtonInfo)
-end
-
------ Get the frame's main content element's screen size.
-function ADDebugSettingsPage:getMainElementSize()
-    return self.settingsContainer.size
-end
-
---- Get the frame's main content element's screen position.
-function ADDebugSettingsPage:getMainElementPosition()
-    return self.settingsContainer.absPosition
-end
-
-function ADDebugSettingsPage:copyAttributes(src)
-	ADDebugSettingsPage:superClass().copyAttributes(self, src)
-    self.storedHeaderKey = src.storedHeaderKey
-    self.storedKey1 = src.storedKey1
 end

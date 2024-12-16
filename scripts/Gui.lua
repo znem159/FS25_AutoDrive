@@ -12,7 +12,7 @@ function AutoDrive:loadGUI()
 	AutoDrive.gui.ADEnterDestinationFilterGui = ADEnterDestinationFilterGui.new()
 	AutoDrive.gui.ADRoutesManagerGui = ADRoutesManagerGui.new()
 	AutoDrive.gui.ADNotificationsHistoryGui = ADNotificationsHistoryGui.new()
-	AutoDrive.gui.ADColorSettingsGui = ADColorSettingsGui:new()
+	AutoDrive.gui.ADColorSettingsGui = ADColorSettingsGui.new()
 	AutoDrive.gui.ADScanConfirmationGui = ADScanConfirmationGui.new()
 
     local count = 1
@@ -66,12 +66,12 @@ function AutoDrive:loadGUI()
         AutoDrive.debugMsg(nil, "AutoDrive:loadGUI failed count %d", count)
     end
 
-	AutoDrive.gui.ADGlobalSettingsPage = ADSettingsPage:new()
-	AutoDrive.gui.ADUserSettingsPage = ADSettingsPage:new()
-	AutoDrive.gui.ADVehicleSettingsPage = ADSettingsPage:new()
-	AutoDrive.gui.ADCombineUnloadSettingsPage = ADSettingsPage:new()
-	AutoDrive.gui.ADEnvironmentSettingsPage = ADSettingsPage:new()
-	AutoDrive.gui.ADDebugSettingsPage = ADDebugSettingsPage:new()
+	AutoDrive.gui.ADGlobalSettingsPage = ADSettingsPage.new()
+	AutoDrive.gui.ADUserSettingsPage = ADSettingsPage.new()
+	AutoDrive.gui.ADVehicleSettingsPage = ADSettingsPage.new()
+	AutoDrive.gui.ADCombineUnloadSettingsPage = ADSettingsPage.new()
+	AutoDrive.gui.ADEnvironmentSettingsPage = ADSettingsPage.new()
+	AutoDrive.gui.ADDebugSettingsPage = ADDebugSettingsPage.new()
 
 	AutoDrive.gui.ADSettings = ADSettings:new()
 
