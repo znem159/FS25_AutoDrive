@@ -73,7 +73,7 @@ function AutoDrive:loadGUI()
 	AutoDrive.gui.ADEnvironmentSettingsPage = ADSettingsPage.new()
 	AutoDrive.gui.ADDebugSettingsPage = ADDebugSettingsPage.new()
 
-	AutoDrive.gui.ADSettings = ADSettings:new()
+	AutoDrive.gui.ADSettings = ADSettings.new()
 
 	result = g_gui:loadGui(AutoDrive.directory .. "gui/globalSettingsPage.xml", "autoDriveGlobalSettings", AutoDrive.gui.ADGlobalSettingsPage, true)
     count = count + 1
@@ -195,6 +195,8 @@ function AutoDrive.showYesNoDialog(title, text, callback, target, ...)
 	dlg.target.dialogTextElement:setText(text)
 	dlg.target:setCallback(callback, target, ...)
 end
+
+
 ADGuiDebugMixin = {}
 
 function ADGuiDebugMixin.new()

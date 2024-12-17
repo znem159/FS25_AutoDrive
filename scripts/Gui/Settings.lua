@@ -6,36 +6,19 @@
 -- @date 08/04/2019
 
 ADSettings = {}
+ADSettings.debug = false
 
 local ADSettings_mt = Class(ADSettings, TabbedMenu)
 
-ADSettings.CONTROLS = {
-    "autoDriveGlobalSettings",
-    "autoDriveUserSettings",
-    "autoDriveVehicleSettings",
-    "autoDriveCombineUnloadSettings",
-    "autoDriveEnvironmentSettings",
-    "autoDriveDebugSettings",
-}
-
-
--- AD specific iconUVs
-ADSettings.ICON_UV = {
-    GLOBAL = {0, 0, 64, 64},
-    VEHICLE = {260, 0, 64, 64},
-    USER = {0, 120, 70, 85}
-}
-
 ADSettings.ICON_COLOR = {
     DEFAULT = {1, 1, 1, 1},
-    -- CHANGED = {0.9910, 0.3865, 0.0100, 1}
     CHANGED = {0.9910, 0.03865, 0.0100, 1}
 }
 
-function ADSettings:new(target)
-    local element = TabbedMenu.new(target, ADSettings_mt, g_messageCenter, g_i18n, g_gui.inputManager)
-    element.returnScreenName = ""
-    return element
+function ADSettings.new(target)
+    local self = TabbedMenu.new(target, ADSettings_mt)
+    self:include(ADGuiDebugMixin)
+    return self
 end
 
 function ADSettings:onGuiSetupFinished()
@@ -43,7 +26,8 @@ function ADSettings:onGuiSetupFinished()
     self:setupPages()
 end
 
-function ADSettings:setupPages()    
+function ADSettings:setupPages()
+    self:debugMsg("ADSettings:setupPages")
     local alwaysEnabled = function()
         return true
     end
@@ -77,29 +61,30 @@ function ADSettings:setupPages()
         {self.autoDriveDebugSettings, developmentControlsEnabled, "ad_gui_debug.settings_debug", true},
     }
 
-    for i, pageDef in ipairs(orderedPages) do        
-        local page, predicate, iconUVs, isAutonomous = table.unpack(pageDef)
-        local slice = g_overlayManager:getSliceInfoById(iconUVs)
-        local pageRoot, position = self:registerPage(page, i, predicate)
-
-        self:addPageTab(page, slice.filename, slice.uvs) -- use the global here because the value changes with resolution settings
+    for i, pageDef in ipairs(orderedPages) do
+        local page, predicate, sliceId, isAutonomous = table.unpack(pageDef)
+        self:registerPage(page, i, predicate)
+        self:addPageTab(page, nil, nil, sliceId)
                 
         page.isAutonomous = isAutonomous
         if page.setupMenuButtonInfo ~= nil then
             page:setupMenuButtonInfo(self)
         end
     end
+    AutoDrive.dumpTable(self, "ADSettings", 1)
     
 end
 
 function ADSettings:onOpen()
+    self:debugMsg("ADSettings:onOpen")
     ADSettings:superClass().onOpen(self)
     self.inputDisableTime = 200
 end
 
 function ADSettings:onClose()
-    for _, pageName in pairs(ADSettings.CONTROLS) do
-        self:resetPage(self[pageName])
+    self:debugMsg("ADSettings:onClose")
+    for page, _ in pairs(self.pageTabs) do
+        self:resetPage(page)
     end
     AutoDrive.Hud.lastUIScale = 0
     ADSettings:superClass().onClose(self)
@@ -117,11 +102,13 @@ function ADSettings:setupMenuButtonInfo()
 end
 
 function ADSettings:onClickOK()
+    self:debugMsg("ADSettings:onClickOK")
     self:applySettings()
     ADSettings:superClass().onClickBack(self)
 end
 
 function ADSettings:onClickBack()
+    self:debugMsg("ADSettings:onClickBack")
     if self:pagesHasChanges() then
         AutoDrive.showYesNoDialog(
             g_i18n:getText("gui_ad_settingsClosingDialog_title"),
@@ -136,28 +123,28 @@ end
 
 function ADSettings:onClickBackDialogCallback(yes)
     if yes then
-        --ADSettings:superClass().onClickBack(self)
         g_gui:changeScreen(nil)
     end
 end
 
 function ADSettings:onClickReset()
-    local page = self:getActivePage()
-    if page == nil or page.isAutonomous then
+    self:debugMsg("ADSettings:onClickReset")
+    if self.currentPage == nil or self.currentPage.isAutonomous then
         return
     end
-    self:resetPage(page)
+    self:resetPage(self.currentPage)
 end
 
 function ADSettings:onClickRestore()
-    local page = self:getActivePage()
-    if page == nil or page.isAutonomous then
+    self:debugMsg("ADSettings:onClickRestore")
+    if self.currentPage == nil or self.currentPage.isAutonomous then
         return
     end
-    self:restorePage(page)
+    self:restorePage(self.currentPage)
 end
 
 function ADSettings:onClickSetDefault()
+    self:debugMsg("ADSettings:onClickSetDefault")
     if self:pagesHasChanges() then
         local controlledVehicle = AutoDrive.getControlledVehicle()
         for settingName, setting in pairs(AutoDrive.settings) do
@@ -174,13 +161,13 @@ function ADSettings:onClickSetDefault()
                 end
             end            
         end
-
         AutoDriveUpdateSettingsEvent.sendEvent(controlledVehicle)
     end
 end
 
 function ADSettings:applySettings()
     if self:pagesHasChanges() then
+        self:debugMsg("ADSettings:applySettings with changes")
         local userSpecificHasChanges = false
         local controlledVehicle = AutoDrive.getControlledVehicle()
 
@@ -212,6 +199,7 @@ function ADSettings:resetPage(page)
         return
     end
     if page:hasChanges() then
+        self:debugMsg("ADSettings:resetPage with changes")
         local controlledVehicle = AutoDrive.getControlledVehicle()
         for settingName, _ in pairs(page.settingElements) do
             if AutoDrive.settings[settingName] ~= nil then
@@ -248,13 +236,9 @@ function ADSettings:restorePage(page)
     end
 end
 
-function ADSettings:getActivePage()
-    return self[ADSettings.CONTROLS[self.currentPageId]]
-end
-
 function ADSettings:pagesHasChanges()
-    for _, pageName in pairs(ADSettings.CONTROLS) do
-        if not self[pageName].isAutonomous and self[pageName]:hasChanges() then
+    for page, _ in pairs(self.pageTabs) do
+        if not page.isAutonomous and page:hasChanges() then
             return true
         end
     end
@@ -262,9 +246,9 @@ function ADSettings:pagesHasChanges()
 end
 
 function ADSettings:forceLoadGUISettings()
-    for _, pageName in pairs(ADSettings.CONTROLS) do
-        if self[pageName].loadGUISettings ~= nil then
-            self[pageName]:loadGUISettings()
+    for page, _ in pairs(self.pageTabs) do
+        if page.loadGUISettings ~= nil then
+            page:loadGUISettings()
         end
     end
 end
