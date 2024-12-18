@@ -53,10 +53,10 @@ function ADSettings:setupPages()
     end
 
     local orderedPages = {
-        {self.autoDriveGlobalSettings, alwaysEnabled, "gui.icon_options_generalSettings2", false},
-        {self.autoDriveUserSettings, alwaysEnabled, "gui.wardrobe_character", false},
         {self.autoDriveVehicleSettings, vehicleEnabled, "gui.icon_options_gameSettings2", false},
         {self.autoDriveCombineUnloadSettings, combineEnabled, "ad_gui.combine", false},
+        {self.autoDriveUserSettings, alwaysEnabled, "gui.wardrobe_character", false},
+        {self.autoDriveGlobalSettings, alwaysEnabled, "gui.icon_options_generalSettings2", false},
         {self.autoDriveEnvironmentSettings, vehicleEnabled, "gui.icon_weather_partiallyCloudy", false},
         {self.autoDriveDebugSettings, developmentControlsEnabled, "ad_gui_debug.settings_debug", true},
     }
@@ -71,8 +71,6 @@ function ADSettings:setupPages()
             page:setupMenuButtonInfo(self)
         end
     end
-    AutoDrive.dumpTable(self, "ADSettings", 1)
-    
 end
 
 function ADSettings:onOpen()

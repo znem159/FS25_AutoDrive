@@ -4,10 +4,10 @@
     <Bitmap profile="fs25_fullScreenBackground" id="background"/>
 
     <Paging profile="uiInGameMenuPaging" onPageChange="onPageChange" onPageUpdate="onPageUpdate" id="pagingElement">
-        <FrameReference ref="autoDriveGlobalSettings" name="autoDriveGlobalSettings" id="autoDriveGlobalSettings"/>
-        <FrameReference ref="autoDriveUserSettings" name="autoDriveUserSettings" id="autoDriveUserSettings"/>
         <FrameReference ref="autoDriveVehicleSettings" name="autoDriveVehicleSettings" id="autoDriveVehicleSettings"/>
         <FrameReference ref="autoDriveCombineUnloadSettings" name="autoDriveCombineUnloadSettings" id="autoDriveCombineUnloadSettings"/>
+        <FrameReference ref="autoDriveUserSettings" name="autoDriveUserSettings" id="autoDriveUserSettings"/>
+        <FrameReference ref="autoDriveGlobalSettings" name="autoDriveGlobalSettings" id="autoDriveGlobalSettings"/>
         <FrameReference ref="autoDriveEnvironmentSettings" name="autoDriveEnvironmentSettings" id="autoDriveEnvironmentSettings"/>
         <FrameReference ref="autoDriveDebugSettings" name="autoDriveDebugSettings" id="autoDriveDebugSettings"/>
     </Paging>
