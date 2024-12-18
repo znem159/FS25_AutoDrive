@@ -60,8 +60,6 @@ function ADDebugSettingsPage:updateDebugElements()
     end
 end
 
-function ADDebugSettingsPage:setupMenuButtonInfo(parent)
-    self:debugMsg("ADDebugSettingsPage:setupMenuButtonInfo")
-    local menuButtonInfo = {{inputAction = InputAction.MENU_BACK, text = g_i18n:getText("button_back"), callback = parent:makeSelfCallback(parent.onButtonBack), showWhenPaused = true}}
-    self:setMenuButtonInfo(menuButtonInfo)
+function ADDebugSettingsPage:hasChanges()
+    return false
 end
