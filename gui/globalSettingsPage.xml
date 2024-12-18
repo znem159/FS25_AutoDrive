@@ -28,15 +28,15 @@
 				<Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_gui_ad_siloEmpty"/>
 			</Bitmap>
 			<Bitmap profile="fs25_multiTextOptionContainer" onCreate="onCreateAutoDriveSettingRow">
-				<MultiTextOption profile="fs25_settingsMultiTextOption" onClick="onOptionChange" onCreate="onCreateAutoDriveSetting" name="autoConnectStart" id="autoConnectStart">
+				<BinaryOption profile="fs25_settingsBinaryOption" onClick="onOptionChange" onCreate="onCreateAutoDriveSetting" name="autoConnectStart" id="autoConnectStart">
 					<Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_gui_ad_autoConnect_start_tooltip"/>
-				</MultiTextOption>
+				</BinaryOption>
 				<Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_gui_ad_autoConnect_start"/>
 			</Bitmap>
 			<Bitmap profile="fs25_multiTextOptionContainer" onCreate="onCreateAutoDriveSettingRow">
-				<MultiTextOption profile="fs25_settingsMultiTextOption" onClick="onOptionChange" onCreate="onCreateAutoDriveSetting" name="autoConnectEnd" id="autoConnectEnd">
+				<BinaryOption profile="fs25_settingsBinaryOption" onClick="onOptionChange" onCreate="onCreateAutoDriveSetting" name="autoConnectEnd" id="autoConnectEnd">
 					<Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_gui_ad_autoConnect_end_tooltip"/>
-				</MultiTextOption>
+				</BinaryOption>
 				<Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_gui_ad_autoConnect_end"/>
 			</Bitmap>
 			<Bitmap profile="fs25_multiTextOptionContainer" onCreate="onCreateAutoDriveSettingRow">
@@ -46,15 +46,15 @@
 				<Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_gui_ad_driverWages"/>
 			</Bitmap>
 			<Bitmap profile="fs25_multiTextOptionContainer" onCreate="onCreateAutoDriveSettingRow">
-				<MultiTextOption profile="fs25_settingsMultiTextOption" onClick="onOptionChange" onCreate="onCreateAutoDriveSetting" name="enableTrafficDetection" id="enableTrafficDetection">
+				<BinaryOption profile="fs25_settingsBinaryOption" onClick="onOptionChange" onCreate="onCreateAutoDriveSetting" name="enableTrafficDetection" id="enableTrafficDetection">
 					<Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_gui_ad_enableTrafficDetection_tooltip"/>
-				</MultiTextOption>
+				</BinaryOption>
 				<Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_gui_ad_enableTrafficDetection"/>
 			</Bitmap>
 			<Bitmap profile="fs25_multiTextOptionContainer" onCreate="onCreateAutoDriveSettingRow">
-				<MultiTextOption profile="fs25_settingsMultiTextOption" onClick="onOptionChange" onCreate="onCreateAutoDriveSetting" name="useFolders" id="useFolders">
+				<BinaryOption profile="fs25_settingsBinaryOption" onClick="onOptionChange" onCreate="onCreateAutoDriveSetting" name="useFolders" id="useFolders">
 					<Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_gui_ad_useFolders_tooltip"/>
-				</MultiTextOption>
+				</BinaryOption>
 				<Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_gui_ad_useFolders"/>
 			</Bitmap>
 			<Bitmap profile="fs25_multiTextOptionContainer" onCreate="onCreateAutoDriveSettingRow">
@@ -88,9 +88,9 @@
 				<Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_gui_ad_pathfinder"/>
 			</Bitmap>
 			<Bitmap profile="fs25_multiTextOptionContainer" onCreate="onCreateAutoDriveSettingRow">
-				<MultiTextOption profile="fs25_settingsMultiTextOption" onClick="onOptionChange" onCreate="onCreateAutoDriveSetting" name="enableRoutesManagerOnDediServer" id="enableRoutesManagerOnDediServer">
+				<BinaryOption profile="fs25_settingsBinaryOption" onClick="onOptionChange" onCreate="onCreateAutoDriveSetting" name="enableRoutesManagerOnDediServer" id="enableRoutesManagerOnDediServer">
 					<Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_gui_ad_enableRoutesManagerOnDediServer_tooltip"/>
-				</MultiTextOption>
+				</BinaryOption>
 				<Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_gui_ad_enableRoutesManagerOnDediServer"/>
 			</Bitmap>
 		</ScrollingLayout>

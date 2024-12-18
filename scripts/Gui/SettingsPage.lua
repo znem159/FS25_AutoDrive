@@ -27,6 +27,31 @@ function ADSettingsPage:onFrameOpen()
     FocusManager:setFocus(self.boxLayout)
 end
 
+function ADSettingsPage:onGuiSetupFinished()
+    self:debugMsg("ADSettingsPage[%s]:onGuiSetupFinished", self.name)
+    ADSettingsPage:superClass().onGuiSetupFinished(self)
+
+    -- set up element text options, BinaryOption does not allow doing this in onCreate.
+    for _, element in pairs(self.settingElements) do
+        local setting = AutoDrive.settings[element.name]
+        local labels = {}
+        for i = 1, #setting.texts, 1 do
+            if setting.translate == true then
+                local text = g_i18n:getText(setting.texts[i])
+                local missingText = "Missing"
+                if text:sub(1, string.len(missingText)) == missingText then
+                    labels[i] = setting.texts[i]
+                else
+                    labels[i] = text
+                end
+            else
+                labels[i] = setting.texts[i]
+            end
+        end
+        element:setTexts(labels)
+    end
+end
+
 function ADSettingsPage:onCreateAutoDriveSettingRow(element)
     self:debugMsg("ADSettingsPage[%s]:onCreateAutoDriveSettingRow, isEvenRow=%s", self.name, tostring(self.isEvenRow))
     element:setImageColor(nil, table.unpack(InGameMenuSettingsFrame.COLOR_ALTERNATING[self.isEvenRow]))
@@ -36,26 +61,6 @@ end
 function ADSettingsPage:onCreateAutoDriveSetting(element)
     self:debugMsg("ADSettingsPage[%s]:onCreateAutoDriveSetting name=%s", self.name, element.name)
     self.settingElements[element.name] = element
-
-    local setting = AutoDrive.settings[element.name]
-
-    local labels = {}
-    for i = 1, #setting.texts, 1 do
-        if setting.translate == true then
-            local text = g_i18n:getText(setting.texts[i])
-            local missingText = "Missing"
-            if text:sub(1, string.len(missingText)) == missingText then
-                labels[i] = setting.texts[i]
-            else
-                labels[i] = text
-            end
-        else
-            labels[i] = setting.texts[i]
-        end
-    end
-
-    element:setTexts(labels)
-    element.parent:setImageColor(nil, table.unpack(ADSettings.ICON_COLOR.DEFAULT))
 end
 
 function ADSettingsPage:onOptionChange(state, element)

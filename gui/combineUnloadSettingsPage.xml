@@ -16,15 +16,15 @@
 				<Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_gui_ad_preCallLevel"/>
 			</Bitmap>
 			<Bitmap profile="fs25_multiTextOptionContainer" onCreate="onCreateAutoDriveSettingRow">
-				<MultiTextOption profile="fs25_settingsMultiTextOption" onClick="onOptionChange" onCreate="onCreateAutoDriveSetting" name="callSecondUnloader" id="callSecondUnloader">
+				<BinaryOption profile="fs25_settingsBinaryOption" onClick="onOptionChange" onCreate="onCreateAutoDriveSetting" name="callSecondUnloader" id="callSecondUnloader">
 					<Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_gui_ad_callSecondUnloader_tooltip"/>
-				</MultiTextOption>
+				</BinaryOption>
 				<Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_gui_ad_callSecondUnloader"/>
 			</Bitmap>
 			<Bitmap profile="fs25_multiTextOptionContainer" onCreate="onCreateAutoDriveSettingRow">
-				<MultiTextOption profile="fs25_settingsMultiTextOption" onClick="onOptionChange" onCreate="onCreateAutoDriveSetting" name="activeUnloading" id="activeUnloading">
+				<BinaryOption profile="fs25_settingsBinaryOption" onClick="onOptionChange" onCreate="onCreateAutoDriveSetting" name="activeUnloading" id="activeUnloading">
 					<Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_gui_ad_activeUnloading_tooltip"/>
-				</MultiTextOption>
+				</BinaryOption>
 				<Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_gui_ad_activeUnloading"/>
 			</Bitmap>
 		</ScrollingLayout>

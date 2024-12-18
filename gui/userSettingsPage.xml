@@ -22,15 +22,15 @@
 				<Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_gui_ad_notifications"/>
 			</Bitmap>
 			<Bitmap profile="fs25_multiTextOptionContainer" onCreate="onCreateAutoDriveSettingRow">
-				<MultiTextOption profile="fs25_settingsMultiTextOption" onClick="onOptionChange" onCreate="onCreateAutoDriveSetting" name="showHelp" id="showHelp">
+				<BinaryOption profile="fs25_settingsBinaryOption" onClick="onOptionChange" onCreate="onCreateAutoDriveSetting" name="showHelp" id="showHelp">
 					<Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_gui_ad_showHelp_tooltip"/>
-				</MultiTextOption>
+				</BinaryOption>
 				<Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_gui_ad_showHelp"/>
 			</Bitmap>
 			<Bitmap profile="fs25_multiTextOptionContainer" onCreate="onCreateAutoDriveSettingRow">
-				<MultiTextOption profile="fs25_settingsMultiTextOption" onClick="onOptionChange" onCreate="onCreateAutoDriveSetting" name="showNextPath" id="showNextPath">
+				<BinaryOption profile="fs25_settingsBinaryOption" onClick="onOptionChange" onCreate="onCreateAutoDriveSetting" name="showNextPath" id="showNextPath">
 					<Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_gui_ad_showNextPath_tooltip"/>
-				</MultiTextOption>
+				</BinaryOption>
 				<Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_gui_ad_showNextPath"/>
 			</Bitmap>
 			<Bitmap profile="fs25_multiTextOptionContainer" onCreate="onCreateAutoDriveSettingRow">
@@ -40,27 +40,27 @@
 				<Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_gui_ad_lineHeight"/>
 			</Bitmap>
 			<Bitmap profile="fs25_multiTextOptionContainer" onCreate="onCreateAutoDriveSettingRow">
-				<MultiTextOption profile="fs25_settingsMultiTextOption" onClick="onOptionChange" onCreate="onCreateAutoDriveSetting" name="showTooltips" id="showTooltips">
+				<BinaryOption profile="fs25_settingsBinaryOption" onClick="onOptionChange" onCreate="onCreateAutoDriveSetting" name="showTooltips" id="showTooltips">
 					<Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_gui_ad_showTooltips_tooltip"/>
-				</MultiTextOption>
+				</BinaryOption>
 				<Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_gui_ad_showTooltips"/>
 			</Bitmap>
 			<Bitmap profile="fs25_multiTextOptionContainer" onCreate="onCreateAutoDriveSettingRow">
-				<MultiTextOption profile="fs25_settingsMultiTextOption" onClick="onOptionChange" onCreate="onCreateAutoDriveSetting" name="showMarkersOnMap" id="showMarkersOnMap">
+				<BinaryOption profile="fs25_settingsBinaryOption" onClick="onOptionChange" onCreate="onCreateAutoDriveSetting" name="showMarkersOnMap" id="showMarkersOnMap">
 					<Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_gui_ad_showMarkersOnMap_tooltip"/>
-				</MultiTextOption>
+				</BinaryOption>
 				<Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_gui_ad_showMarkersOnMap"/>
 			</Bitmap>
 			<Bitmap profile="fs25_multiTextOptionContainer" onCreate="onCreateAutoDriveSettingRow">
-				<MultiTextOption profile="fs25_settingsMultiTextOption" onClick="onOptionChange" onCreate="onCreateAutoDriveSetting" name="switchToMarkersOnMap" id="switchToMarkersOnMap">
+				<BinaryOption profile="fs25_settingsBinaryOption" onClick="onOptionChange" onCreate="onCreateAutoDriveSetting" name="switchToMarkersOnMap" id="switchToMarkersOnMap">
 					<Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_gui_ad_switchToMarkersOnMap_tooltip"/>
-				</MultiTextOption>
+				</BinaryOption>
 				<Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_gui_ad_switchToMarkersOnMap"/>
 			</Bitmap>
 			<Bitmap profile="fs25_multiTextOptionContainer" onCreate="onCreateAutoDriveSettingRow">
-				<MultiTextOption profile="fs25_settingsMultiTextOption" onClick="onOptionChange" onCreate="onCreateAutoDriveSetting" name="addSettingsToHUD" id="addSettingsToHUD">
+				<BinaryOption profile="fs25_settingsBinaryOption" onClick="onOptionChange" onCreate="onCreateAutoDriveSetting" name="addSettingsToHUD" id="addSettingsToHUD">
 					<Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_gui_ad_addSettingsToHUD_tooltip"/>
-				</MultiTextOption>
+				</BinaryOption>
 				<Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_gui_ad_addSettingsToHUD"/>
 			</Bitmap>
 			<Bitmap profile="fs25_multiTextOptionContainer" onCreate="onCreateAutoDriveSettingRow">
@@ -70,15 +70,15 @@
 				<Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_gui_ad_iconSetToUse"/>
 			</Bitmap>
 			<Bitmap profile="fs25_multiTextOptionContainer" onCreate="onCreateAutoDriveSettingRow">
-				<MultiTextOption profile="fs25_settingsMultiTextOption" onClick="onOptionChange" onCreate="onCreateAutoDriveSetting" name="wideHUD" id="wideHUD">
+				<BinaryOption profile="fs25_settingsBinaryOption" onClick="onOptionChange" onCreate="onCreateAutoDriveSetting" name="wideHUD" id="wideHUD">
 					<Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_gui_ad_wideHUD_tooltip"/>
-				</MultiTextOption>
+				</BinaryOption>
 				<Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_gui_ad_wideHUD"/>
 			</Bitmap>
 			<Bitmap profile="fs25_multiTextOptionContainer" onCreate="onCreateAutoDriveSettingRow">
-				<MultiTextOption profile="fs25_settingsMultiTextOption" onClick="onOptionChange" onCreate="onCreateAutoDriveSetting" name="playSounds" id="playSounds">
+				<BinaryOption profile="fs25_settingsBinaryOption" onClick="onOptionChange" onCreate="onCreateAutoDriveSetting" name="playSounds" id="playSounds">
 					<Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_gui_ad_playSounds_tooltip"/>
-				</MultiTextOption>
+				</BinaryOption>
 				<Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_gui_ad_playSounds"/>
 			</Bitmap>
 			<Bitmap profile="fs25_multiTextOptionContainer" onCreate="onCreateAutoDriveSettingRow">
@@ -94,15 +94,15 @@
 				<Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_gui_ad_scaleMarkerText"/>
 			</Bitmap>
 			<Bitmap profile="fs25_multiTextOptionContainer" onCreate="onCreateAutoDriveSettingRow">
-				<MultiTextOption profile="fs25_settingsMultiTextOption" onClick="onOptionChange" onCreate="onCreateAutoDriveSetting" name="colorAssignmentMode" id="colorAssignmentMode">
+				<BinaryOption profile="fs25_settingsBinaryOption" onClick="onOptionChange" onCreate="onCreateAutoDriveSetting" name="colorAssignmentMode" id="colorAssignmentMode">
 					<Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_gui_ad_colorAssignmentMode_tooltip"/>
-				</MultiTextOption>
+				</BinaryOption>
 				<Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_gui_ad_colorAssignmentMode"/>
 			</Bitmap>
 			<Bitmap profile="fs25_multiTextOptionContainer" onCreate="onCreateAutoDriveSettingRow">
-				<MultiTextOption profile="fs25_settingsMultiTextOption" onClick="onOptionChange" onCreate="onCreateAutoDriveSetting" name="RecordWhileNotInVehicle" id="RecordWhileNotInVehicle">
+				<BinaryOption profile="fs25_settingsBinaryOption" onClick="onOptionChange" onCreate="onCreateAutoDriveSetting" name="RecordWhileNotInVehicle" id="RecordWhileNotInVehicle">
 					<Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_gui_ad_RecordWhileNotInVehicle_tooltip"/>
-				</MultiTextOption>
+				</BinaryOption>
 				<Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_gui_ad_RecordWhileNotInVehicle"/>
 			</Bitmap>
 		</ScrollingLayout>
