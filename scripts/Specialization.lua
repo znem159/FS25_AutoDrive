@@ -817,10 +817,12 @@ function AutoDrive:onDrawEditorMode()
     --Draw close destinations
     for _, marker in pairs(ADGraphManager:getMapMarkers()) do
         local wp = ADGraphManager:getWayPointById(marker.id)
-        if MathUtil.vector2Length(wp.x - x1, wp.z - z1) < maxDistance then
-            local scale = AutoDrive.getSetting("scaleMarkerText") or 1
-            Utils.renderTextAtWorldPosition(wp.x, wp.y + 4, wp.z, marker.name, getCorrectTextSize(0.013) * scale, 0)
-            DrawingManager:addMarkerTask(wp.x, wp.y + 0.45, wp.z)
+        if wp then
+            if MathUtil.vector2Length(wp.x - x1, wp.z - z1) < maxDistance then
+                local scale = AutoDrive.getSetting("scaleMarkerText") or 1
+                Utils.renderTextAtWorldPosition(wp.x, wp.y + 4, wp.z, marker.name, getCorrectTextSize(0.013) * scale, 0)
+                DrawingManager:addMarkerTask(wp.x, wp.y + 0.45, wp.z)
+            end
         end
     end
 
