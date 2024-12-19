@@ -84,30 +84,99 @@ function AutoDrivePlaceableData.showConfirmation()
 	end
 end
 
-function AutoDrivePlaceableData:onFinalizePlacement()
-    if AutoDrivePlaceableData.active then
-        if g_currentMission.placeableSystem and g_currentMission.placeableSystem.placeables and #g_currentMission.placeableSystem.placeables > 0 then
-			AutoDrivePlaceableData.placeable = g_currentMission.placeableSystem.placeables[#g_currentMission.placeableSystem.placeables]
-			local xmlFileName = g_currentMission.placeableSystem.placeables[#g_currentMission.placeableSystem.placeables].configFileName
-            if xmlFileName then
-                AutoDrivePlaceableData.xmlFile = loadXMLFile("placeable_xml", xmlFileName)
-				if AutoDrivePlaceableData.xmlFile then
-					if hasXMLProperty(AutoDrivePlaceableData.xmlFile, "placeable")
-					and hasXMLProperty(AutoDrivePlaceableData.xmlFile, "placeable.AutoDrive")
-					and hasXMLProperty(AutoDrivePlaceableData.xmlFile, "placeable.AutoDrive.wayPoints")
-					then
-						AutoDrivePlaceableData.showConfirmation()
-					else
-						-- reset all
-						AutoDrivePlaceableData.reset()
+-- TODO: find a solution to only process the event for the user which is placing the object and not other user hold the same object in the construction screen
+function AutoDrivePlaceableData:onFinalizePlacement_TODO()
+	if AutoDrivePlaceableData.active then
+		if self.isClient and g_gui and g_gui.currentGui and g_gui.currentGuiName and g_gui.currentGuiName == "ConstructionScreen" then
+			if g_currentMission.placeableSystem and g_currentMission.placeableSystem.placeables and #g_currentMission.placeableSystem.placeables > 0 then
+				AutoDrivePlaceableData.placeable = g_currentMission.placeableSystem.placeables[#g_currentMission.placeableSystem.placeables]
+				if g_gui.currentGui.target and g_gui.currentGui.target.brush and g_gui.currentGui.target.brush.placeable then
+					if g_gui.currentGui.target.brush.placeable and AutoDrivePlaceableData.placeable then
+
+						local currentUserId = nil
+						local brushCurrentUserId = g_gui.currentGui.target.brush.currentUserId
+						AutoDrive.debugMsg(nil, "AutoDrivePlaceableData:onFinalizePlacement brushCurrentUserId %s "
+						, tostring(brushCurrentUserId)
+						)
+--[[
+						-- if connection:getIsServer() then
+						local connection = g_client:getServerConnection()
+						AutoDrive.debugMsg(nil, "AutoDrivePlaceableData:onFinalizePlacement connection %s "
+						, tostring(connection)
+						)
+						AutoDrive.debugMsg(nil, "AutoDrivePlaceableData:onFinalizePlacement connection:getIsServer() %s "
+						, tostring(connection:getIsServer())
+						)
+
+						-- local connection = self:getOwnerConnection()
+						if connection ~= nil then
+							-- MP
+							currentUserId = g_currentMission.userManager:getUserIdByConnection(connection)
+							AutoDrive.debugMsg(nil, "AutoDrivePlaceableData:onFinalizePlacement currentUserId %s "
+							, tostring(currentUserId)
+							)
+						end
+						if currentUserId == nil or currentUserId == brushCurrentUserId then
+]]
+						AutoDrive.debugMsg(nil, "AutoDrivePlaceableData:onFinalizePlacement g_localPlayer.userId %s "
+						, tostring(g_localPlayer.userId)
+						)
+						if g_localPlayer.userId == brushCurrentUserId then
+							local xmlFileName = g_currentMission.placeableSystem.placeables[#g_currentMission.placeableSystem.placeables].configFileName
+							if xmlFileName then
+								AutoDrivePlaceableData.xmlFile = loadXMLFile("placeable_xml", xmlFileName)
+								if AutoDrivePlaceableData.xmlFile then
+									if hasXMLProperty(AutoDrivePlaceableData.xmlFile, "placeable")
+									and hasXMLProperty(AutoDrivePlaceableData.xmlFile, "placeable.AutoDrive")
+									and hasXMLProperty(AutoDrivePlaceableData.xmlFile, "placeable.AutoDrive.wayPoints")
+									then
+										AutoDrivePlaceableData.showConfirmation()
+									else
+										-- reset all
+										AutoDrivePlaceableData.reset()
+									end
+								else
+									-- reset all
+									AutoDrivePlaceableData.reset()
+								end
+							end
+						end
 					end
-				else
-					-- reset all
-					AutoDrivePlaceableData.reset()
 				end
-            end
+			end
 		end
-    end
+	end
+end
+
+function AutoDrivePlaceableData:onFinalizePlacement()
+	if AutoDrivePlaceableData.active then
+		if self.isClient and g_gui and g_gui.currentGui and g_gui.currentGuiName and g_gui.currentGuiName == "ConstructionScreen" then
+			if g_currentMission.placeableSystem and g_currentMission.placeableSystem.placeables and #g_currentMission.placeableSystem.placeables > 0 then
+				AutoDrivePlaceableData.placeable = g_currentMission.placeableSystem.placeables[#g_currentMission.placeableSystem.placeables]
+				if AutoDrivePlaceableData.placeable then
+					local xmlFileName = g_currentMission.placeableSystem.placeables[#g_currentMission.placeableSystem.placeables].configFileName
+					if xmlFileName then
+						AutoDrivePlaceableData.xmlFile = loadXMLFile("placeable_xml", xmlFileName)
+						if AutoDrivePlaceableData.xmlFile then
+							if hasXMLProperty(AutoDrivePlaceableData.xmlFile, "placeable")
+							and hasXMLProperty(AutoDrivePlaceableData.xmlFile, "placeable.AutoDrive")
+							and hasXMLProperty(AutoDrivePlaceableData.xmlFile, "placeable.AutoDrive.wayPoints")
+							then
+								-- AutoDrivePlaceableData.showConfirmation()
+								local ret = AutoDrivePlaceableData.readGraphFromXml(AutoDrivePlaceableData.xmlFile, AutoDrivePlaceableData.placeable)
+								if ret < 0 then
+									AutoDrivePlaceableData.showError(ret)
+									return
+								end
+							end
+						end
+					end
+				end
+			end
+		end
+	end
+	-- reset all
+	AutoDrivePlaceableData.reset()
 end
 
 function AutoDrivePlaceableData.readGraphFromXml(xmlFile, placeable)
@@ -168,7 +237,6 @@ function AutoDrivePlaceableData.readGraphFromXml(xmlFile, placeable)
 		local ft = getXMLString(xmlFile, key):split(",")
 
         if #xt == 0 or #yt == 0 or #zt == 0 or #ot == 0 or #it == 0 or #ft == 0 or #xt ~= #yt or #xt ~= #zt or #xt ~= #ot or #xt ~= #it or #xt ~= #ft then
-			AutoDrive.debugMsg(nil, "ERROR AutoDrivePlaceableData:readGraphFromXml invalid consitency for key %s", tostring(key))
 			if #xt == 0 then
 				AutoDrive.debugMsg(nil, "ERROR AutoDrivePlaceableData:readGraphFromXml invalid consitency #xt == 0")
 			end
