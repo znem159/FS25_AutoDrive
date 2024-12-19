@@ -6,104 +6,71 @@
 -- @date 08/04/2019
 
 ADSettingsPage = {}
+ADSettingsPage.debug = false
 
 local ADSettingsPage_mt = Class(ADSettingsPage, TabbedMenuFrameElement)
 
--- ADSettingsPage.CONTROLS = {"settingsContainer", "ingameMenuHelpBox", "headerIcon", "headerText"}
-ADSettingsPage.CONTROLS = {"settingsContainer", "ingameMenuHelpBox", "boxLayout"}
-
-function ADSettingsPage:new(target)
-    local element = TabbedMenuFrameElement.new(target, ADSettingsPage_mt)
-    element.returnScreenName = ""
-    element.settingElements = {}
-    element.skipRow = 0
-
-    return element
+function ADSettingsPage.new(target)
+    local self = TabbedMenuFrameElement.new(target, ADSettingsPage_mt)
+    self:include(ADGuiDebugMixin)
+    self.settingElements = {}
+    self.isEvenRow = false
+    return self
 end
 
 function ADSettingsPage:onFrameOpen()
+    self:debugMsg("ADSettingsPage[%s]:onOpen", self.name)
     ADSettingsPage:superClass().onFrameOpen(self)
-    -- FocusManager:unsetHighlight(FocusManager.currentFocusData.highlightElement)
-    -- FocusManager:unsetFocus(FocusManager.currentFocusData.focusElement)
     if not self:hasChanges() then
         self:loadGUISettings()
     end
-    FocusManager:setFocus(self.boxLayout)    
+    FocusManager:setFocus(self.boxLayout)
 end
 
+function ADSettingsPage:onGuiSetupFinished()
+    self:debugMsg("ADSettingsPage[%s]:onGuiSetupFinished", self.name)
+    ADSettingsPage:superClass().onGuiSetupFinished(self)
 
-function ADSettingsPage:onFrameClose()
-    ADSettingsPage:superClass().onFrameClose(self)
+    -- set up element text options, BinaryOption does not allow doing this in onCreate.
+    for _, element in pairs(self.settingElements) do
+        local setting = AutoDrive.settings[element.name]
+        local labels = {}
+        for i = 1, #setting.texts, 1 do
+            if setting.translate == true then
+                local text = g_i18n:getText(setting.texts[i])
+                local missingText = "Missing"
+                if text:sub(1, string.len(missingText)) == missingText then
+                    labels[i] = setting.texts[i]
+                else
+                    labels[i] = text
+                end
+            else
+                labels[i] = setting.texts[i]
+            end
+        end
+        element:setTexts(labels)
+    end
 end
 
 function ADSettingsPage:onCreateAutoDriveSettingRow(element)
-    if self.skipRow == 0 then
-        element:setImageColor(nil, 0.04231, 0.04231, 0.04231, 1)    
-    else
-        element:setImageColor(nil, 0.02956, 0.02956, 0.02956, 0.5)
-    end
-    self.skipRow = (self.skipRow + 1) % 2
+    self:debugMsg("ADSettingsPage[%s]:onCreateAutoDriveSettingRow, isEvenRow=%s", self.name, tostring(self.isEvenRow))
+    element:setImageColor(nil, table.unpack(InGameMenuSettingsFrame.COLOR_ALTERNATING[self.isEvenRow]))
+    self.isEvenRow = not self.isEvenRow
 end
 
 function ADSettingsPage:onCreateAutoDriveSetting(element)
+    self:debugMsg("ADSettingsPage[%s]:onCreateAutoDriveSetting name=%s", self.name, element.name)
     self.settingElements[element.name] = element
-
-    local setting = AutoDrive.settings[element.name]
-
-    local labels = {}
-    for i = 1, #setting.texts, 1 do
-        if setting.translate == true then
-            local text = g_i18n:getText(setting.texts[i])
-            local missingText = "Missing"
-            if text:sub(1, string.len(missingText)) == missingText then
-                labels[i] = setting.texts[i]
-            else
-                labels[i] = text
-            end
-        else
-            labels[i] = setting.texts[i]
-        end
-    end    
-
-    element:setTexts(labels)
-
-    element.parent:setImageColor(nil, unpack(ADSettings.ICON_COLOR.DEFAULT))
-
-    --[[
-    local iconElem = element.elements[6]
-    if iconElem ~= nil then
-        if setting.isUserSpecific then
-            iconElem:setImageFilename(g_autoDriveIconFilename)
-            iconElem:setImageUVs(nil, unpack(GuiUtils.getUVs(ADSettings.ICON_UV.USER)))
-        elseif setting.isVehicleSpecific then
-            iconElem:setImageFilename(g_autoDriveIconFilename)
-            iconElem:setImageUVs(nil, unpack(GuiUtils.getUVs(ADSettings.ICON_UV.VEHICLE)))
-        else
-            iconElem:setImageFilename(g_autoDriveIconFilename)
-            iconElem:setImageUVs(nil, unpack(GuiUtils.getUVs(ADSettings.ICON_UV.GLOBAL)))
-        end
-    end
-    --]]
 end
 
 function ADSettingsPage:onOptionChange(state, element)
+    self:debugMsg("ADSettingsPage[%s]:onOptionChange, name=%s, state=%s", self.name, element.name, tostring(state))
     local setting = AutoDrive.settings[element.name]
     local controlledVehicle = AutoDrive.getControlledVehicle()
     if setting.isVehicleSpecific and controlledVehicle ~= nil and controlledVehicle.ad ~= nil and controlledVehicle.ad.settings[element.name] ~= nil then
         setting = controlledVehicle.ad.settings[element.name]
     end
     setting.new = state
-
-    --[[
-    local iconElem = element.elements[6]
-    if iconElem ~= nil then
-        if setting.new ~= setting.current then
-            iconElem:setImageColor(iconElem.overlayState, unpack(ADSettings.ICON_COLOR.CHANGED))
-        else
-            iconElem:setImageColor(iconElem.overlayState, unpack(ADSettings.ICON_COLOR.DEFAULT))
-        end
-    end
-    --]]
 end
 
 function ADSettingsPage:hasChanges()
@@ -115,30 +82,17 @@ function ADSettingsPage:hasChanges()
                 setting = controlledVehicle.ad.settings[settingName]
             end
             if setting.new ~= nil and setting.new ~= setting.current then
+                self:debugMsg("ADSettingsPage[%s]:hasChanges = true (%s)", self.name, settingName)
                 return true
             end
         end
     end
-    
+    self:debugMsg("ADSettingsPage[%s]:hasChanges = false", self.name)
     return false
 end
 
------ Get the frame's main content element's screen size.
-function ADSettingsPage:getMainElementSize()
-    return self.settingsContainer.size
-end
-
---- Get the frame's main content element's screen position.
-function ADSettingsPage:getMainElementPosition()
-    return self.settingsContainer.absPosition
-end
-
-function ADSettingsPage:onIngameMenuHelpTextChanged(box)
-    local hasText = box.text ~= nil and box.text ~= ""
-    self.ingameMenuHelpBox:setVisible(hasText)
-end
-
 function ADSettingsPage:loadGUISettings()
+    self:debugMsg("ADSettingsPage[%s]:loadGUISettings", self.name)
     local controlledVehicle = AutoDrive.getControlledVehicle()
     for settingName, _ in pairs(self.settingElements) do
         if AutoDrive.settings[settingName] ~= nil then
@@ -157,8 +111,3 @@ function ADSettingsPage:loadGUISetting(settingName, state)
     self:onOptionChange(state, element)
 end
 
-function ADSettingsPage:copyAttributes(src)
-	ADSettingsPage:superClass().copyAttributes(self, src)
-    self.storedHeaderKey = src.storedHeaderKey
-    self.storedKey1 = src.storedKey1
-end

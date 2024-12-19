@@ -4,7 +4,9 @@ AutoDrive.version = "3.0.0.0-RC1"
 AutoDrive.directory = g_currentModDirectory
 
 g_autoDriveUIFilename = AutoDrive.directory .. "textures/GUI_Icons.dds"
+g_autoDriveUIConfigPath = AutoDrive.directory .. "textures/GUI_Icons.xml"
 g_autoDriveDebugUIFilename = AutoDrive.directory .. "textures/gui_debug_Icons.dds"
+g_autoDriveDebugUIConfigPath = AutoDrive.directory .. "textures/gui_debug_Icons.xml"
 g_autoDriveIconFilename = g_iconsUIFilename
 
 AutoDrive.experimentalFeatures = {}

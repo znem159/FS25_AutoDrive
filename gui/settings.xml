@@ -5,8 +5,11 @@
 
     <Paging profile="uiInGameMenuPaging" onPageChange="onPageChange" onPageUpdate="onPageUpdate" id="pagingElement">
         <FrameReference ref="autoDriveVehicleSettings" name="autoDriveVehicleSettings" id="autoDriveVehicleSettings"/>
+        <FrameReference ref="autoDriveCombineUnloadSettings" name="autoDriveCombineUnloadSettings" id="autoDriveCombineUnloadSettings"/>
+        <FrameReference ref="autoDriveUserSettings" name="autoDriveUserSettings" id="autoDriveUserSettings"/>
+        <FrameReference ref="autoDriveGlobalSettings" name="autoDriveGlobalSettings" id="autoDriveGlobalSettings"/>
+        <FrameReference ref="autoDriveEnvironmentSettings" name="autoDriveEnvironmentSettings" id="autoDriveEnvironmentSettings"/>
         <FrameReference ref="autoDriveDebugSettings" name="autoDriveDebugSettings" id="autoDriveDebugSettings"/>
-        <!-- <FrameReference ref="ingameMenuSettings" name="ingameMenuSettings" id="pageSettings"/> -->
     </Paging>
 
     <Bitmap profile="fs25_tabListContainer" id="header">
@@ -21,19 +24,19 @@
     </Bitmap>
 
     <BoxLayout profile="fs25_buttonBox" id="buttonsPanel">
-        <Button profile="buttonBack" onClick="onClickBack" id="menuButton[1]">
+        <Button profile="buttonBack" id="menuButton[1]">
             <Bitmap profile="fs25_buttonBoxSeparator" name="separator"/>
         </Button>
-        <Button profile="buttonOK" text="button_apply" onClick="onClickOk" id="menuButton[2]">
+        <Button profile="buttonBack" id="menuButton[2]">
             <Bitmap profile="fs25_buttonBoxSeparator" name="separator"/>
         </Button>
-        <Button profile="buttonCancel" text="$l10n_button_reset" onClick="onClickReset" id="menuButton[3]">
+        <Button profile="buttonBack" id="menuButton[3]">
             <Bitmap profile="fs25_buttonBoxSeparator" name="separator"/>
         </Button>
-        <Button profile="buttonActivate" text="gui_ad_restoreButtonText" onClick="onClickRestore" id="menuButton[4]">
+        <Button profile="buttonBack" id="menuButton[4]">
             <Bitmap profile="fs25_buttonBoxSeparator" name="separator"/>
         </Button>
-        <Button profile="buttonSelect" text="gui_ad_setDefaultButtonText" onClick="onClickSetDefault" id="menuButton[5]">
+        <Button profile="buttonBack" id="menuButton[5]">
             <Bitmap profile="fs25_buttonBoxSeparator" name="separator"/>
         </Button>
     </BoxLayout>

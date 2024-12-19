@@ -6,62 +6,19 @@
 -- @date 08/04/2019
 
 ADSettings = {}
+ADSettings.debug = false
 
 local ADSettings_mt = Class(ADSettings, TabbedMenu)
 
-ADSettings.CONTROLS = {"autoDriveVehicleSettings", "autoDriveDebugSettings"} -- , "autoDriveCombineUnloadSettings", "autoDriveUserSettings", "autoDriveSettings", "autoDriveEnvironmentSettings",  "autoDriveDebugSettings", "autoDriveExperimentalFeaturesSettings"}
-
---- Page tab UV coordinates for display elements.
---AD specific iconUVs
---[[
-ADSettings.TAB_UV = {
-    SETTINGS_GENERAL = {385, 0, 128, 128},
-    SETTINGS_VEHICLE = {0, 209, 65, 65},
-    SETTINGS_USER = {457, 210, 60, 60},
-    SETTINGS_UNLOAD = {0, 0, 128, 128},
-    SETTINGS_LOAD = {0, 129, 128, 128},
-    SETTINGS_NAVIGATION = {0, 257, 128, 128},
-    SETTINGS_DEBUG = {0, 128, 128, 128},
-    SETTINGS_EXPFEAT = {128, 128, 128, 128},
-    SETTINGS_ENVIRONMENT = {65, 144, 65, 65}
-}
-]]
-
-ADSettings.TAB_UV = {
-    SETTINGS_GENERAL = {0, 0, 64, 64},
-    SETTINGS_VEHICLE = {0, 0, 128, 128},
-    SETTINGS_USER = {0, 130, 64, 64},
-    SETTINGS_UNLOAD = {0, 0, 128, 128},
-    SETTINGS_DEBUG = {385, 0, 128, 128},
-    SETTINGS_EXPFEAT = {0, 270, 64, 64},
-    SETTINGS_ENVIRONMENT = {134, 0, 64, 64}
-}
-
--- AD specific iconUVs
---[[
-ADSettings.ICON_UVa= {
-    GLOBAL = {12, 157, 40, 40},
-    VEHICLE = {136, 151, 51, 51},
-    USER = {462, 215, 50, 50}
-}
-]]
-
-ADSettings.ICON_UV = {
-    GLOBAL = {0, 0, 64, 64},
-    VEHICLE = {260, 0, 64, 64},
-    USER = {0, 120, 70, 85}
-}
-
 ADSettings.ICON_COLOR = {
     DEFAULT = {1, 1, 1, 1},
-    -- CHANGED = {0.9910, 0.3865, 0.0100, 1}
     CHANGED = {0.9910, 0.03865, 0.0100, 1}
 }
 
-function ADSettings:new(target)
-    local element = TabbedMenu.new(target, ADSettings_mt, g_messageCenter, g_i18n, g_gui.inputManager)
-    element.returnScreenName = ""
-    return element
+function ADSettings.new(target)
+    local self = TabbedMenu.new(target, ADSettings_mt)
+    self:include(ADGuiDebugMixin)
+    return self
 end
 
 function ADSettings:onGuiSetupFinished()
@@ -69,7 +26,8 @@ function ADSettings:onGuiSetupFinished()
     self:setupPages()
 end
 
-function ADSettings:setupPages()    
+function ADSettings:setupPages()
+    self:debugMsg("ADSettings:setupPages")
     local alwaysEnabled = function()
         return true
     end
@@ -94,63 +52,47 @@ function ADSettings:setupPages()
         return false
     end
 
+    local btnBack = {inputAction = InputAction.MENU_BACK, text = g_i18n:getText("button_back"), callback = self:makeSelfCallback(self.onClickBack), showWhenPaused = true}
+    local btnApply = {inputAction = InputAction.MENU_ACCEPT, text = g_i18n:getText("button_apply"), callback = self:makeSelfCallback(self.onClickOK), showWhenPaused = true}
+    local btnReset = {inputAction = InputAction.MENU_CANCEL, text = g_i18n:getText("button_reset"), callback = self:makeSelfCallback(self.onClickReset), showWhenPaused = true}
+    local btnRestoreDefault = {inputAction = InputAction.MENU_ACTIVATE, text = g_i18n:getText("gui_ad_restoreButtonText"), callback = self:makeSelfCallback(self.onClickRestore), showWhenPaused = true}
+    local btnMakeDefault = {inputAction = InputAction.MENU_EXTRA_1, text = g_i18n:getText("gui_ad_setDefaultButtonText"), callback = self:makeSelfCallback(self.onClickSetDefault), showWhenPaused = true}
+    
     local orderedPages = {
-        {self.autoDriveVehicleSettings, vehicleEnabled, g_autoDriveDebugUIFilename, ADSettings.TAB_UV.SETTINGS_VEHICLE, false},
-        --{self.autoDriveCombineUnloadSettings, combineEnabled, g_autoDriveUIFilename, ADSettings.TAB_UV.SETTINGS_UNLOAD, false},
-        --{self.autoDriveUserSettings, alwaysEnabled, g_iconsUIFilename, ADSettings.TAB_UV.SETTINGS_USER, false},
-        --{self.autoDriveSettings, alwaysEnabled, g_iconsUIFilename, ADSettings.TAB_UV.SETTINGS_GENERAL, false},
-        --{self.autoDriveEnvironmentSettings, vehicleEnabled, g_iconsUIFilename, ADSettings.TAB_UV.SETTINGS_ENVIRONMENT, false},
-        {self.autoDriveDebugSettings, developmentControlsEnabled, g_autoDriveDebugUIFilename, ADSettings.TAB_UV.SETTINGS_DEBUG, true}
-        --{self.autoDriveExperimentalFeaturesSettings, alwaysEnabled, g_iconsUIFilename, ADSettings.TAB_UV.SETTINGS_EXPFEAT, true}
+        {self.autoDriveVehicleSettings, vehicleEnabled, "gui.icon_options_gameSettings2", {btnBack, btnApply, btnReset, btnRestoreDefault, btnMakeDefault}},
+        {self.autoDriveCombineUnloadSettings, combineEnabled, "ad_gui.combine", {btnBack, btnApply, btnReset, btnRestoreDefault, btnMakeDefault}},
+        {self.autoDriveUserSettings, alwaysEnabled, "gui.wardrobe_character", {btnBack, btnApply, btnReset}},
+        {self.autoDriveGlobalSettings, alwaysEnabled, "gui.icon_options_generalSettings2", {btnBack, btnApply, btnReset}},
+        {self.autoDriveEnvironmentSettings, vehicleEnabled, "gui.icon_weather_partiallyCloudy", {btnBack, btnApply, btnReset}},
+        {self.autoDriveDebugSettings, developmentControlsEnabled, "ad_gui_debug.settings_debug", {btnBack}},
     }
 
-    for i, pageDef in ipairs(orderedPages) do        
-        local page, predicate, uiFilename, iconUVs, isAutonomous = unpack(pageDef)
-        
-        local normalizedIconUVs = GuiUtils.getUVs(iconUVs)
-        local pageRoot, position = self:registerPage(page, i, predicate)
-
-        self:addPageTab(page, uiFilename, normalizedIconUVs) -- use the global here because the value changes with resolution settings
-                
-        page.isAutonomous = isAutonomous
-        if page.setupMenuButtonInfo ~= nil then
-            page:setupMenuButtonInfo(self)
-        end
+    for i, pageDef in ipairs(orderedPages) do
+        local page, predicate, sliceId, buttonInfo = table.unpack(pageDef)
+        self:registerPage(page, i, predicate)
+        self:addPageTab(page, nil, nil, sliceId)
+        page:setMenuButtonInfo(buttonInfo)
     end
-    
 end
 
 function ADSettings:onOpen()
+    self:debugMsg("ADSettings:onOpen")
     ADSettings:superClass().onOpen(self)
     self.inputDisableTime = 200
 end
 
 function ADSettings:onClose()
-    for _, pageName in pairs(ADSettings.CONTROLS) do
-        self:resetPage(self[pageName])
+    self:debugMsg("ADSettings:onClose")
+    for page, _ in pairs(self.pageTabs) do
+        self:resetPage(page)
     end
     AutoDrive.Hud.lastUIScale = 0
     ADSettings:superClass().onClose(self)
 end
 
---- Define default properties and retrieval collections for menu buttons.
-function ADSettings:setupMenuButtonInfo()
-    self.defaultMenuButtonInfo = {
-        {inputAction = InputAction.MENU_BACK, text = g_i18n:getText("button_back"), callback = self:makeSelfCallback(self.onClickBack), showWhenPaused = true},
-        {inputAction = InputAction.MENU_ACCEPT, text = g_i18n:getText("button_apply"), callback = self:makeSelfCallback(self.onClickOK), showWhenPaused = true},
-        {inputAction = InputAction.MENU_CANCEL, text = g_i18n:getText("button_reset"), callback = self:makeSelfCallback(self.onClickReset), showWhenPaused = true},
-        {inputAction = InputAction.MENU_ACTIVATE, text = g_i18n:getText("gui_ad_restoreButtonText"), callback = self:makeSelfCallback(self.onClickRestore), showWhenPaused = true},
-        {inputAction = InputAction.MENU_EXTRA_1, text = g_i18n:getText("gui_ad_setDefaultButtonText"), callback = self:makeSelfCallback(self.onClickSetDefault), showWhenPaused = true}
-    }
-end
-
-function ADSettings:onClickOK()
-    self:applySettings()
-    ADSettings:superClass().onClickBack(self)
-end
-
 function ADSettings:onClickBack()
-    if self:pagesHasChanges() then
+    self:debugMsg("ADSettings:onClickBack")
+    if self:pagesHaveChanges() then
         AutoDrive.showYesNoDialog(
             g_i18n:getText("gui_ad_settingsClosingDialog_title"),
             g_i18n:getText("gui_ad_settingsClosingDialog_text"),
@@ -164,29 +106,21 @@ end
 
 function ADSettings:onClickBackDialogCallback(yes)
     if yes then
-        --ADSettings:superClass().onClickBack(self)
         g_gui:changeScreen(nil)
     end
 end
 
 function ADSettings:onClickReset()
-    local page = self:getActivePage()
-    if page == nil or page.isAutonomous then
+    self:debugMsg("ADSettings:onClickReset")
+    if self.currentPage == nil then
         return
     end
-    self:resetPage(page)
-end
-
-function ADSettings:onClickRestore()
-    local page = self:getActivePage()
-    if page == nil or page.isAutonomous then
-        return
-    end
-    self:restorePage(page)
+    self:resetPage(self.currentPage)
 end
 
 function ADSettings:onClickSetDefault()
-    if self:pagesHasChanges() then
+    self:debugMsg("ADSettings:onClickSetDefault")
+    if self:pagesHaveChanges() then
         local controlledVehicle = AutoDrive.getControlledVehicle()
         for settingName, setting in pairs(AutoDrive.settings) do
             local newSetting = setting
@@ -200,15 +134,16 @@ function ADSettings:onClickSetDefault()
                     -- Logging.info('Default setting \'%s\' changed from "%s" to "%s"', settingName, setting.values[setting.userDefault], setting.values[newSetting.new])
                     setting.userDefault = newSetting.new
                 end
-            end            
+            end
         end
-
         AutoDriveUpdateSettingsEvent.sendEvent(controlledVehicle)
     end
 end
 
-function ADSettings:applySettings()
-    if self:pagesHasChanges() then
+function ADSettings:onClickOK()
+    self:debugMsg("ADSettings:onClickOK")
+    if self:pagesHaveChanges() then
+        self:debugMsg("ADSettings:applySettings with changes")
         local userSpecificHasChanges = false
         local controlledVehicle = AutoDrive.getControlledVehicle()
 
@@ -233,13 +168,15 @@ function ADSettings:applySettings()
 
         AutoDriveUpdateSettingsEvent.sendEvent(controlledVehicle)
     end
+    ADSettings:superClass().onClickBack(self)
 end
 
 function ADSettings:resetPage(page)
-    if page == nil or page.isAutonomous then
+    if page == nil then
         return
     end
     if page:hasChanges() then
+        self:debugMsg("ADSettings:resetPage with changes")
         local controlledVehicle = AutoDrive.getControlledVehicle()
         for settingName, _ in pairs(page.settingElements) do
             if AutoDrive.settings[settingName] ~= nil then
@@ -254,12 +191,14 @@ function ADSettings:resetPage(page)
     end
 end
 
-function ADSettings:restorePage(page)
-    if page == nil or page.isAutonomous then
+function ADSettings:onClickRestore()
+    self:debugMsg("ADSettings:onClickRestore")
+    if self.currentPage == nil then
         return
     end
+
     local controlledVehicle = AutoDrive.getControlledVehicle()
-    for settingName, _ in pairs(page.settingElements) do
+    for settingName, _ in pairs(self.currentPage.settingElements) do
         if AutoDrive.settings[settingName] ~= nil then
             local setting = AutoDrive.settings[settingName]
             if setting.isVehicleSpecific and controlledVehicle ~= nil and controlledVehicle.ad ~= nil and controlledVehicle.ad.settings[settingName] ~= nil then
@@ -271,18 +210,14 @@ function ADSettings:restorePage(page)
             else
                 setting.new = setting.default
             end
-            page:loadGUISetting(settingName, setting.new)
+            self.currentPage:loadGUISetting(settingName, setting.new)
         end
     end
 end
 
-function ADSettings:getActivePage()
-    return self[ADSettings.CONTROLS[self.currentPageId]]
-end
-
-function ADSettings:pagesHasChanges()
-    for _, pageName in pairs(ADSettings.CONTROLS) do
-        if not self[pageName].isAutonomous and self[pageName]:hasChanges() then
+function ADSettings:pagesHaveChanges()
+    for page, _ in pairs(self.pageTabs) do
+        if page:hasChanges() then
             return true
         end
     end
@@ -290,9 +225,9 @@ function ADSettings:pagesHasChanges()
 end
 
 function ADSettings:forceLoadGUISettings()
-    for _, pageName in pairs(ADSettings.CONTROLS) do
-        if self[pageName].loadGUISettings ~= nil then
-            self[pageName]:loadGUISettings()
+    for page, _ in pairs(self.pageTabs) do
+        if page.loadGUISettings ~= nil then
+            page:loadGUISettings()
         end
     end
 end
