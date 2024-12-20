@@ -500,12 +500,7 @@ function AutoDrive:saveToXMLFile(xmlFile, key, usedModNames)
     --end
 
     self.ad.stateModule:saveToXMLFile(xmlFile, adKey)
-
-    for settingName, setting in pairs(AutoDrive.settings) do
-        if setting.isVehicleSpecific and self.ad.settings ~= nil and self.ad.settings[settingName] ~= nil then
-            xmlFile:setValue(adKey .. "#" .. settingName, self.ad.settings[settingName].current)
-        end
-    end
+    AutoDrive.saveVehicleSettingsToXMLFile(self, xmlFile, adKey)
 
     if self.ad.groups ~= nil then
         local combinedString = ""

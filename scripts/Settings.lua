@@ -1,3 +1,16 @@
+--[[
+values - values which are used as return by getSetting with index current
+current - current index of values which is in use
+default - index used by first use of AD or invoked by settings screen default button
+texts - showed in the settings screen selections, translated to current language
+translate - enable translation of the texts, if not set true no translation will be applied
+tooltip - help text shown in the settings screen
+isVehicleSpecific - this setting is specific for the current vehicle only
+isUserSpecific - this setting is specific for the current user only
+if isVehicleSpecific is false or nil and isUserSpecific is false or nil the setting is global
+shallNotBeSaved - this setting is only valid during runtime and will not be saved
+]]
+
 AutoDrive.settings = {}
 
 AutoDrive.settings.blinkValue = {
@@ -1175,13 +1188,15 @@ AutoDrive.settings.RecordWhileNotInVehicle = {
     tooltip = "gui_ad_RecordWhileNotInVehicle_tooltip",
     translate = true,
     isVehicleSpecific = false,
-    isUserSpecific = true
+    isUserSpecific = true,
+    shallNotBeSaved = true
 }
 
 function AutoDrive.getSetting(settingName, vehicle)
     if AutoDrive.settings[settingName] ~= nil then
         local setting = AutoDrive.settings[settingName]
-        if setting.isVehicleSpecific and vehicle ~= nil and vehicle.ad ~= nil and vehicle.ad.settings ~= nil then --try loading vehicle specific setting first, if available
+        if setting.isVehicleSpecific and vehicle ~= nil and vehicle.ad ~= nil and vehicle.ad.settings ~= nil then
+            --try loading vehicle specific setting first, if available
             if vehicle.ad.settings[settingName] ~= nil then
                 setting = vehicle.ad.settings[settingName]
             end
@@ -1199,7 +1214,8 @@ end
 function AutoDrive.getSettingState(settingName, vehicle)
     if AutoDrive.settings[settingName] ~= nil then
         local setting = AutoDrive.settings[settingName]
-        if setting.isVehicleSpecific and vehicle ~= nil and vehicle.ad ~= nil and vehicle.ad.settings ~= nil then --try loading vehicle specific setting first, if available
+        if setting.isVehicleSpecific and vehicle ~= nil and vehicle.ad ~= nil and vehicle.ad.settings ~= nil then
+            --try loading vehicle specific setting first, if available
             if vehicle.ad.settings[settingName] ~= nil then
                 setting = vehicle.ad.settings[settingName]
             end
@@ -1272,7 +1288,7 @@ function AutoDrive.readVehicleSettingsFromXML(vehicle, xmlFile, key)
 
     vehicle.ad.settings = {}
     for settingName, setting in pairs(AutoDrive.settings) do
-        if setting.isVehicleSpecific then
+        if setting.isVehicleSpecific and not setting.shallNotBeSaved then
             local settingVehicle = {}
             settingVehicle.values = setting.values
             settingVehicle.default = setting.default
@@ -1289,6 +1305,16 @@ function AutoDrive.readVehicleSettingsFromXML(vehicle, xmlFile, key)
                 if storedSetting ~= nil then
                     vehicle.ad.settings[settingName].current = storedSetting
                 end
+            end
+        end
+    end
+end
+
+function AutoDrive.saveVehicleSettingsToXMLFile(vehicle, xmlFile, key)
+    if vehicle then
+        for settingName, setting in pairs(AutoDrive.settings) do
+            if setting.isVehicleSpecific and vehicle.ad.settings ~= nil and vehicle.ad.settings[settingName] ~= nil and not setting.shallNotBeSaved then
+                xmlFile:setValue(key .. "#" .. settingName, vehicle.ad.settings[settingName].current)
             end
         end
     end

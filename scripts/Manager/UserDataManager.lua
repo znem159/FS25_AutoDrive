@@ -50,7 +50,10 @@ function ADUserDataManager:loadFromXml()
                     self.users[uniqueId].hudY = Utils.getNoNil(getXMLFloat(xmlFile, uKey .. "#hudY"), AutoDrive.HudY or 0.5)
                     self.users[uniqueId].settings = {}
                     for _, sn in pairs(self.userSettingNames) do
-                        self.users[uniqueId].settings[sn] = Utils.getNoNil(getXMLInt(xmlFile, uKey .. "#" .. sn), AutoDrive.getSettingState(sn))
+                        local setting = AutoDrive.settings[sn]
+                        if setting and not setting.shallNotBeSaved then
+                            self.users[uniqueId].settings[sn] = Utils.getNoNil(getXMLInt(xmlFile, uKey .. "#" .. sn), AutoDrive.getSettingState(sn))
+                        end
                     end
                     userCount = userCount + 1
                 end
@@ -111,7 +114,10 @@ function ADUserDataManager:saveToXml()
         setXMLFloat(xmlFile, uKey .. "#hudY", userData.hudY)
 
         for sn, sv in pairs(userData.settings) do
-            setXMLInt(xmlFile, uKey .. "#" .. sn, sv)
+            local setting = AutoDrive.settings[sn]
+            if setting and not setting.shallNotBeSaved then
+                setXMLInt(xmlFile, uKey .. "#" .. sn, sv)
+            end
         end
         uIndex = uIndex + 1
     end
