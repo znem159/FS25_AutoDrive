@@ -1068,14 +1068,11 @@ function AutoDrive:startAutoDrive()
 
             if self.ad.currentHelper == nil or self.ad.stateModule:getCurrentHelperIndex() <= 0 then
                 -- no helper assigned
-                local currentHelper = g_helperManager:getRandomHelper()
-
-                if currentHelper == nil then
+                if #g_helperManager.availableHelpers == 0 then
                     -- assume helper limit over
                     AutoDrive.checkAddHelper(self, nil, 1) -- add 1 helper
-                    currentHelper = g_helperManager:getRandomHelper()
                 end
-
+                local currentHelper = g_helperManager:getRandomHelper()
                 if currentHelper ~= nil then
                     g_helperManager:useHelper(currentHelper)
                 end
@@ -1083,7 +1080,6 @@ function AutoDrive:startAutoDrive()
                     local name = self.getName and self:getName() or ""
                     Logging.error("[AD] AutoDrive:startAutoDrive ERROR: unable to get helper for vehicle %s", tostring(name))
                 end
-
                 if currentHelper and currentHelper.index then
                     self.ad.currentHelper = currentHelper
                     self.ad.stateModule:setCurrentHelperIndex(currentHelper.index)
@@ -1252,9 +1248,9 @@ function AutoDrive.checkAddHelper(vehicle, helperIndex, numHelpersToAdd)
             -- helper.name = source.name .. "_" .. math.random(100, 1000)
             helper.name = source.name .. "_" .. g_helperManager.numHelpers
             helper.index = g_helperManager.numHelpers
+            helper.color = source.color
             helper.title = helper.name
-            helper.modelFilename = source.modelFilename
-
+            helper.playerStyle = source.playerStyle
             g_helperManager.helpers[helper.name] = helper
             g_helperManager.nameToIndex[helper.name] = g_helperManager.numHelpers
             g_helperManager.indexToHelper[g_helperManager.numHelpers] = helper
