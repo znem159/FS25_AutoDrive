@@ -209,7 +209,7 @@ function AutoDrive:notifyDestinationListeners()
 end
 
 function AutoDrive:combineIsCallingDriver(combine)	--only for CoursePlay
-    return AutoDrive:getIsCPWaitingForUnload(combine)
+    return combine ~=nil and ADHarvestManager:hasHarvesterPotentialUnloaders(combine) and AutoDrive:getIsCPWaitingForUnload(combine)
 end
 
 function AutoDrive:getCombineOpenPipePercent(combine)	--for AIVE
