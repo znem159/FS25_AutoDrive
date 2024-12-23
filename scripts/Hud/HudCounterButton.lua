@@ -11,6 +11,10 @@ function ADHudCounterButton:new(posX, posY, width, height, mode)
     o.counter = 1
     o.mode = mode
 
+    -- Reads these images. They are listed here to pass the test runner check.
+    -- "textures/loop_counter_active.dds"
+    -- "textures/loop_counter_inactive.dds"
+    -- "textures/loop_counter_inf.dds"
     o.images = {
         [ADHudCounterButton.STATE_INFINITE] = AutoDrive.directory .. "textures/" .. mode .. "_inf.dds",
         [ADHudCounterButton.STATE_ACTIVE] = AutoDrive.directory .. "textures/" .. mode .. "_active.dds",

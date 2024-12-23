@@ -2,7 +2,8 @@
 
 <CustomShader version="5">
     <Parameters>
-        <Parameter name = "lineColor" target = "lineColor" type = "float4" defaultValue = "0.75 1.0 1.0 1.0" />
+        <!-- <Parameter name = "lineColor" target = "lineColor" type = "float4" defaultValue = "0.75 1.0 1.0 1.0" /> -->
+		<Parameter name = "lineColor" target = "lineColor" type = "float4" defaultValue = "0.75 1.0 1.0 1.0" />
     </Parameters>
     <UvUsages/>
     <LodLevel startDistance="0">

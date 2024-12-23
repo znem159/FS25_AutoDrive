@@ -18,6 +18,22 @@ function ADHudSettingsButton:new(posX, posY, width, height, setting, toolTip, st
 end
 
 function ADHudSettingsButton:readImages()
+    -- Reads these images. They are listed here to pass the test runner check.
+    -- "textures/avoidFruit_1.dds"
+    -- "textures/avoidFruit_2.dds"
+    -- "textures/enableTrafficDetection_1.dds" 
+    -- "textures/enableTrafficDetection_2.dds"
+    -- "textures/enableTrafficDetection_3.dds"
+    -- "textures/exitField_1.dds"
+    -- "textures/exitField_2.dds"
+    -- "textures/exitField_3.dds"
+    -- "textures/restrictToField_1.dds" 
+    -- "textures/restrictToField_2.dds"
+    -- "textures/rotateTargets_1.dds"
+    -- "textures/rotateTargets_2.dds"
+    -- "textures/rotateTargets_3.dds"
+    -- "textures/rotateTargets_4.dds"
+
     local images = {}
     local counter = 1
     while counter <= 4 do
