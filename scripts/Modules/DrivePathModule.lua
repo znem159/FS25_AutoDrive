@@ -329,9 +329,9 @@ function ADDrivePathModule:followWaypoints(dt)
         
         if self.vehicle.getAISteeringNode ~= nil then
             local aix, aiy, aiz = getWorldTranslation(self.vehicle:getAISteeringNode())            
-            ADDrawingManager:addLineTask(aix, aiy, aiz, self.targetX, y, self.targetZ, 1, 1, 0, 0)
-        else            
-            ADDrawingManager:addLineTask(x, y, z, self.targetX, y, self.targetZ, 1, 1, 0, 0)
+        --     ADDrawingManager:addLineTask(aix, aiy, aiz, self.targetX, y, self.targetZ, 1, 1, 0, 0)
+        -- else            
+        --     ADDrawingManager:addLineTask(x, y, z, self.targetX, y, self.targetZ, 1, 1, 0, 0)
         end
         if self.vehicle.startMotor then
             if not self.vehicle:getIsMotorStarted() and self.vehicle:getCanMotorRun() and not self.vehicle.ad.specialDrivingModule:shouldStopMotor() then
@@ -716,7 +716,7 @@ function ADDrivePathModule:checkActiveAttributesSet(dt)
         if ((g_updateLoopIndex + self.vehicle.id) % AutoDrive.PERF_FRAMES == 0) then
             if self.vehicle.setBeaconLightsVisibility ~= nil and AutoDrive.getSetting("useBeaconLights", self.vehicle) then
                 local x, y, z = getWorldTranslation(self.vehicle.components[1].node)
-                if not AutoDrive.checkIsOnField(x, y, z) and self.vehicle.spec_motorized.isMotorStarted then
+                if not AutoDrive.checkIsOnField(x, y, z) and self.vehicle:getIsMotorStarted() then
                     self.vehicle:setBeaconLightsVisibility(true)
                 else
                     self.vehicle:setBeaconLightsVisibility(false)

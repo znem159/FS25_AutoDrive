@@ -1008,7 +1008,7 @@ function UnloadBGATask:handleDriveStrategy(dt)
 
     if self.vehicle.isServer then
         if self.vehicle.startMotor and self.vehicle.stopMotor then
-            if not self.vehicle.spec_motorized.isMotorStarted and self.vehicle:getCanMotorRun() and not self.vehicle.ad.specialDrivingModule:shouldStopMotor() then
+            if not self.vehicle:getIsMotorStarted() and self.vehicle:getCanMotorRun() and not self.vehicle.ad.specialDrivingModule:shouldStopMotor() then
                 self.vehicle:startMotor()
             end
         end
