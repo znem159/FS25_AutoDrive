@@ -381,6 +381,9 @@ function ADDrawingManager:drawObjects_alternative2(obj, dFunc, iFunc)
                 setVisibility(id, false)
             end
             obj.itemIDs = {}
+            for _, task in pairs(obj.tasks) do
+                task.taskChanged = true
+            end
         end
         fileToUse = obj.fileNames[AutoDrive.getSetting("iconSetToUse")]
         obj.lastDrawFileUsed = AutoDrive.getSetting("iconSetToUse")
