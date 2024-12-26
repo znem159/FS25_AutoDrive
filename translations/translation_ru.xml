@@ -254,7 +254,7 @@
 		<text name="gui_ad_adpd_showError"						text="AutoDrive: Сеть непоследовательна и не может быть импортирована, код ошибки" />
 		<text name="gui_ad_adpd_showConfirmation"				text="AutoDrive: Хотели бы вы импортировать AD сеть из размещаемых объектов?" />
 		<text name="gui_ad_pathfinder"							text="Алгоритм путеискателя" />
-		<text name="gui_ad_pathfinder_tooltip"					text="Выберите алгоритм путеискателя, который будет использоваться (если он не работает в сети)" />
+		<text name="gui_ad_pathfinder_tooltip"					text="Выберите алгоритм путеискателя, который будет использоваться (когда не в сети)" />
 		<text name="gui_ad_pathfinder_astar"					text="A-Star + Dubbins" />
 		<text name="gui_ad_pathfinder_custom"					text="AutoDrive Custom" />
 		<text name="gui_ad_enableRoutesManagerOnDediServer"			text="Маршрутизатор на сервере" />
@@ -264,7 +264,7 @@
 		<text name="gui_ad_colorAssignmentMode"					text="Собственные цвета" />
 		<text name="gui_ad_colorAssignmentMode_tooltip"			text="Позволяет выбирать цвета для AutoDrive." />
 		<text name="gui_ad_FoldImplements"						text="Сворачивание оборудования" />
-		<text name="gui_ad_FoldImplements_tooltip"				text="AutoDrive будет ждать, пока оборудование не свернутся перед запуском." />
+		<text name="gui_ad_FoldImplements_tooltip"				text="AutoDrive перед запуском будет ждать, пока оборудование не свернутся." />
 		<text name="gui_ad_RecordWhileNotInVehicle"				text="Запись без водителя" />
 		<text name="gui_ad_RecordWhileNotInVehicle_tooltip"		text="AutoDrive будет продолжать запись, если водитель покидает автомобиль." />	
 
