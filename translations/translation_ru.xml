@@ -51,14 +51,14 @@
 		<text name="input_ADRefuelVehicle"						text="AD: Заправить технику" />
 		<text name="input_ADRepairVehicle"						text="AD: Ремонтировать технику" />
 		<text name="input_ADSwapTargets"						text="AD: Сменить локации" />
-		<text name="input_ADStartHelper"							text="AD: Передать управление AI/CP/AIVE" />
-		<text name="input_ADToggleUsedHelper"						text="AD: Переключение AI/CP/AIVE" />
+		<text name="input_ADStartHelper"						text="AD: Передать управление AI/CP/AIVE" />
+		<text name="input_ADToggleUsedHelper"					text="AD: Переключение AI/CP/AIVE" />
 		<text name="input_AD_devAction"							text="AD: Действия разработчика" />
 		<text name="input_ADToggleAutomaticPickupTarget"		text="AD: Переключать автоматически цели загрузки" />
 		<text name="input_ADToggleAutomaticUnloadTarget"		text="AD: Переключать автоматически цели разгрузки" />
 		<text name="input_ADToggleLoadByFillLevel"				text="AD: Переключение загрузки по уровню заполнения" />
 		<text name="hud_avoidFruit"								text="AD: Избегать посевов" />
-		<text name="hud_startHelper"								text="AD: Запустить AI/CP/AIVE в пункте назначения" />
+		<text name="hud_startHelper"							text="AD: Запустить AI/CP/AIVE в пункте назначения" />
 		<text name="AD_parkVehicle_noPosSet"					text="Место для парковки не назначено. Чтобы назначить выбранную локацию, как место парковки, нажмите правой кнопкой мыши на этой же кнопке." />
 		<text name="AD_parkVehicle_selected"					text="Выбранное место для парковки: " />
 		<text name="AD_parkVehicle_deleted"					    text="место для парковки удалено!" />
@@ -74,8 +74,8 @@
 		<text name="AD_No_Refuel_Station"						text="не удалось найти заправочную станцию" />
 		<text name="AD_No_Repair_Station"						text="не смог найти ремонтную станцию для:" />
 		<text name="AD_Wrong_Mode_takeover_from_CP"				text="Неправильный режим AD для совместной работы с CP" />
-		<text name="AD_Unable_to_start_AIJob"					text="Not able to start AI Helper" />
-		<text name="AD_AIJob_active"							text="AI Helper still active!" />
+		<text name="AD_Unable_to_start_AIJob"					text="Невозможно запустить ИИ-помощника" />
+		<text name="AD_AIJob_active"							text="ИИ-помощник всё ещё активный!" />
 		<text name="AD_MODE_DRIVETO"							text="Перегон" />
 		<text name="AD_MODE_DELIVERTO"							text="Доставка" />
 		<text name="AD_MODE_PICKUPANDDELIVER"					text="Загрузка и доставка" />
@@ -179,7 +179,7 @@
 		<text name="gui_ad_worklightsWhenSilo_tooltip"			text="Да - Использовать рабочие свет в силосной яме" />
 		<text name="gui_ad_hazardLightReverse"					text="Аварийные огни" />
 		<text name="gui_ad_hazardLightReverse_tooltip"			text="Да - Использовать аварийные огни при движении задним ходом" />
-		<text name="gui_ad_activeUnloading"						text="Активная разгрузка" />
+		<text name="gui_ad_activeUnloading"						text="Разгрузка в движении" />
 		<text name="gui_ad_activeUnloading_tooltip"				text="Разгрузка комбайна во время движения." />
 		<text name="gui_ad_restrictToField"						text="Поиск маршрута ограничен полем" />
 		<text name="gui_ad_restrictToField_tooltip"				text="Если разгружающий автомобиль уже находится на поле, он ограничит поиск маршрута границами поля." />
@@ -196,7 +196,7 @@
 		<text name="gui_ad_autoRefuel"							text="Автодозаправка топливом" />
 		<text name="gui_ad_autoRefuel_tooltip"					text="Двигаться к месту заправки (ближайший триггер заправки), если уровень топлива низкий." />
 		<text name="gui_ad_autoRepair"							text="Автоматический ремонт" />
-		<text name="gui_ad_autoRepair_tooltip"					text="Двигаться к пункту ремонта (близко к триггеру ремонта), когда слишком высокий уровень износа." />
+		<text name="gui_ad_autoRepair_tooltip"					text="Двигаться к пункту ремонта (ближайший триггер ремонта), когда слишком высокий уровень износа." />
 		<text name="gui_ad_filter"								text="Фильтр" />
 		<text name="gui_ad_enterDestinationFilterTitle"			text="Изменение текста фильтра локаций" />
 		<text name="gui_ad_enterDestinationFilterText"			text="Введите текст фильтра:" />
@@ -224,8 +224,8 @@
 		<text name="gui_ad_playSounds_tooltip"					text="Включает звуковые эффекты для щелчков мыши и уведомлений." />
 		<text name="gui_ad_scaleLines"							text="Размер линий" />
 		<text name="gui_ad_scaleLines_tooltip"					text="Размер толщины линий соединений." />
-		<text name="gui_ad_scaleMarkerText"						text="Scale Destination Name" />
-		<text name="gui_ad_scaleMarkerText_tooltip"				text="Scale Size of Destination Names" />
+		<text name="gui_ad_scaleMarkerText"						text="Масштаб названий пунктов" />
+		<text name="gui_ad_scaleMarkerText_tooltip"				text="Изменение масштаба названий пунктов назначений" />
 		<text name="gui_ad_syncMultiTargets"					text="Синхронизация нескольких локаций" />
 		<text name="gui_ad_syncMultiTargets_tooltip"			text="Если несколько водителей едут в одно и то же место, выбор места назначения синхронизируется." />
 		<text name="gui_ad_enableParkAtJobFinished"				text="Припарковать по завершению" />
@@ -251,8 +251,22 @@
 		<text name="gui_ad_noUnloaderAvailable"					text="Ни одного водителя с той же целью" />
 		<text name="gui_ad_remainingDriveTimeInterval"			text="Оставшееся время вождения" />
 		<text name="gui_ad_remainingDriveTimeInterval_tooltip"	text="Для внешних модов: интервал для расчета оставшегося времени вождения. В случае проблем с производительностью - увеличить или деактивировать." />
-		<text name="gui_ad_adpd_showError"						text="AutoDrive: The Network is inconsistent and could not be imported, error code" />
-		<text name="gui_ad_adpd_showConfirmation"				text="AutoDrive: Would you like to import the AD Network from the Placeable?" />
+		<text name="gui_ad_adpd_showError"						text="AutoDrive: Сеть непоследовательна и не может быть импортирована, код ошибки" />
+		<text name="gui_ad_adpd_showConfirmation"				text="AutoDrive: Хотели бы вы импортировать AD сеть из размещаемых объектов?" />
+		<text name="gui_ad_pathfinder"							text="Алгоритм путеискателя" />
+		<text name="gui_ad_pathfinder_tooltip"					text="Выберите алгоритм путеискателя, который будет использоваться (если он не работает в сети)" />
+		<text name="gui_ad_pathfinder_astar"					text="A-Star + Dubbins" />
+		<text name="gui_ad_pathfinder_custom"					text="AutoDrive Custom" />
+		<text name="gui_ad_enableRoutesManagerOnDediServer"			text="Маршрутизатор на сервере" />
+		<text name="gui_ad_enableRoutesManagerOnDediServer_tooltip"	text="Включить диспетчер маршрутов на выделенных серверах" />
+		<text name="gui_ad_detectSwath"							text="Обнаружение валков" />
+		<text name="gui_ad_detectSwath_tooltip"					text="Решает если валки определяются как культуры на поле." />
+		<text name="gui_ad_colorAssignmentMode"					text="Собственные цвета" />
+		<text name="gui_ad_colorAssignmentMode_tooltip"			text="Позволяет выбирать цвета для AutoDrive." />
+		<text name="gui_ad_FoldImplements"						text="Сворачивание оборудования" />
+		<text name="gui_ad_FoldImplements_tooltip"				text="AutoDrive будет ждать, пока оборудование не свернутся перед запуском." />
+		<text name="gui_ad_RecordWhileNotInVehicle"				text="Запись без водителя" />
+		<text name="gui_ad_RecordWhileNotInVehicle_tooltip"		text="AutoDrive будет продолжать запись, если водитель покидает автомобиль." />	
 
 		<text name="gui_ad_settingsPage_title"					text="Общие настройки - AutoDrive" />
 		<text name="gui_ad_userSettingsPage_title"				text="Пользовательские настройки - AutoDrive" />
@@ -264,7 +278,7 @@
 		<text name="gui_ad_restoreButtonText" 					text="Восстановить" />
 		<text name="gui_ad_settingsClosingDialog_title" 		text="Все изменения будут утеряны" />
 		<text name="gui_ad_settingsClosingDialog_text" 			text="Вы уверены, что хотите закрыть окно настроек без сохранения?" />
-		<text name="gui_ad_setDefaultButtonText" 				text="Установить ка по умолчанию" />
+		<text name="gui_ad_setDefaultButtonText" 				text="Установить как по умолчанию" />
 		<text name="gui_ad_routesManagerTitle" 					text="Менеджер маршрутов" />
 		<text name="gui_ad_routesManagerTextTitle" 				text="Присвоить название маршруту:" />
 		<text name="gui_ad_button_export" 						text="Сохранить" />
