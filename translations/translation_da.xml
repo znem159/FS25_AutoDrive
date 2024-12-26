@@ -54,134 +54,134 @@
 		<text name="input_ADStartHelper"						text="AD: Pass to AI/CP/AIVE" />
 		<text name="input_ADToggleUsedHelper"					text="AD: Toggle AI/CP/AIVE" />
 		<text name="input_AD_devAction"                         text="AD: Developer Action" />
-		<text name="input_ADToggleAutomaticPickupTarget"				text="AD: Toggle automatic pickup target" />
-		<text name="input_ADToggleAutomaticUnloadTarget"				text="AD: Toggle automatic unload target" />
+		<text name="input_ADToggleAutomaticPickupTarget"				text="AD: Skift automatisk opsamlingsmål" />
+		<text name="input_ADToggleAutomaticUnloadTarget"				text="AD: Skift automatisk aflæsningsmål" />
 		<text name="input_ADToggleLoadByFillLevel"				text="AD: Toggle loading by fill level" />
-		<text name="hud_avoidFruit"								text="AD: Avoid fruit" />
+		<text name="hud_avoidFruit"								text="AD: Undgå afgrøder" />
 		<text name="hud_startHelper"								text="AD: Start AI/CP/AIVE at destination" />
-		<text name="AD_parkVehicle_noPosSet"					text="No parking destination assigned." />
-		<text name="AD_parkVehicle_selected"					text="Chosen parking destination: " />
-		<text name="AD_parkVehicle_deleted"					    text="parking destination deleted!" />
-		<text name="AD_Driver_of"								text="Driver of" />
-		<text name="AD_has_reached"								text="has reached" />
-		<text name="AD_got_stuck"								text="got stuck" />
-		<text name="AD_cannot_reach"							text="can't reach" />
-		<text name="AD_cannot_find_path"						text="can't calculate a path" />
-		<text name="AD_new_marker"								text="New Goal:" />
-		<text name="AD_No_Trailer"								text="couldn't find trailer" />
-		<text name="AD_No_Bunker"								text="couldn't find silo bunker" />
-		<text name="AD_No_Shovel"								text="couldn't find a connected shovel" />
-		<text name="AD_No_Refuel_Station"						text="could not find refuel station" />
-		<text name="AD_No_Repair_Station"						text="could not find repair station for:" />
-		<text name="AD_Wrong_Mode_takeover_from_CP"				text="Wrong AD Mode to work together with CP" />
-		<text name="AD_Unable_to_start_AIJob"					text="Not able to start AI Helper" />
-		<text name="AD_AIJob_active"							text="AI Helper still active!" />
-		<text name="AD_MODE_DRIVETO"							text="Drive" />
-		<text name="AD_MODE_DELIVERTO"							text="Deliver" />
-		<text name="AD_MODE_PICKUPANDDELIVER"					text="Pickup and Deliver" />
-		<text name="AD_MODE_UNLOAD"								text="Unload Combine" />
-		<text name="AD_MODE_LOAD"								text="Load" />
-		<text name="AD_MODE_BGA"								text="Unload bunker silo" />
-		<text name="AD_synchronizing"							text="loading network from server.." />
-		<text name="AD_lctrl_for_extendedEditor" 				text="LCTRL for extended editor mode" />
-		<text name="AD_lctrl_for_creation" 						text="LCTRL to create" />
-		<text name="AD_lalt_for_deletion" 						text="LALT to delete" />
-		<text name="AD_lshift_for_reverse" 						text="RSHIFT reverse drive" />
-		<text name="gui_ad_Setting"								text="AutoDrive - Settings" />
-		<text name="gui_ad_collisionHeigth"						text="Collisionheigth over ground" />
-		<text name="gui_ad_collisionHeigth_tooltip"				text="Setting for collision detection in front of vehicle. If other vehicles are not detected during driving, reduce step by step. (Default 2m)" />
-		<text name="gui_ad_blinkValue"						    text="Turnlight Automatic" />
-		<text name="gui_ad_blinkValue_tooltip"					text="Steering angle to enable turn lights automatically. (0 = turn light automatic deactivated)" />
-		<text name="gui_ad_pipe_offset"							text="Pipe Offset" />
-		<text name="gui_ad_followDistance"						text="Distance combine" />
-		<text name="gui_ad_followDistance_tooltip"				text="Distance kept from combine when following it's rear end" />
-		<text name="gui_ad_lookahead_turning"					text="Look ahead distance (turn)" />
-		<text name="gui_ad_lookahead_turning_tooltip"			text="The distance the vehicle looks ahead to adjust steering to follow the next segment" />
-		<text name="gui_ad_useFastestRoute"						text="Use fastest Route" />
-		<text name="gui_ad_useFastestRoute_tooltip"				text="Take the driving speed into consideration instead of simple distances, when calculating best routes" />
-		<text name="gui_ad_mapMarkerDetour"						text="Maximum detour" />
-		<text name="gui_ad_mapMarkerDetour_tooltip"				text="Maximum detour when avoiding targets" />
-		<text name="gui_ad_siloEmpty"							text="If silo empty" />
-		<text name="gui_ad_siloEmpty_tooltip"					text="How a pickup and deliver driver reacts to an empty silo" />
-		<text name="gui_ad_useFolders"							text="Use folders" />
-		<text name="gui_ad_useFolders_tooltip"					text="Use folders to structure destinations" />
-		<text name="gui_ad_wait"								text="Wait" />
-		<text name="gui_ad_drive"								text="Drive on" />
-		<text name="gui_ad_off"									text="Off" />
-		<text name="gui_ad_yes"									text="Yes" />
-		<text name="gui_ad_no"									text="No" />
+		<text name="AD_parkVehicle_noPosSet"					text="Ingen parkerings destination tildelt." />
+		<text name="AD_parkVehicle_selected"					text="Vælg parkering destination: " />
+		<text name="AD_parkVehicle_deleted"					    text="Parkering destination slettet!" />
+		<text name="AD_Driver_of"								text="Kører af" />
+		<text name="AD_has_reached"								text="er nået til" />
+		<text name="AD_got_stuck"								text="sidder fast" />
+		<text name="AD_cannot_reach"							text="kan ikke nå" />
+		<text name="AD_cannot_find_path"						text="kan ikke udregne rute" />
+		<text name="AD_new_marker"								text="Nyt mål:" />
+		<text name="AD_No_Trailer"								text="kan ikke finde trailer" />
+		<text name="AD_No_Bunker"								text="kan ikke finde bunker silo" />
+		<text name="AD_No_Shovel"								text="kan ikke finde skovl" />
+		<text name="AD_No_Refuel_Station"						text="kan ikke finde tankstation" />
+		<text name="AD_No_Repair_Station"						text="kan ikke finde værksted:" />
+		<text name="AD_Wrong_Mode_takeover_from_CP"				text="Forkert AD indstilling til at virke med CP" />
+		<text name="AD_Unable_to_start_AIJob"					text="Kan ikke starte AI-medarbejder" />
+		<text name="AD_AIJob_active"							text="AI-medarbejder er stadig igang!" />
+		<text name="AD_MODE_DRIVETO"							text="Kør" />
+		<text name="AD_MODE_DELIVERTO"							text="Aflever" />
+		<text name="AD_MODE_PICKUPANDDELIVER"					text="Opsamling og aflevering" />
+		<text name="AD_MODE_UNLOAD"								text="Tømning af mejetærsker" />
+		<text name="AD_MODE_LOAD"								text="Opsamling" />
+		<text name="AD_MODE_BGA"								text="Tøm bunker silo" />
+		<text name="AD_synchronizing"							text="Synkronisere fra server.." />
+		<text name="AD_lctrl_for_extendedEditor" 				text="LCTRL for udvidet Edit-Mode" />
+		<text name="AD_lctrl_for_creation" 						text="LCTRL for at oprette" />
+		<text name="AD_lalt_for_deletion" 						text="LALT for at slette" />
+		<text name="AD_lshift_for_reverse" 						text="RSHIFT baglens kørsel" />
+		<text name="gui_ad_Setting"								text="AutoDrive - Indstillinger" />
+		<text name="gui_ad_collisionHeigth"						text="Kollisionshøjde over jorden" />
+		<text name="gui_ad_collisionHeigth_tooltip"				text="Indstilling af kollision detektering i fronten af køretøjet. Hvis andre køretøjer ikke er detekteret under kørsel, reducere trin for trin. (Default 2m)" />
+		<text name="gui_ad_blinkValue"						    text="Automatisk Blinklys" />
+		<text name="gui_ad_blinkValue_tooltip"					text="Vinklen for at aktivere blinklys. (0 = automatisk blinklyst deaktiveret)" />
+		<text name="gui_ad_pipe_offset"							text="Rør forskydning" />
+		<text name="gui_ad_followDistance"						text="Distance til mejetærsker" />
+		<text name="gui_ad_followDistance_tooltip"				text="Distance fra mejetærsker når bagenden" />
+		<text name="gui_ad_lookahead_turning"					text="Se fremad distance (turn)" />
+		<text name="gui_ad_lookahead_turning_tooltip"			text="Distancen køretøjet kigger fremad for at justere styrringen til næste segment" />
+		<text name="gui_ad_useFastestRoute"						text="Brug den hurtigste rute" />
+		<text name="gui_ad_useFastestRoute_tooltip"				text="Tager hastigheden i betragtning istedet for en simpel distance udregning, ved udregningen af ruten" />
+		<text name="gui_ad_mapMarkerDetour"						text="Maximum afvigelse" />
+		<text name="gui_ad_mapMarkerDetour_tooltip"				text="Maximum afvigelse for at ungå mål" />
+		<text name="gui_ad_siloEmpty"							text="Hvis siloen er tom" />
+		<text name="gui_ad_siloEmpty_tooltip"					text="Hvordan AI-medarbejderen reagere til en tom silo" />
+		<text name="gui_ad_useFolders"							text="Brug mapper" />
+		<text name="gui_ad_useFolders_tooltip"					text="Brug mapper til at strukturer mål" />
+		<text name="gui_ad_wait"								text="Vent" />
+		<text name="gui_ad_drive"								text="Kør" />
+		<text name="gui_ad_off"									text="Fra" />
+		<text name="gui_ad_yes"									text="Ja" />
+		<text name="gui_ad_no"									text="Nej" />
 		<text name="gui_ad_FS22"								text="FS 22" />
 		<text name="gui_ad_FS19"								text="FS 19" />
-		<text name="gui_ad_BSMRange"							text="Bunker Silo Manager Range" />
+		<text name="gui_ad_BSMRange"							text="Bunker Silo Manager område" />
 		<text name="gui_ad_BSMRange_tooltip"					text="In this range vehicles to destination bunker silo one by one get driveway" />
-		<text name="ad_bga_init"								text="Initializing" />
-		<text name="ad_bga_waiting"								text="Waiting for trailer/silo" />
-		<text name="ad_bga_active"								text="Active" />
-		<text name="gui_ad_autoConnect_start"					text="Auto connect (start)" />
-		<text name="gui_ad_autoConnect_start_tooltip"			text="Auto connect suitable node on start of recording" />
-		<text name="gui_ad_autoConnect_end"						text="Auto connect (end)" />
-		<text name="gui_ad_autoConnect_end_tooltip"				text="Auto connect suitable node on end of recording" />
-		<text name="gui_ad_parkInField"							text="Park in field" />
-		<text name="gui_ad_parkInField_tooltip"					text="After unloading a combine - if not parked in fruit" />
-		<text name="gui_ad_unloadFillLevel"						text="Unload fill level" />
-		<text name="gui_ad_unloadFillLevel_tooltip"				text="After unloading combine. Directly go to deliver at this fill level." />
-		<text name="gui_ad_findDriver"							text="Find Driver" />
-		<text name="gui_ad_findDriver_tooltip"					text="Search for close by drivers (Ignore destination)" />
-		<text name="gui_ad_gui_scale"							text="Gui scale for AutoDrive HUD" />
+		<text name="ad_bga_init"								text="Initialiserer" />
+		<text name="ad_bga_waiting"								text="Venter på Trailer/Silo" />
+		<text name="ad_bga_active"								text="Aktiv" />
+		<text name="gui_ad_autoConnect_start"					text="Autotilslut (start)" />
+		<text name="gui_ad_autoConnect_start_tooltip"			text="Autostilslut til en passende node ved start af optagelse" />
+		<text name="gui_ad_autoConnect_end"						text="Autotilslut (slut)" />
+		<text name="gui_ad_autoConnect_end_tooltip"				text="Autostilslut til en passende node ved slut af optagelse" />
+		<text name="gui_ad_parkInField"							text="Parkere i marken" />
+		<text name="gui_ad_parkInField_tooltip"					text="Efter aflæsning af en mejetærsker - hvis den ikke er parkeret i afgrøder" />
+		<text name="gui_ad_unloadFillLevel"						text="Aflæs påfyldningsniveau" />
+		<text name="gui_ad_unloadFillLevel_tooltip"				text="Efter tømming af mejetærsker. kør til aflevering ved dette påfyldnignsniveau." />
+		<text name="gui_ad_findDriver"							text="Find AI-medarbejder" />
+		<text name="gui_ad_findDriver_tooltip"					text="Søg efter nærmest AI-medarbejder (Ignorer destination)" />
+		<text name="gui_ad_gui_scale"							text="Gui Skala for AutoDrive HUD" />
 		<text name="gui_ad_gui_scale_tooltip"					text="Leave default to use in game scaling settings" />
-		<text name="gui_ad_notifications"						text="Notifications" />
-		<text name="gui_ad_notifications_text_1"				text="Disabled" />
-		<text name="gui_ad_notifications_text_2"				text="Short" />
+		<text name="gui_ad_notifications"						text="Notifikationer" />
+		<text name="gui_ad_notifications_text_1"				text="Frakoblet" />
+		<text name="gui_ad_notifications_text_2"				text="Kort" />
 		<text name="gui_ad_notifications_text_3"				text="Default" />
-		<text name="gui_ad_notifications_text_4"				text="Long" />
-		<text name="gui_ad_notifications_text_5"				text="Extra Long" />
-		<text name="gui_ad_notifications_text_6"				text="Endless" />
-		<text name="gui_ad_notifications_tooltip"				text="Display time for notifications: no display / ca. 2,5s / 5s / 10s / 25s / Show until user close" />
-		<text name="gui_ad_exitField"							text="Field exit" />
-		<text name="gui_ad_exitField_tooltip"					text="Field exit strategy for unloader" />
+		<text name="gui_ad_notifications_text_4"				text="Lang" />
+		<text name="gui_ad_notifications_text_5"				text="Ekstra Lang" />
+		<text name="gui_ad_notifications_text_6"				text="Uendelig" />
+		<text name="gui_ad_notifications_tooltip"				text="Visnigstid for notifikationer: Frakoblet / ca. 2,5s / 5s / 10s / 25s / Vis indtil bruger lukker" />
+		<text name="gui_ad_exitField"							text="Mark udkørsel" />
+		<text name="gui_ad_exitField_tooltip"					text="Mark udkørsel strategi for unloader" />
 		<text name="gui_ad_default"								text="Default" />
-		<text name="gui_ad_after_start"							text="Behind Start" />
-		<text name="gui_ad_closest"								text="Closest point" />
-		<text name="gui_ad_showHelp"							text="Display help" />
-		<text name="gui_ad_showHelp_tooltip"					text="Display keybinding in F1 window" />
-		<text name="gui_ad_driverWages"							text="Driver wages" />
-		<text name="gui_ad_driverWages_tooltip"					text="Driver wages will be multiplied with this value" />
-		<text name="gui_ad_showNextPath"						text="Show next path" />
-		<text name="gui_ad_showNextPath_tooltip"				text="En/Disable the display of the next two waypoints" />
-		<text name="gui_ad_avoidFruit"							text="Avoid fruit" />
-		<text name="gui_ad_avoidFruit_tooltip"					text="Combine unloader tries to avoid fruit destruction" />
+		<text name="gui_ad_after_start"							text="Bag Start" />
+		<text name="gui_ad_closest"								text="Nærmeste punkt" />
+		<text name="gui_ad_showHelp"							text="Vis hjælp" />
+		<text name="gui_ad_showHelp_tooltip"					text="Vis tastekombinationer i F1 vinduet" />
+		<text name="gui_ad_driverWages"							text="AI-medarbejder løn" />
+		<text name="gui_ad_driverWages_tooltip"					text="AI-medarbejder løn vil blive ganget med denne værdi" />
+		<text name="gui_ad_showNextPath"						text="Vis næste segment" />
+		<text name="gui_ad_showNextPath_tooltip"				text="Til/Frakoble visningen af de næste 2 punkter" />
+		<text name="gui_ad_avoidFruit"							text="Undgå afgrøder" />
+		<text name="gui_ad_avoidFruit_tooltip"					text="Mejetærsker aflæser forsøger at undgå afgrøder" />
 		<text name="gui_ad_pathFinderTime"						text="Pathfinder factor" />
 		<text name="gui_ad_pathFinderTime_tooltip"				text="Determines how far pathfinding algorithm is allowed to search for collision free path to/from combine. Should only be slightly increased in case fruit avoid on large fields with sufficient headland is not working." />
-		<text name="gui_ad_lineHeight"							text="Line height" />
-		<text name="gui_ad_lineHeight_tooltip"					text="Line height in editor mode. Either on ground level or above the tractor" />
-		<text name="gui_ad_ground"								text="Ground level" />
-		<text name="gui_ad_aboveDriver"							text="Above tractor" />
-		<text name="gui_ad_enableTrafficDetection"				text="Collision detection" />
+		<text name="gui_ad_lineHeight"							text="Linie højde" />
+		<text name="gui_ad_lineHeight_tooltip"					text="Linie højde i editor mode. enten på jord-niveau eller over køretøjet" />
+		<text name="gui_ad_ground"								text="Jord-niveau" />
+		<text name="gui_ad_aboveDriver"							text="Over køretøj" />
+		<text name="gui_ad_enableTrafficDetection"				text="Kollistion detektering" />
 		<text name="gui_ad_enableTrafficDetection_tooltip"		text="Advanced collision detection, which also detects AI-traffic, signs, fences etc. Off, detect FS 22 or FS 19 collision" />
-		<text name="gui_ad_shovelWidth"							text="Shovel width (Addition)" />
-		<text name="gui_ad_shovelWidth_tooltip"					text="If automatically detected shovel width is too small, it can be increased with this value" />
-		<text name="gui_ad_preCallLevel"						text="Pre call level" />
-		<text name="gui_ad_preCallLevel_tooltip"				text="Pre call unloader at the set fill level." />
-		<text name="gui_ad_none"					            text="None" />
-		<text name="gui_ad_onlyPickup"					        text="only Pickup" />
-		<text name="gui_ad_onlyDeliver"					        text="only Deliver" />
-		<text name="gui_ad_PickupandDeliver"					text="Pickup and Deliver" />
-		<text name="gui_ad_rotateTargets"					    text="Cycle Pickup and Deliver" />
-		<text name="gui_ad_rotateTargets_tooltip"			    text="4 Modes: No change of targets / only Pickup Targets / only Deliver Targets / Pickup and Deliver Targets in folder are cycled (not with default folder) (only considered if use folders is active)" />
-		<text name="gui_ad_maxTriggerDistance"					text="Maximum trigger distance" />
-		<text name="gui_ad_maxTriggerDistance_tooltip"			text="Distance to target at which triggers are detected and activated." />
-		<text name="gui_ad_useGlobalSetting"					text="Use global setting" />
-		<text name="gui_ad_useBeaconLights"						text="Beacon lights" />
-		<text name="gui_ad_useBeaconLights_tooltip"				text="Yes - Use beacon lights automatic outside of fields / No - beacon lights will not be turned on or off automatically" />
-		<text name="gui_ad_worklightsWhenLoading"				text="Worklight when Loading / Unloading" />
-		<text name="gui_ad_worklightsWhenLoading_tooltip"		text="Yes - Use working lights when loading or unloading at a trigger" />
-		<text name="gui_ad_worklightsWhenSilo"					text="Worklight when in a Silo Bunker" />
-		<text name="gui_ad_worklightsWhenSilo_tooltip"			text="Yes - Use working lights when in a silo bunker" />
-		<text name="gui_ad_hazardLightReverse"					text="Hazard Lights" />
-		<text name="gui_ad_hazardLightReverse_tooltip"			text="Yes - Use hazard lights while reverse driving" />
-		<text name="gui_ad_activeUnloading"						text="Active unloading" />
-		<text name="gui_ad_activeUnloading_tooltip"				text="Unload harvesters while driving." />
-		<text name="gui_ad_restrictToField"						text="Restrict pathfinder to field" />
+		<text name="gui_ad_shovelWidth"							text="Skovel brede (Tillæg)" />
+		<text name="gui_ad_shovelWidth_tooltip"					text="Hvis automatisk detekteret og skovl breden er for lille, kan den øges med denne værdi" />
+		<text name="gui_ad_preCallLevel"						text="Varsel påfyldningsniveau" />
+		<text name="gui_ad_preCallLevel_tooltip"				text="Varsel ved dette påfyldningsniveau." />
+		<text name="gui_ad_none"					            text="Ingen" />
+		<text name="gui_ad_onlyPickup"					        text="Kun opsamling" />
+		<text name="gui_ad_onlyDeliver"					        text="Kun aflevering" />
+		<text name="gui_ad_PickupandDeliver"					text="Opsamling og Aflevering" />
+		<text name="gui_ad_rotateTargets"					    text="Skift opsamling og aflevering" />
+		<text name="gui_ad_rotateTargets_tooltip"			    text="4 Modes: Ingen ændring af mål / Kun opsamlings mål / Kun afleverings mål / opsamling og afleverings mål . i mappe bliver skiftet (ikke i default mappe) (Kun i den aktive mappe)" />
+		<text name="gui_ad_maxTriggerDistance"					text="Maskimum trigger distance" />
+		<text name="gui_ad_maxTriggerDistance_tooltip"			text="Distance til målet hvor triggeren er detekteret og aktiveret." />
+		<text name="gui_ad_useGlobalSetting"					text="Brug global indstillinger" />
+		<text name="gui_ad_useBeaconLights"						text="Rotor-Blink" />
+		<text name="gui_ad_useBeaconLights_tooltip"				text="Ja - Brug rotor-blink automatisk uden for marken / Nej - rotor-blink vil ikke tænde og slukke automatisk" />
+		<text name="gui_ad_worklightsWhenLoading"				text="Arbejdslys ved pålæsning og aflæsning" />
+		<text name="gui_ad_worklightsWhenLoading_tooltip"		text="Ja - brug arbejdslys ved pålæsning og aflæsning ved en trigger" />
+		<text name="gui_ad_worklightsWhenSilo"					text="Arbejdslys ved bunker silo" />
+		<text name="gui_ad_worklightsWhenSilo_tooltip"			text="Ja - Brug arbejdslys ved bunker silo" />
+		<text name="gui_ad_hazardLightReverse"					text="Havari blink" />
+		<text name="gui_ad_hazardLightReverse_tooltip"			text="Ja - Brug Haveri blink i mens der bakkes" />
+		<text name="gui_ad_activeUnloading"						text="Aktiv aflæsning" />
+		<text name="gui_ad_activeUnloading_tooltip"				text="Aflæs mejetærsker under kørsel." />
+		<text name="gui_ad_restrictToField"						text="begræns pathfinder til marken" />
 		<text name="gui_ad_restrictToField_tooltip"				text="If unloader is already parked in the field, he will limit the pathfinder to field boundaries." />
 		<text name="gui_ad_showTooltips"						text="Show tooltips" />
 		<text name="gui_ad_showTooltips_tooltip"				text="Show tooltips of buttons in the HUD." />
