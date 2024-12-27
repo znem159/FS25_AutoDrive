@@ -555,6 +555,6 @@ end
 
 function ADSensor.debugMsg(vehicle, debugText, ...)
     if ADSensor.debug == true then
-        ADSensor.debugMsg(vehicle, debugText, ...)
+        AutoDrive.debugMsg(vehicle, debugText, ...)
     end
 end
