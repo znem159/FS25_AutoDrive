@@ -36,7 +36,7 @@ Changelog: пожалуйста, читайте на github...
 ]]>
 		</ru>
 	</description>
-	<version>3.0.0.0</version>
+	<version>3.0.0.1-RC</version>
 	<multiplayer supported="true" />
 	<iconFilename>icon_AutoDrive.dds</iconFilename>
 	<extraSourceFiles>
