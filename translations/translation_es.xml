@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" standalone="no" ?>
 <l10n>
-	<translationContributors>Yllelder, Vanquish081</translationContributors>
+	<translationContributors> </translationContributors>
 	<texts>
 		<text name="UNKNOWN"									text="Desconocido" />
 		<text name="input_ADToggleHud"							text="AD: Abrir ventana AD" />
@@ -19,6 +19,7 @@
 		<text name="input_AD_Speed_down"						text="AD: Disminuir velocidad" />
 		<text name="input_AD_routes_manager" 					text="AD: Abrir gestor de rutas" />
 		<text name="input_AD_open_notification_history" 		text="AD: Abrir historial de notificaciones" />
+		<text name="input_AD_open_colorSettings" 		        text="AD: Asignación de Color" />
 		<text name="input_AD_continue"							text="AD: Continuar" />
 		<text name="input_ADSelectTargetUnload"					text="AD: Seleccionar siguiente descarga" />
 		<text name="input_ADSelectPreviousTargetUnload"			text="AD: Seleccionar descarga anterior" />
@@ -60,6 +61,7 @@
 		<text name="hud_startHelper" 								text="AD: Iniciar AI/CP/AIVE en destino" />
 		<text name="AD_parkVehicle_noPosSet"					text="No se ha asignado ningún destino de estacionamiento. Asigna el destino seleccionado actualmente haciendo clic derecho." />
 		<text name="AD_parkVehicle_selected"					text="Destino de estacionamiento elegido: " />
+		<text name="AD_parkVehicle_deleted"					    text="Destino de estacionamiento eliminado!" />
 		<text name="AD_Driver_of"								text="Conductor de" />
 		<text name="AD_has_reached"								text="ha llegado" />
 		<text name="AD_got_stuck"								text="está atascado" />
@@ -72,8 +74,8 @@
 		<text name="AD_No_Refuel_Station"						text="no puede encontrar estación de repostaje" />
 		<text name="AD_No_Repair_Station"						text="no puede encontrar la estación de reparación:" />
 		<text name="AD_Wrong_Mode_takeover_from_CP"				text="Modo AD incorrecto para trabajar junto con CP" />
-		<text name="AD_Unable_to_start_AIJob"					text="Not able to start AI Helper" />
-		<text name="AD_AIJob_active"							text="AI Helper still active!" />
+		<text name="AD_Unable_to_start_AIJob"					text="No se puede iniciar Ayudante AI" />
+		<text name="AD_AIJob_active"							text="Ayudante AI sigue activo!" />
 		<text name="AD_MODE_DRIVETO"							text="Conducir" />
 		<text name="AD_MODE_DELIVERTO"							text="Entregar" />
 		<text name="AD_MODE_PICKUPANDDELIVER"					text="Cargar y entregar" />
@@ -110,8 +112,8 @@
 		<text name="gui_ad_no"									text="No" />
 		<text name="gui_ad_FS22"								text="FS 22" />
 		<text name="gui_ad_FS19"								text="FS 19" />
-		<text name="gui_ad_BSMRange"							text="Bunker Silo Manager Range" />
-		<text name="gui_ad_BSMRange_tooltip"					text="In this range vehicles to destination bunker silo one by one get driveway" />
+		<text name="gui_ad_BSMRange"							text="Rango Bunker Silo Manager" />
+		<text name="gui_ad_BSMRange_tooltip"					text="En este rango los vehículos llegan uno por uno al bunker silo de destino." />
 		<text name="ad_bga_init"								text="Inicializando" />
 		<text name="ad_bga_waiting"								text="Esperando por Remolque/Silo" />
 		<text name="ad_bga_active"								text="Activo" />
@@ -168,7 +170,7 @@
 		<text name="gui_ad_rotateTargets_tooltip"			    text="4 modos: Sin cambio de objetivos/Solo recoger de objetivos/Solo entregar a objetivos/Recoger y entregar a objetivos dentro de la carpeta en bucle (no funciona con la carpeta por defecto) (solo funciona si se activa la opción de usar carpetas)" />
 		<text name="gui_ad_maxTriggerDistance"					text="Distancia máxima al desencadenante" />
 		<text name="gui_ad_maxTriggerDistance_tooltip"			text="Distancia a la que se detectan y activan los desencadenantes (por ejemplo, al llegar a un punto de descarga)." />		
-		<text name="gui_ad_useGlobalSetting"					text="Use global setting" />
+		<text name="gui_ad_useGlobalSetting"					text="Utilice la configuración global" />
 		<text name="gui_ad_useBeaconLights"						text="Luces rotativas" />
 		<text name="gui_ad_useBeaconLights_tooltip"				text="Sí: Usa luces rotativas automáticas fuera de los campos/No: Las luces rotativas no se encenderán ni apagarán automáticamente" />
 		<text name="gui_ad_worklightsWhenLoading"				text="Luz de trabajo al Cargar/Descargar" />
@@ -249,8 +251,22 @@
 		<text name="gui_ad_noUnloaderAvailable"					text="No hay descargadero en destino" />
 		<text name="gui_ad_remainingDriveTimeInterval"			text="Tiempo de conducción restante" />
 		<text name="gui_ad_remainingDriveTimeInterval_tooltip"	text="Para mods externos: Intervalo para calcular el tiempo de conducción restante. En caso de problemas con el aumento de rendimiento o desactivar." />
-		<text name="gui_ad_adpd_showError"						text="AutoDrive: The Network is inconsistent and could not be imported, error code" />
-		<text name="gui_ad_adpd_showConfirmation"				text="AutoDrive: Would you like to import the AD Network from the Placeable?" />
+		<text name="gui_ad_adpd_showError"						text="AutoDrive: La ruta es inconsistente y no se pudo importar, código de error" />
+		<text name="gui_ad_adpd_showConfirmation"				text="AutoDrive: ¿Quieres importar la ruta AD desde el Colocable?" />
+		<text name="gui_ad_pathfinder"							text="Algoritmo de búsqueda de rutas" />
+		<text name="gui_ad_pathfinder_tooltip"					text="Elija qué algoritmo de búsqueda de rutas se utiliza (cuando no está en la ruta)" />
+		<text name="gui_ad_pathfinder_astar"					text="A-Star + Dubbins" />
+		<text name="gui_ad_pathfinder_custom"					text="AutoDrive personalizado" />
+		<text name="gui_ad_enableRoutesManagerOnDediServer"			text="Administrador de rutas en servidor" />
+		<text name="gui_ad_enableRoutesManagerOnDediServer_tooltip"	text="Habilitar el administrador de rutas en servidores dedicados" />
+		<text name="gui_ad_detectSwath"							text="Detección de hileras" />
+		<text name="gui_ad_detectSwath_tooltip"					text="Decide si las hileras se detectan como fruta en el campo." />
+		<text name="gui_ad_colorAssignmentMode"					text="Colores personalizados" />
+		<text name="gui_ad_colorAssignmentMode_tooltip"			text="Permite la selección de colores personalizados para AutoDrive" />
+		<text name="gui_ad_FoldImplements"						text="Plegar herramientas" />
+		<text name="gui_ad_FoldImplements_tooltip"				text="AutoDrive esperará a que las herramientas se plieguen antes de comenzar" />
+		<text name="gui_ad_RecordWhileNotInVehicle"				text="Grabar sin conductor" />
+		<text name="gui_ad_RecordWhileNotInVehicle_tooltip"		text="AutoDrive seguirá grabando si el conductor abandona el vehículo" />	
 
 		<text name="gui_ad_settingsPage_title"					text="Ajustes - AutoDrive" />
 		<text name="gui_ad_userSettingsPage_title"				text="Ajustes de usuario - AutoDrive" />
@@ -262,8 +278,7 @@
 		<text name="gui_ad_restoreButtonText" 					text="Restaurar" />
 		<text name="gui_ad_settingsClosingDialog_title" 		text="Todos los cambios se perderán" />
 		<text name="gui_ad_settingsClosingDialog_text" 			text="¿Estás seguro de que quieres cerrar los ajustes sin guardar?" />
-		<text name="gui_ad_setDefaultButtonText" 				text="Establecer como predeterminado" />
-		
+		<text name="gui_ad_setDefaultButtonText" 				text="Establecer como predeterminado" />	
 		<text name="gui_ad_routesManagerTitle" 					text="Gestor de rutas" />
 		<text name="gui_ad_routesManagerTextTitle" 				text="Introduce el nombre de la ruta:" />
 		<text name="gui_ad_button_export" 						text="Guardar" />
@@ -293,7 +308,6 @@
 		<text name="gui_ad_notificationHistoryTitle" 			text="Notificaciones" />
 
 		<text name="gui_ad_colorSettingsTitle" 			        text="Asignaciones de color" />
-   
         <!-- Please keep the numbers in the translation texts - they are used to sort / group the entries in the list -->
 		<text name="ad_color_singleConnection" 			        text="01 línea de conexión unidireccional" />
 		<text name="ad_color_dualConnection" 			        text="02 línea de conexión bidireccional" />
@@ -303,27 +317,26 @@
 		<text name="ad_color_subPrioDualConnection" 			text="06 línea de conexión secundaria bidireccional" />
 		<text name="ad_color_subPrioNode" 			            text="07 punto de ruta secundario" />
 		<text name="ad_color_hoveredNode" 			            text="08 punto de ruta resaltado" />
-		<text name="ad_color_previousNode" 			            text="09 connectar punto de ruta anterior" />
-		<text name="ad_color_nextNode" 			                text="10 connexión punto de ruta siguiente" />
+		<text name="ad_color_previousNode" 			            text="09 conectar punto de ruta anterior" />
+		<text name="ad_color_nextNode" 			                text="10 conexión punto de ruta siguiente" />
 		<text name="ad_color_selectedNode" 			            text="11 punto de ruta seleccionado" />
 		<text name="ad_color_currentConnection" 			    text="12 líneas siguiente ruta" />
 		<text name="ad_color_closestLine" 			            text="13 líneas desde el vehículo hasta el punto de referencia más cercano" />
 		<text name="ad_color_editorHeightLine" 			        text="14 línea desde el punto de ruta de superficie hasta el vehículo cercano" />
-		<text name="ad_color_previewSingleConnection" 	        text="15 curve preview OK, single-way connection" />
-		<text name="ad_color_previewDualConnection" 	        text="16 curve preview OK, dual-way connection" />
-		<text name="ad_color_previewSubPrioSingleConnection"    text="17 curve preview OK, secondary single-way connection" />
-		<text name="ad_color_previewSubPrioDualConnection" 	    text="18 curve preview OK, secondary dual-way connection" />
-		<text name="ad_color_previewOk" 			            text="19 vista previa de la curva OK, sin colisión" />
-		<text name="ad_color_previewNotOk" 			            text="20 vista previa de la curva no OK, tiene colisión" />
+		<text name="ad_color_previewSingleConnection" 	        text="15 Vista previa de curva OK, conexión unidireccional" />
+		<text name="ad_color_previewDualConnection" 	        text="16 Vista previa de curva OK, conexión bidireccional" />
+		<text name="ad_color_previewSubPrioSingleConnection"    text="17 Vista previa de curva OK, conexión secundaria unidireccional" />
+		<text name="ad_color_previewSubPrioDualConnection" 	    text="18 Vista previa de curva OK, conexión secundaria bidireccional" />
+		<text name="ad_color_previewOk" 			            text="19 Vista previa de la curva OK, sin colisión" />
+		<text name="ad_color_previewNotOk" 			            text="20 Vista previa de la curva no OK, tiene colisión" />
 		<text name="ad_color_textInputBackground" 			    text="21 Fondo para entradas de texto, objetivos, etc." />
-		<text name="ad_color_hudTextDefault"					text="22 HUD text, normal items" />
-		<text name="ad_color_hudTextHover"					    text="23 HUD text, hovering on normal items" />
-		<text name="ad_color_hudTextSpecial"					text="24 HUD text, active items and folders" />
-		<text name="ad_color_hudTextHoverSpecial"				text="25 HUD text, hovering on active items and folders" />
+		<text name="ad_color_hudTextDefault"					text="22 Texto del HUD, elementos normales" />
+		<text name="ad_color_hudTextHover"					    text="23 Texto del HUD, al pasar el cursor sobre elementos normales" />
+		<text name="ad_color_hudTextSpecial"					text="24 Texto del HUD, elementos activos y carpetas" />
+		<text name="ad_color_hudTextHoverSpecial"				text="25 Texto de HUD al pasar el cursor sobre elementos y carpetas activos" />
 
 		<text name="button_delete_all" 							text="Eliminar todas" />
 		<text name="button_reset_selected" 					    text="Resetear seleccionados" />
-
 		<text name="AD_task_pathfinding"						text="Calculando ruta" />
 		<text name="AD_task_catch_up_with_combine"				text="Alcanzando a cosechadora" />
 		<text name="AD_task_clearcrop"							text="Retirando Cultivo" />
