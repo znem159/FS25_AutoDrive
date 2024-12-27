@@ -104,11 +104,11 @@ function ADDrawingManager:addLineTask(sx, sy, sz, ex, ey, ez, scale, r, g, b)
     -- storing task
     -- local hash = 0
     -- table.insert(self.lines.tasks, {sx = sx, sy = sy, sz = sz, ex = ex, ey = ey, ez = ez, scale = scale, r = r, g = g, b = b, hash = hash})
-    scale = scale or 1
+    local scaleLine = (AutoDrive.getSetting("scaleLines") or 1) * (scale or 1)
     self.lines.currentTask = self.lines.currentTask + 1
     if self.lines.tasks[self.lines.currentTask] == nil then
         -- add new task
-        table.insert(self.lines.tasks, {sx = sx, sy = sy, sz = sz, ex = ex, ey = ey, ez = ez, scale = scale, r = r, g = g, b = b, taskChanged = true})
+        table.insert(self.lines.tasks, {sx = sx, sy = sy, sz = sz, ex = ex, ey = ey, ez = ez, scale = scaleLine, r = r, g = g, b = b, taskChanged = true})
     elseif
         self.lines.tasks[self.lines.currentTask].sx ~= sx or
         self.lines.tasks[self.lines.currentTask].sy ~= sy or
@@ -116,7 +116,7 @@ function ADDrawingManager:addLineTask(sx, sy, sz, ex, ey, ez, scale, r, g, b)
         self.lines.tasks[self.lines.currentTask].ex ~= ex or
         self.lines.tasks[self.lines.currentTask].ey ~= ey or
         self.lines.tasks[self.lines.currentTask].ez ~= ez or
-        self.lines.tasks[self.lines.currentTask].scale ~= scale or
+        self.lines.tasks[self.lines.currentTask].scale ~= scaleLine or
         self.lines.tasks[self.lines.currentTask].r ~= r or
         self.lines.tasks[self.lines.currentTask].g ~= g or
         self.lines.tasks[self.lines.currentTask].b ~= b
@@ -128,7 +128,7 @@ function ADDrawingManager:addLineTask(sx, sy, sz, ex, ey, ez, scale, r, g, b)
         self.lines.tasks[self.lines.currentTask].ex = ex
         self.lines.tasks[self.lines.currentTask].ey = ey
         self.lines.tasks[self.lines.currentTask].ez = ez
-        self.lines.tasks[self.lines.currentTask].scale = scale
+        self.lines.tasks[self.lines.currentTask].scale = scaleLine
         self.lines.tasks[self.lines.currentTask].r = r
         self.lines.tasks[self.lines.currentTask].g = g
         self.lines.tasks[self.lines.currentTask].b = b
@@ -141,13 +141,13 @@ end
 
 function ADDrawingManager:addArrowTask(sx, sy, sz, ex, ey, ez, scale, position, r, g, b)
     -- storing task
-    scale = scale or 1
+    local scaleLine = (AutoDrive.getSetting("scaleLines") or 1) * (scale or 1)
     -- local hash = 0
     -- table.insert(self.arrows.tasks, {sx = sx, sy = sy, sz = sz, ex = ex, ey = ey, ez = ez, scale = scale, r = r, g = g, b = b, position = position, hash = hash})
     self.arrows.currentTask = self.arrows.currentTask + 1
     if self.arrows.tasks[self.arrows.currentTask] == nil then
         -- add new task
-        table.insert(self.arrows.tasks, {sx = sx, sy = sy, sz = sz, ex = ex, ey = ey, ez = ez, scale = scale, position = position, r = r, g = g, b = b, taskChanged = true})
+        table.insert(self.arrows.tasks, {sx = sx, sy = sy, sz = sz, ex = ex, ey = ey, ez = ez, scale = scaleLine, position = position, r = r, g = g, b = b, taskChanged = true})
     elseif
         self.arrows.tasks[self.arrows.currentTask].sx ~= sx or
         self.arrows.tasks[self.arrows.currentTask].sy ~= sy or
@@ -155,7 +155,7 @@ function ADDrawingManager:addArrowTask(sx, sy, sz, ex, ey, ez, scale, position, 
         self.arrows.tasks[self.arrows.currentTask].ex ~= ex or
         self.arrows.tasks[self.arrows.currentTask].ey ~= ey or
         self.arrows.tasks[self.arrows.currentTask].ez ~= ez or
-        self.arrows.tasks[self.arrows.currentTask].scale ~= scale or
+        self.arrows.tasks[self.arrows.currentTask].scale ~= scaleLine or
         self.arrows.tasks[self.arrows.currentTask].position ~= position or
         self.arrows.tasks[self.arrows.currentTask].r ~= r or
         self.arrows.tasks[self.arrows.currentTask].g ~= g or
@@ -168,7 +168,7 @@ function ADDrawingManager:addArrowTask(sx, sy, sz, ex, ey, ez, scale, position, 
         self.arrows.tasks[self.arrows.currentTask].ex = ex
         self.arrows.tasks[self.arrows.currentTask].ey = ey
         self.arrows.tasks[self.arrows.currentTask].ez = ez
-        self.arrows.tasks[self.arrows.currentTask].scale = scale
+        self.arrows.tasks[self.arrows.currentTask].scale = scaleLine
         self.arrows.tasks[self.arrows.currentTask].position = position
         self.arrows.tasks[self.arrows.currentTask].r = r
         self.arrows.tasks[self.arrows.currentTask].g = g
@@ -238,22 +238,22 @@ function ADDrawingManager:addCrossTask(x, y, z, scale)
     -- storing task
     -- local hash = 0
     -- table.insert(self.cross.tasks, {x = x, y = y, z = z, scale = scale, hash = hash})
-    scale = scale or 1
+    local scaleLine = (AutoDrive.getSetting("scaleLines") or 1) * (scale or 1)
     self.cross.currentTask = self.cross.currentTask + 1
     if self.cross.tasks[self.cross.currentTask] == nil then
         -- add new task
-        table.insert(self.cross.tasks, {x = x, y = y, z = z, scale = scale, taskChanged = true})
+        table.insert(self.cross.tasks, {x = x, y = y, z = z, scale = scaleLine, taskChanged = true})
     elseif
         self.cross.tasks[self.cross.currentTask].x ~= x or
         self.cross.tasks[self.cross.currentTask].y ~= y or
         self.cross.tasks[self.cross.currentTask].z ~= z or
-        self.cross.tasks[self.cross.currentTask].scale ~= scale
+        self.cross.tasks[self.cross.currentTask].scale ~= scaleLine
     then
         -- task changed
         self.cross.tasks[self.cross.currentTask].x = x
         self.cross.tasks[self.cross.currentTask].y = y
         self.cross.tasks[self.cross.currentTask].z = z
-        self.cross.tasks[self.cross.currentTask].scale = scale
+        self.cross.tasks[self.cross.currentTask].scale = scaleLine
         self.cross.tasks[self.cross.currentTask].taskChanged = true
     else
         -- task unchanged -> false will be set after update with dFunc
@@ -619,8 +619,7 @@ function ADDrawingManager:drawLine(id, task)
 
     setTranslation(id, task.sx, task.sy + self.yOffset, task.sz)
 
-    local scaleLines = (AutoDrive.getSetting("scaleLines") or 1) * (task.scale or 1)
-    setScale(id, scaleLines, scaleLines, distToNextPoint)
+    setScale(id, task.scale, task.scale, distToNextPoint)
 
     -- Set the direction of the line
     setRotation(id, rotX, rotY, 0)
@@ -655,8 +654,7 @@ function ADDrawingManager:drawArrow(id, task)
 
     setTranslation(id, x, y + self.yOffset, z)
 
-    local scaleLines = (AutoDrive.getSetting("scaleLines") or 1) * (task.scale or 1)
-    setScale(id, scaleLines, scaleLines, scaleLines)
+    setScale(id, task.scale, task.scale, task.scale)
 
     -- Set the direction of the arrow
     setRotation(id, rotX, rotY, 0)
@@ -676,8 +674,7 @@ end
 
 function ADDrawingManager:drawCross(id, task)
     setTranslation(id, task.x, task.y + self.yOffset, task.z)
-    local scaleLines = (AutoDrive.getSetting("scaleLines") or 1) * (task.scale or 1)
-    setScale(id, scaleLines, scaleLines, scaleLines)
+    setScale(id, task.scale, task.scale, task.scale)
 end
 
 function ADDrawingManager:drawSphere(id, task)
