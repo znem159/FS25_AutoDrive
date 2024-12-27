@@ -2997,7 +2997,7 @@ function PathFinderModule:collisionTestCallback(transformId)
         if (collisionObject == nil) or (collisionObject ~= nil and not (collisionObject.rootVehicle == self.vehicle)) then
             self.collisionhits = self.collisionhits + 1
             if PathFinderModule.debug == true then
-                local currentCollMask = getCollisionMask(transformId)
+                local currentCollMask = getCollisionFilterMask(transformId)
                 if currentCollMask then
                     local x, _, z = getWorldTranslation(transformId)
                     x = x + g_currentMission.mapWidth/2
