@@ -66,17 +66,16 @@ string.randomCharset = {
 --- Calculates a much better result of world height by using a raycast.
 --- The original function `getTerrainHeightAtWorldPos` returns wrong results if, for example, the terrain underneath a road has gaps.
 --- As the raycast uses a callback function, this function must be splitted in two parts.
---- We're using collision mask of 12 (bit 3&4) - see: ADCollSensor.mask_static_world*
---- see: https://gdn.giants-software.com/thread.php?categoryId=3&threadId=8381
 --- @param x number X Coordinate
 --- @param z number Z Coordinate
 --- @return number Height of the terrain
 function AutoDrive:getTerrainHeightAtWorldPos(x, z, startingHeight)
 	self.raycastHeight = nil
+	local collisionMask = CollisionFlag.DEFAULT + CollisionFlag.ROAD + CollisionFlag.TERRAIN
 	-- get a starting height with the basic function
 	local startHeight = startingHeight or getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, x, 1, z)
 	-- do a raycast from a bit above y
-	raycastClosest(x, startHeight + 3, z, 0, -1, 0, 5, "getTerrainHeightAtWorldPos_Callback", self, 12)
+	raycastClosest(x, startHeight + 3, z, 0, -1, 0, 5, "getTerrainHeightAtWorldPos_Callback", self, collisionMask)
 	return self.raycastHeight or startHeight
 end
 
