@@ -172,6 +172,12 @@ function ADStateModule:readFromXMLFile(xmlFile, key)
         self.bunkerUnloadType = bunkerUnloadType
     end
 
+    local usedHelper = xmlFile:getValue(key .. "#usedHelper")
+    if usedHelper ~= nil and self:isHelperTypeValid(usedHelper) then
+        self.usedHelper = usedHelper
+    end
+
+    
     -- local automaticUnloadTarget = xmlFile:getValue(key .. "#automaticUnloadTarget")
     -- if automaticUnloadTarget ~= nil then
         -- self.automaticUnloadTarget = automaticUnloadTarget
@@ -200,6 +206,7 @@ function ADStateModule:saveToXMLFile(xmlFile, key)
     xmlFile:setValue(key .. "#driverName", self.driverName)
     xmlFile:setValue(key .. "#lastActive", self.active)
     xmlFile:setValue(key .. "#AIVElastActive", false)
+    xmlFile:setValue(key .. "#usedHelper", self.usedHelper)
     xmlFile:setValue(key .. "#bunkerUnloadType", self.bunkerUnloadType)
     -- xmlFile:setValue(key .. "#automaticUnloadTarget", self.automaticUnloadTarget)
     -- xmlFile:setValue(key .. "#automaticPickupTarget", self.automaticPickupTarget)
@@ -391,33 +398,45 @@ function ADStateModule:getStartHelper()
     return self.startHelper
 end
 
-function ADStateModule:toggleUsedHelper()
-    local helper = self.usedHelper
-    if self.vehicle.getLastJob and helper == ADStateModule.HELPER_AI then
-        if self.vehicle.cpStartStopDriver then
-            helper = ADStateModule.HELPER_CP
-        elseif self.vehicle.acParameters then
-            helper = ADStateModule.HELPER_AIVE
-        else
-            helper = ADStateModule.HELPER_AI
-        end
-    elseif self.vehicle.cpStartStopDriver and helper == ADStateModule.HELPER_CP then
-        if self.vehicle.acParameters then
-            helper = ADStateModule.HELPER_AIVE
-        elseif self.vehicle.getLastJob then
-            helper = ADStateModule.HELPER_AI
-        else
-            helper = ADStateModule.HELPER_CP
-        end
-    elseif self.vehicle.acParameters and helper == ADStateModule.HELPER_AIVE then
-        if self.vehicle.getLastJob then
-            helper = ADStateModule.HELPER_AI
-        elseif self.vehicle.cpStartStopDriver then
-            helper = ADStateModule.HELPER_CP
-        else
-            helper = ADStateModule.HELPER_AIVE
-        end
+function ADStateModule.getNextHelperType(helper)
+    -- AI -> CP -> AIVE -> AI ...
+    if helper == ADStateModule.HELPER_AI then
+        return ADStateModule.HELPER_CP
+    elseif helper == ADStateModule.HELPER_CP then
+        return ADStateModule.HELPER_AIVE
+    elseif helper == ADStateModule.HELPER_AIVE then
+        return ADStateModule.HELPER_AI
     else
+        return ADStateModule.HELPER_NONE
+    end
+end
+
+function ADStateModule:isHelperTypeValid(helper)
+    if helper == ADStateModule.HELPER_NONE then
+        return true
+    end
+    if helper == ADStateModule.HELPER_AI and self.vehicle.getLastJob then
+        return true
+    end
+    if helper == ADStateModule.HELPER_CP and self.vehicle.cpStartStopDriver then
+        return true
+    end
+    if helper == ADStateModule.HELPER_AIVE and self.vehicle.acParameters then
+        return true
+    end
+    return false
+end
+
+function ADStateModule:toggleUsedHelper()
+    -- check the hext helper type
+    local helper = self.getNextHelperType(self.usedHelper)
+    if not self:isHelperTypeValid(helper) then
+        -- try the next one
+        -- currently we only have 3 helper types - if we have more in the future, we need to add a loop here
+        helper = self.getNextHelperType(helper)
+    end
+
+    if not self:isHelperTypeValid(helper) then
         helper = ADStateModule.HELPER_NONE
     end
     if helper ~= self.usedHelper then
