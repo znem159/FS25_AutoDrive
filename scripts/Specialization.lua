@@ -1609,7 +1609,7 @@ function AutoDrive:toggleMouse()
 end
 
 function AutoDrive:onPlayerLeaveVehicle(param)
-    AutoDrive.debugMsg(self, "AutoDrive:onPlayerLeaveVehicle start param %"
+    AutoDrive.debugMsg(self, "AutoDrive:onPlayerLeaveVehicle start param %s"
     , tostring(param)
     )
     AutoDrive.debugMsg(self, "AutoDrive:onPlayerLeaveVehicle self.ad %s "
