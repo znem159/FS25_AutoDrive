@@ -19,7 +19,7 @@ function AutoDrive.registerEventListeners(vehicleType)
             "onUpdate",
             "onRegisterActionEvents",
             "onDelete",
-            "onDraw",
+            "onDrawUIInfo",
             "onPreLoad",
             "onPostLoad",
             "onLoad",
@@ -522,7 +522,13 @@ function AutoDrive:saveToXMLFile(xmlFile, key, usedModNames)
     end
 end
 
-function AutoDrive:onDraw()
+function AutoDrive:onDrawUIInfo()
+    local controlledVehicle = AutoDrive.getControlledVehicle()
+	if controlledVehicle == nil or self ~= controlledVehicle then
+        -- user not in control of this vehicle
+        return
+    end
+
     if AutoDrive.getSetting("showHUD") then
         AutoDrive.Hud:drawHud(self)
     end
