@@ -629,13 +629,12 @@ function AutoDrive.findGrainBackDoorTipSideIndex(vehicle, trailer)
             local _, _, diffZ = AutoDrive.worldToLocal(trailer, tx, ty, tz + 50)
             -- get the 2 most back doors
             if diffZ < backDistance1 and currentDischargeNode and currentDischargeNode.effects and table.count(currentDischargeNode.effects) > 0 then
+                backDistance2 = backDistance1
+                dischargeSpeed2 = dischargeSpeed1
+                tipSideIndex2 = tipSideIndex1
                 backDistance1 = diffZ
                 dischargeSpeed1 = currentDischargeNode.emptySpeed
                 tipSideIndex1 = i
-            elseif diffZ < backDistance2 and currentDischargeNode and currentDischargeNode.effects and table.count(currentDischargeNode.effects) > 0 then
-                backDistance2 = diffZ
-                dischargeSpeed2 = currentDischargeNode.emptySpeed
-                tipSideIndex2 = i
             end
         end
     end
@@ -723,7 +722,7 @@ function AutoDrive.findAndSetBestTipPoint(vehicle, trailer)
                 --end
 
                 local currentDischargeNode = trailer:getCurrentDischargeNode()
-                
+
                 if currentDischargeNode and currentDischargeNode.effects and table.count(currentDischargeNode.effects) > 0 then
                     AutoDrive.updateTrailerRaycast(trailer, trailer:getCurrentDischargeNode())
                     --trailer:updateRaycast(trailer:getCurrentDischargeNode())
