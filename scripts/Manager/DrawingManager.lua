@@ -105,16 +105,17 @@ function ADDrawingManager:addLineTask(sx, sy, sz, ex, ey, ez, scale, r, g, b)
     -- local hash = 0
     -- table.insert(self.lines.tasks, {sx = sx, sy = sy, sz = sz, ex = ex, ey = ey, ez = ez, scale = scale, r = r, g = g, b = b, hash = hash})
     local scaleLine = (AutoDrive.getSetting("scaleLines") or 1) * (scale or 1)
+    self.yOffset = AutoDrive.drawHeight + AutoDrive.getSetting("lineHeight")
     self.lines.currentTask = self.lines.currentTask + 1
     if self.lines.tasks[self.lines.currentTask] == nil then
         -- add new task
-        table.insert(self.lines.tasks, {sx = sx, sy = sy, sz = sz, ex = ex, ey = ey, ez = ez, scale = scaleLine, r = r, g = g, b = b, taskChanged = true})
+        table.insert(self.lines.tasks, {sx = sx, sy = sy + self.yOffset, sz = sz, ex = ex, ey = ey + self.yOffset, ez = ez, scale = scaleLine, r = r, g = g, b = b, taskChanged = true})
     elseif
         self.lines.tasks[self.lines.currentTask].sx ~= sx or
-        self.lines.tasks[self.lines.currentTask].sy ~= sy or
+        self.lines.tasks[self.lines.currentTask].sy ~= sy + self.yOffset or
         self.lines.tasks[self.lines.currentTask].sz ~= sz or
         self.lines.tasks[self.lines.currentTask].ex ~= ex or
-        self.lines.tasks[self.lines.currentTask].ey ~= ey or
+        self.lines.tasks[self.lines.currentTask].ey ~= ey + self.yOffset or
         self.lines.tasks[self.lines.currentTask].ez ~= ez or
         self.lines.tasks[self.lines.currentTask].scale ~= scaleLine or
         self.lines.tasks[self.lines.currentTask].r ~= r or
@@ -123,10 +124,10 @@ function ADDrawingManager:addLineTask(sx, sy, sz, ex, ey, ez, scale, r, g, b)
     then
         -- task changed
         self.lines.tasks[self.lines.currentTask].sx = sx
-        self.lines.tasks[self.lines.currentTask].sy = sy
+        self.lines.tasks[self.lines.currentTask].sy = sy + self.yOffset
         self.lines.tasks[self.lines.currentTask].sz = sz
         self.lines.tasks[self.lines.currentTask].ex = ex
-        self.lines.tasks[self.lines.currentTask].ey = ey
+        self.lines.tasks[self.lines.currentTask].ey = ey + self.yOffset
         self.lines.tasks[self.lines.currentTask].ez = ez
         self.lines.tasks[self.lines.currentTask].scale = scaleLine
         self.lines.tasks[self.lines.currentTask].r = r
@@ -142,18 +143,19 @@ end
 function ADDrawingManager:addArrowTask(sx, sy, sz, ex, ey, ez, scale, position, r, g, b)
     -- storing task
     local scaleLine = (AutoDrive.getSetting("scaleLines") or 1) * (scale or 1)
+    self.yOffset = AutoDrive.drawHeight + AutoDrive.getSetting("lineHeight")
     -- local hash = 0
     -- table.insert(self.arrows.tasks, {sx = sx, sy = sy, sz = sz, ex = ex, ey = ey, ez = ez, scale = scale, r = r, g = g, b = b, position = position, hash = hash})
     self.arrows.currentTask = self.arrows.currentTask + 1
     if self.arrows.tasks[self.arrows.currentTask] == nil then
         -- add new task
-        table.insert(self.arrows.tasks, {sx = sx, sy = sy, sz = sz, ex = ex, ey = ey, ez = ez, scale = scaleLine, position = position, r = r, g = g, b = b, taskChanged = true})
+        table.insert(self.arrows.tasks, {sx = sx, sy = sy + self.yOffset, sz = sz, ex = ex, ey = ey + self.yOffset, ez = ez, scale = scaleLine, position = position, r = r, g = g, b = b, taskChanged = true})
     elseif
         self.arrows.tasks[self.arrows.currentTask].sx ~= sx or
-        self.arrows.tasks[self.arrows.currentTask].sy ~= sy or
+        self.arrows.tasks[self.arrows.currentTask].sy ~= sy + self.yOffset or
         self.arrows.tasks[self.arrows.currentTask].sz ~= sz or
         self.arrows.tasks[self.arrows.currentTask].ex ~= ex or
-        self.arrows.tasks[self.arrows.currentTask].ey ~= ey or
+        self.arrows.tasks[self.arrows.currentTask].ey ~= ey + self.yOffset or
         self.arrows.tasks[self.arrows.currentTask].ez ~= ez or
         self.arrows.tasks[self.arrows.currentTask].scale ~= scaleLine or
         self.arrows.tasks[self.arrows.currentTask].position ~= position or
@@ -163,10 +165,10 @@ function ADDrawingManager:addArrowTask(sx, sy, sz, ex, ey, ez, scale, position, 
     then
         -- task changed
         self.arrows.tasks[self.arrows.currentTask].sx = sx
-        self.arrows.tasks[self.arrows.currentTask].sy = sy
+        self.arrows.tasks[self.arrows.currentTask].sy = sy + self.yOffset
         self.arrows.tasks[self.arrows.currentTask].sz = sz
         self.arrows.tasks[self.arrows.currentTask].ex = ex
-        self.arrows.tasks[self.arrows.currentTask].ey = ey
+        self.arrows.tasks[self.arrows.currentTask].ey = ey + self.yOffset
         self.arrows.tasks[self.arrows.currentTask].ez = ez
         self.arrows.tasks[self.arrows.currentTask].scale = scaleLine
         self.arrows.tasks[self.arrows.currentTask].position = position
@@ -185,12 +187,13 @@ function ADDrawingManager:addSmallSphereTask(x, y, z, r, g, b)
     -- local hash = 0
     -- table.insert(self.sSphere.tasks, {x = x, y = y, z = z, r = r, g = g, b = b, hash = hash})
     self.sSphere.currentTask = self.sSphere.currentTask + 1
+    self.yOffset = AutoDrive.drawHeight + AutoDrive.getSetting("lineHeight")
     if self.sSphere.tasks[self.sSphere.currentTask] == nil then
         -- add new task
-        table.insert(self.sSphere.tasks, {x = x, y = y, z = z, r = r, g = g, b = b, taskChanged = true})
+        table.insert(self.sSphere.tasks, {x = x, y = y + self.yOffset, z = z, r = r, g = g, b = b, taskChanged = true})
     elseif
         self.sSphere.tasks[self.sSphere.currentTask].x ~= x or
-        self.sSphere.tasks[self.sSphere.currentTask].y ~= y or
+        self.sSphere.tasks[self.sSphere.currentTask].y ~= y + self.yOffset or
         self.sSphere.tasks[self.sSphere.currentTask].z ~= z or
         self.sSphere.tasks[self.sSphere.currentTask].r ~= r or
         self.sSphere.tasks[self.sSphere.currentTask].g ~= g or
@@ -198,7 +201,7 @@ function ADDrawingManager:addSmallSphereTask(x, y, z, r, g, b)
     then
         -- task changed
         self.sSphere.tasks[self.sSphere.currentTask].x = x
-        self.sSphere.tasks[self.sSphere.currentTask].y = y
+        self.sSphere.tasks[self.sSphere.currentTask].y = y + self.yOffset
         self.sSphere.tasks[self.sSphere.currentTask].z = z
         self.sSphere.tasks[self.sSphere.currentTask].r = r
         self.sSphere.tasks[self.sSphere.currentTask].g = g
@@ -215,17 +218,18 @@ function ADDrawingManager:addMarkerTask(x, y, z)
     -- local hash = 0
     -- table.insert(self.markers.tasks, {x = x, y = y, z = z, hash = hash})
     self.markers.currentTask = self.markers.currentTask + 1
+    self.yOffset = AutoDrive.drawHeight + AutoDrive.getSetting("lineHeight")
     if self.markers.tasks[self.markers.currentTask] == nil then
         -- add new task
-        table.insert(self.markers.tasks, {x = x, y = y, z = z, taskChanged = true})
+        table.insert(self.markers.tasks, {x = x, y = y + self.yOffset, z = z, taskChanged = true})
     elseif
         self.markers.tasks[self.markers.currentTask].x ~= x or
-        self.markers.tasks[self.markers.currentTask].y ~= y or
+        self.markers.tasks[self.markers.currentTask].y ~= y + self.yOffset or
         self.markers.tasks[self.markers.currentTask].z ~= z
     then
         -- task changed
         self.markers.tasks[self.markers.currentTask].x = x
-        self.markers.tasks[self.markers.currentTask].y = y
+        self.markers.tasks[self.markers.currentTask].y = y + self.yOffset
         self.markers.tasks[self.markers.currentTask].z = z
         self.markers.tasks[self.markers.currentTask].taskChanged = true
     else
@@ -266,14 +270,15 @@ function ADDrawingManager:addSphereTask(x, y, z, scale, r, g, b, a)
     -- local hash = 0
     -- table.insert(self.sphere.tasks, {x = x, y = y, z = z, r = r, g = g, b = b, a = a, scale = scale, hash = hash})
     scale = scale or 1
+    self.yOffset = AutoDrive.drawHeight + AutoDrive.getSetting("lineHeight")
     a = a or 0
     self.sphere.currentTask = self.sphere.currentTask + 1
     if self.sphere.tasks[self.sphere.currentTask] == nil then
         -- add new task
-        table.insert(self.sphere.tasks, {x = x, y = y, z = z, r = r, g = g, b = b, a = a, scale = scale, taskChanged = true})
+        table.insert(self.sphere.tasks, {x = x, y = y + self.yOffset, z = z, r = r, g = g, b = b, a = a, scale = scale, taskChanged = true})
     elseif
         self.sphere.tasks[self.sphere.currentTask].x ~= x or
-        self.sphere.tasks[self.sphere.currentTask].y ~= y or
+        self.sphere.tasks[self.sphere.currentTask].y ~= y + self.yOffset or
         self.sphere.tasks[self.sphere.currentTask].z ~= z or
         self.sphere.tasks[self.sphere.currentTask].r ~= r or
         self.sphere.tasks[self.sphere.currentTask].g ~= g or
@@ -283,7 +288,7 @@ function ADDrawingManager:addSphereTask(x, y, z, scale, r, g, b, a)
     then
         -- task changed
         self.sphere.tasks[self.sphere.currentTask].x = x
-        self.sphere.tasks[self.sphere.currentTask].y = y
+        self.sphere.tasks[self.sphere.currentTask].y = y + self.yOffset
         self.sphere.tasks[self.sphere.currentTask].z = z
         self.sphere.tasks[self.sphere.currentTask].r = r
         self.sphere.tasks[self.sphere.currentTask].g = g
@@ -299,8 +304,6 @@ end
 
 function ADDrawingManager:draw()
     local time = netGetTime()
-    local ad = AutoDrive
-    self.yOffset = ad.drawHeight + ad.getSetting("lineHeight")
 
     -- update emittivity only once every 600 frames
     if self.emittivityNextUpdate <= 0 then
@@ -617,7 +620,7 @@ function ADDrawingManager:drawLine(id, task)
     local dist2D = MathUtil.vector2Length(task.ex - task.sx, task.ez - task.sz)
     local rotX = -atan2(dy, dist2D)
 
-    setTranslation(id, task.sx, task.sy + self.yOffset, task.sz)
+    setTranslation(id, task.sx, task.sy, task.sz)
 
     setScale(id, task.scale, task.scale, distToNextPoint)
 
@@ -652,7 +655,7 @@ function ADDrawingManager:drawArrow(id, task)
     local dist2D = MathUtil.vector2Length(task.ex - task.sx, task.ez - task.sz)
     local rotX = -atan2(dy, dist2D)
 
-    setTranslation(id, x, y + self.yOffset, z)
+    setTranslation(id, x, y, z)
 
     setScale(id, task.scale, task.scale, task.scale)
 
@@ -664,12 +667,12 @@ function ADDrawingManager:drawArrow(id, task)
 end
 
 function ADDrawingManager:drawSmallSphere(id, task)
-    setTranslation(id, task.x, task.y + self.yOffset, task.z)
+    setTranslation(id, task.x, task.y, task.z)
     setShaderParameter(id, "lineColor", task.r, task.g, task.b, self.emittivity, false)
 end
 
 function ADDrawingManager:drawMarker(id, task)
-    setTranslation(id, task.x, task.y + self.yOffset, task.z)
+    setTranslation(id, task.x, task.y, task.z)
 end
 
 function ADDrawingManager:drawCross(id, task)
@@ -678,7 +681,7 @@ function ADDrawingManager:drawCross(id, task)
 end
 
 function ADDrawingManager:drawSphere(id, task)
-    setTranslation(id, task.x, task.y + self.yOffset, task.z)
+    setTranslation(id, task.x, task.y, task.z)
     setScale(id, task.scale, task.scale, task.scale)
     setShaderParameter(id, "lineColor", task.r, task.g, task.b, self.emittivity + task.a, false)
 end
