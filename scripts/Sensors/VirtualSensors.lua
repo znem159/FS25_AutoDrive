@@ -241,7 +241,7 @@ function ADSensor:getLocationByPosition()
             location = front
         end
         --location.z = location.z + AutoDrive.getVehicleLeadingEdge(vehicle)
-        --location.z = location.z + 2
+        location.z = location.z + 0.5
     elseif self.position == ADSensor.POS_REAR then
         location.z = - vehicle.size.length / 2
         self.frontFactor = -1
