@@ -81,15 +81,14 @@ function ADCollSensorSplit:collisionTestCallback(transformId)
         if collisionObject ~= self and collisionObject ~= self.vehicle and not AutoDrive:checkIsConnected(self.vehicle:getRootVehicle(), collisionObject) then
             if unloadDriver == nil or (collisionObject ~= unloadDriver and (not AutoDrive:checkIsConnected(unloadDriver:getRootVehicle(), collisionObject))) then
                 self.newHit = true
-                return true
+                -- return true
             end
         end
     else
         self.newHit = true
-        return true
+        -- return true
     end
-
-    return false
+    -- return false
 end
 
 function ADCollSensorSplit:buildBoxShape(x, y, z, width, height, length, vecZ, vecX)
