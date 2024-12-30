@@ -164,6 +164,7 @@ function ADPullDownList:onDraw(vehicle, uiScale)
 
         renderText(posX, posY, adFontSize, text)
     else
+        drawFilledRect(self.position.x, self.expandedBottom, self.size.width, self.expandedSize.height, 0, 0, 0, 0.9)
         self.ovTop:render()
         self.ovStretch:render()
         self.ovBottom:render()
@@ -764,15 +765,13 @@ function ADPullDownList:expand(vehicle)
         self.expandedSize.height = math.min(itemCount + ADPullDownList.MIN_SHOWN, ADPullDownList.MAX_SHOWN) * AutoDrive.Hud.listItemHeight + self.size.height / 2
 
         if self.direction == ADPullDownList.EXPANDED_UP then
-            self.ovTop = Overlay.new(self.imageBGTop, self.position.x, self.position.y + self.expandedSize.height - self.size.height / 2, self.size.width, self.size.height / 2)
-            self.ovStretch = Overlay.new(self.imageBGStretch, self.position.x, self.position.y + (self.size.height / 2), self.size.width, self.expandedSize.height - self.size.height)
-            self.ovBottom = Overlay.new(self.imageBGBottom, self.position.x, self.position.y, self.size.width, self.size.height / 2)
+            self.expandedBottom = self.position.y
         else
-            self.ovTop = Overlay.new(self.imageBGTop, self.position.x, self.position.y + self.size.height / 2, self.size.width, self.size.height / 2)
-            self.ovStretch = Overlay.new(self.imageBGStretch, self.position.x, self.position.y + (self.size.height / 2) * 3 - self.expandedSize.height, self.size.width, self.expandedSize.height - self.size.height)
-            self.ovBottom = Overlay.new(self.imageBGBottom, self.position.x, self.position.y - self.expandedSize.height + self.size.height, self.size.width, self.size.height / 2)
+            self.expandedBottom = self.position.y - self.expandedSize.height + self.size.height
         end
-
+        self.ovTop = Overlay.new(self.imageBGTop, self.position.x, self.expandedBottom + self.expandedSize.height - self.size.height / 2, self.size.width, self.size.height / 2)
+        self.ovStretch = Overlay.new(self.imageBGStretch, self.position.x, self.expandedBottom + self.size.height / 2, self.size.width, self.expandedSize.height - self.size.height)
+        self.ovBottom = Overlay.new(self.imageBGBottom, self.position.x, self.expandedBottom, self.size.width, self.size.height / 2)
         self:setSelected(vehicle)
     end
 end

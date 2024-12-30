@@ -371,6 +371,7 @@ function AutoDriveHud:drawHud(vehicle)
 		self.lastUIScale = uiScale
 
         if self.hudElements ~= nil then
+			new2DLayer()
             for _, element in ipairs(self.hudElements) do -- `ipairs` is important, as we want "index-value pairs", not "key-value pairs". https://stackoverflow.com/a/55109411
                 element:onDraw(vehicle, uiScale)
             end
