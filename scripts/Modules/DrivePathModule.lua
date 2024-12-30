@@ -209,6 +209,13 @@ function ADDrivePathModule:isCloseToWaypoint()
     end
 
     local maxSkipWayPoints = 1
+    local wp_ahead = self:getNextWayPoint()
+    local wp_current = self:getCurrentWayPoint()
+    local isReverseStart = wp_ahead ~= nil and wp_ahead.incoming ~= nil and (not table.contains(wp_ahead.incoming, wp_current.id))
+    if isReverseStart then
+        maxSkipWayPoints = 0
+    end
+
     for i = 0, maxSkipWayPoints do
         if self.wayPoints[self:getCurrentWayPointIndex() + i] ~= nil then
             local distanceToCurrentWp = MathUtil.vector2Length(x - self.wayPoints[self:getCurrentWayPointIndex() + i].x, z - self.wayPoints[self:getCurrentWayPointIndex() + i].z)
@@ -216,15 +223,11 @@ function ADDrivePathModule:isCloseToWaypoint()
                 return true
             end
             -- Check if the angle between vehicle and current wp and current wp to next wp is over 90° - then we should already make the switch
-            if i == 1 then
-                local wp_ahead = self:getNextWayPoint()
-                local wp_current = self:getCurrentWayPoint()
-
+            if i == 1 and not isReverseStart then
                 local angle = AutoDrive.angleBetween({x = wp_ahead.x - wp_current.x, z = wp_ahead.z - wp_current.z}, {x = wp_current.x - x, z = wp_current.z - z})
                 angle = math.abs(angle)
 
-                local isReverseStart = wp_ahead.incoming ~= nil and (not table.contains(wp_ahead.incoming, wp_current.id))
-                if angle >= 135 and not isReverseStart then
+                if angle >= 135 then
                     return true
                 end
             end
