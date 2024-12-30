@@ -754,6 +754,10 @@ function AutoDrive:onEnterVehicle(isControlling)
 end
 
 function AutoDrive:onLeaveVehicle(wasEntered)
+    AutoDrive.debugPrint(self, AutoDrive.DC_VEHICLEINFO, "AutoDrive:onLeaveVehicle wasEntered: %s", tostring(wasEntered))
+    if not wasEntered then
+        return
+    end
     if not AutoDrive.getSetting("RecordWhileNotInVehicle") then
         if self.ad ~= nil and self.ad.stateModule ~= nil then
             self.ad.stateModule:disableCreationMode()
