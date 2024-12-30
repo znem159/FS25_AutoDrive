@@ -303,7 +303,7 @@ function ADSpecialDrivingModule:checkWayPointReached()
     local minDistance = 9
     local storedIndex = self.vehicle.ad.drivePathModule.currentWayPoint
     self.vehicle.ad.drivePathModule.currentWayPoint = self.vehicle.ad.drivePathModule.currentWayPoint + 1
-    local reverseStart, reverseEnd = self.vehicle.ad.drivePathModule:checkForReverseSection()
+    local _, _, reverseEnd = self.vehicle.ad.drivePathModule:checkForReverseSection()
     self.vehicle.ad.drivePathModule.currentWayPoint = storedIndex
     if self.reverseSolo then
         minDistance = AutoDrive.defineMinDistanceByVehicleType(self.vehicle)
