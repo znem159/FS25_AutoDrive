@@ -3,7 +3,7 @@
     <translationContributors>cristiancundari, Roby1164, Markus33_ITA</translationContributors>
     <texts>
         <text name="UNKNOWN"                    		text="Sconosciuto" />
-        <text name="input_ADToggleHud"              		text="AD: Mostra/Nascondi HUD" />
+		<text name="input_ADToggleHud"              		text="AD: Mostra/Nascondi HUD" />
         <text name="input_ADToggleHudExtension"         	text="AD: Mostra/Nascondi HUD estesa" />
         <text name="input_ADToggleMouse"            		text="AD: Mostra/Nascondi mouse" />
         <text name="input_ADEnDisable"              		text="AD: Abilita/Disabilita" />
@@ -204,8 +204,8 @@
         <text name="gui_ad_shovelHeight_tooltip"        	text="Se l'altezza della pala rilevata automaticamente non è corretta. Utilizzare questo per regolare l'altezza dal suolo" />
         <text name="gui_ad_showMarkersOnMap"            	text="Visualizza marcatori " />
         <text name="gui_ad_showMarkersOnMap_tooltip"        	text="Visualizza marcatori/destinazioni sulla mappa in gioco" />
-        <text name="gui_ad_switchToMarkersOnMap"        	text="Vai ai marcatori" />
-        <text name="gui_ad_switchToMarkersOnMap_tooltip"    	text="Imposta la destinazione quando si fa clic sugli hotspot della mappa" />
+        <text name="gui_ad_switchToMarkersOnMap"        	text="Vai ai marcatori ( Solo quando si è su un veicolo )" />
+        <text name="gui_ad_switchToMarkersOnMap_tooltip"    	text="Imposta la destinazione quando si fa clic sugli hotspot della mappa ( Solo quando si è su un veicolo )" />
         <text name="gui_ad_cornerSpeed"             		text="Velocità di svolta" />
         <text name="gui_ad_cornerSpeed_tooltip"         	text="Regola la velocità di svolta per il singolo veicolo. La massa e la velocità continueranno ad influenzare il punto di frenata" />
         <text name="gui_ad_callSecondUnloader"          	text="Chiamata secondo carro" />
@@ -243,8 +243,8 @@
         <text name="gui_ad_AL_left"                             text="Scarica a sinistra" />
         <text name="gui_ad_AL_behind"                           text="Scarica di dietro" />
         <text name="gui_ad_AL_right"                            text="Scarica a destra" />
-        <text name="gui_ad_ALUnloadWaitTime"                    text="Autoload: tempo di attesa dopo lo scarico" />
-        <text name="gui_ad_ALUnloadWaitTime_tooltip"            text="Tempo di attesa dopo lo scarico, prima di continuare a guidare - utile per il centro di scarico: 0-no aspetta, aspetta il tempo selezionato" />
+        <text name="gui_ad_ALUnloadWaitTime"                    text="Autoload: tempo di attesa dopo lo scarico/carico" />
+        <text name="gui_ad_ALUnloadWaitTime_tooltip"            text="Tempo di attesa dopo lo scarico/scarico, prima di continuare a guidare - utile per il carico in produzione o nel centro di scarico: 0-nessuna attesa, attendere il tempo selezionato" />
         <text name="gui_ad_scanConfirmationTextTitle"           text="AutoDrive - Generazione di rete" />
         <text name="gui_ad_scanConfirmationText"                text="AutoDrive deve generare una rete di percorsi a partire dai dati del traffico e degli aiutanti sulla mappa?" />
         <text name="gui_ad_noHarvesterAvailable"        	text="Nessuna mietitrice con lo stesso obiettivo trovata" />
