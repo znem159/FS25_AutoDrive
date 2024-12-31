@@ -6,7 +6,7 @@ FS25 version of the AutoDrive mod
 Direct Download: https://github.com/Stephan-S/FS25_AutoDrive/releases/latest/download/FS25_AutoDrive.zip
 
 ## Placeable Crossings (separate mod)
-Direct Download: https://github.com/Williwillswisse/AD_xCrossing/releases/latest/download/FS25_AutoDrive_xCrossing.zip
+Direct Download: https://github.com/Williwillswisse/AD_xCrossing/releases/latest/download/FS25_AutoDrive_xCrossing.zip <br/>
 Repository: https://github.com/Williwillswisse/AD_xCrossing
 
 ## Discord Server:
