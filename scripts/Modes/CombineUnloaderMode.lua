@@ -690,10 +690,20 @@ function CombineUnloaderMode:getPipeChasePosition(planningPhase)
     local chaseNode
     local sideIndex = AutoDrive.CHASEPOS_REAR
 
-    local leftBlocked = self.combine.ad.sensors.leftSensorFruit:pollInfo() or self.combine.ad.sensors.leftSensor:pollInfo() or (AutoDrive.getSetting("followOnlyOnField", self.vehicle) and (not self.combine.ad.sensors.leftSensorField:pollInfo()))
-    local leftFrontBlocked = self.combine.ad.sensors.leftFrontSensorFruit:pollInfo() or self.combine.ad.sensors.leftFrontSensor:pollInfo()
-    local rightBlocked = self.combine.ad.sensors.rightSensorFruit:pollInfo() or self.combine.ad.sensors.rightSensor:pollInfo() or (AutoDrive.getSetting("followOnlyOnField", self.vehicle) and (not self.combine.ad.sensors.rightSensorField:pollInfo()))
-    local rightFrontBlocked = self.combine.ad.sensors.rightFrontSensorFruit:pollInfo() or self.combine.ad.sensors.rightFrontSensor:pollInfo()
+    local leftBlocked = (AutoDrive.getSetting("avoidFruit", self.vehicle) and self.combine.ad.sensors.leftSensorFruit:pollInfo())
+    or self.combine.ad.sensors.leftSensor:pollInfo()
+    or (AutoDrive.getSetting("followOnlyOnField", self.vehicle) and (not self.combine.ad.sensors.leftSensorField:pollInfo()))
+
+    local leftFrontBlocked = (AutoDrive.getSetting("avoidFruit", self.vehicle) and self.combine.ad.sensors.leftFrontSensorFruit:pollInfo())
+    or self.combine.ad.sensors.leftFrontSensor:pollInfo()
+
+    local rightBlocked = (AutoDrive.getSetting("avoidFruit", self.vehicle) and self.combine.ad.sensors.rightSensorFruit:pollInfo())
+    or self.combine.ad.sensors.rightSensor:pollInfo()
+    or (AutoDrive.getSetting("followOnlyOnField", self.vehicle) and (not self.combine.ad.sensors.rightSensorField:pollInfo()))
+
+    local rightFrontBlocked = (AutoDrive.getSetting("avoidFruit", self.vehicle) and self.combine.ad.sensors.rightFrontSensorFruit:pollInfo())
+    or self.combine.ad.sensors.rightFrontSensor:pollInfo()
+
     rightBlocked = rightBlocked or rightFrontBlocked
     leftBlocked = leftBlocked or leftFrontBlocked
 
