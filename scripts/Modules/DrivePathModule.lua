@@ -53,6 +53,7 @@ function ADDrivePathModule:reset()
 end
 
 function ADDrivePathModule:setPathTo(wayPointId)
+    self:reset()
     self.wayPoints = ADGraphManager:getPathTo(self.vehicle, wayPointId, self.lastUsedWayPoint)
     local destination = ADGraphManager:getMapMarkerByWayPointId(self:getLastWayPointId())
     self.vehicle.ad.stateModule:setCurrentDestination(destination)
@@ -115,6 +116,7 @@ function ADDrivePathModule:appendPathTo(startWayPointId, wayPointId)
 end
 
 function ADDrivePathModule:setWayPoints(wayPoints)
+    self:reset()
     self.wayPoints = wayPoints
     local destination = ADGraphManager:getMapMarkerByWayPointId(self:getLastWayPointId())
     self.vehicle.ad.stateModule:setCurrentDestination(destination)
