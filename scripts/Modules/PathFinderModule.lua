@@ -1639,6 +1639,30 @@ function PathFinderModule:drawDebugForCreatedRoute()
     end
 end
 
+function PathFinderModule:getShapeDefByDirectionType_New(cell)
+    local shapeDefinition = {}
+    shapeDefinition.angleRad = math.atan2(-self.targetVector.z, self.targetVector.x)
+    shapeDefinition.angleRad = AutoDrive.normalizeAngle(shapeDefinition.angleRad)
+    local worldPos = self:gridLocationToWorldLocation(cell)
+    shapeDefinition.y = getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, worldPos.x, 1, worldPos.z)
+    shapeDefinition.height = self.vehicle.size.height --2.65
+
+    shapeDefinition.x = worldPos.x
+    shapeDefinition.z = worldPos.z
+    shapeDefinition.widthX = self.minTurnRadius / 2
+    shapeDefinition.widthZ = self.minTurnRadius / 2
+
+    local corners = self:getCornersFromShapeDefinition(shapeDefinition)
+    if corners ~= nil then
+        for _, corner in pairs(corners) do
+            shapeDefinition.y = math.max(shapeDefinition.y, getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, corner.x, 1, corner.z))
+        end
+    end
+
+    return shapeDefinition
+end
+
+
 function PathFinderModule:getShapeDefByDirectionType(cell, getDefault)
     local shapeDefinition = {}
     shapeDefinition.angleRad = math.atan2(-self.targetVector.z, self.targetVector.x)
@@ -2292,9 +2316,13 @@ end
 
 function PathFinderModule:drawDebugNewPF()
     -- AStar
-    if self.cachedNodes and #self.cachedNodes > 0 then
+    if self.cachedNodes then
         for z, row in pairs(self.cachedNodes) do
             for x, node in pairs(row) do
+                local shapeDefinition = node.shapeDefinition
+                if shapeDefinition then
+                    DebugUtil.drawOverlapBox(shapeDefinition.x, shapeDefinition.y + 3, shapeDefinition.z, 0, shapeDefinition.angleRad, 0, shapeDefinition.widthX, 2.65, shapeDefinition.widthZ, 1, 1, 1)
+                end
                 -- cell outline
                 local gridFactor = PathFinderModule.GRID_SIZE_FACTOR
                 if self.isSecondChasingVehicle then
@@ -2438,6 +2466,7 @@ function PathFinderModule:isDriveableAstar(cell)
     cell.isRestricted = false
     cell.incoming = cell.from_node
     cell.hasCollision = false
+    cell.shapeDefinition = self:getShapeDefByDirectionType_New(cell)   --> return shape for the cell according to direction, on ground level, 2.65m height
 
     local worldPos = self:gridLocationToWorldLocation(cell)
     --Try going through the checks in a way that fast checks happen before slower ones which might then be skipped
@@ -2489,9 +2518,8 @@ function PathFinderModule:isDriveableAstar(cell)
 
     if not cell.isRestricted then
         -- check for obstacles
-        local shapeDefinition = self:getShapeDefByDirectionType(cell)   --> return shape for the cell according to direction, on ground level, 2.65m height
         self.collisionhits = 0
-        local shapes = overlapBox(shapeDefinition.x, shapeDefinition.y + 3, shapeDefinition.z, 0, shapeDefinition.angleRad, 0, shapeDefinition.widthX, 2.65, shapeDefinition.widthZ, "collisionTestCallback", self, self.mask, true, true, true, true)
+        local shapes = overlapBox(cell.shapeDefinition.x, cell.shapeDefinition.y + 3, cell.shapeDefinition.z, 0, cell.shapeDefinition.angleRad, 0, cell.shapeDefinition.widthX, 2.65, cell.shapeDefinition.widthZ, "collisionTestCallback", self, self.mask, true, true, true, true)
         cell.hasCollision = cell.hasCollision or (self.collisionhits > 0)
         cell.isRestricted = cell.isRestricted or cell.hasCollision
         if cell.hasCollision then
