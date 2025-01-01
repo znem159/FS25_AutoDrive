@@ -209,7 +209,11 @@ function AutoDrive:notifyDestinationListeners()
 end
 
 function AutoDrive:combineIsCallingDriver(combine)	--only for CoursePlay
-    return combine ~=nil and ADHarvestManager:hasHarvesterPotentialUnloaders(combine) and AutoDrive:getIsCPWaitingForUnload(combine)
+    AutoDrive.debugPrint(combine, AutoDrive.DC_EXTERNALINTERFACEINFO, "AutoDrive:combineIsCallingDriver hasHarvesterAvailableUnloader %s getIsCPWaitingForUnload %s"
+    , tostring(ADHarvestManager:hasHarvesterAvailableUnloader(combine))
+    , tostring(AutoDrive:getIsCPWaitingForUnload(combine))
+    )
+    return combine ~=nil and AutoDrive:getIsCPWaitingForUnload(combine) and ADHarvestManager:hasHarvesterAvailableUnloader(combine)
 end
 
 function AutoDrive:getCombineOpenPipePercent(combine)	--for AIVE
@@ -940,17 +944,14 @@ function AutoDrive:handleAIFieldWorker(vehicle)
     AutoDrive.debugPrint(vehicle, AutoDrive.DC_EXTERNALINTERFACEINFO, "AutoDrive:handleAIFieldWorker end")
 end
 
-function AutoDrive:onAIJobFinished(arg1, arg2)
-    -- AutoDrive.debugMsg(vehicle, "AutoDrive:onAIJobFinished arg1 %s arg2 %s "
-    -- , tostring(arg1)
-    -- , tostring(arg2)
-    -- )
-    if arg1 then
-        -- AutoDrive.dumpTable(arg1, "arg1", 4)
-    end
+function AutoDrive:onAIJobFinished()
     AutoDrive.debugPrint(self, AutoDrive.DC_EXTERNALINTERFACEINFO, "AutoDrive:onAIJobFinished start...")
     local rootVehicle = self.getRootVehicle and self:getRootVehicle()
     if rootVehicle then
+        if AutoDrive:getIsCPActive(rootVehicle) then
+            -- ignore this event for CP helpers to react on the separate CP events
+            return
+        end
         if rootVehicle.ad == nil then
             rootVehicle.ad = {}
         end

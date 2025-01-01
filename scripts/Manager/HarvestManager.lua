@@ -108,6 +108,7 @@ function ADHarvestManager:update(dt)
             vehicle = vehicle.trailingVehicle
         end
         if (vehicle.getIsAIActive ~= nil and vehicle:getIsAIActive()) or (AutoDrive:getIsEntered(vehicle:getRootVehicle()) and AutoDrive.isPipeOut(vehicle)) then
+            -- ADHarvestManager.debugMsg(idleHarvester, "ADHarvestManager:update add to harvesters")
             table.insert(self.harvesters, idleHarvester)
             table.removeValue(self.idleHarvesters, idleHarvester)
         end
@@ -118,11 +119,15 @@ function ADHarvestManager:update(dt)
             vehicle = vehicle.trailingVehicle
         end
         if not ((vehicle.getIsAIActive ~= nil and vehicle:getIsAIActive()) or (AutoDrive:getIsEntered(vehicle:getRootVehicle()) and AutoDrive.isPipeOut(vehicle))) then
+            -- ADHarvestManager.debugMsg(harvester, "ADHarvestManager:update change to idleHarvesters")
             table.insert(self.idleHarvesters, harvester)
             table.removeValue(self.harvesters, harvester)
 
             local unloader = self:getAssignedUnloader(harvester)
             if unloader ~= nil then
+                -- ADHarvestManager.debugMsg(harvester, "ADHarvestManager:update fireUnloader %s"
+                -- , tostring(unloader and unloader:getName())
+                -- )
                 self:fireUnloader(unloader, harvester)
             end
         end
@@ -132,7 +137,12 @@ function ADHarvestManager:update(dt)
         if harvester ~= nil and g_currentMission.nodeToObject[harvester.components[1].node] ~= nil and entityExists(harvester.components[1].node) then
             --if self.assignmentDelayTimer:done() then
                 if not self:alreadyAssignedUnloader(harvester) then
+                    -- ADHarvestManager.debugMsg(harvester, "ADHarvestManager:update doesHarvesterNeedUnloading %s isHarvesterActive %s"
+                    -- , tostring(ADHarvestManager.doesHarvesterNeedUnloading(harvester))
+                    -- , tostring(ADHarvestManager.isHarvesterActive(harvester))
+                    -- )
                     if ADHarvestManager.doesHarvesterNeedUnloading(harvester) or (ADHarvestManager.isHarvesterActive(harvester)) then
+                        -- ADHarvestManager.debugMsg(harvester, "ADHarvestManager:update assignUnloaderToHarvester")
                         self:assignUnloaderToHarvester(harvester)
                     end
                 else
@@ -155,6 +165,7 @@ function ADHarvestManager:update(dt)
                 end
             --end
         else
+            -- ADHarvestManager.debugMsg(harvester, "ADHarvestManager:update remove from harvesters")
             table.removeValue(self.harvesters, harvester)
         end
     end
@@ -227,25 +238,19 @@ end
 function ADHarvestManager.doesHarvesterNeedUnloading(harvester, ignorePipe)
     local ret = false
 
-    local cpIsCalling = AutoDrive:getIsCPWaitingForUnload(harvester)
-
     local pipeOut = AutoDrive.isPipeOut(harvester)
     ret = (
             (
-                    (
-                        cpIsCalling
-                    )
-                or
                 (pipeOut)
             )
             and 
             harvester.ad.noMovementTimer.elapsedTime > 5000
         )
-    ADHarvestManager.debugMsg(harvester, "ADHarvestManager.doesHarvesterNeedUnloading cpIsCalling %s pipeOut %s noMovementTimer %s"
-    , tostring(cpIsCalling)
-    , tostring(pipeOut)
-    , tostring(harvester.ad.noMovementTimer.elapsedTime > 5000)
-    )
+    -- ADHarvestManager.debugMsg(harvester, "ADHarvestManager.doesHarvesterNeedUnloading cpIsCalling %s pipeOut %s noMovementTimer %s"
+    -- , tostring(cpIsCalling)
+    -- , tostring(pipeOut)
+    -- , tostring(harvester.ad.noMovementTimer.elapsedTime > 5000)
+    -- )
     return ret
 end
 
@@ -257,7 +262,7 @@ function ADHarvestManager.isHarvesterActive(harvester)
         local fillPercent = fillCapacity > 0 and (fillLevel / fillCapacity) or 0
         local reachedPreCallLevel = fillPercent >= AutoDrive.getSetting("preCallLevel", harvester)
         local isAlmostFull = fillPercent >= ADHarvestManager.MAX_PREDRIVE_LEVEL or fillFreeCapacity < 0.1
-               
+
         -- Only chase the rear on low fill levels of the combine. This should prevent getting into unneccessarily tight spots for the final approach to the pipe.
         -- Also for small fields, there is often no purpose in chasing so far behind the combine as it will already start a turn soon
         local allowedToChase = true
@@ -265,12 +270,12 @@ function ADHarvestManager.isHarvesterActive(harvester)
             local chasingRear = false
             local pipeSide = AutoDrive.getPipeSide(harvester)
             if pipeSide == AutoDrive.CHASEPOS_LEFT then
-                local leftBlocked = harvester.ad.sensors.leftSensorFruit:pollInfo() or harvester.ad.sensors.leftSensor:pollInfo() or (AutoDrive.getSetting("followOnlyOnField", harvester) and (not harvester.ad.sensors.leftSensorField:pollInfo()))
-                local leftFrontBlocked = harvester.ad.sensors.leftFrontSensorFruit:pollInfo() or harvester.ad.sensors.leftFrontSensor:pollInfo()
+                local leftBlocked = harvester.ad.sensors.leftSensor:pollInfo()
+                local leftFrontBlocked = harvester.ad.sensors.leftFrontSensor:pollInfo()
                 chasingRear = leftBlocked or leftFrontBlocked
             else
-                local rightBlocked = harvester.ad.sensors.rightSensorFruit:pollInfo() or harvester.ad.sensors.rightSensor:pollInfo() or (AutoDrive.getSetting("followOnlyOnField", harvester) and (not harvester.ad.sensors.rightSensorField:pollInfo()))
-                local rightBlockedBlocked = harvester.ad.sensors.rightFrontSensorFruit:pollInfo() or harvester.ad.sensors.rightFrontSensor:pollInfo()
+                local rightBlocked = harvester.ad.sensors.rightSensor:pollInfo()
+                local rightBlockedBlocked = harvester.ad.sensors.rightFrontSensor:pollInfo()
                 chasingRear = rightBlocked or rightBlockedBlocked
             end
 
@@ -284,7 +289,7 @@ function ADHarvestManager.isHarvesterActive(harvester)
         if manuallyControlled then
             return  AutoDrive.isPipeOut(harvester)
         end
-        ADHarvestManager.debugMsg(harvester, "ADHarvestManager.isHarvesterActive reachedPreCallLevel %s isAlmostFull %s allowedToChase %s", reachedPreCallLevel, isAlmostFull, allowedToChase)
+        -- ADHarvestManager.debugMsg(harvester, "ADHarvestManager.isHarvesterActive reachedPreCallLevel %s isAlmostFull %s allowedToChase %s", reachedPreCallLevel, isAlmostFull, allowedToChase)
 
         return reachedPreCallLevel and (not isAlmostFull) and allowedToChase
     end
@@ -295,6 +300,7 @@ end
 function ADHarvestManager:assignUnloaderToHarvester(harvester)
     local closestUnloader = self:getClosestIdleUnloader(harvester)
     if closestUnloader ~= nil then
+        ADHarvestManager.debugMsg(closestUnloader, "ADHarvestManager:assignUnloaderToHarvester ")
         closestUnloader.ad.modes[AutoDrive.MODE_UNLOAD]:assignToHarvester(harvester)
         table.insert(self.activeUnloaders, closestUnloader)
         table.removeValue(self.idleUnloaders, closestUnloader)
@@ -335,6 +341,22 @@ function ADHarvestManager:getClosestIdleUnloader(harvester)
         end
     end
     return closestUnloader
+end
+
+function ADHarvestManager:hasHarvesterAvailableUnloader(harvester)
+    for _, unloader in pairs(self.idleUnloaders) do
+        local targetsMatch = unloader.ad.stateModule:getFirstMarker() == harvester.ad.stateModule:getFirstMarker()
+        if targetsMatch then
+            return true
+        end
+    end
+    for _, unloader in pairs(self.activeUnloaders) do
+        local targetsMatch = unloader.ad.stateModule:getFirstMarker() == harvester.ad.stateModule:getFirstMarker()
+        if targetsMatch then
+            return true
+        end
+    end
+    return false
 end
 
 function ADHarvestManager:hasHarvesterPotentialUnloaders(harvester)
