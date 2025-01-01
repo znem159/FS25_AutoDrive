@@ -152,7 +152,6 @@ function AutoDrive.initSpecialization()
     schemaSavegame:register(XMLValueType.STRING, "vehicles.vehicle(?).AutoDrive#driverName", "driverName")
     schemaSavegame:register(XMLValueType.BOOL, "vehicles.vehicle(?).AutoDrive#lastActive", "lastActive")
     schemaSavegame:register(XMLValueType.BOOL, "vehicles.vehicle(?).AutoDrive#AIVElastActive", "AIVElastActive")
-    schemaSavegame:register(XMLValueType.INT, "vehicles.vehicle(?).AutoDrive#usedHelper", "usedHelper")
     schemaSavegame:register(XMLValueType.INT, "vehicles.vehicle(?).AutoDrive#parkDestination", "parkDestination")
     schemaSavegame:register(XMLValueType.INT, "vehicles.vehicle(?).AutoDrive#bunkerUnloadType", "bunkerUnloadType")
     if AutoDrive.automaticUnloadTarget then
@@ -755,6 +754,10 @@ function AutoDrive:onEnterVehicle(isControlling)
 end
 
 function AutoDrive:onLeaveVehicle(wasEntered)
+    AutoDrive.debugPrint(self, AutoDrive.DC_VEHICLEINFO, "AutoDrive:onLeaveVehicle wasEntered: %s", tostring(wasEntered))
+    if not wasEntered then
+        return
+    end
     if not AutoDrive.getSetting("RecordWhileNotInVehicle") then
         if self.ad ~= nil and self.ad.stateModule ~= nil then
             self.ad.stateModule:disableCreationMode()

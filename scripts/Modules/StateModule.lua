@@ -60,12 +60,12 @@ function ADStateModule:reset()
 
     self.startHelper = false
 
-    if self.vehicle.getLastJob then
-        self.usedHelper = ADStateModule.HELPER_AI
-    elseif self.vehicle.cpStartStopDriver then
+    if self.vehicle.cpStartStopDriver then
         self.usedHelper = ADStateModule.HELPER_CP
     elseif self.vehicle.acParameters then
         self.usedHelper = ADStateModule.HELPER_AIVE
+    elseif self.vehicle.getLastJob then
+        self.usedHelper = ADStateModule.HELPER_AI
     else
         self.usedHelper = ADStateModule.HELPER_NONE
     end
@@ -172,12 +172,6 @@ function ADStateModule:readFromXMLFile(xmlFile, key)
         self.bunkerUnloadType = bunkerUnloadType
     end
 
-    local usedHelper = xmlFile:getValue(key .. "#usedHelper")
-    if usedHelper ~= nil and self:isHelperTypeValid(usedHelper) then
-        self.usedHelper = usedHelper
-    end
-
-    
     -- local automaticUnloadTarget = xmlFile:getValue(key .. "#automaticUnloadTarget")
     -- if automaticUnloadTarget ~= nil then
         -- self.automaticUnloadTarget = automaticUnloadTarget
@@ -206,7 +200,6 @@ function ADStateModule:saveToXMLFile(xmlFile, key)
     xmlFile:setValue(key .. "#driverName", self.driverName)
     xmlFile:setValue(key .. "#lastActive", self.active)
     xmlFile:setValue(key .. "#AIVElastActive", false)
-    xmlFile:setValue(key .. "#usedHelper", self.usedHelper)
     xmlFile:setValue(key .. "#bunkerUnloadType", self.bunkerUnloadType)
     -- xmlFile:setValue(key .. "#automaticUnloadTarget", self.automaticUnloadTarget)
     -- xmlFile:setValue(key .. "#automaticPickupTarget", self.automaticPickupTarget)
