@@ -76,21 +76,15 @@ function AutoDrive:checkIsConnected(toCheck, other)
 end
 
 function AutoDrive.defineMinDistanceByVehicleType(vehicle)
-    local min_distance = 1.8
-
-    local steeringX, _, steeringZ = getWorldTranslation(vehicle.components[1].node)
+    local min_distance = vehicle.size.length / 2
     if vehicle.getAISteeringNode ~= nil then
-        steeringX, _, steeringZ = getWorldTranslation(vehicle:getAISteeringNode())
+        local _, _, diffZ = localToLocal(vehicle:getAISteeringNode(), vehicle.components[1].node, 0, 0, 0)
+        
+        -- diffZ > 0 -> steering node ahead of vehicle center
+        min_distance = min_distance - diffZ
     end
 
-    local _, _, diffZ = AutoDrive.worldToLocal(vehicle, steeringX, 0, steeringZ)
-
-    -- diffZ > 0 -> steering node ahead of vehicle center
-    min_distance = (vehicle.size.length / 2) - diffZ
-    -- Get distance from steering node to leading leadingEdge
-
     -- print("Min distance for " .. vehicle:getName() .. " is: " .. min_distance)
-
     return min_distance
 end
 
