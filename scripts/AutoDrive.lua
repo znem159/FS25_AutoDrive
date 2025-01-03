@@ -210,12 +210,7 @@ function AutoDrive:loadMap(name)
 	end
 
 	-- calculate the collision masks only once
-	-- AutoDrive.collisionMaskFS19 = ADCollSensor.getMaskFS19()
-	-- AutoDrive.collisionMaskTerrain = ADCollSensor.getMaskTerrain()
-	-- AutoDrive.collisionMaskSplines = ADCollSensor.getMaskSplines()
 	AutoDrive.collisionMaskTerrain = ADCollSensor.getMask()
-
-	-- ADDimensionSensor:getRealVehicleDimensions()
 	AutoDrive.collisionMaskVehicleDimesions = CollisionFlag.VEHICLE
 
 	ADGraphManager:load()
