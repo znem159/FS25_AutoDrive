@@ -37,8 +37,6 @@ function ADCollSensor:new(vehicle, sensorParameters)
     o:init(vehicle, ADSensor.TYPE_COLLISION, sensorParameters)
     o.hit = false
     o.newHit = false
-    o.collisionHits = 0
-    o.timeOut = AutoDriveTON:new()
     o.vehicle = vehicle --test collbox and coll bits mode
     o.mask = 0
 
@@ -52,28 +50,17 @@ end
 function ADCollSensor:onUpdate(dt)
     self.mask = self:getMask()
     local box = self:getBoxShape()
-    if self.collisionHits == 0 or self.timeOut:timer(true, 20000, dt) then
-        self.timeOut:timer(false)
-        self.hit = self.newHit
-        self:setTriggered(self.hit)
-        self.newHit = false
+    self.hit = self.newHit
+    self:setTriggered(self.hit)
+    self.newHit = false
 
-        local offsetCompensation = math.max(-math.tan(box.rx) * box.size[3], 0)
-		box.y = math.max(getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, box.x, 300, box.z), box.y) + offsetCompensation
-
-        self.collisionHits = overlapBox(box.x, box.y, box.z, box.rx, box.ry, 0, box.size[1], box.size[2], box.size[3], "collisionTestCallback", self, self.mask, true, true, true, true) --AIVehicleUtil.COLLISION_MASK --16783599
-
-        --for some reason, I have to call this again if collisionHits > 0 to trigger the callback functions, which check if the hit object is me or is attached to me
-        if self.collisionHits > 0 then
-            overlapBox(box.x, box.y, box.z, box.rx, box.ry, 0, box.size[1], box.size[2], box.size[3], "collisionTestCallback", self, self.mask, true, true, true)
-        end
-    end
-
+    local offsetCompensation = math.max(-math.tan(box.rx) * box.size[3], 0)
+    box.y = math.max(getTerrainHeightAtWorldPos(g_currentMission.terrainRootNode, box.x, 300, box.z), box.y) + offsetCompensation
+    overlapBox(box.x, box.y, box.z, box.rx, box.ry, 0, box.size[1], box.size[2], box.size[3], "collisionTestCallback", self, self.mask, true, true, true, true)
     self:onDrawDebug(box)
 end
 
 function ADCollSensor:collisionTestCallback(transformId)
-    self.collisionHits = math.max(0, self.collisionHits - 1)
     local unloadDriver = ADHarvestManager:getAssignedUnloader(self.vehicle)
     local collisionObject = g_currentMission.nodeToObject[transformId]
 
@@ -91,7 +78,7 @@ function ADCollSensor:collisionTestCallback(transformId)
                 self.newHit = true
             end
         end
-    else
+    elseif self:isElementBlockingVehicle(transformId) then
         self.newHit = true
     end
 end
