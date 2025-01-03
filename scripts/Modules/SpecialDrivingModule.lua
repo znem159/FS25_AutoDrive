@@ -306,23 +306,24 @@ function ADSpecialDrivingModule:checkWayPointReached()
     AutoDrive.debugPrint(self.vehicle, AutoDrive.DC_PATHINFO, "ADSpecialDrivingModule:checkWayPointReached start self.currentWayPointIndex %s ", tostring(self.currentWayPointIndex))
     local distanceToTarget = MathUtil.vector2Length(self.reverseTarget.x - self.rNx, self.reverseTarget.z - self.rNz)
     local minDistance = 9
+    local angle = math.abs(self.angleToPoint)
     local storedIndex = self.vehicle.ad.drivePathModule.currentWayPoint
     self.vehicle.ad.drivePathModule.currentWayPoint = self.vehicle.ad.drivePathModule.currentWayPoint + 1
-    local reverseEnd = self.vehicle.ad.drivePathModule:checkForReverseSection(true)
+    local _, isLastForward, isLastReverse = self.vehicle.ad.drivePathModule:checkForReverseSection()
     self.vehicle.ad.drivePathModule.currentWayPoint = storedIndex
+    
     if self.reverseSolo then
-        minDistance = self.vehicle.ad.drivePathModule.min_distance
-    elseif self.currentWayPointIndex == #self.wayPoints then
-        minDistance = 4.5
-    elseif reverseEnd then
+        minDistance = AutoDrive.defineMinDistanceByVehicleType(self.vehicle, true)
+    elseif self.currentWayPointIndex == #self.wayPoints or isLastForward or isLastReverse then
         minDistance = 3
     end
-    if distanceToTarget < minDistance or math.abs(self.angleToPoint) > 80 then
-        AutoDrive.debugPrint(self.vehicle, AutoDrive.DC_PATHINFO, "ADSpecialDrivingModule:checkWayPointReached return true self.currentWayPointIndex %s ", tostring(self.currentWayPointIndex))
+
+    if distanceToTarget < minDistance or angle > 80 then
+        AutoDrive.debugPrint(self.vehicle, AutoDrive.DC_PATHINFO, "ADSpecialDrivingModule:checkWayPointReached return true self.currentWayPointIndex %s minDistance=%.2f, distance=%.2f, angle=%.2f", tostring(self.currentWayPointIndex), minDistance, distanceToTarget, angle)
         return true
     end
 
-    AutoDrive.debugPrint(self.vehicle, AutoDrive.DC_PATHINFO, "ADSpecialDrivingModule:checkWayPointReached end self.currentWayPointIndex %s ", tostring(self.currentWayPointIndex))
+    AutoDrive.debugPrint(self.vehicle, AutoDrive.DC_PATHINFO, "ADSpecialDrivingModule:checkWayPointReached end self.currentWayPointIndex %s minDistance=%.2f, distance=%.2f, angle=%.2f", tostring(self.currentWayPointIndex), minDistance, distanceToTarget, angle)
     return false
 end
 

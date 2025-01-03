@@ -175,14 +175,7 @@ function ADDrivePathModule:update(dt)
             self:checkIfStuck(dt)
 
             if self:isCloseToWaypoint() then
-                local isReverse = self:checkForReverseSection()
-                if isReverse and not self.isReversing then
-                    self.isReversing = true
-                    self.vehicle.ad.specialDrivingModule:reset()
-                    self.vehicle.ad.specialDrivingModule.currentWayPointIndex = self:getCurrentWayPointIndex() + 1
-                else
-                    self:handleReachedWayPoint()
-                end
+                self:handleReachedWayPoint()
             end
         end
 
@@ -213,12 +206,12 @@ function ADDrivePathModule:isCloseToWaypoint()
     local maxSkipWayPoints = 1
     local wp_ahead = self:getNextWayPoint()
     local wp_current = self:getCurrentWayPoint()
-    local isReversing = self:checkForReverseSection()
-    if isReversing then
+    local _, isLastForward, isLastReverse = self:checkForReverseSection()
+    if isLastForward or isLastReverse then
         maxSkipWayPoints = 0
     end
 
-    AutoDrive.debugPrint(self.vehicle, AutoDrive.DC_PATHINFO, "ADDrivePathModule:isCloseToWaypoint - start, wpIdx=%d, isReversing=%s", self:getCurrentWayPointIndex(), tostring(isReversing))
+    AutoDrive.debugPrint(self.vehicle, AutoDrive.DC_PATHINFO, "ADDrivePathModule:isCloseToWaypoint - start, wpIdx=%d, maxSkip=%d", self:getCurrentWayPointIndex(), maxSkipWayPoints)
 
     for i = 0, maxSkipWayPoints do
         if self.wayPoints[self:getCurrentWayPointIndex() + i] ~= nil then
@@ -228,7 +221,7 @@ function ADDrivePathModule:isCloseToWaypoint()
                 return true
             end
             -- Check if the angle between vehicle and current wp and current wp to next wp is over 90° - then we should already make the switch
-            if i == 1 and not isReversing then
+            if i == 1 then
                 local angle = AutoDrive.angleBetween({x = wp_ahead.x - wp_current.x, z = wp_ahead.z - wp_current.z}, {x = wp_current.x - x, z = wp_current.z - z})
                 angle = math.abs(angle)
 
@@ -641,9 +634,9 @@ function ADDrivePathModule:switchToNextWayPoint()
     self:setCurrentWayPointIndex(self:getNextWayPointIndex())
     self.minDistanceToNextWp = math.huge
 
-    local isReverse = self:checkForReverseSection()
-    if not isReverse and self.isReversing then
-        self.isReversing = false
+    local isReverse, _, _ = self:checkForReverseSection()
+    if isReverse ~= self.isReversing then
+        self.isReversing = isReverse
         self.vehicle.ad.specialDrivingModule:reset()
         self.vehicle.ad.specialDrivingModule.currentWayPointIndex = self:getCurrentWayPointIndex()
     end
@@ -667,7 +660,7 @@ function ADDrivePathModule:getLookAheadTarget()
         targetZ = wp_current.z
     end
 
-    if self:getNextWayPoint() ~= nil and (self:getNextWayPoint().incoming == nil or #self:getNextWayPoint().incoming > 0) then
+    if self:getNextWayPoint() ~= nil and not ADGraphManager:isReverseRoad(wp_current, self:getNextWayPoint()) then
         local lookAheadID = 1
         local lookAheadDistance = AutoDrive.getSetting("lookAheadTurning")
         local distanceToCurrentTarget = MathUtil.vector2Length(x - wp_current.x, z - wp_current.z)
@@ -774,54 +767,40 @@ function ADDrivePathModule:handleBeingStuck()
     end
 end
 
-function ADDrivePathModule:checkForReverseSection(checkIfLastReverseSection)
-    checkIfLastReverseSection = Utils.getNoNil(checkIfLastReverseSection, false)
+function ADDrivePathModule:checkForReverseSection()
+    -- returns [current segment is reversed], [current segment is the last forward segment], [current segment is the last reverse segment]
 
     if self.wayPoints == nil or self:getCurrentWayPointIndex() < 1 or #self.wayPoints <= self:getCurrentWayPointIndex() + 1 then
         AutoDrive.debugPrint(self.vehicle, AutoDrive.DC_PATHINFO, "ADDrivePathModule:checkForReverseSection wpIdx=%d - first or last segment", self:getCurrentWayPointIndex())
-        return self.isReversing and not checkIfLastReverseSection
+        return self.isReversing, false, false
     end
 
     -- check current segment (required either way)
-    local wp_ahead = self.wayPoints[self:getCurrentWayPointIndex() + 1]
+    local wp_ref = self.wayPoints[self:getCurrentWayPointIndex() - 1]
     local wp_current = self.wayPoints[self:getCurrentWayPointIndex() - 0]
-    local isReverse = ADGraphManager:isReverseRoad(wp_current, wp_ahead)
+    local wp_ahead = self.wayPoints[self:getCurrentWayPointIndex() + 1]
+
+    local isReverse = ADGraphManager:isReverseRoad(wp_ref, wp_current)
+    local aheadIsReverse = ADGraphManager:isReverseRoad(wp_current, wp_ahead)
 
     if self.isReversing then
         -- we're allowed to continue reversing on dual segments
-        isReverse = isReverse or ADGraphManager:isDualRoad(wp_current, wp_ahead)
+        isReverse = isReverse or ADGraphManager:isDualRoad(wp_ref, wp_current)
+        aheadIsReverse = aheadIsReverse or ADGraphManager:isDualRoad(wp_current, wp_ahead)
     end
 
     -- special case for harvester-task reversed sections
-    isReverse = isReverse or Utils.getNoNil(wp_ahead.isReverse, false)
-    isReverse = isReverse and not Utils.getNoNil(wp_ahead.isForward, false)
-
-    if not checkIfLastReverseSection then
-        AutoDrive.debugPrint(self.vehicle, AutoDrive.DC_PATHINFO, "ADDrivePathModule:checkForReverseSection wpIdx=%d - isReverse: %s", self:getCurrentWayPointIndex(), tostring(isReverse))
-        return isReverse
-    end
-
-    if isReverse then
-        -- current segment is reversed, can't be the end of a reverse section
-        AutoDrive.debugPrint(self.vehicle, AutoDrive.DC_PATHINFO, "ADDrivePathModule:checkForReverseSection wpIdx=%d - currently reversed", self:getCurrentWayPointIndex())
-        return false
-    end
-
-    -- current segment is not reversed, this could be the end of a reversed section
-    local wp_ref = self.wayPoints[self:getCurrentWayPointIndex() - 1]
-    local refIsReverse = ADGraphManager:isReverseRoad(wp_ref, wp_current)
-
-    if self.isReversing then
-        refIsReverse = refIsReverse or ADGraphManager:isDualRoad(wp_ref, wp_current)
-    end
-
-    if not refIsReverse then
-        -- was not reversed, can't be the end of a reverse section
-        AutoDrive.debugPrint(self.vehicle, AutoDrive.DC_PATHINFO, "ADDrivePathModule:checkForReverseSection wpIdx=%d - previously not reversed", self:getCurrentWayPointIndex())
-        return false
-    end
+    isReverse = isReverse or Utils.getNoNil(wp_current.isReverse, false)
+    isReverse = isReverse and not Utils.getNoNil(wp_current.isForward, false)
+    aheadIsReverse = aheadIsReverse or Utils.getNoNil(wp_ahead.isReverse, false)
+    aheadIsReverse = aheadIsReverse and not Utils.getNoNil(wp_ahead.isForward, false)
 
     local angle = AutoDrive.angleBetween({x = wp_ahead.x - wp_current.x, z = wp_ahead.z - wp_current.z}, {x = wp_current.x - wp_ref.x, z = wp_current.z - wp_ref.z})
-    AutoDrive.debugPrint(self.vehicle, AutoDrive.DC_PATHINFO, "ADDrivePathModule:checkForReverseSection wpIdx=%d - angle=%f", self:getCurrentWayPointIndex(), angle)
-    return math.abs(angle) > 100
+    local isSteepTurn = math.abs(angle) > 100
+
+    local isLastForwardSection = not isReverse and aheadIsReverse and isSteepTurn
+    local isLastReverseSection = isReverse and not aheadIsReverse and isSteepTurn
+
+    AutoDrive.debugPrint(self.vehicle, AutoDrive.DC_PATHINFO, "ADDrivePathModule:checkForReverseSection wpIdx=%d - isReverse: %s, last fwd: %s, last rev: %s", self:getCurrentWayPointIndex(), tostring(isReverse), tostring(isLastForwardSection), tostring(isLastReverseSection))
+    return isReverse, isLastForwardSection, isLastReverseSection
 end

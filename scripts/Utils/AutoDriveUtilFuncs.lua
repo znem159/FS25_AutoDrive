@@ -75,17 +75,22 @@ function AutoDrive:checkIsConnected(toCheck, other)
     return isAttachedToMe
 end
 
-function AutoDrive.defineMinDistanceByVehicleType(vehicle)
+function AutoDrive.defineMinDistanceByVehicleType(vehicle, reverse)
     local min_distance = vehicle.size.length / 2
     if vehicle.getAISteeringNode ~= nil then
         local _, _, diffZ = localToLocal(vehicle:getAISteeringNode(), vehicle.components[1].node, 0, 0, 0)
         
         -- diffZ > 0 -> steering node ahead of vehicle center
-        min_distance = min_distance - diffZ
+        if reverse ~= true then
+            min_distance = min_distance - diffZ
+        else
+            min_distance = min_distance + diffZ
+        end
+        -- print(string.format("Min distance for %s is %.2f with diffZ %.2f", vehicle:getName(), min_distance, diffZ))
     end
 
-    -- print("Min distance for " .. vehicle:getName() .. " is: " .. min_distance)
-    return min_distance
+    
+    return math.max(min_distance, 0.1)
 end
 
 function AutoDrive.defineMinDistanceByVehicleTypeOld(vehicle)
