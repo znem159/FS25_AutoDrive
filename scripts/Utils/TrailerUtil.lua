@@ -688,7 +688,9 @@ function AutoDrive.findAndSetBestTipPoint(vehicle, trailer)
                         -- back to first
                         preferedTipSideIndex = 1
                     end
-                    trailer:setPreferedTipSide(preferedTipSideIndex)
+                    if preferedTipSideIndex ~= spec.preferedTipSideIndex then
+                        trailer:setPreferedTipSide(preferedTipSideIndex)
+                    end
                 end
             end
         end
