@@ -61,7 +61,7 @@ function ADCollSensor:onUpdate(dt)
 end
 
 function ADCollSensor:collisionTestCallback(transformId)
-    local unloadDriver = ADHarvestManager:getAssignedUnloader(self.vehicle)
+    local unloadDriver = ADHarvestManager:getAssignedUnloader(self.vehicle.ad.attachableCombine or self.vehicle)
     local collisionObject = g_currentMission.nodeToObject[transformId]
 
     if collisionObject == nil then

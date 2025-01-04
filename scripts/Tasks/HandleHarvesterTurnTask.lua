@@ -23,7 +23,7 @@ function HandleHarvesterTurnTask:new(vehicle, combine)
     o.triedAllTurnsAfterTurnEnded = false
 
     local x, y, z = getWorldTranslation(vehicle.components[1].node)
-    local diffX, _, diffZ = AutoDrive.worldToLocal(combine, x, y, z)
+    local diffX, _, diffZ = AutoDrive.worldToLocal(combine, x, y, z, combine.ad.ADRootNode)
     local turnLeft = AutoDrive.sign(diffX) >= 0
     local targetPosition = o:getHarvesterEndTurnPosition()
 
@@ -116,7 +116,11 @@ function HandleHarvesterTurnTask:update(dt)
         self.vehicle.ad.specialDrivingModule:update(dt)
     elseif self.state == HandleHarvesterTurnTask.STATE_EXECUTE_TURN then
         local allowedToSkip = self.vehicle.ad.drivePathModule:getCurrentWayPoint() ~= nil and self.vehicle.ad.drivePathModule:getCurrentWayPoint().allowedToSkip
-        local combineMovingAgain = ((self.combine.lastSpeedReal * self.combine.movingDirection) >= 0.0004)
+        local movingDirection = self.combine.movingDirection
+        if self.combine.ad.isReverseAttached then
+            movingDirection = -self.combine.movingDirection
+        end
+        local combineMovingAgain = ((self.combine.lastSpeedReal * movingDirection) >= 0.0004)
 
         if self.vehicle.ad.drivePathModule:isTargetReached() or (allowedToSkip and combineMovingAgain) then
             AutoDrive.debugPrint(self.vehicle, AutoDrive.DC_COMBINEINFO, "Turn finished")
@@ -308,7 +312,7 @@ end
 
 function HandleHarvesterTurnTask:generateReverseToCombineSection()
     local x, y, z = getWorldTranslation(self.vehicle.components[1].node)
-    local diffX, _, diffZ = AutoDrive.worldToLocal(self.combine, x, y, z)
+    local diffX, _, diffZ = AutoDrive.worldToLocal(self.combine, x, y, z, self.combine.ad.ADRootNode)
 
     local nodes = {}
 

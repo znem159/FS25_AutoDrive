@@ -2,7 +2,7 @@
 -- negative X -> right
 function AutoDrive.createWayPointRelativeToVehicle(vehicle, offsetX, offsetZ)
     local wayPoint = {}
-    wayPoint.x, wayPoint.y, wayPoint.z = AutoDrive.localToWorld(vehicle, offsetX, 0, offsetZ)
+    wayPoint.x, wayPoint.y, wayPoint.z = AutoDrive.localToWorld(vehicle, offsetX, 0, offsetZ, vehicle.ad.ADRootNode)
     return wayPoint
 end
 

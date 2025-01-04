@@ -234,7 +234,7 @@ function PathFinderModule:startPathPlanningToPipe(combine, chasing)
         )
     )
     local _, worldY, _ = getWorldTranslation(combine.components[1].node)
-    local rx, _, rz =  AutoDrive.localDirectionToWorld(combine, 0, 0, 1)
+    local rx, _, rz =  AutoDrive.localDirectionToWorld(combine, 0, 0, 1, combine.ad.ADRootNode)
     if combine.components[2] ~= nil and combine.components[2].node ~= nil then
         rx, _, rz =  AutoDrive.localDirectionToWorld(combine, 0, 0, 1, combine.components[2].node)
     end
@@ -582,6 +582,7 @@ end
 function PathFinderModule:abort()
     PathFinderModule.debugMsg(self.vehicle, "PFM:abort start")
     self.isFinished = true
+    self.dubinsDone = true
     self.smoothDone = true
     self.wayPoints = {}
     ADScheduler:removePathfinderVehicle(self.vehicle)
@@ -683,6 +684,9 @@ function PathFinderModule:update(dt)
         end
     end
     if self.isFinished then
+        if self.dubinsDone then
+            self.smoothDone = true
+        end
         if not self.smoothDone then
             if self.isNewPF then
                 self:createWayPointsNew()
@@ -812,7 +816,6 @@ function PathFinderModule:update(dt)
                         self.wayPoints = dubinsPath
                         self:appendWayPointsNew()
                         self.isFinished = true
-                        self.smoothDone = true
                         return  -- found path
                     else
                         -- self.completelyBlocked = true

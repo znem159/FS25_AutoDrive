@@ -672,12 +672,27 @@ function AutoDrive:onPostAttachImplement(attachable, inputJointDescIndex, jointD
     end
     if (attachable.spec_pipe ~= nil and attachable.spec_combine ~= nil) or attachable.isPremos then
         attachable.ad = self.ad -- takeover i.e. sensors from trailing vehicle
+
+        local vx, _, vz =  AutoDrive.localDirectionToWorld(self, 0, 0, 1)
+        local cx, _, cz =  AutoDrive.localDirectionToWorld(attachable, 0, 0, 1)
+        local angle = math.abs(AutoDrive.angleBetween({x = vx, z = vz}, {x = cx, z = cz}))
+
+        if angle > 100 then
+            AutoDrive.debugMsg(self, "AutoDrive:onPostAttachImplement isRotatedAttached")
+            -- attachable is rotated attached - use sensors from vehicle
+            attachable.ad.sensors = nil
+            attachable.ad.isReverseAttached = true
+            attachable.ad.ADRootNode = createTransformGroup("ADRootNode")
+            link(attachable.rootNode, attachable.ad.ADRootNode)
+            setRotation(attachable.ad.ADRootNode, 0, math.pi, 0)
+            setTranslation(attachable.ad.ADRootNode, 0, 0, 0)
+        end
         attachable.isTrailedHarvester = true
         attachable.trailingVehicle = self
         -- harvester types
-        self.ad.attachableCombine = attachable
         local isValidHarvester = AutoDrive.setCombineType(attachable)
         if isValidHarvester then
+            self.ad.attachableCombine = attachable
             ADHarvestManager:registerHarvester(attachable)
         end
     end

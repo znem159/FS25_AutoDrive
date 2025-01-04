@@ -175,8 +175,12 @@ function ADHarvestManager:update(dt)
             return
         end
 
+        local movingDirection = harvester.movingDirection
+        if harvester.ad.isReverseAttached then
+            movingDirection = -harvester.movingDirection
+        end
         harvester.ad.noMovementTimer:timer((harvester.lastSpeedReal <= 0.0004), 3000, dt)
-        if ((harvester.lastSpeedReal * harvester.movingDirection) >= 0.0004) then
+        if ((harvester.lastSpeedReal * movingDirection) >= 0.0004) then
             harvester.ad.driveForwardTimer:timer(true, 4000, dt)
         else
             harvester.ad.driveForwardTimer:timer(false)
