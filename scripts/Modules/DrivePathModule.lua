@@ -645,64 +645,49 @@ end
 function ADDrivePathModule:getLookAheadTarget()
     --start driving to the nextWayPoint when closing in on current waypoint in order to avoid harsh steering angles and oversteering
 
-    local x, _, z = getWorldTranslation(self.vehicle.components[1].node)
+    local x, y, z = getWorldTranslation(self.vehicle.components[1].node)
     if self.vehicle.getAISteeringNode ~= nil then
         x, _, z = getWorldTranslation(self.vehicle:getAISteeringNode())
     end
 
-    local targetX = x
-    local targetZ = z
-
     local wp_current = self:getCurrentWayPoint()
-
-    if wp_current ~= nil then
-        targetX = wp_current.x
-        targetZ = wp_current.z
+    if wp_current == nil then
+        return x, z
     end
 
-    if self:getNextWayPoint() ~= nil and not ADGraphManager:isReverseRoad(wp_current, self:getNextWayPoint()) then
-        local lookAheadID = 1
-        local lookAheadDistance = AutoDrive.getSetting("lookAheadTurning")
-        local distanceToCurrentTarget = MathUtil.vector2Length(x - wp_current.x, z - wp_current.z)
+    local distanceToCurrentTarget = MathUtil.vector2Length(x - wp_current.x, z - wp_current.z)
+    local lookAheadDistance = AutoDrive.getSetting("lookAheadTurning")
+    local lookAheadRemaining = lookAheadDistance - distanceToCurrentTarget
 
-        local wp_ahead = self.wayPoints[self:getCurrentWayPointIndex() + lookAheadID]
-        local distanceToNextTarget = MathUtil.vector2Length(x - wp_ahead.x, z - wp_ahead.z)
+    local lookAheadID = 0
+    local wp_ahead = wp_current
+    local distanceToNextTarget = 0
 
-        if distanceToCurrentTarget < distanceToNextTarget then
-            lookAheadDistance = lookAheadDistance - distanceToCurrentTarget
+    while lookAheadRemaining > distanceToNextTarget do
+        lookAheadRemaining = lookAheadRemaining - distanceToNextTarget
+        lookAheadID = lookAheadID + 1
+
+        local wp_next = self.wayPoints[self:getCurrentWayPointIndex() + lookAheadID]
+        if wp_next == nil or ADGraphManager:isReverseRoad(wp_ahead, wp_next) then
+            break
         end
-
-        while lookAheadDistance > distanceToNextTarget do
-            lookAheadDistance = lookAheadDistance - distanceToNextTarget
-            lookAheadID = lookAheadID + 1
-            if self.wayPoints[self:getCurrentWayPointIndex() + lookAheadID] == nil then
-                break
-            end
-            wp_current = wp_ahead
-            wp_ahead = self.wayPoints[self:getCurrentWayPointIndex() + lookAheadID]
-            distanceToNextTarget = MathUtil.vector2Length(wp_current.x - wp_ahead.x, wp_current.z - wp_ahead.z)
-        end
-
-        local distX = wp_ahead.x - wp_current.x
-        local distZ = wp_ahead.z - wp_current.z
-        if lookAheadDistance > 0 then
-            local addX = lookAheadDistance * (math.abs(distX) / (math.abs(distX) + math.abs(distZ)))
-            local addZ = lookAheadDistance * (math.abs(distZ) / (math.abs(distX) + math.abs(distZ)))
-            if distX < 0 then
-                addX = -addX
-            end
-
-            if distZ < 0 then
-                addZ = -addZ
-            end
-
-            if (math.abs(distX) + math.abs(distZ)) > 0 then
-                targetX = wp_current.x + addX
-                targetZ = wp_current.z + addZ
-            end
-        end
+        wp_current, wp_ahead = wp_ahead, wp_next
+        distanceToNextTarget = MathUtil.vector2Length(wp_current.x - wp_ahead.x, wp_current.z - wp_ahead.z)
     end
 
+    local targetX, targetZ = wp_current.x, wp_current.z
+    if lookAheadRemaining > 0.1 and distanceToNextTarget > 0.1 then
+        local length = math.min(lookAheadRemaining, distanceToNextTarget)
+        local addX, addZ = MathUtil.vector2SetLength(wp_ahead.x - wp_current.x, wp_ahead.z - wp_current.z, length)
+        targetX = targetX + addX
+        targetZ = targetZ + addZ
+    end
+    
+    if AutoDrive.isEditorModeEnabled() and AutoDrive.getDebugChannelIsSet(AutoDrive.DC_VEHICLEINFO) then
+        ADDrawingManager:addLineTask(x, y+2.2, z, wp_current.x, y+2.2, wp_current.z, 1, 0.8, 0, 0)
+        ADDrawingManager:addLineTask(x, y+2.3, z, wp_ahead.x, y+2.3, wp_ahead.z, 1, 1, 0.2, 0.2)
+        ADDrawingManager:addLineTask(x, y+2.4, z, targetX, y+2.4, targetZ, 1.5, 0, 1, 0)
+    end
     return targetX, targetZ
 end
 
