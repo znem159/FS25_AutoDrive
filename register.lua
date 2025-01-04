@@ -316,7 +316,6 @@ end
 
 function AutoDriveValidateVehicleTypes(TypeManager)
 	AutoDriveRegister.onMissionWillLoad(g_i18n)
-	AutoDrive:onAllModsLoaded()
 end
 
 ---Copy our translations to global space.
