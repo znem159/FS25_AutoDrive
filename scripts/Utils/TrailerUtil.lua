@@ -628,7 +628,7 @@ function AutoDrive.findGrainBackDoorTipSideIndex(vehicle, trailer)
             local tx, ty, tz = getWorldTranslation(currentDischargeNode.node)
             local _, _, diffZ = AutoDrive.worldToLocal(trailer, tx, ty, tz + 50)
             -- get the 2 most back doors
-            if diffZ < backDistance1 and currentDischargeNode and currentDischargeNode.effects and table.count(currentDischargeNode.effects) > 0 then
+            if diffZ <= backDistance1 and currentDischargeNode and currentDischargeNode.effects and table.count(currentDischargeNode.effects) > 0 then
                 backDistance2 = backDistance1
                 dischargeSpeed2 = dischargeSpeed1
                 tipSideIndex2 = tipSideIndex1
@@ -652,43 +652,6 @@ function AutoDrive.findGrainBackDoorTipSideIndex(vehicle, trailer)
     return trailer.ad.grainDoorSideIndex, trailer.ad.backDoorSideIndex
 end
 
----
-function AutoDrive:updateTrailerRaycast(dischargeNode)
-    local spec = self.spec_dischargeable
-    local raycast = dischargeNode.raycast
-
-    if raycast.node == nil then
-        return
-    end
-
-    dischargeNode.lastDischargeObject = dischargeNode.dischargeObject
-
-    dischargeNode.raycastDischargeObject = nil
-    dischargeNode.raycastDischargeHitObject = nil
-    dischargeNode.raycastDischargeHitObjectUnitIndex = nil
-    dischargeNode.raycastDischargeHitTerrain = false
-    dischargeNode.raycastDischargeShape = nil
-    dischargeNode.raycastDischargeDistance = math.huge
-    dischargeNode.raycastDischargeFillUnitIndex = nil
-    dischargeNode.raycastDischargeHit = false
-    dischargeNode.raycastDischargeFailedReason = nil
-
-    local x, y, z = getWorldTranslation(raycast.node)
-    local dx, dy, dz = 0, -1, 0
-
-    y = y + raycast.yOffset
-
-    if not raycast.useWorldNegYDirection then
-        dx, dy, dz = localDirectionToWorld(raycast.node, 0, -1, 0)
-    end
-
-    spec.currentRaycastDischargeNode = dischargeNode
-    spec.currentRaycast = raycast
-    spec.isAsyncRaycastActive = true
-
-    raycastAll(x, y, z, dx, dy, dz, dischargeNode.maxDistance, "raycastCallbackDischargeNode", self, spec.raycastCollisionMask)
-end
-
 function AutoDrive.findAndSetBestTipPoint(vehicle, trailer)
     local dischargeCondition = true
     if trailer.getCanDischargeToObject ~= nil and trailer.getCurrentDischargeNode ~= nil then
@@ -697,47 +660,38 @@ function AutoDrive.findAndSetBestTipPoint(vehicle, trailer)
     if (AutoDrive.getSetting("autoTipSide", vehicle) == true) and dischargeCondition and (not vehicle.ad.isLoading) and (not vehicle.ad.isUnloading) and trailer.getCurrentDischargeNode ~= nil and trailer:getCurrentDischargeNode() ~= nil then
         local spec = trailer.spec_trailer
         if spec == nil then
+            AutoDrive.debugPrint(trailer, AutoDrive.DC_TRAILERINFO, "AutoDrive.findAndSetBestTipPoint ERROR spec_trailer == nil")
             return
         end
-
-        local currentDischargeNodeIndex = trailer:getCurrentDischargeNode().index
         local grainDoorSideIndex, backDoorSideIndex = AutoDrive.findGrainBackDoorTipSideIndex(vehicle, trailer)
-        if grainDoorSideIndex > 0 then
-            -- grain door avaialable - select back door
-            if spec.preferedTipSideIndex ~= backDoorSideIndex then
-                if trailer:getCanTogglePreferdTipSide() then
-                    trailer:setPreferedTipSide(backDoorSideIndex)
-                    AutoDrive.updateTrailerRaycast(trailer, trailer:getCurrentDischargeNode())
-                end
-            end
-        end
-        for i = 1, spec.tipSideCount, 1 do
-            if grainDoorSideIndex ~= i then
-                -- avoid grain door if back door available
-                local tipSide = spec.tipSides[i]
-                trailer:setCurrentDischargeNodeIndex(tipSide.dischargeNodeIndex)
-
-                --if trailer:getCanTogglePreferdTipSide() then
-                    --trailer:setPreferedTipSide(i)
-                --end
-
-                local currentDischargeNode = trailer:getCurrentDischargeNode()
-
-                if currentDischargeNode and currentDischargeNode.effects and table.count(currentDischargeNode.effects) > 0 then
-                    AutoDrive.updateTrailerRaycast(trailer, trailer:getCurrentDischargeNode())
-                    --trailer:updateRaycast(trailer:getCurrentDischargeNode())
-                    if trailer:getCanDischargeToObject(trailer:getCurrentDischargeNode()) then
-                        if trailer:getCanTogglePreferdTipSide() then
-                            trailer:setPreferedTipSide(i)
-                            trailer:updateRaycast(trailer:getCurrentDischargeNode())
-                            AutoDrive.debugPrint(vehicle, AutoDrive.DC_VEHICLEINFO, "Changed tip side to %s", i)
-                            return
-                        end
+        if trailer:getCanTogglePreferdTipSide() then
+            local dischargeObject, dischargeFillUnitIndex = trailer:getDischargeTargetObject(trailer:getCurrentDischargeNode())
+            if dischargeFillUnitIndex == nil then
+                -- no discharge target found
+                if trailer.spec_dischargeable.isAsyncRaycastActive == false then
+                    -- no raycast running - change tipside
+                    local preferedTipSideIndex = spec.preferedTipSideIndex
+                    preferedTipSideIndex = preferedTipSideIndex + 1
+                    if grainDoorSideIndex == preferedTipSideIndex then
+                        -- skipping grain door
+                        preferedTipSideIndex = preferedTipSideIndex + 1
                     end
+                    if preferedTipSideIndex > spec.tipSideCount then
+                        -- back to first
+                        preferedTipSideIndex = 1
+                    end
+                    if grainDoorSideIndex == preferedTipSideIndex then
+                        -- skipping grain door
+                        preferedTipSideIndex = preferedTipSideIndex + 1
+                    end
+                    if preferedTipSideIndex > spec.tipSideCount then
+                        -- back to first
+                        preferedTipSideIndex = 1
+                    end
+                    trailer:setPreferedTipSide(preferedTipSideIndex)
                 end
             end
         end
-        trailer:setCurrentDischargeNodeIndex(currentDischargeNodeIndex)        
     end
 end
 

@@ -46,58 +46,58 @@ Changelog: пожалуйста, читайте на github...
 	<l10n filenamePrefix="translations/translation" />
 
 	<actions>
-		<action name="ADSilomode" category="VEHICLE" ignoreComboMask="false" />
-		<action name="ADPreviousMode" category="VEHICLE" ignoreComboMask="false" />
-		<action name="ADRecord" category="VEHICLE" ignoreComboMask="false" />
-		<action name="ADRecord_Dual" category="VEHICLE" ignoreComboMask="false" />
-		<action name="ADRecord_SubPrio" category="VEHICLE" ignoreComboMask="false" />
-		<action name="ADRecord_SubPrioDual" category="VEHICLE" ignoreComboMask="false" />
-		<action name="ADEnDisable" category="VEHICLE" ignoreComboMask="false" />
-		<action name="ADSelectTarget" category="VEHICLE" ignoreComboMask="false" />
-		<action name="ADSelectPreviousTarget" category="VEHICLE" ignoreComboMask="false" />
-		<action name="ADSelectTargetUnload" category="VEHICLE" ignoreComboMask="false" />
-		<action name="ADSelectPreviousTargetUnload" category="VEHICLE" ignoreComboMask="false" />
-		<action name="ADActivateDebug" category="VEHICLE" ignoreComboMask="false" />
-		<action name="ADDisplayMapPoints" category="VEHICLE" ignoreComboMask="false" />
-		<action name="ADDebugSelectNeighbor" category="VEHICLE" ignoreComboMask="false" />
-		<action name="ADDebugCreateConnection" category="VEHICLE" ignoreComboMask="false" />
-		<action name="ADDebugToggleConnectionInverted" category="VEHICLE" ignoreComboMask="false" />
-		<action name="ADDebugChangeNeighbor" category="VEHICLE" ignoreComboMask="false" />
-		<action name="ADDebugPreviousNeighbor" category="VEHICLE" ignoreComboMask="false" />
-		<action name="ADDebugCreateMapMarker" category="VEHICLE" ignoreComboMask="false" />
-		<action name="ADRenameMapMarker" category="VEHICLE" ignoreComboMask="false" />
-		<action name="ADDebugDeleteDestination" category="VEHICLE" ignoreComboMask="false" />
-		<action name="ADNameDriver" category="VEHICLE" ignoreComboMask="false" />
-		<action name="ADSetDestinationFilter" category="VEHICLE" ignoreComboMask="false" />
-		<action name="AD_Speed_up" category="VEHICLE" ignoreComboMask="false" />
-		<action name="AD_Speed_down" category="VEHICLE" ignoreComboMask="false" />
-		<action name="AD_FieldSpeed_up" category="VEHICLE" ignoreComboMask="false" />
-		<action name="AD_FieldSpeed_down" category="VEHICLE" ignoreComboMask="false" />
-		<action name="ADToggleHud" category="VEHICLE" ignoreComboMask="false" />
-		<action name="ADToggleMouse" category="VEHICLE" ignoreComboMask="false" />
-		<action name="ADDebugDeleteWayPoint" category="VEHICLE" ignoreComboMask="false" />
-		<action name="AD_routes_manager" category="VEHICLE" ignoreComboMask="false" />
-		<action name="ADSelectNextFillType" category="VEHICLE" ignoreComboMask="false" />
-		<action name="ADSelectPreviousFillType" category="VEHICLE" ignoreComboMask="false" />
-		<action name="ADOpenGUI" category="VEHICLE" ignoreComboMask="false" />
-		<action name="ADCallDriver" category="VEHICLE" ignoreComboMask="false" />
-		<action name="ADGoToVehicle" category="VEHICLE" ignoreComboMask="false" />
-		<action name="ADIncLoopCounter" category="VEHICLE" ignoreComboMask="false" />
-		<action name="ADDecLoopCounter" category="VEHICLE" ignoreComboMask="false" />
-		<action name="ADSwapTargets" category="VEHICLE" ignoreComboMask="false" />
-		<action name="ADStartHelper" category="VEHICLE" ignoreComboMask="false" />
-		<action name="ADToggleUsedHelper" category="VEHICLE" ignoreComboMask="false" />
-		<action name="AD_open_notification_history" category="VEHICLE" ignoreComboMask="false" />
-		<action name="AD_continue" category="VEHICLE" ignoreComboMask="false" />
-		<action name="ADParkVehicle" category="VEHICLE" ignoreComboMask="false" />
-		<action name="ADSetParkDestination" category="VEHICLE" ignoreComboMask="false" />
-		<action name="AD_devAction" category="VEHICLE" ignoreComboMask="false" />
-		<action name="ADRefuelVehicle" category="VEHICLE" ignoreComboMask="false" />	
-		<action name="ADToggleHudExtension" category="VEHICLE" ignoreComboMask="false" />	
-		<action name="ADToggleAutomaticUnloadTarget" category="VEHICLE" ignoreComboMask="false" />
-		<action name="ADToggleAutomaticPickupTarget" category="VEHICLE" ignoreComboMask="false" />
-		<action name="ADToggleLoadByFillLevel" category="VEHICLE" ignoreComboMask="false" />
-		<action name="ADRepairVehicle" category="VEHICLE" ignoreComboMask="false" />		
+		<action name="ADSilomode"/>
+		<action name="ADPreviousMode"/>
+		<action name="ADRecord"/>
+		<action name="ADRecord_Dual"/>
+		<action name="ADRecord_SubPrio"/>
+		<action name="ADRecord_SubPrioDual"/>
+		<action name="ADEnDisable"/>
+		<action name="ADSelectTarget"/>
+		<action name="ADSelectPreviousTarget"/>
+		<action name="ADSelectTargetUnload"/>
+		<action name="ADSelectPreviousTargetUnload"/>
+		<action name="ADActivateDebug"/>
+		<action name="ADDisplayMapPoints"/>
+		<action name="ADDebugSelectNeighbor"/>
+		<action name="ADDebugCreateConnection"/>
+		<action name="ADDebugToggleConnectionInverted"/>
+		<action name="ADDebugChangeNeighbor"/>
+		<action name="ADDebugPreviousNeighbor"/>
+		<action name="ADDebugCreateMapMarker"/>
+		<action name="ADRenameMapMarker"/>
+		<action name="ADDebugDeleteDestination"/>
+		<action name="ADNameDriver"/>
+		<action name="ADSetDestinationFilter"/>
+		<action name="AD_Speed_up"/>
+		<action name="AD_Speed_down"/>
+		<action name="AD_FieldSpeed_up"/>
+		<action name="AD_FieldSpeed_down"/>
+		<action name="ADToggleHud"/>
+		<action name="ADToggleMouse"/>
+		<action name="ADDebugDeleteWayPoint"/>
+		<action name="AD_routes_manager"/>
+		<action name="ADSelectNextFillType"/>
+		<action name="ADSelectPreviousFillType"/>
+		<action name="ADOpenGUI"/>
+		<action name="ADCallDriver"/>
+		<action name="ADGoToVehicle"/>
+		<action name="ADIncLoopCounter"/>
+		<action name="ADDecLoopCounter"/>
+		<action name="ADSwapTargets"/>
+		<action name="ADStartHelper"/>
+		<action name="ADToggleUsedHelper"/>
+		<action name="AD_open_notification_history"/>
+		<action name="AD_continue"/>
+		<action name="ADParkVehicle"/>
+		<action name="ADSetParkDestination"/>
+		<action name="AD_devAction"/>
+		<action name="ADRefuelVehicle"/>	
+		<action name="ADToggleHudExtension"/>	
+		<action name="ADToggleAutomaticUnloadTarget"/>
+		<action name="ADToggleAutomaticPickupTarget"/>
+		<action name="ADToggleLoadByFillLevel"/>
+		<action name="ADRepairVehicle"/>		
 	</actions>
 
 	<inputBinding>

@@ -381,6 +381,28 @@ function ADSensor:getCorners(box)
     return corners
 end
 
+function ADSensor:isElementBlockingVehicle(nodeId)
+    -- we want to ignore some elements and keep driving instead.
+    if nodeId == nil then
+        return false  -- no an element
+    end
+    if g_currentMission:getNodeObject(nodeId) ~= nil then
+        return true  -- not handled here
+    end
+
+    local isShapeClass = getHasClassId(nodeId, ClassIds.SHAPE)
+    local isRigidBodyTypeDynamic = getRigidBodyType(nodeId) == RigidBodyType.DYNAMIC
+    local isDynamicCollision = CollisionFlag.getHasMaskFlagSet(nodeId, CollisionFlag.DYNAMIC_OBJECT)
+
+    -- traffic signs return true for all three checks above, this might require tweaking
+    if isShapeClass and isRigidBodyTypeDynamic and isDynamicCollision then
+        return false  -- probably a traffic sign
+    end
+
+    -- unknown element
+    return true
+end
+
 function ADSensor:updateSensor(dt)
     --Logging.info("updateSensor called")
     if self:isEnabled() then

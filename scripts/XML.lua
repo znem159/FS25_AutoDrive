@@ -94,6 +94,8 @@ function AutoDrive.readFromXML(xmlFile)
 	if idString == nil then
 		return
 	end
+	AutoDrive.ADRouteVersion = getXMLString(xmlFile, "AutoDrive.ADRouteVersion") or "no version defined"
+	AutoDrive.ADRouteAuthor = getXMLString(xmlFile, "AutoDrive.ADRouteAuthor") or "no Author defined"
 
 	AutoDrive.currentDebugChannelMask = getXMLInt(xmlFile, "AutoDrive.currentDebugChannelMask") or 0
 
@@ -290,6 +292,8 @@ function AutoDrive.saveToXML(xmlFile)
 
 	setXMLString(xmlFile, "AutoDrive.version", AutoDrive.version)
 	setXMLString(xmlFile, "AutoDrive.MapName", AutoDrive.loadedMap)
+	setXMLString(xmlFile, "AutoDrive.ADRouteVersion", AutoDrive.ADRouteVersion or "no version defined")
+	setXMLString(xmlFile, "AutoDrive.ADRouteAuthor", AutoDrive.ADRouteAuthor or "no Author defined")
 
 	setXMLInt(xmlFile, "AutoDrive.currentDebugChannelMask", AutoDrive.currentDebugChannelMask)
 

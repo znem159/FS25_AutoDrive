@@ -1661,6 +1661,9 @@ function AutoDrive:updateAutoDriveLights(switchOff)
         if AutoDrive.getSetting("useHazardLightReverse", self) and self.setTurnLightState then
             self:setTurnLightState(Lights.TURNLIGHT_OFF)
         end
+        if self.updateAutomaticLights ~= nil then
+            self:updateAutomaticLights(false, false)
+        end
     elseif self.ad ~= nil and self.ad.stateModule:isActive() then
         local isInRangeToLoadUnloadTarget = false
         local isInBunkerSilo              = false
