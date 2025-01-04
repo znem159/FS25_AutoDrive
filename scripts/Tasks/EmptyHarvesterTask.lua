@@ -212,7 +212,7 @@ function EmptyHarvesterTask:update(dt)
             waitTime = 3 * EmptyHarvesterTask.WAITING_TIME
         end
         self.waitTimer:timer(true, waitTime, dt)
-        if self.waitTimer:done() then
+        if self.waitTimer:done() or AutoDrive.isVehicleOrTrailerInCrop(self.vehicle, true) then
             self:finished()
             return
         else
