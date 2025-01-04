@@ -286,8 +286,6 @@
 		<text name="gui_ad_routeExportWarn_title"					text="Útvonal felülírása" />
 		<text name="gui_ad_routeDeleteWarn_text"					text="Biztosan törli ezt az útvonalat '%s'?" />
 		<text name="gui_ad_routeDeleteWarn_title"					text="Útvonal törlés" />
-		<text name="statistic_driversTraveledDistance"				text="Vezetési távolság a sofőröktől" />
-		<text name="statistic_driversHired"							text="Alkalmazott sofőrök" />
 		<text name="gui_ad_debugChannelVehicle"						text="Jármű" />
 		<text name="gui_ad_debugChannelCombine"						text="Kombájn" />
 		<text name="gui_ad_debugChannelTrailer"						text="Pótkocsi" />

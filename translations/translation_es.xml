@@ -286,8 +286,6 @@
 		<text name="gui_ad_routeExportWarn_title"					text="Sobrescribir ruta" />
 		<text name="gui_ad_routeDeleteWarn_text"					text="¿Estás seguro de que quieres borrar la ruta '%s'?" />
 		<text name="gui_ad_routeDeleteWarn_title"					text="Eliminar ruta" />
-		<text name="statistic_driversTraveledDistance"				text="Distancia de conducción de los conductores" />
-		<text name="statistic_driversHired"							text="Conductores actualmente contratados" />
 		<text name="gui_ad_debugChannelVehicle"						text="Vehículos" />
 		<text name="gui_ad_debugChannelCombine"						text="Cosechadoras" />
 		<text name="gui_ad_debugChannelTrailer"						text="Remolques" />

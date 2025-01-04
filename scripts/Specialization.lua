@@ -465,10 +465,6 @@ function AutoDrive:onUpdate(dt)
                 self:raiseActive()
             end
         end
-
-        if self.lastMovedDistance > 0 then
-            -- g_currentMission:farmStats(self:getOwnerFarmId()):updateStats("driversTraveledDistance", self.lastMovedDistance * 0.001)
-        end
     end
 
     self.ad.stateModule:update(dt)
@@ -856,7 +852,7 @@ function AutoDrive:onDrawEditorMode()
 
         if AutoDrive.isInExtendedEditorMode() then
             arrowPosition = DrawingManager.arrows.position.middle
-            if AutoDrive.enableSphrere == true then
+            if AutoDrive.enableSphere == true then
                 if AutoDrive.mouseIsAtPos(point, 0.01) then
                     DrawingManager:addSphereTask(x, y, z, 3, unpack(AutoDrive.currentColors.ad_color_hoveredNode))
                 else
@@ -1074,8 +1070,6 @@ function AutoDrive:startAutoDrive()
                 end
             end
 
-            -- g_currentMission:farmStats(self:getOwnerFarmId()):updateStats("driversHired", 1)
-
             if self.ad.currentHelper == nil or self.ad.stateModule:getCurrentHelperIndex() <= 0 then
                 -- no helper assigned
                 if #g_helperManager.availableHelpers == 0 then
@@ -1110,7 +1104,6 @@ function AutoDrive:stopAutoDrive()
         ADScheduler:removePathfinderVehicle(self)
 
         if self.ad.stateModule:isActive() then
-            -- g_currentMission:farmStats(self:getOwnerFarmId()):updateStats("driversHired", -1)
             self.ad.drivePathModule:reset()
             self.ad.specialDrivingModule:reset()
             self.ad.trailerModule:reset()

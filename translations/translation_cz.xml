@@ -286,8 +286,6 @@
 		<text name="gui_ad_routeExportWarn_title"					text="Trasa byla přepsána" />
 		<text name="gui_ad_routeDeleteWarn_text"					text="Opravdu chcete smazat trasu '%s'?" />
 		<text name="gui_ad_routeDeleteWarn_title"					text="Smazání trasy" />
-		<text name="statistic_driversTraveledDistance"				text="Vzdálenost mezi odvozci" />
-		<text name="statistic_driversHired"							text="Aktuálně najmutí odvozci" />
 		<text name="gui_ad_debugChannelVehicle"						text="Vozidla" />
 		<text name="gui_ad_debugChannelCombine"						text="Kombajny" />
 		<text name="gui_ad_debugChannelTrailer"						text="Vlečky" />

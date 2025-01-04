@@ -286,8 +286,6 @@
 		<text name="gui_ad_routeExportWarn_title"					text="路線覆蓋" />
 		<text name="gui_ad_routeDeleteWarn_text"					text="您確定要刪除路線嗎 '%s'?" />
 		<text name="gui_ad_routeDeleteWarn_title"					text="路線刪除" />
-		<text name="statistic_driversTraveledDistance"				text="與司機的行駛距離" />
-		<text name="statistic_driversHired"							text="目前雇用的司機" />
 		<text name="gui_ad_debugChannelVehicle"						text="車輛" />
 		<text name="gui_ad_debugChannelCombine"						text="收割機" />
 		<text name="gui_ad_debugChannelTrailer"						text="拖車" />

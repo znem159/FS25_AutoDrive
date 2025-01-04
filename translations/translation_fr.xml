@@ -286,8 +286,6 @@
 		<text name="gui_ad_routeExportWarn_title"					text="Ecrasement des itinéraires" />
 		<text name="gui_ad_routeDeleteWarn_text"					text="Voulez-vous vraiment supprimer l'itinéraire '%s'?" />
 		<text name="gui_ad_routeDeleteWarn_title"					text="Suppression de l'itinéraire" />
-		<text name="statistic_driversTraveledDistance"				text="Distance de conduite des chauffeurs" />
-		<text name="statistic_driversHired"							text="Chauffeurs actuellement embauchés" />
 		<text name="gui_ad_debugChannelVehicle"						text="Véhicules" />
 		<text name="gui_ad_debugChannelCombine"						text="Moissonneuses" />
 		<text name="gui_ad_debugChannelTrailer"						text="Remorques" />

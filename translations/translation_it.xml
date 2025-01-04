@@ -286,8 +286,6 @@
 		<text name="gui_ad_routeExportWarn_title"					text="Sovrascrittura percorsi" />
 		<text name="gui_ad_routeDeleteWarn_text"					text="Sei sicuro di voler cancellare il percorso '%s'?" />
 		<text name="gui_ad_routeDeleteWarn_title"					text="Rimozione percorso" />
-		<text name="statistic_driversTraveledDistance"				text="Distanza percorsa dagli autisti" />
-		<text name="statistic_driversHired"							text="Autisti attualmente assunti" />
 		<text name="gui_ad_debugChannelVehicle"						text="Veicoli" />
 		<text name="gui_ad_debugChannelCombine"						text="Trebbie" />
 		<text name="gui_ad_debugChannelTrailer"						text="Rimorchi" />

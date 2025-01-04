@@ -286,8 +286,6 @@
 		<text name="gui_ad_routeExportWarn_title"					text="Перезапис маршруту" />
 		<text name="gui_ad_routeDeleteWarn_text"					text="Ви впевнені, що хочете видалити маршрут '%s'?" />
 		<text name="gui_ad_routeDeleteWarn_title"					text="Видалення маршруту" />
-		<text name="statistic_driversTraveledDistance"				text="Відстань, яку подолали водії AD" />
-		<text name="statistic_driversHired"							text="Поточна кількість найнятих водіїв AD" />
 		<text name="gui_ad_debugChannelVehicle"						text="Автомобілі" />
 		<text name="gui_ad_debugChannelCombine"						text="Комбайни" />
 		<text name="gui_ad_debugChannelTrailer"						text="Причепи" />

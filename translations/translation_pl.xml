@@ -286,8 +286,6 @@
 		<text name="gui_ad_routeExportWarn_title"					text="Nadpisywanie trasy" />
 		<text name="gui_ad_routeDeleteWarn_text"					text="Czy na pewno chcesz usunąć trasę '%s'?" />
 		<text name="gui_ad_routeDeleteWarn_title"					text="Usuwanie trasy" />
-		<text name="statistic_driversTraveledDistance"				text="Trasa przejechana przez kierowców" />
-		<text name="statistic_driversHired"							text="Aktualnie zatrudnieni kierowcy" />
 		<text name="gui_ad_debugChannelVehicle"						text="Pojazdy" />
 		<text name="gui_ad_debugChannelCombine"						text="Kombajny" />
 		<text name="gui_ad_debugChannelTrailer"						text="Przyczepy" />

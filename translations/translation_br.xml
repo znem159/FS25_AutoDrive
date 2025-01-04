@@ -286,8 +286,6 @@
 		<text name="gui_ad_routeExportWarn_title"					text="Sobrescrever rota" />
 		<text name="gui_ad_routeDeleteWarn_text"					text="Tem certeza de que deseja excluir a rota '%s'?" />
 		<text name="gui_ad_routeDeleteWarn_title"					text="Exclusão de rota" />
-		<text name="statistic_driversTraveledDistance"				text="Distância de condução dos motoristas" />
-		<text name="statistic_driversHired"							text="Motoristas atualmente contratados" />
 		<text name="gui_ad_debugChannelVehicle"						text="Veículos" />
 		<text name="gui_ad_debugChannelCombine"						text="Colheitadeira" />
 		<text name="gui_ad_debugChannelTrailer"						text="Carretas" />

@@ -10,7 +10,6 @@ g_autoDriveDebugUIConfigPath = AutoDrive.directory .. "textures/gui_debug_Icons.
 g_autoDriveIconFilename = g_iconsUIFilename
 
 AutoDrive.experimentalFeatures = {}
--- AutoDrive.experimentalFeatures.telemetryOutput = false
 
 AutoDrive.automaticUnloadTarget = false
 AutoDrive.automaticPickupTarget = false
@@ -23,11 +22,6 @@ AutoDrive.mapHotspotsBuffer = {}
 
 AutoDrive.drawHeight = 0.3
 AutoDrive.drawDistance = getViewDistanceCoeff() * 100
-
--- AutoDrive.STAT_NAMES = {"driversTraveledDistance", "driversHired"}
--- for _, statName in pairs(AutoDrive.STAT_NAMES) do
--- table.insert(FarmStats.STAT_NAMES, statName)
--- end
 
 AutoDrive.MODE_DRIVETO = 1
 AutoDrive.MODE_PICKUPANDDELIVER = 2
@@ -78,8 +72,8 @@ AutoDrive.MAX_BUNKERSILO_LENGTH = 100 -- length of bunker silo where speed shoul
 AutoDrive.PERF_FRAMES = 20
 AutoDrive.PERF_FRAMES_HIGH = 4
 
-AutoDrive.toggleSphrere = true
-AutoDrive.enableSphrere = true
+AutoDrive.toggleSphere = true
+AutoDrive.enableSphere = true
 
 AutoDrive.FLAG_NONE = 0
 AutoDrive.FLAG_SUBPRIO = 1
@@ -152,10 +146,6 @@ AutoDrive.modesToStartFromCP = {
 	-- AutoDrive.MODE_BGA not allowed
 }
 
-function AutoDrive:onAllModsLoaded()
-	-- ADThirdPartyModsManager:load()
-end
-
 function AutoDrive:restartMySavegame()
 	if g_server then
 		restartApplication(true, " -autoStartSavegameId 1")
@@ -164,7 +154,6 @@ end
 
 function AutoDrive:loadMap(name)
 	Logging.info("[AD] Start register later loaded mods...")
-	--ADThirdPartyModsManager:load()
 	-- second iteration to register AD to vehicle types which where loaded after AD
 	AutoDriveRegister.registerAutoDrive()
 	AutoDriveRegister.registerVehicleData()
@@ -263,7 +252,7 @@ function AutoDrive:loadMap(name)
 	ADInputManager:load()
 
 	ADMultipleTargetsManager:load()
-	-- AutoDrive.initTelemetry()
+
 	ADBunkerSiloManager:load()
 
 	AutoDrivePlaceableData:load()
@@ -585,16 +574,16 @@ function AutoDrive:keyEvent(unicode, sym, modifier, isDown)
 	AutoDrive.rightSHIFTmodifierKeyPressed = bitAND(modifier, Input.MOD_RSHIFT) > 0
 
 	if AutoDrive.isInExtendedEditorMode() then
-		if (AutoDrive.rightCTRLmodifierKeyPressed and AutoDrive.toggleSphrere == true) then
-			AutoDrive.toggleSphrere = false
-		elseif (AutoDrive.rightCTRLmodifierKeyPressed and AutoDrive.toggleSphrere == false) then
-			AutoDrive.toggleSphrere = true
+		if (AutoDrive.rightCTRLmodifierKeyPressed and AutoDrive.toggleSphere == true) then
+			AutoDrive.toggleSphere = false
+		elseif (AutoDrive.rightCTRLmodifierKeyPressed and AutoDrive.toggleSphere == false) then
+			AutoDrive.toggleSphere = true
 		end
 
 		if (AutoDrive.leftCTRLmodifierKeyPressed or AutoDrive.leftALTmodifierKeyPressed) then
-			AutoDrive.enableSphrere = true
+			AutoDrive.enableSphere = true
 		else
-			AutoDrive.enableSphrere = AutoDrive.toggleSphrere
+			AutoDrive.enableSphere = AutoDrive.toggleSphere
 		end
 	end
 end
@@ -719,8 +708,6 @@ function AutoDrive:update(dt)
 	ADMessagesManager:update(dt)
 	ADTriggerManager:update(dt)
 	ADRoutesManager:update(dt)
-
-	-- AutoDrive.handleTelemetry(dt)
 end
 
 function AutoDrive:draw()
@@ -737,25 +724,4 @@ function AutoDrive:preRemoveVehicle(vehicle)
 	end
 end
 
-function AutoDrive:FarmStats_saveToXMLFile(xmlFile, key)
-	if not xmlFile:hasProperty(key) then
-		return
-	end
-	-- key = key .. ".statistics"
-	-- if self.statistics.driversTraveledDistance ~= nil then
-	-- setXMLFloat(xmlFile, key .. ".driversTraveledDistance", self.statistics.driversTraveledDistance.total)
-	-- end
-end
-
-function AutoDrive:FarmStats_loadFromXMLFile(xmlFileName, key)
-	local xmlFile = XMLFile.load("TempXML", xmlFileName)
-	if xmlFile == nil then
-		return false
-	end
-
-	key = key .. ".statistics"
-	-- self.statistics["driversTraveledDistance"].total = Utils.getNoNil(getXMLFloat(xmlFile, key .. ".driversTraveledDistance"), 0)
-
-	-- self.statistics["driversTraveledDistance"].total = xmlFile:getFloat(key .. ".driversTraveledDistance", 0)
-end
 

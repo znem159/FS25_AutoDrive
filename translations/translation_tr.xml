@@ -286,8 +286,6 @@
 		<text name="gui_ad_routeExportWarn_title"					text="Rota üzerine yazma" />
 		<text name="gui_ad_routeDeleteWarn_text"					text="%s' rotasını silmek istediğinizden emin misiniz?" />
 		<text name="gui_ad_routeDeleteWarn_title"					text="Rota silme" />
-		<text name="statistic_driversTraveledDistance"				text="Sürücülerden sürüş mesafesi" />
-		<text name="statistic_driversHired"							text="Şu anda işe alınan sürücüler" />
 		<text name="gui_ad_debugChannelVehicle"						text="Araçlar" />
 		<text name="gui_ad_debugChannelCombine"						text="Biçerdöverler" />
 		<text name="gui_ad_debugChannelTrailer"						text="Römorklar" />

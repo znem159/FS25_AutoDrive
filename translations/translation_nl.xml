@@ -286,8 +286,6 @@
 		<text name="gui_ad_routeExportWarn_title"					text="Route overschrijven" />
 		<text name="gui_ad_routeDeleteWarn_text"					text="Weet u zeker dat u de route wilt verwijderen '%s'?" />
 		<text name="gui_ad_routeDeleteWarn_title"					text="Verwijdering van de route" />
-		<text name="statistic_driversTraveledDistance"				text="Rijafstand van bestuurders" />
-		<text name="statistic_driversHired"							text="Momenteel gehuurde bestuurders" />
 		<text name="gui_ad_debugChannelVehicle"						text="Voertuigen" />
 		<text name="gui_ad_debugChannelCombine"						text="Oogstmachines" />
 		<text name="gui_ad_debugChannelTrailer"						text="Aanhangwagens" />

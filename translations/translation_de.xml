@@ -286,8 +286,6 @@
 		<text name="gui_ad_routeExportWarn_title"					text="Route überschreiben" />
 		<text name="gui_ad_routeDeleteWarn_text"					text="Möchtest du diese Route wirklich löschen '%s'?" />
 		<text name="gui_ad_routeDeleteWarn_title"					text="Route löschen" />
-		<text name="statistic_driversTraveledDistance"				text="Gefahrene Strecke der Fahrer" />
-		<text name="statistic_driversHired"							text="Eingestellte Fahrer" />
 		<text name="gui_ad_debugChannelVehicle"						text="Fahrzeuge" />
 		<text name="gui_ad_debugChannelCombine"						text="Drescher" />
 		<text name="gui_ad_debugChannelTrailer"						text="Anhänger" />

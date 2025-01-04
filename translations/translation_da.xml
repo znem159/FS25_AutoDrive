@@ -286,8 +286,6 @@
 		<text name="gui_ad_routeExportWarn_title"					text="Rute overskrives" />
 		<text name="gui_ad_routeDeleteWarn_text"					text="Er du sikker på du vil slette rute '%s'?" />
 		<text name="gui_ad_routeDeleteWarn_title"					text="Rute sletning" />
-		<text name="statistic_driversTraveledDistance"				text="Køreafstand fra chauffører" />
-		<text name="statistic_driversHired"							text="Kører aktuelt hyret" />
 		<text name="gui_ad_debugChannelVehicle"						text="Køretøjer" />
 		<text name="gui_ad_debugChannelCombine"						text="Tærskere" />
 		<text name="gui_ad_debugChannelTrailer"						text="Trailere" />
