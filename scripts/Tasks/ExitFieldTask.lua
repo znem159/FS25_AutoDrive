@@ -67,7 +67,7 @@ function ExitFieldTask:update(dt)
         self.vehicle.ad.specialDrivingModule:stopVehicle()
         self.vehicle.ad.specialDrivingModule:update(dt)
         return
-    elseif self.state == CatchCombinePipeTask.STATE_DRIVING then
+    elseif self.state == ExitFieldTask.STATE_DRIVING then
         if self.vehicle.ad.drivePathModule:isTargetReached() then
             self.state = ExitFieldTask.STATE_FINISHED
         else
