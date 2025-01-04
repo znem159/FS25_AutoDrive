@@ -1,7 +1,9 @@
 ExitFieldTask = ADInheritsFrom(AbstractTask)
+ExitFieldTask.debug = false
 
 ExitFieldTask.STATE_PATHPLANNING = 1
 ExitFieldTask.STATE_DRIVING = 2
+ExitFieldTask.STATE_DELAY_PATHPLANNING = 3
 
 ExitFieldTask.STRATEGY_START = 0
 ExitFieldTask.STRATEGY_BEHIND_START = 1
@@ -12,13 +14,13 @@ function ExitFieldTask:new(vehicle)
     o.vehicle = vehicle
     o.trailers = nil
     o.failedPathFinder = 0
+    o.waitForCheckTimer = AutoDriveTON:new()
     return o
 end
 
 function ExitFieldTask:setUp()
-    self.state = ExitFieldTask.STATE_PATHPLANNING
+    self.state = ExitFieldTask.STATE_DELAY_PATHPLANNING
     self.nextExitStrategy = AutoDrive.getSetting("exitField", self.vehicle)
-    self:startPathPlanning()
     self.trailers, _ = AutoDrive.getAllUnits(self.vehicle)
     AutoDrive.setTrailerCoverOpen(self.vehicle, self.trailers, false)
 end
@@ -53,12 +55,26 @@ function ExitFieldTask:update(dt)
             self.vehicle.ad.specialDrivingModule:stopVehicle()
             self.vehicle.ad.specialDrivingModule:update(dt)
         end
-    else
+    elseif self.state == ExitFieldTask.STATE_DELAY_PATHPLANNING then
+        ExitFieldTask.debugMsg(self.vehicle, "ExitFieldTask:update - STATE_DELAY_PATHPLANNING")
+        if self.waitForCheckTimer:timer(true, 1000, dt) then
+            if self:startPathPlanning() then
+                self.vehicle.ad.pathFinderModule:addDelayTimer(6000)
+                self.state = ExitFieldTask.STATE_PATHPLANNING
+                return
+            end
+        end
+        self.vehicle.ad.specialDrivingModule:stopVehicle()
+        self.vehicle.ad.specialDrivingModule:update(dt)
+        return
+    elseif self.state == CatchCombinePipeTask.STATE_DRIVING then
         if self.vehicle.ad.drivePathModule:isTargetReached() then
-            self:finished()
+            self.state = ExitFieldTask.STATE_FINISHED
         else
             self.vehicle.ad.drivePathModule:update(dt)
         end
+    elseif self.state == ExitFieldTask.STATE_FINISHED then
+        self:finished()
     end
 end
 
@@ -70,6 +86,7 @@ function ExitFieldTask:finished()
 end
 
 function ExitFieldTask:startPathPlanning()
+    ExitFieldTask.debugMsg(self.vehicle, "ExitFieldTask:startPathPlanning")
     local closest, closestDistance = self.vehicle:getClosestWayPoint()
     if self.nextExitStrategy == ExitFieldTask.STRATEGY_CLOSEST then
         local closestNode = ADGraphManager:getWayPointById(closest)
@@ -80,6 +97,7 @@ function ExitFieldTask:startPathPlanning()
                 local vecToNextPoint = {x = wayPoints[2].x - closestNode.x, z = wayPoints[2].z - closestNode.z}
                 self.vehicle.ad.pathFinderModule:reset()
                 self.vehicle.ad.pathFinderModule:startPathPlanningTo(closestNode, vecToNextPoint)
+                return true
             else
                 -- close to network, set task finished
                 self:finished()
@@ -100,12 +118,14 @@ function ExitFieldTask:startPathPlanning()
             end
             self.vehicle.ad.pathFinderModule:reset()
             self.vehicle.ad.pathFinderModule:startPathPlanningTo(targetNode, vecToNextPoint)
+            return true
         else
             AutoDriveMessageEvent.sendMessageOrNotification(self.vehicle, ADMessagesManager.messageTypes.WARN, "$l10n_AD_Driver_of; %s $l10n_AD_cannot_find_path;", 5000, self.vehicle.ad.stateModule:getName())
             self.vehicle.ad.taskModule:abortAllTasks()
             self.vehicle.ad.taskModule:addTask(StopAndDisableADTask:new(self.vehicle))
         end
     end
+    return false
 end
 
 function ExitFieldTask:selectNextStrategy()
@@ -130,5 +150,13 @@ function ExitFieldTask:getI18nInfo()
         return "$l10n_AD_task_pathfinding;" .. string.format(" %d / %d - %d / %d", actualState, maxStates, steps, max_pathfinder_steps)
     else
         return "$l10n_AD_task_exiting_field;"
+    end
+end
+
+function ExitFieldTask.debugMsg(vehicle, debugText, ...)
+    if ExitFieldTask.debug == true then
+        AutoDrive.debugMsg(vehicle, debugText, ...)
+    else
+        AutoDrive.debugPrint(vehicle, AutoDrive.DC_COMBINEINFO, debugText, ...)
     end
 end
