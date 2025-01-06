@@ -51,14 +51,14 @@
 		<text name="input_ADRefuelVehicle"							text="AD: Rifornire il veicolo" />
 		<text name="input_ADRepairVehicle"							text="AD: Ripara il veicolo" />
 		<text name="input_ADSwapTargets"							text="AD: Scambia Destinazione" />
-		<text name="input_ADStartHelper"							text="AD: Passa a AI/CP/AIVE" />
-		<text name="input_ADToggleUsedHelper"						text="AD: Attiva/Disattiva AI/CP/AIVE" />
+		<text name="input_ADStartHelper"							text="AD: Passa a IA/CP/AIVE" />
+		<text name="input_ADToggleUsedHelper"						text="AD: Attiva/Disattiva IA/CP/AIVE" />
 		<text name="input_AD_devAction"								text="AD: Azione dello sviluppatore" />
 		<text name="input_ADToggleAutomaticPickupTarget"			text="AD: Attiva/Disattiva il target di ritiro automatico" />
 		<text name="input_ADToggleAutomaticUnloadTarget"			text="AD: Attiva/Disattiva obiettivo di scaricamento automatico" />
 		<text name="input_ADToggleLoadByFillLevel"					text="AD: Attiva/disattiva il caricamento in base al livello di riempimento" />
 		<text name="hud_avoidFruit"									text="AD: Evita raccolto" />
-		<text name="hud_startHelper"								text="AD: Avvia AI/CP/AIVE a destinazione" />
+		<text name="hud_startHelper"								text="AD: Avvia IA/CP/AIVE a destinazione" />
 		<text name="AD_parkVehicle_noPosSet"						text="Nessuna destinazione di parcheggio assegnata." />
 		<text name="AD_parkVehicle_selected"						text="Seleziona Parcheggio veicolo: " />
 		<text name="AD_parkVehicle_deleted"							text="destinazione parcheggio eliminata!" />
@@ -74,8 +74,8 @@
 		<text name="AD_No_Refuel_Station"							text="Impossibile trovare la stazione di rifornimento" />
 		<text name="AD_No_Repair_Station"							text="Impossibile trovare la stazione di riparazione per: " />
 		<text name="AD_Wrong_Mode_takeover_from_CP"					text="Modalità AD errata per lavorare insieme al CP" />
-		<text name="AD_Unable_to_start_AIJob"						text="Impossibile avviare AI Helper" />
-		<text name="AD_AIJob_active"								text="AI Helper è ancora attivo!" />
+		<text name="AD_Unable_to_start_AIJob"						text="Impossibile avviare IA Helper" />
+		<text name="AD_AIJob_active"								text="IA Helper è ancora attivo!" />
 		<text name="AD_MODE_DRIVETO"								text="Guida" />
 		<text name="AD_MODE_DELIVERTO"								text="Consegna" />
 		<text name="AD_MODE_PICKUPANDDELIVER"						text="Carica e consegna" />
@@ -104,7 +104,7 @@
 		<text name="gui_ad_siloEmpty"								text="Se il silo è vuoto" />
 		<text name="gui_ad_siloEmpty_tooltip"						text="Determina come l'autista deve reagire ad un silo vuoto" />
 		<text name="gui_ad_useFolders"								text="Usa le cartelle" />
-		<text name="gui_ad_useFolders_tooltip"						text="Usa Le cartelle per le destinazioni edifici" />
+		<text name="gui_ad_useFolders_tooltip"						text="Ordina i punti di destinazione in cartelle." />
 		<text name="gui_ad_wait"									text="Attendi" />
 		<text name="gui_ad_drive"									text="Continua" />
 		<text name="gui_ad_off"										text="Spento" />
@@ -157,7 +157,7 @@
 		<text name="gui_ad_ground"									text="Livello del suolo" />
 		<text name="gui_ad_aboveDriver"								text="Sopra il veicolo" />
 		<text name="gui_ad_enableTrafficDetection"					text="Rileva collisioni" />
-		<text name="gui_ad_enableTrafficDetection_tooltip"			text="Rilevamento di collisioni avanzato, che rileva anche traffico AI, segnali stradali, recinzioni ecc. Se Disattivato, rileva la collisione standard di FS 22 o FS 19" />
+		<text name="gui_ad_enableTrafficDetection_tooltip"			text="Rilevamento di collisioni avanzato, che rileva anche traffico IA, segnali stradali, recinzioni ecc. Se Disattivato, rileva la collisione standard di FS 22 o FS 19" />
 		<text name="gui_ad_shovelWidth"								text="Larghezza della pala (aggiunta)" />
 		<text name="gui_ad_shovelWidth_tooltip"						text="Se la larghezza della pala rilevata automaticamente è troppo piccola, può essere aumentata con questo valore" />
 		<text name="gui_ad_preCallLevel"							text="Anticipa chiamata per scarico" />
@@ -244,7 +244,7 @@
 		<text name="gui_ad_AL_behind"								text="Scarica di dietro" />
 		<text name="gui_ad_AL_right"								text="Scarica a destra" />
 		<text name="gui_ad_ALUnloadWaitTime"						text="Autoload: tempo di attesa dopo lo scarico/carico" />
-		<text name="gui_ad_ALUnloadWaitTime_tooltip"				text="Tempo di attesa dopo lo scarico/scarico, prima di continuare a guidare - utile per il carico in produzione o nel centro di scarico: 0-nessuna attesa, attendere il tempo selezionato" />
+		<text name="gui_ad_ALUnloadWaitTime_tooltip"				text="Tempo di attesa dopo lo scarico/carico, prima di continuare a guidare - utile per il carico in produzione o nel centro di scarico: 0-nessuna attesa, attendere il tempo selezionato" />
 		<text name="gui_ad_scanConfirmationTextTitle"				text="AutoDrive - Generazione di rete" />
 		<text name="gui_ad_scanConfirmationText"					text="AutoDrive deve generare una rete di percorsi a partire dai dati del traffico e degli aiutanti sulla mappa?" />
 		<text name="gui_ad_noHarvesterAvailable"					text="Nessuna mietitrice con lo stesso obiettivo trovata" />
@@ -259,8 +259,8 @@
 		<text name="gui_ad_pathfinder_custom"						text="AutoDrive Personalizzato" />
 		<text name="gui_ad_enableRoutesManagerOnDediServer"			text="Gestore di percorsi sul server" />
 		<text name="gui_ad_enableRoutesManagerOnDediServer_tooltip"	text="Abilita il gestore del percorso sui server dedicati" />
-		<text name="gui_ad_autostartHelpers"						text="Autostart helpers" />
-		<text name="gui_ad_autostartHelpers_tooltip"				text="Automatically restart active helpers after loading a savegame" />
+		<text name="gui_ad_autostartHelpers"						text="Autostart Aiutante" />
+		<text name="gui_ad_autostartHelpers_tooltip"				text="Riavvia automaticamente gli aiutanti attivi dopo aver caricato un salvataggio" />
 		<text name="gui_ad_detectSwath"								text="Rilevamento dell'andana" />
 		<text name="gui_ad_detectSwath_tooltip"						text="Decide se le andane vengono rilevate come frutta sul campo" />
 		<text name="gui_ad_colorAssignmentMode"						text="Colori personalizzati" />
@@ -348,7 +348,7 @@
 		<text name="AD_task_drive_to_unload_point"					text="Guida al punto di scarico" />
 		<text name="AD_task_wait_for_call"							text="Attesa di chiamata" />
 		<text name="AD_task_chasing_combine"						text="Inseguimento mietitrebbia" />
-		<text name="AD_task_wait_for_combine_pass_by"				text="Lasciare passare a" />
+		<text name="AD_task_wait_for_combine_pass_by"				text="attendere il passaggio della mietitrebbia" />
 		<text name="AD_task_catching_chase_side"					text="Lato di intercettazione" />
 		<text name="AD_task_chase_side"								text="Lato" />
 		<text name="AD_task_chase_side_left"						text="Sinistra" />
