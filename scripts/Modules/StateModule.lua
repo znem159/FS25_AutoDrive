@@ -17,6 +17,7 @@ ADStateModule.HELPER_NONE = 10/2 -- must not be 0
 ADStateModule.HELPER_CP = 1
 ADStateModule.HELPER_AIVE = 2
 ADStateModule.HELPER_AI = 3
+ADStateModule.NUM_HELPER_TYPES = 3  -- number of valid helper types above
 
 function ADStateModule:new(vehicle)
     local o = {}
@@ -426,14 +427,13 @@ function ADStateModule:isHelperTypeValid(helper)
 end
 
 function ADStateModule:toggleUsedHelper()
-    -- check the hext helper type
-    local helper = self.getNextHelperType(self.usedHelper)
-    if not self:isHelperTypeValid(helper) then
-        -- try the next one
-        -- currently we only have 3 helper types - if we have more in the future, we need to add a loop here
+    local helper = self.usedHelper
+    for _ = 1, ADStateModule.NUM_HELPER_TYPES do
         helper = self.getNextHelperType(helper)
+        if self:isHelperTypeValid(helper) then
+            break
+        end
     end
-
     if not self:isHelperTypeValid(helper) then
         helper = ADStateModule.HELPER_NONE
     end
