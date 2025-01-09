@@ -622,23 +622,24 @@ function AutoDrive.findGrainBackDoorTipSideIndex(vehicle, trailer)
 
     for i = 1, spec.tipSideCount, 1 do
         local tipSide = spec.tipSides[i]
-        trailer:setCurrentDischargeNodeIndex(tipSide.dischargeNodeIndex)
-        local currentDischargeNode = trailer:getCurrentDischargeNode()
-        if currentDischargeNode then
-            local tx, ty, tz = getWorldTranslation(currentDischargeNode.node)
-            local _, _, diffZ = AutoDrive.worldToLocal(trailer, tx, ty, tz + 50)
-            -- get the 2 most back doors
-            if diffZ <= backDistance1 and currentDischargeNode and currentDischargeNode.effects and table.count(currentDischargeNode.effects) > 0 then
-                backDistance2 = backDistance1
-                dischargeSpeed2 = dischargeSpeed1
-                tipSideIndex2 = tipSideIndex1
-                backDistance1 = diffZ
-                dischargeSpeed1 = currentDischargeNode.emptySpeed
-                tipSideIndex1 = i
+        if tipSide.dischargeNodeIndex and tipSide.dischargeNodeIndex > 0 then
+            local currentDischargeNode = trailer:getDischargeNodeByIndex(tipSide.dischargeNodeIndex)
+            if currentDischargeNode then
+                local tx, ty, tz = getWorldTranslation(currentDischargeNode.node)
+                local _, _, diffZ = AutoDrive.worldToLocal(trailer, tx, ty, tz + 50)
+                -- get the 2 most back doors
+                if diffZ <= backDistance1 and currentDischargeNode.effects and table.count(currentDischargeNode.effects) > 0 then
+                    backDistance2 = backDistance1
+                    dischargeSpeed2 = dischargeSpeed1
+                    tipSideIndex2 = tipSideIndex1
+                    backDistance1 = diffZ
+                    dischargeSpeed1 = currentDischargeNode.emptySpeed
+                    tipSideIndex1 = i
+                end
             end
         end
     end
-    local foundTwoBackDoors = math.abs(backDistance2 - backDistance1) < 1
+    local foundTwoBackDoors = (backDistance1 ~= math.huge) and (math.abs(backDistance2 - backDistance1) < 1)
     if foundTwoBackDoors then
         grainDoorSideIndex = tipSideIndex1
         backDoorSideIndex = tipSideIndex2
