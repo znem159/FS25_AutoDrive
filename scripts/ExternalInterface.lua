@@ -761,8 +761,17 @@ function AutoDrive:unloadAL(object)
             local unloadPosition = unloadPositions[unloadPositionSetting]
             AutoDrive.debugPrint(object, AutoDrive.DC_EXTERNALINTERFACEINFO, "AutoDrive:unloadAL spec_universalAutoload unloadPosition %s", tostring(unloadPosition))
             if unloadPosition ~= nil and string.len(unloadPosition) > 0 then
-                object:ualSetUnloadPosition(unloadPosition)
-                object:ualUnload()
+                if unloadPositionSetting == 1 then
+                    -- center unload - unfasten belts only
+                    if object.setAllTensionBeltsActive ~= nil then
+                        AutoDrive.debugPrint(object, AutoDrive.DC_EXTERNALINTERFACEINFO, "AutoDrive:unloadAL spec_universalAutoload setAllTensionBeltsActive")
+                        object:setAllTensionBeltsActive(false, false)
+                    end
+                else
+                    AutoDrive.debugPrint(object, AutoDrive.DC_EXTERNALINTERFACEINFO, "AutoDrive:unloadAL spec_universalAutoload ualUnload")
+                    object:ualSetUnloadPosition(unloadPosition)
+                    object:ualUnload()
+                end
             end
         end
     end
@@ -949,6 +958,7 @@ function AutoDrive:onAIJobFinished()
     if rootVehicle then
         if AutoDrive:getIsCPActive(rootVehicle) then
             -- ignore this event for CP helpers to react on the separate CP events
+            AutoDrive.debugPrint(self, AutoDrive.DC_EXTERNALINTERFACEINFO, "AutoDrive:onAIJobFinished ignore this event for CP helpers")
             return
         end
         if rootVehicle.ad == nil then
