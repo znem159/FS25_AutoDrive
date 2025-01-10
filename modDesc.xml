@@ -7,32 +7,32 @@
 	<description>
 		<en>
 <![CDATA[This mod can be used to create a network of routes for vehicles to drive autonomously. Once setup you can tell a tractor which is standing anywhere close to the network to drive to any point, such as the shop, field 1 or to a sell point.
-Changelog: please check github...
+Changelog: Necessary adjustments for FS25, color adjustment, conversion of all graphics, new creation of the menus, corrections and optimization of all scripts and routines, adjustment HUD, complete information and release notes: https://github.com/Stephan-S/FS25_AutoDrive
 ]]>
 		</en>
 		<de>
 <![CDATA[Dieser Mod erlaubt es ein Netzwerk von Routen aufzuzeichnen, um dann ein Fahrzeug von jedem beliebigen Punkt zu speziell definierten Zielen, wie zum Beispiel der eigenen Farm, Feld 1 oder auch zu jedem Verkaufspunkt fahren zu lassen.
-Changelog: bitte auf github lesen...
+Changelog: notwendige Anpassungen für den LS25, farbliche Anpassung, Konvertierung aller Grafiken, Neuerstellung der Menüs, Korrekturen und Optimierung aller Skripts und Routinen, Anpassung HUD, vollständige Infos und Release Notes: https://github.com/Stephan-S/FS25_AutoDrive
 ]]>
 		</de>
 		<it>
 <![CDATA[Questa mod può essere usata per creare una rete di percorsi per permettere ai veicoli di guidare autonomamente. Una volta effettuata la configurazione puoi dire a un veicolo di guidare tramite la rete verso un qualsiasi punto, come il negozio, il campo 1 o un punto vendita.
-Changelog: si prega di leggere su github...
+Changelog: Adeguamenti necessari per FS25, adeguamento dei colori, conversione di tutta la grafica, nuova creazione di menu, correzioni e ottimizzazione di tutti gli script e le routine, adeguamento dell'HUD, informazioni complete e note di rilascio: https://github.com/Stephan-S/FS25_AutoDrive
 ]]>
 		</it>
 		<fr>
 <![CDATA[Ce mod peut être utilisé pour créer un réseau de routes permettant aux véhicules de conduire de manière autonome. Une fois la configuration effectuée, vous pouvez indiquer à un tracteur situé près du réseau de se rendre à n’importe quel point, tel que le magasin, le champ 1 ou un point de vente.
-Changelog: à lire sur github...
+Changelog: adaptations nécessaires pour le FS25, adaptation des couleurs, conversion de tous les graphiques, nouvelle création des menus, corrections et optimisation de tous les scripts et routines, adaptation du HUD, infos complètes et release notes : https://github.com/Stephan-S/FS25_AutoDrive
 ]]>
 		</fr>
 		<es>
 <![CDATA[Este mod se utiliza para crear una red de rutas y permitir que los vehículos conduzcan de forma autónoma. Una vez configurado, puede ordenar a un tractor, cercano a la red, que conduzca a cualquier meta definida, como la tienda, el campo 1 o un punto de venta.
-Changelog: por favor lea en github...
+Changelog: Ajustes necesarios para FS25, ajuste de color, conversión de todos los gráficos, nueva creación de menús, correcciones y optimización de todos los scripts y rutinas, ajuste del HUD, información completa y notas de la versión: https://github.com/Stephan-S/FS25_AutoDrive
 ]]>
 		</es>
 		<ru>
 <![CDATA[Этот мод может быть использован для создания сети маршрутов для транспортных средств для автономного вождения. После настройки вы можете указать трактору, стоящему где-угодно рядом с сетью, проехать в любую точку, например, в магазин, поле №1 или в точку продажи.
-Changelog: пожалуйста, читайте на github...
+Changelog: Необходимые корректировки для FS25, настройка цвета, преобразование всей графики, новое создание меню, исправления и оптимизация всех скриптов и процедур, настройка HUD, полная информация и примечания к выпуску: https://github.com/Stephan-S/FS25_AutoDrive
 ]]>
 		</ru>
 	</description>
