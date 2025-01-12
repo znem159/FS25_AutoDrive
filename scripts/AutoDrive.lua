@@ -131,6 +131,12 @@ AutoDrive.nonFillableFillTypes = { -- these fillTypes should not be transported
 	"AIR"
 }
 
+AutoDrive.seedFillTypes = {
+	FillType.SEEDS,
+	FillType.FERTILIZER,
+	FillType.LIQUIDFERTILIZER
+}
+
 AutoDrive.modesToStartFromCP = {
 	-- AutoDrive.MODE_DRIVETO, not allowed
 	AutoDrive.MODE_PICKUPANDDELIVER,
@@ -496,11 +502,6 @@ end
 function AutoDrive:init()
 
 	-- AutoDrive.debugMsg(nil, "[AD] AutoDrive:init start...")
-	AutoDrive.seedFillTypes = {
-		FillType.SEEDS,
-		FillType.FERTILIZER,
-		FillType.LIQUIDFERTILIZER
-	}
 
 	if g_server == nil then
 		-- Here we could ask to server the initial sync
