@@ -24,7 +24,7 @@ end
 function ADHudSpeedmeter:onDraw(vehicle, uiScale)
     self.ov:render()
 
-    if AutoDrive.pullDownListExpanded == 0 or AutoDrive.Hud.targetPullDownList.direction == ADPullDownList.EXPANDED_UP then
+    if AutoDrive.pullDownListExpanded == 0 then
         local adFontSize = AutoDrive.FONT_SCALE * uiScale
         setTextColor(unpack(AutoDrive.currentColors.ad_color_hudTextDefault))
         setTextAlignment(RenderText.ALIGN_CENTER)

@@ -57,18 +57,20 @@ function ADHudCounterButton:onDraw(vehicle, uiScale)
     self:updateState(vehicle)
     self.ov:render()
 
-    if self.state ~= ADHudCounterButton.STATE_INFINITE then
-        local adFontSize = AutoDrive.FONT_SCALE * uiScale
-        if self.state == ADHudCounterButton.STATE_ACTIVE then
-            setTextColor(unpack(AutoDrive.currentColors.ad_color_hudTextSpecial))
-        else
-            setTextColor(unpack(AutoDrive.currentColors.ad_color_hudTextDefault))
+    if AutoDrive.pullDownListExpanded == 0 then
+        if self.state ~= ADHudCounterButton.STATE_INFINITE then
+            local adFontSize = AutoDrive.FONT_SCALE * uiScale
+            if self.state == ADHudCounterButton.STATE_ACTIVE then
+                setTextColor(unpack(AutoDrive.currentColors.ad_color_hudTextSpecial))
+            else
+                setTextColor(unpack(AutoDrive.currentColors.ad_color_hudTextDefault))
+            end
+            setTextAlignment(RenderText.ALIGN_CENTER)
+            local text = string.format("%d", self.counter)
+            local posX = self.position.x + (self.size.width / 2)
+            local posY = self.position.y + AutoDrive.Hud.gapHeight
+            renderText(posX, posY, adFontSize, text)
         end
-        setTextAlignment(RenderText.ALIGN_CENTER)
-        local text = string.format("%d", self.counter)
-        local posX = self.position.x + (self.size.width / 2)
-        local posY = self.position.y + AutoDrive.Hud.gapHeight
-        renderText(posX, posY, adFontSize, text)
     end
 end
 
