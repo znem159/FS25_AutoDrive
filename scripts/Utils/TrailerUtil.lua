@@ -262,10 +262,15 @@ function AutoDrive.fillTypesMatch(vehicle, fillTrigger, workTool, allowedFillTyp
         if allowedFillTypes ~= nil then
             fillTypesToCheck = allowedFillTypes
         else
-            if vehicle.ad.stateModule:getFillType() == nil or vehicle.ad.stateModule:getFillType() == FillType.UNKNOWN then
+            local selectedFilltype = vehicle.ad.stateModule:getFillType()
+            if selectedFilltype == nil or selectedFilltype == FillType.UNKNOWN then
                 return false
+            elseif #fillUnits > 1 and table.contains(AutoDrive.seedFillTypes, selectedFilltype) then
+                -- allow filling seeds, fertilizer, liquidfertilizer
+                table.insert(fillTypesToCheck, selectedFilltype)
+            else
+                fillTypesToCheck = vehicle.ad.stateModule:getSelectedFillTypes()
             end
-            fillTypesToCheck = vehicle.ad.stateModule:getSelectedFillTypes()
         end
 
         -- go through the single fillUnits and check:
@@ -774,14 +779,13 @@ function AutoDrive.getTriggerAndTrailerPairs(vehicle, dt)
 
                             -- seeds, fertilizer, liquidfertilizer should always be loaded if in trigger available
                             if #fillUnits > 1 then
-                                local fillTypeName = g_fillTypeManager:getFillTypeNameByIndex(vehicle.ad.stateModule:getFillType())
+                                local selectedFilltype = vehicle.ad.stateModule:getFillType()
+                                local fillTypeName = g_fillTypeManager:getFillTypeNameByIndex(selectedFilltype)
+
                                 AutoDrive.debugPrint(trailer, AutoDrive.DC_TRAILERINFO, "AutoDrive.getTriggerAndTrailerPairs #fillUnits > 1 fillTypeName %s", tostring(fillTypeName))
-                                if fillTypeName == 'SEEDS' or fillTypeName == 'FERTILIZER' or fillTypeName == 'LIQUIDFERTILIZER' then
+                                if table.contains(AutoDrive.seedFillTypes, selectedFilltype) then
                                     -- seeds, fertilizer, liquidfertilizer
-                                    allowedFillTypes = {}
-                                    table.insert(allowedFillTypes, g_fillTypeManager:getFillTypeIndexByName('SEEDS'))
-                                    table.insert(allowedFillTypes, g_fillTypeManager:getFillTypeIndexByName('FERTILIZER'))
-                                    table.insert(allowedFillTypes, g_fillTypeManager:getFillTypeIndexByName('LIQUIDFERTILIZER'))
+                                    allowedFillTypes = AutoDrive.seedFillTypes
                                 end
                             end
 
