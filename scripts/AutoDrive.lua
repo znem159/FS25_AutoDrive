@@ -132,9 +132,9 @@ AutoDrive.nonFillableFillTypes = { -- these fillTypes should not be transported
 }
 
 AutoDrive.seedFillTypes = {
-	FillType.SEEDS,
-	FillType.FERTILIZER,
-	FillType.LIQUIDFERTILIZER
+	'SEEDS',
+	'FERTILIZER',
+	'LIQUIDFERTILIZER'
 }
 
 AutoDrive.modesToStartFromCP = {
