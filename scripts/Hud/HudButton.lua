@@ -15,57 +15,12 @@ function ADHudButton:new(posX, posY, width, height, primaryAction, secondaryActi
 
     o.images = o:readImages()
 
-    o.ov = Overlay.new(o.images[o.state], o.position.x, o.position.y, o.size.width, o.size.height)
+    o.ov = g_overlayManager:createOverlay(o.images[o.state], o.position.x, o.position.y, o.size.width, o.size.height)
 
     return o
 end
 
 function ADHudButton:readImages()
-    -- Reads these images. They are listed here to pass the test runner check.
-    -- "textures/input_bunkerUnloadType_1.dds"
-    -- "textures/input_bunkerUnloadType_2.dds"
-    -- "textures/input_continue_1.dds"
-    -- "textures/input_createMapMarker_1.dds"
-    -- "textures/input_debug_1.dds"
-    -- "textures/input_debug_2.dds"
-    -- "textures/input_editMapMarker_1.dds"
-    -- "textures/input_openGUI_1.dds"
-    -- "textures/input_parkVehicle_1.dds"
-    -- "textures/input_parkVehicle_2.dds"
-    -- "textures/input_record_1.dds"
-    -- "textures/input_record_2.dds"
-    -- "textures/input_record_3.dds"
-    -- "textures/input_record_4.dds"
-    -- "textures/input_record_5.dds"
-    -- "textures/input_removeMapMarker_1.dds"
-    -- "textures/input_removeWaypoint_1.dds"
-    -- "textures/input_routesManager_1.dds"
-    -- "textures/input_silomode_1.dds"
-    -- "textures/input_silomode_2.dds"
-    -- "textures/input_silomode_3.dds"
-    -- "textures/input_silomode_4.dds"
-    -- "textures/input_silomode_5.dds"
-    -- "textures/input_silomode_6.dds"
-    -- "textures/input_startHelper_1.dds"
-    -- "textures/input_startHelper_10.dds"
-    -- "textures/input_startHelper_2.dds"
-    -- "textures/input_startHelper_3.dds"
-    -- "textures/input_startHelper_4.dds"
-    -- "textures/input_startHelper_5.dds"
-    -- "textures/input_startHelper_6.dds"
-    -- "textures/input_startHelper_9.dds"
-    -- "textures/input_start_stop_1.dds"
-    -- "textures/input_start_stop_2.dds"
-    -- "textures/input_toggleAutomaticUnloadTarget_1.dds"
-    -- "textures/input_toggleAutomaticUnloadTarget_2.dds"
-    -- "textures/input_toggleAutomaticUnloadTarget_3.dds"
-    -- "textures/input_toggleAutomaticUnloadTarget_4.dds"
-    -- "textures/input_toggleAutomaticUnloadTarget_5.dds"
-    -- "textures/input_toggleHudExtension_1.dds"
-    -- "textures/input_toggleLoadByFillLevel_1.dds"
-    -- "textures/input_toggleLoadByFillLevel_2.dds"
-    -- "textures/input_toggleLoadByFillLevel_3.dds"
-    
     local images = {}
     local counter = 1
 
@@ -74,8 +29,13 @@ function ADHudButton:readImages()
         path = "input_toggleAutomaticUnloadTarget"
     end
 
+    local adTextureConfig = g_overlayManager.textureConfigs["ad_gui"]
     while counter <= 20 do
-        images[counter] = AutoDrive.directory .. "textures/" .. path .. "_" .. counter .. ".dds"
+        -- we can't exit early here, because we have gaps e.g. input_startHelper
+        local sliceId = path .. "_" .. counter
+        if adTextureConfig.slices[sliceId] ~= nil then
+            images[counter] = "ad_gui." .. sliceId
+        end
         counter = counter + 1
     end
     return images
@@ -90,7 +50,7 @@ end
 
 function ADHudButton:updateState(vehicle)
     local newState = self:getNewState(vehicle)
-    self.ov:setImage(self.images[newState])
+    self.ov:setSliceId(self.images[newState])
     self.state = newState
 end
 

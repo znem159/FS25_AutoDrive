@@ -1,10 +1,10 @@
 ADNotificationsHistoryGui = {}
 ADNotificationsHistoryGui.debug = false
 
-ADNotificationsHistoryGui.ICON_UVS = {
-    { 0,   768, 256, 256 },
-    { 256, 768, 256, 256 },
-    { 512, 768, 256, 256 }
+ADNotificationsHistoryGui.ICON_SLICES = {
+    "ad_gui.info_icon",
+    "ad_gui.warn_icon",
+    "ad_gui.error_icon",
 }
 
 local ADNotificationsHistoryGui_mt = Class(ADNotificationsHistoryGui, DialogElement)
@@ -34,7 +34,7 @@ function ADNotificationsHistoryGui:populateCellForItemInSection(list, section, i
     self:debugMsg("ADNotificationsHistoryGui:populateCellForItemInSection")
     if list == self.notificationsList then
         local item = self.history[index]
-        cell.attributes.listItemIcon:setImageUVs(nil, unpack(GuiUtils.getUVs(self.ICON_UVS[item.messageType])))
+        cell.attributes.listItemIcon:setImageSlice(nil, self.ICON_SLICES[item.messageType])
         cell.attributes.listItemText:setText(item.text)
         cell.target = self
     end

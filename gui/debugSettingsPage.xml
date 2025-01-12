@@ -3,7 +3,7 @@
 	<GuiElement profile="fs25_menuContainer">
 		<GuiElement profile="fs25_menuHeaderPanel">
 			<Bitmap profile="fs25_menuHeaderIconBg">
-				<Bitmap profile="fs25_menuHeaderIcon" imageSliceId="ad_gui_debug.settings_debug"/>
+				<Bitmap profile="fs25_menuHeaderIcon" imageSliceId="ad_gui.settings_debug"/>
 			</Bitmap>
 			<Text profile="fs25_menuHeaderTitle" text="$l10n_gui_ad_debugSettingsPage_title"/>
 		</GuiElement>

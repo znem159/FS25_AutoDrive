@@ -9,7 +9,7 @@ function ADHudIcon:new(posX, posY, width, height, image, layer, name)
     o.isVisible = true
     o.lastLineCount = 1
     
-    o.ov = Overlay.new(o.image, o.position.x, o.position.y, o.size.width, o.size.height)
+    o.ov = g_overlayManager:createOverlay(o.image, o.position.x, o.position.y, o.size.width, o.size.height)
     return o
 end
 
@@ -189,24 +189,24 @@ function ADHudIcon:updateIcon(vehicle)
     local newIcon = self.image
     if self.name == "unloadOverlay" then
         if vehicle.ad.stateModule:getMode() == AutoDrive.MODE_LOAD then
-            newIcon = AutoDrive.directory .. "textures/tipper_load.dds"
+            newIcon = "ad_gui.tipper_load"
         elseif vehicle.ad.stateModule:getMode() == AutoDrive.MODE_PICKUPANDDELIVER then
-            newIcon = AutoDrive.directory .. "textures/tipper_overlay.dds"
+            newIcon = "ad_gui.tipper_overlay"
         elseif vehicle.ad.stateModule:getMode() == AutoDrive.MODE_UNLOAD then
-            newIcon = AutoDrive.directory .. "textures/tipper_overlay.dds"
+            newIcon = "ad_gui.tipper_overlay"
         end
     elseif self.name == "destinationOverlay" then
         if vehicle.ad.stateModule:getMode() == AutoDrive.MODE_PICKUPANDDELIVER then
-            newIcon = AutoDrive.directory .. "textures/tipper_load.dds"
+            newIcon = "ad_gui.tipper_load"
         elseif vehicle.ad.stateModule:getMode() == AutoDrive.MODE_DELIVERTO then
-            newIcon = AutoDrive.directory .. "textures/tipper_overlay.dds"
+            newIcon = "ad_gui.tipper_overlay"
         elseif vehicle.ad.stateModule:getMode() ~= AutoDrive.MODE_BGA then
-            newIcon = AutoDrive.directory .. "textures/destination.dds"
+            newIcon = "ad_gui.destination"
         end
     end
 
     self.image = newIcon
     if self.ov ~= nil then
-        self.ov:setImage(self.image)
+        self.ov:setSliceId(self.image)
     end
 end

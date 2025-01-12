@@ -1,9 +1,6 @@
 function AutoDrive:loadGUI()
-	GuiOverlay.loadOverlay = AutoDrive.overwrittenStaticFunction(GuiOverlay.loadOverlay, AutoDrive.GuiOverlay_loadOverlay)
-
-	g_gui:loadProfiles(AutoDrive.directory .. "gui/guiProfiles.xml")
-	g_overlayManager:addTextureConfigFile(g_autoDriveDebugUIConfigPath, "ad_gui_debug")
 	g_overlayManager:addTextureConfigFile(g_autoDriveUIConfigPath, "ad_gui")
+	g_gui:loadProfiles(AutoDrive.directory .. "gui/guiProfiles.xml")
 
 	AutoDrive.gui = {}
 	AutoDrive.gui.ADEnterDriverNameGui = ADEnterDriverNameGui.new()
@@ -116,21 +113,6 @@ function AutoDrive:loadGUI()
     if result == nil then
         AutoDrive.debugMsg(nil, "AutoDrive:loadGUI failed count %d", count)
     end
-end
-
-function AutoDrive.GuiOverlay_loadOverlay(superFunc, ...)
-	local overlay = superFunc(...)
-	if overlay == nil then
-		return nil
-	end
-
-	if overlay.filename == "g_autoDriveDebugUIFilename" then
-		overlay.filename = g_autoDriveDebugUIFilename
-	elseif overlay.filename == "g_autoDriveUIFilename" then
-		overlay.filename = g_autoDriveUIFilename
-	end
-
-	return overlay
 end
 
 function AutoDrive.onOpenSettings()

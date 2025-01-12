@@ -57,9 +57,7 @@
     <Profile name="ad_common_listItemIcon" extends="baseReference" with="anchorMiddleLeft">
         <size value="24px 24px"/>
         <position value="0px 0px" />
-        <imageFilename value="g_autoDriveUIFilename" />
-        <imageSliceId value="noSlice" />
-        <imageUVs value="0px 768px 256px 256px" />
+        <imageSliceId value="ad_gui.info_icon" />
     </Profile>
 
     <Profile name="ad_common_listItemText" extends="fs25_textDarkHighlight" with="anchorStretchingYLeft">

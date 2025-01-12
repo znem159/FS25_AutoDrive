@@ -64,7 +64,7 @@ function ADSettings:setupPages()
         {self.autoDriveUserSettings, alwaysEnabled, "gui.wardrobe_character", {btnBack, btnApply, btnReset}},
         {self.autoDriveGlobalSettings, alwaysEnabled, "gui.icon_options_generalSettings2", {btnBack, btnApply, btnReset}},
         {self.autoDriveEnvironmentSettings, vehicleEnabled, "gui.icon_weather_partiallyCloudy", {btnBack, btnApply, btnReset}},
-        {self.autoDriveDebugSettings, developmentControlsEnabled, "ad_gui_debug.settings_debug", {btnBack}},
+        {self.autoDriveDebugSettings, developmentControlsEnabled, "ad_gui.settings_debug", {btnBack}},
     }
 
     for i, pageDef in ipairs(orderedPages) do

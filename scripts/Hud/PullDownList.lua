@@ -24,9 +24,9 @@ ADPullDownList.ICON_DELETE_FOLDER = 1
 
 
 function ADPullDownList:initReusableOverlaysOnlyOnce()
-    local function overlayReuseOrNew(overlay, imageFilename)
+    local function overlayReuseOrNew(overlay, imageSlice)
         if overlay == nil then
-            overlay = Overlay.new(imageFilename, 0, 0, self.iconSize.width, self.iconSize.height)
+            overlay = g_overlayManager:createOverlay(imageSlice, 0, 0, self.iconSize.width, self.iconSize.height)
         end
         return overlay
     end
@@ -34,9 +34,6 @@ function ADPullDownList:initReusableOverlaysOnlyOnce()
     -- For avoiding creating/destroying multiple Overlay objects in onDraw, so here we only create
     -- one instance of each icon (overlay). Then in onDraw we use the game engine's renderOverlay()
     -- API method directly. Should reduce excessive memory allocation/deallocation tremendously.
-    -- ADPullDownList.ovCollapse = overlayReuseOrNew(ADPullDownList.ovCollapse, self.imageCollapse)
-    -- ADPullDownList.ovExpand = overlayReuseOrNew(ADPullDownList.ovExpand, self.imageExpand)
-    --ADPullDownList.ovAddHere = overlayReuseOrNew(ADPullDownList.ovAddHere, self.imageRight)
     ADPullDownList.ovPlus = overlayReuseOrNew(ADPullDownList.ovPlus, self.imagePlus)
     ADPullDownList.ovMinus = overlayReuseOrNew(ADPullDownList.ovMinus, self.imageMinus)
     ADPullDownList.ovFilter = overlayReuseOrNew(ADPullDownList.ovFilter, self.imageFilter)
@@ -68,24 +65,18 @@ function ADPullDownList:new(posX, posY, width, height, type, selected)
 
     o.layer = 6
 
-    o.imageBG = AutoDrive.directory .. "textures/4xlongBorderFilled.dds"
-    o.imageBGTop = AutoDrive.directory .. "textures/4xlongBorderTopFilled.dds"
-    o.imageBGBottom = AutoDrive.directory .. "textures/4xlongBorderBottomFilled.dds"
-    o.imageBGStretch = AutoDrive.directory .. "textures/4xlongBorderStretchFilled.dds"
-    o.imageExpand = AutoDrive.directory .. "textures/arrowExpand.dds"
-    -- o.imageCollapse = AutoDrive.directory .. "textures/arrowCollapse.dds"
-    o.imageCollapseAll = AutoDrive.directory .. "textures/arrowCollapseAll.dds"
-    -- o.imageUp = AutoDrive.directory .. "textures/arrowUp.dds"
-    -- o.imageDown = AutoDrive.directory .. "textures/arrowDown.dds"
-    o.imagePlus = AutoDrive.directory .. "textures/plusSign.dds"
-    o.imageMinus = AutoDrive.directory .. "textures/minusSign.dds"
-    -- o.imageRight = AutoDrive.directory .. "textures/arrowRight.dds"
-    o.imageFilter = AutoDrive.directory .. "textures/zoom.dds"
+    o.imageBG = "ad_gui.4xlongBorderFilled"
+    o.imageBGTop = "ad_gui.4xlongBorderTopFilled"
+    o.imageBGBottom = "ad_gui.4xlongBorderBottomFilled"
+    o.imageBGStretch = "ad_gui.4xlongBorderStretchFilled"
+    o.imageExpand = "ad_gui.arrowExpand"
+    o.imageCollapseAll = "ad_gui.arrowCollapseAll"
+    o.imagePlus = "ad_gui.plusSign"
+    o.imageMinus = "ad_gui.minusSign"
+    o.imageFilter = "ad_gui.zoom"
 
-    o.ovBG = Overlay.new(o.imageBG, o.position.x, o.position.y, o.size.width, o.size.height)
--- expand icon if collapsed
--- ovExpand used double: o. / ADPullDownList.
-    o.ovExpand = Overlay.new(o.imageExpand, o.rightIconPos.x, o.rightIconPos.y, o.iconSize.width, o.iconSize.height)
+    o.ovBG = g_overlayManager:createOverlay(o.imageBG, o.position.x, o.position.y, o.size.width, o.size.height)
+    o.ovExpand = g_overlayManager:createOverlay(o.imageExpand, o.rightIconPos.x, o.rightIconPos.y, o.iconSize.width, o.iconSize.height)
 
     o.state = ADPullDownList.STATE_COLLAPSED
     o.isVisible = true
@@ -769,9 +760,9 @@ function ADPullDownList:expand(vehicle)
         else
             self.expandedBottom = self.position.y - self.expandedSize.height + self.size.height
         end
-        self.ovTop = Overlay.new(self.imageBGTop, self.position.x, self.expandedBottom + self.expandedSize.height - self.size.height / 2, self.size.width, self.size.height / 2)
-        self.ovStretch = Overlay.new(self.imageBGStretch, self.position.x, self.expandedBottom + self.size.height / 2, self.size.width, self.expandedSize.height - self.size.height)
-        self.ovBottom = Overlay.new(self.imageBGBottom, self.position.x, self.expandedBottom, self.size.width, self.size.height / 2)
+        self.ovTop = g_overlayManager:createOverlay(self.imageBGTop, self.position.x, self.expandedBottom + self.expandedSize.height - self.size.height / 2, self.size.width, self.size.height / 2)
+        self.ovStretch = g_overlayManager:createOverlay(self.imageBGStretch, self.position.x, self.expandedBottom + self.size.height / 2, self.size.width, self.expandedSize.height - self.size.height)
+        self.ovBottom = g_overlayManager:createOverlay(self.imageBGBottom, self.position.x, self.expandedBottom, self.size.width, self.size.height / 2)
         self:setSelected(vehicle)
     end
 end
