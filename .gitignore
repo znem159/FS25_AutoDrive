@@ -1,3 +1,5 @@
-
 /.vscode
-/*.gsp*
+/.venv
+/venv
+*.zip
+*.gsp* # Giants Software Project
