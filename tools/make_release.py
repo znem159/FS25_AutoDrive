@@ -18,7 +18,7 @@ if __name__ == "__main__":
         archive_path.unlink()
 
     # Create the archive
-    with zipfile.ZipFile(archive_path, "w") as zf:
+    with zipfile.ZipFile(archive_path, "w", zipfile.ZIP_DEFLATED) as zf:
         # Add all files in the repository
         for file in repo_root.rglob("*"):
             if not file.is_file():
