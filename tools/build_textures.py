@@ -1,5 +1,6 @@
 # this requires Wand and ImageMagick to be installed
-# - pip-install wand
+# - create a virtual environment and activate it
+# - pip-install wand: "pip install Wand"
 # - follow these instructions: https://docs.wand-py.org/en/latest/guide/install.html#install-imagemagick-on-windows
 #
 # I you change the texture file, you MUST restart the game. Reloading the savegame is not sufficient.
