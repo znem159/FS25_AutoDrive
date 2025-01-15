@@ -546,6 +546,9 @@ function AutoDrive:getSplineControlPoints(startNode, endNode)
 		-- returns unit vector from start/end node to a waypoint
 		local wp = ADGraphManager:getWayPointById(waypointId)
 		local wpVec = ADVectorUtils.subtract2D(node, wp)
+		if MathUtil.vector2Length(wpVec.x, wpVec.z) < 1e-8 then
+			return nil
+		end
 		return ADVectorUtils.unitVector2D(wpVec)
 	end
 
@@ -556,18 +559,22 @@ function AutoDrive:getSplineControlPoints(startNode, endNode)
 
 		for _, px in pairs(node.incoming) do
 			local dir = getWaypointDirection(node, px)
-			local angle = math.abs(180 - math.abs(AutoDrive.angleBetween(startEndVec, dir)))
-			if bestAngle == nil or bestAngle > angle then
-				bestAngle = angle
-				bestDirection = dir
+			if dir ~= nil then
+				local angle = math.abs(180 - math.abs(AutoDrive.angleBetween(startEndVec, dir)))
+				if bestAngle == nil or bestAngle > angle then
+					bestAngle = angle
+					bestDirection = dir
+				end
 			end
 		end
 		for _, px in pairs(node.out) do
 			local dir = getWaypointDirection(node, px)
-			local angle = math.abs(180 - math.abs(AutoDrive.angleBetween(startEndVec, dir)))
-			if bestAngle == nil or bestAngle > angle then
-				bestAngle = angle
-				bestDirection = dir
+			if dir ~= nil then
+				local angle = math.abs(180 - math.abs(AutoDrive.angleBetween(startEndVec, dir)))
+				if bestAngle == nil or bestAngle > angle then
+					bestAngle = angle
+					bestDirection = dir
+				end
 			end
 		end
 		if bestDirection == nil then

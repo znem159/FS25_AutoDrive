@@ -1164,8 +1164,10 @@ function ADGraphManager:createDebugMarkers(updateMap)
         local count2 = 1
         local count3 = 1
         local count4 = 1
+        local count5 = 1
         local count9 = 1
         local mapMarkerCounter = #self:getMapMarkers() + 1
+        local tileHashMap = {}
         for i, wp in pairs(network) do
             wp.foundError = false
             -- mark wayPoint without outgoing connection
@@ -1288,6 +1290,36 @@ function ADGraphManager:createDebugMarkers(updateMap)
                     wp.foundError = true
                     count9 = count9 + 1
                     mapMarkerCounter = mapMarkerCounter + 1
+                end
+            end
+            
+            -- duplicate points - creates 10x10m tiles and looks for very close matches
+            local hash = string.format("%.0f_%.0f", wp.x/10, wp.z/10)
+            if tileHashMap[hash] == nil then
+                tileHashMap[hash] = {}
+            end
+            table.insert(tileHashMap[hash], i)
+            if not wp.foundError and #tileHashMap[hash] > 1 then
+                for _, j in tileHashMap[hash] do
+                    if j ~= i then
+                        local wp2 = network[j]
+                        if math.abs(wp.x - wp2.x) < 1e-3 and math.abs(wp.z - wp2.z) < 1e-3 then
+                            local debugMapMarkerName = "5_" .. tostring(count5)
+                            -- create the mapMarker
+                            local mapMarker = {}
+                            mapMarker.name = debugMapMarkerName
+                            mapMarker.group = ADGraphManager.debugGroupName
+                            mapMarker.markerIndex = mapMarkerCounter
+                            mapMarker.id = wp.id
+                            mapMarker.isADDebug = true
+                            self:setMapMarker(mapMarker)
+
+                            wp.foundError = true
+                            count5 = count5 + 1
+                            mapMarkerCounter = mapMarkerCounter + 1
+                            break
+                        end
+                    end
                 end
             end
         end
