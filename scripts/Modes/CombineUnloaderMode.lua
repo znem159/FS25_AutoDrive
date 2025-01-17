@@ -287,10 +287,37 @@ end
 function CombineUnloaderMode:setToWaitForCall(keepCombine)
     CombineUnloaderMode.debugMsg(self.vehicle, "CombineUnloaderMode:setToWaitForCall start self.state %s keepCombine %s", tostring(self:getStateName()), tostring(keepCombine))
     -- We just have to wait to be wait to be called (again)
-    self.state = self.STATE_WAIT_TO_BE_CALLED
-    self.vehicle.ad.taskModule:addTask(WaitForCallTask:new(self.vehicle))
-    if self.combine ~= nil and self.combine.ad ~= nil and (keepCombine == nil or keepCombine ~= true) then
-        self.combine = nil
+    local x, y, z = getWorldTranslation(self.vehicle.components[1].node)
+    local point = nil
+    local distanceToStart = 0
+    if
+        self.vehicle.ad ~= nil and ADGraphManager.getWayPointById ~= nil and self.vehicle.ad.stateModule ~= nil and self.vehicle.ad.stateModule.getFirstMarker ~= nil
+        and self.vehicle.ad.stateModule:getFirstMarker() ~= nil and self.vehicle.ad.stateModule:getFirstMarker() ~= 0 and self.vehicle.ad.stateModule:getFirstMarker().id ~= nil
+    then
+        point = ADGraphManager:getWayPointById(self.vehicle.ad.stateModule:getFirstMarker().id)
+        if point ~= nil then
+            distanceToStart = MathUtil.vector2Length(x - point.x, z - point.z)
+        end
+    end
+
+    local _, _, filledToUnload, _ = AutoDrive.getAllFillLevels(self.trailers)
+    if filledToUnload then
+        if AutoDrive.checkIsOnField(x, y, z) and distanceToStart > 30 then
+            -- is activated on a field - use ExitFieldTask to leave field according to setting
+            CombineUnloaderMode.debugMsg(self.vehicle, "CombineUnloaderMode:setToWaitForCall ExitFieldTask...")
+            self.vehicle.ad.taskModule:addTask(ExitFieldTask:new(self.vehicle))
+            self.state = self.STATE_EXIT_FIELD
+        else
+            CombineUnloaderMode.debugMsg(self.vehicle, "CombineUnloaderMode:setToWaitForCall UnloadAtDestinationTask...")
+            self.vehicle.ad.taskModule:addTask(UnloadAtDestinationTask:new(self.vehicle, self.vehicle.ad.stateModule:getSecondMarker().id))
+            self.state = self.STATE_DRIVE_TO_UNLOAD
+        end
+    else
+	    self.state = self.STATE_WAIT_TO_BE_CALLED
+	    self.vehicle.ad.taskModule:addTask(WaitForCallTask:new(self.vehicle))
+	    if self.combine ~= nil and self.combine.ad ~= nil and (keepCombine == nil or keepCombine ~= true) then
+	        self.combine = nil
+	    end
     end
     CombineUnloaderMode.debugMsg(self.vehicle, "CombineUnloaderMode:setToWaitForCall end self.state %s self.combine %s", tostring(self:getStateName()), tostring(self.combine))
 end
