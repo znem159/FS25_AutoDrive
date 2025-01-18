@@ -2,7 +2,7 @@
 -- negative X -> right
 function AutoDrive.createWayPointRelativeToVehicle(vehicle, offsetX, offsetZ)
     local wayPoint = {}
-    wayPoint.x, wayPoint.y, wayPoint.z = AutoDrive.localToWorld(vehicle, offsetX, 0, offsetZ)
+    wayPoint.x, wayPoint.y, wayPoint.z = AutoDrive.localToWorld(vehicle, offsetX, 0, offsetZ, vehicle.ad.ADRootNode)
     return wayPoint
 end
 
@@ -75,23 +75,22 @@ function AutoDrive:checkIsConnected(toCheck, other)
     return isAttachedToMe
 end
 
-function AutoDrive.defineMinDistanceByVehicleType(vehicle)
-    local min_distance = 1.8
-
-    local steeringX, _, steeringZ = getWorldTranslation(vehicle.components[1].node)
+function AutoDrive.defineMinDistanceByVehicleType(vehicle, reverse)
+    local min_distance = vehicle.size.length / 2
     if vehicle.getAISteeringNode ~= nil then
-        steeringX, _, steeringZ = getWorldTranslation(vehicle:getAISteeringNode())
+        local _, _, diffZ = localToLocal(vehicle:getAISteeringNode(), vehicle.components[1].node, 0, 0, 0)
+        
+        -- diffZ > 0 -> steering node ahead of vehicle center
+        if reverse ~= true then
+            min_distance = min_distance - diffZ
+        else
+            min_distance = min_distance + diffZ
+        end
+        -- print(string.format("Min distance for %s is %.2f with diffZ %.2f", vehicle:getName(), min_distance, diffZ))
     end
 
-    local _, _, diffZ = AutoDrive.worldToLocal(vehicle, steeringX, 0, steeringZ)
-
-    -- diffZ > 0 -> steering node ahead of vehicle center
-    min_distance = (vehicle.size.length / 2) - diffZ
-    -- Get distance from steering node to leading leadingEdge
-
-    -- print("Min distance for " .. vehicle:getName() .. " is: " .. min_distance)
-
-    return min_distance
+    
+    return math.max(min_distance, 0.1)
 end
 
 function AutoDrive.defineMinDistanceByVehicleTypeOld(vehicle)
@@ -827,30 +826,26 @@ function AutoDrive.getAllVehicles()
     return (g_currentMission and g_currentMission.vehicleSystem and g_currentMission.vehicleSystem.vehicles) or {}
 end
 
-function AutoDrive.getControlledVehicle()
-
---[[     if g_currentMission and g_currentMission.vehicleSystem and g_currentMission.vehicleSystem.enterables then
-        if g_currentMission.vehicleSystem.lastEnteredVehicleIndex then
-            return g_currentMission.vehicleSystem.enterables[g_currentMission.vehicleSystem.lastEnteredVehicleIndex]
-        end
+function AutoDrive:autostartHelpers()
+    if g_server == nil or g_client == nil or g_dedicatedServer ~= nil then
+        -- only in SP mode
+        return
     end
- ]]
 
---[[
-   if g_currentMission and g_currentMission.vehicleSystem and AutoDrive.getAllVehicles() then
-        for index, vehicle in pairs(AutoDrive.getAllVehicles()) do
-            -- if vehicle.getIsControlled and vehicle:getIsControlled() then
-            --     return vehicle
-            -- end
-            if vehicle.getIsControlled and vehicle:getIsControlled() then
-                return vehicle
+    if not AutoDrive.getSetting("autostartHelpers") then
+        return
+    end
+
+    for _, vehicle in pairs(AutoDrive.getAllVehicles()) do
+        if vehicle ~= nil and vehicle.ad ~= nil and vehicle.ad.stateModule ~= nil then
+            if vehicle.ad.stateModule.activeBeforeSave then
+                vehicle.ad.stateModule:getCurrentMode():start(AutoDrive.USER_PLAYER)
             end
-
         end
     end
+end
 
-    return nil
-]]
+function AutoDrive.getControlledVehicle()
     return g_localPlayer and g_localPlayer.getCurrentVehicle and g_localPlayer:getCurrentVehicle()
 end
 

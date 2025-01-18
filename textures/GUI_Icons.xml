@@ -1,9 +1,0 @@
-<texture>
-    <meta>
-        <filename>GUI_Icons.png</filename>
-        <size width="1024" height="1024"/>
-    </meta>
-    <slices>
-        <slice id="combine" uvs="0px 0px 128px 128px"/>
-    </slices>
-</texture>

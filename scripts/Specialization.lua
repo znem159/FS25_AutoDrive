@@ -19,7 +19,7 @@ function AutoDrive.registerEventListeners(vehicleType)
             "onUpdate",
             "onRegisterActionEvents",
             "onDelete",
-            "onDraw",
+            "onDrawUIInfo",
             "onPreLoad",
             "onPostLoad",
             "onLoad",
@@ -147,11 +147,12 @@ function AutoDrive.initSpecialization()
     schemaSavegame:register(XMLValueType.STRING, "vehicles.vehicle(?).AutoDrive#selectedFillTypes", "selectedFillTypes")
     schemaSavegame:register(XMLValueType.BOOL, "vehicles.vehicle(?).AutoDrive#loadByFillLevel", "loadByFillLevel")
     schemaSavegame:register(XMLValueType.INT, "vehicles.vehicle(?).AutoDrive#loopCounter", "loopCounter")
+    schemaSavegame:register(XMLValueType.INT, "vehicles.vehicle(?).AutoDrive#loopsDone", "loopsDone")
     schemaSavegame:register(XMLValueType.INT, "vehicles.vehicle(?).AutoDrive#speedLimit", "speedLimit")
     schemaSavegame:register(XMLValueType.INT, "vehicles.vehicle(?).AutoDrive#fieldSpeedLimit", "fieldSpeedLimit")
     schemaSavegame:register(XMLValueType.STRING, "vehicles.vehicle(?).AutoDrive#driverName", "driverName")
-    schemaSavegame:register(XMLValueType.BOOL, "vehicles.vehicle(?).AutoDrive#lastActive", "lastActive")
-    schemaSavegame:register(XMLValueType.BOOL, "vehicles.vehicle(?).AutoDrive#AIVElastActive", "AIVElastActive")
+    schemaSavegame:register(XMLValueType.BOOL, "vehicles.vehicle(?).AutoDrive#active", "active")
+    schemaSavegame:register(XMLValueType.BOOL, "vehicles.vehicle(?).AutoDrive#startHelper", "startHelper")
     schemaSavegame:register(XMLValueType.INT, "vehicles.vehicle(?).AutoDrive#parkDestination", "parkDestination")
     schemaSavegame:register(XMLValueType.INT, "vehicles.vehicle(?).AutoDrive#bunkerUnloadType", "bunkerUnloadType")
     if AutoDrive.automaticUnloadTarget then
@@ -465,10 +466,6 @@ function AutoDrive:onUpdate(dt)
                 self:raiseActive()
             end
         end
-
-        if self.lastMovedDistance > 0 then
-            -- g_currentMission:farmStats(self:getOwnerFarmId()):updateStats("driversTraveledDistance", self.lastMovedDistance * 0.001)
-        end
     end
 
     self.ad.stateModule:update(dt)
@@ -522,7 +519,13 @@ function AutoDrive:saveToXMLFile(xmlFile, key, usedModNames)
     end
 end
 
-function AutoDrive:onDraw()
+function AutoDrive:onDrawUIInfo()
+    local controlledVehicle = AutoDrive.getControlledVehicle()
+	if controlledVehicle == nil or self ~= controlledVehicle then
+        -- user not in control of this vehicle
+        return
+    end
+
     if AutoDrive.getSetting("showHUD") then
         AutoDrive.Hud:drawHud(self)
     end
@@ -670,12 +673,27 @@ function AutoDrive:onPostAttachImplement(attachable, inputJointDescIndex, jointD
     end
     if (attachable.spec_pipe ~= nil and attachable.spec_combine ~= nil) or attachable.isPremos then
         attachable.ad = self.ad -- takeover i.e. sensors from trailing vehicle
+
+        local vx, _, vz =  AutoDrive.localDirectionToWorld(self, 0, 0, 1)
+        local cx, _, cz =  AutoDrive.localDirectionToWorld(attachable, 0, 0, 1)
+        local angle = math.abs(AutoDrive.angleBetween({x = vx, z = vz}, {x = cx, z = cz}))
+
+        if angle > 100 then
+            AutoDrive.debugMsg(self, "AutoDrive:onPostAttachImplement isRotatedAttached")
+            -- attachable is rotated attached - use sensors from vehicle
+            attachable.ad.sensors = nil
+            attachable.ad.isReverseAttached = true
+            attachable.ad.ADRootNode = createTransformGroup("ADRootNode")
+            link(attachable.rootNode, attachable.ad.ADRootNode)
+            setRotation(attachable.ad.ADRootNode, 0, math.pi, 0)
+            setTranslation(attachable.ad.ADRootNode, 0, 0, 0)
+        end
         attachable.isTrailedHarvester = true
         attachable.trailingVehicle = self
         -- harvester types
-        self.ad.attachableCombine = attachable
         local isValidHarvester = AutoDrive.setCombineType(attachable)
         if isValidHarvester then
+            self.ad.attachableCombine = attachable
             ADHarvestManager:registerHarvester(attachable)
         end
     end
@@ -748,6 +766,10 @@ function AutoDrive:onEnterVehicle(isControlling)
 end
 
 function AutoDrive:onLeaveVehicle(wasEntered)
+    AutoDrive.debugPrint(self, AutoDrive.DC_VEHICLEINFO, "AutoDrive:onLeaveVehicle wasEntered: %s", tostring(wasEntered))
+    if not wasEntered then
+        return
+    end
     if not AutoDrive.getSetting("RecordWhileNotInVehicle") then
         if self.ad ~= nil and self.ad.stateModule ~= nil then
             self.ad.stateModule:disableCreationMode()
@@ -846,7 +868,7 @@ function AutoDrive:onDrawEditorMode()
 
         if AutoDrive.isInExtendedEditorMode() then
             arrowPosition = DrawingManager.arrows.position.middle
-            if AutoDrive.enableSphrere == true then
+            if AutoDrive.enableSphere == true then
                 if AutoDrive.mouseIsAtPos(point, 0.01) then
                     DrawingManager:addSphereTask(x, y, z, 3, unpack(AutoDrive.currentColors.ad_color_hoveredNode))
                 else
@@ -1064,8 +1086,6 @@ function AutoDrive:startAutoDrive()
                 end
             end
 
-            -- g_currentMission:farmStats(self:getOwnerFarmId()):updateStats("driversHired", 1)
-
             if self.ad.currentHelper == nil or self.ad.stateModule:getCurrentHelperIndex() <= 0 then
                 -- no helper assigned
                 if #g_helperManager.availableHelpers == 0 then
@@ -1100,7 +1120,6 @@ function AutoDrive:stopAutoDrive()
         ADScheduler:removePathfinderVehicle(self)
 
         if self.ad.stateModule:isActive() then
-            -- g_currentMission:farmStats(self:getOwnerFarmId()):updateStats("driversHired", -1)
             self.ad.drivePathModule:reset()
             self.ad.specialDrivingModule:reset()
             self.ad.trailerModule:reset()
@@ -1602,7 +1621,7 @@ function AutoDrive:toggleMouse()
 end
 
 function AutoDrive:onPlayerLeaveVehicle(param)
-    AutoDrive.debugMsg(self, "AutoDrive:onPlayerLeaveVehicle start param %"
+    AutoDrive.debugMsg(self, "AutoDrive:onPlayerLeaveVehicle start param %s"
     , tostring(param)
     )
     AutoDrive.debugMsg(self, "AutoDrive:onPlayerLeaveVehicle self.ad %s "
@@ -1650,6 +1669,9 @@ function AutoDrive:updateAutoDriveLights(switchOff)
     if switchOff then
         if AutoDrive.getSetting("useHazardLightReverse", self) and self.setTurnLightState then
             self:setTurnLightState(Lights.TURNLIGHT_OFF)
+        end
+        if self.updateAutomaticLights ~= nil then
+            self:updateAutomaticLights(false, false)
         end
     elseif self.ad ~= nil and self.ad.stateModule:isActive() then
         local isInRangeToLoadUnloadTarget = false

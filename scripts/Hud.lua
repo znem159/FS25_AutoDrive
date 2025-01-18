@@ -166,9 +166,8 @@ function AutoDriveHud:createHudAt(hudX, hudY)
 	self.row4 = self.posY + (self.pullDownRowOffset + 3) * self.borderY + (self.pullDownRowOffset + 2) * self.buttonHeight
 	self.rowHeader = self.posY + (self.pullDownRowOffset + 4) * self.borderY + (self.pullDownRowOffset + 3) * self.buttonHeight
 
-	table.insert(self.hudElements, ADHudIcon:new(self.posX, self.posY - 0 * self.gapHeight, self.width, self.height + 5 * self.gapHeight, AutoDrive.directory .. "textures/Background.dds", 0, "background"))
-
-	table.insert(self.hudElements, ADHudIcon:new(self.posX, self.rowHeader, self.width, self.headerHeight, AutoDrive.directory .. "textures/Header.dds", 1, "header"))
+	table.insert(self.hudElements, ADHudIcon:new(self.posX, self.posY - 0 * self.gapHeight, self.width, self.height + 5 * self.gapHeight, "ad_gui.Background", 0, "background"))
+	table.insert(self.hudElements, ADHudIcon:new(self.posX, self.rowHeader, self.width, self.headerHeight, "ad_gui.Header", 1, "header"))
 
 	local closeHeight = AutoDriveHud.defaultHeaderHeight * uiScale --0.0177 * uiScale;
 	local closeWidth = closeHeight * (g_screenHeight / g_screenWidth)
@@ -371,6 +370,7 @@ function AutoDriveHud:drawHud(vehicle)
 		self.lastUIScale = uiScale
 
         if self.hudElements ~= nil then
+			new2DLayer()
             for _, element in ipairs(self.hudElements) do -- `ipairs` is important, as we want "index-value pairs", not "key-value pairs". https://stackoverflow.com/a/55109411
                 element:onDraw(vehicle, uiScale)
             end
@@ -1059,22 +1059,18 @@ function AutoDrive.updateDestinationsMapHotspots()
 
 	-- Updating and adding hotspots
     for index, marker in ipairs(ADGraphManager:getMapMarkers()) do
-        -- local mapHotspot = TourHotspot.new()
         local mapHotspot = PlaceableHotspot.new()
-        -- local mapHotspot = AutoDrive.getPlayerHotspot()
 
         mapHotspot.width, mapHotspot.height = getNormalizedScreenValues(40, 40)
         mapHotspot.isVisible = true
-        mapHotspot.icon = Overlay.new(g_autoDriveUIFilename, 0, 0, mapHotspot.width, mapHotspot.height )
-        mapHotspot.icon:setUVs(GuiUtils.getUVs({0, 512, 128, 128}))
-		mapHotspot.iconSmall = Overlay.new(g_autoDriveUIFilename, 0, 0, mapHotspot.width, mapHotspot.height)
-		mapHotspot.iconSmall:setUVs(GuiUtils.getUVs({0, 512, 128, 128}))
+        mapHotspot.icon =  g_overlayManager:createOverlay("ad_gui.marker", 0, 0, mapHotspot.width, mapHotspot.height)
+		mapHotspot.iconSmall = g_overlayManager:createOverlay("ad_gui.marker", 0, 0, mapHotspot.width, mapHotspot.height)
 
+		
         if marker.isADDebug == true then
             -- map hotspot debug
             mapHotspot.isADDebug = true
-            -- mh = MapHotspot:new("mapMarkerHotSpot", MapHotspot.CATEGORY_MISSION)
-			mapHotspot.icon:setUVs(GuiUtils.getUVs({780, 780, 234, 234}))			
+			mapHotspot.icon:setSliceId("ad_gui.debug_marker")
         end
 
         mapHotspot.isADMarker = true

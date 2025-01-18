@@ -241,7 +241,7 @@ function ADSensor:getLocationByPosition()
             location = front
         end
         --location.z = location.z + AutoDrive.getVehicleLeadingEdge(vehicle)
-        --location.z = location.z + 2
+        location.z = location.z + 0.5
     elseif self.position == ADSensor.POS_REAR then
         location.z = - vehicle.size.length / 2
         self.frontFactor = -1
@@ -379,6 +379,28 @@ function ADSensor:getCorners(box)
     corners[4] = {x = box.topRight.x, z = box.topRight.z}
 
     return corners
+end
+
+function ADSensor:isElementBlockingVehicle(nodeId)
+    -- we want to ignore some elements and keep driving instead.
+    if nodeId == nil then
+        return false  -- no an element
+    end
+    if g_currentMission:getNodeObject(nodeId) ~= nil then
+        return true  -- not handled here
+    end
+
+    local isShapeClass = getHasClassId(nodeId, ClassIds.SHAPE)
+    local isRigidBodyTypeDynamic = getRigidBodyType(nodeId) == RigidBodyType.DYNAMIC
+    local isDynamicCollision = CollisionFlag.getHasMaskFlagSet(nodeId, CollisionFlag.DYNAMIC_OBJECT)
+
+    -- traffic signs return true for all three checks above, this might require tweaking
+    if isShapeClass and isRigidBodyTypeDynamic and isDynamicCollision then
+        return false  -- probably a traffic sign
+    end
+
+    -- unknown element
+    return true
 end
 
 function ADSensor:updateSensor(dt)
@@ -555,6 +577,6 @@ end
 
 function ADSensor.debugMsg(vehicle, debugText, ...)
     if ADSensor.debug == true then
-        ADSensor.debugMsg(vehicle, debugText, ...)
+        AutoDrive.debugMsg(vehicle, debugText, ...)
     end
 end

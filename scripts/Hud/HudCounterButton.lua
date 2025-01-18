@@ -10,25 +10,20 @@ function ADHudCounterButton:new(posX, posY, width, height, mode)
     o.state = 1
     o.counter = 1
     o.mode = mode
-
-    -- Reads these images. They are listed here to pass the test runner check.
-    -- "textures/loop_counter_active.dds"
-    -- "textures/loop_counter_inactive.dds"
-    -- "textures/loop_counter_inf.dds"
     o.images = {
-        [ADHudCounterButton.STATE_INFINITE] = AutoDrive.directory .. "textures/" .. mode .. "_inf.dds",
-        [ADHudCounterButton.STATE_ACTIVE] = AutoDrive.directory .. "textures/" .. mode .. "_active.dds",
-        [ADHudCounterButton.STATE_INACTIVE] = AutoDrive.directory .. "textures/" .. mode .. "_inactive.dds",
+        [ADHudCounterButton.STATE_INFINITE] = "ad_gui." .. mode .. "_inf",
+        [ADHudCounterButton.STATE_ACTIVE] = "ad_gui." .. mode .. "_active",
+        [ADHudCounterButton.STATE_INACTIVE] = "ad_gui." .. mode .. "_inactive",
     }
 
     o.layer = 5
-    o.ov = Overlay.new(o.images[o.state], o.position.x, o.position.y, o.size.width, o.size.height)
+    o.ov = g_overlayManager:createOverlay(o.images[o.state], o.position.x, o.position.y, o.size.width, o.size.height)
     return o
 end
 
 function ADHudCounterButton:updateState(vehicle)
     local newState, newCounter = self:getNewState(vehicle)
-    self.ov:setImage(self.images[newState])
+    self.ov:setSliceId(self.images[newState])
     self.state = newState
     self.counter = newCounter
 end
@@ -57,18 +52,20 @@ function ADHudCounterButton:onDraw(vehicle, uiScale)
     self:updateState(vehicle)
     self.ov:render()
 
-    if self.state ~= ADHudCounterButton.STATE_INFINITE then
-        local adFontSize = AutoDrive.FONT_SCALE * uiScale
-        if self.state == ADHudCounterButton.STATE_ACTIVE then
-            setTextColor(unpack(AutoDrive.currentColors.ad_color_hudTextSpecial))
-        else
-            setTextColor(unpack(AutoDrive.currentColors.ad_color_hudTextDefault))
+    if AutoDrive.pullDownListExpanded == 0 then
+        if self.state ~= ADHudCounterButton.STATE_INFINITE then
+            local adFontSize = AutoDrive.FONT_SCALE * uiScale
+            if self.state == ADHudCounterButton.STATE_ACTIVE then
+                setTextColor(unpack(AutoDrive.currentColors.ad_color_hudTextSpecial))
+            else
+                setTextColor(unpack(AutoDrive.currentColors.ad_color_hudTextDefault))
+            end
+            setTextAlignment(RenderText.ALIGN_CENTER)
+            local text = string.format("%d", self.counter)
+            local posX = self.position.x + (self.size.width / 2)
+            local posY = self.position.y + AutoDrive.Hud.gapHeight
+            renderText(posX, posY, adFontSize, text)
         end
-        setTextAlignment(RenderText.ALIGN_CENTER)
-        local text = string.format("%d", self.counter)
-        local posX = self.position.x + (self.size.width / 2)
-        local posY = self.position.y + AutoDrive.Hud.gapHeight
-        renderText(posX, posY, adFontSize, text)
     end
 end
 

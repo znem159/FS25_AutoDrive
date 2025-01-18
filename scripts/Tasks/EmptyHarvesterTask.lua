@@ -11,6 +11,7 @@ EmptyHarvesterTask.STATE_UNLOADING_FINISHED = {}
 EmptyHarvesterTask.REVERSE_TIME = 30000
 EmptyHarvesterTask.MAX_STUCK_TIME = 60000
 EmptyHarvesterTask.WAITING_TIME = 7000
+EmptyHarvesterTask.WAITING_FOR_PIPE = 1000
 
 function EmptyHarvesterTask:new(vehicle, combine)
     local o = EmptyHarvesterTask:create()
@@ -95,7 +96,17 @@ function EmptyHarvesterTask:update(dt)
         end
     elseif self.state == EmptyHarvesterTask.STATE_DRIVING then
         if self.vehicle.ad.drivePathModule:isTargetReached() then
-            self.state = EmptyHarvesterTask.STATE_UNLOADING
+            if AutoDrive:getIsCPActive(self.combine) then
+                self.vehicle.ad.specialDrivingModule:stopVehicle()
+                self.vehicle.ad.specialDrivingModule:update(dt)
+                self.waitTimer:timer(self.combine:getDischargeState() ~= Dischargeable.DISCHARGE_STATE_OFF, EmptyHarvesterTask.WAITING_FOR_PIPE, dt)
+                if self.waitTimer:done() then
+                    self.waitTimer:timer(false)
+                    self.state = EmptyHarvesterTask.STATE_UNLOADING
+                end
+            else
+                self.state = EmptyHarvesterTask.STATE_UNLOADING
+            end
             return
         else
             self.vehicle.ad.drivePathModule:update(dt)
@@ -123,7 +134,11 @@ function EmptyHarvesterTask:update(dt)
 
         local combineFillLevel, _, _ = AutoDrive.getObjectFillLevels(self.combine)
 
+        EmptyHarvesterTask.debugMsg(self.vehicle, "EmptyHarvesterTask:update getDischargeState %s"
+        , tostring(self.combine:getDischargeState())
+        )
         if combineFillLevel > 0.1 and self.combine.getDischargeState ~= nil and self.combine:getDischargeState() ~= Dischargeable.DISCHARGE_STATE_OFF then
+            EmptyHarvesterTask.debugMsg(self.vehicle, "EmptyHarvesterTask:update stopVehicle")
             self.vehicle.ad.specialDrivingModule:stopVehicle()
             self.vehicle.ad.specialDrivingModule:update(dt)
         else
@@ -132,6 +147,7 @@ function EmptyHarvesterTask:update(dt)
             local distanceToCombine = AutoDrive.getDistanceBetween(self.vehicle, self.combine)
 
             if combineFillLevel <= 0.1 or filledToUnload then
+                EmptyHarvesterTask.debugMsg(self.vehicle, "EmptyHarvesterTask:update STATE_UNLOADING_FINISHED")
                 self.state = EmptyHarvesterTask.STATE_UNLOADING_FINISHED
                 return
             else
@@ -141,6 +157,7 @@ function EmptyHarvesterTask:update(dt)
                     self:finished()
                     return
                 else
+                    EmptyHarvesterTask.debugMsg(self.vehicle, "EmptyHarvesterTask:update driveForward")
                     self.vehicle.ad.specialDrivingModule:driveForward(dt)
                 end
             end
@@ -195,7 +212,7 @@ function EmptyHarvesterTask:update(dt)
             waitTime = 3 * EmptyHarvesterTask.WAITING_TIME
         end
         self.waitTimer:timer(true, waitTime, dt)
-        if self.waitTimer:done() then
+        if self.waitTimer:done() or AutoDrive.isVehicleOrTrailerInCrop(self.vehicle, true) then
             self:finished()
             return
         else

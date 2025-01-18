@@ -5,18 +5,18 @@ function ADHudSpeedmeter:new(posX, posY, width, height, fieldSpeed)
     o:init(posX, posY, width, height)
     o.primaryAction = "input_increaseSpeed"
     o.secondaryAction = "input_decreaseSpeed"
-    o.image = AutoDrive.directory .. "textures/speedmeter.dds"
+    o.image = "ad_gui.speedmeter"
 
     if fieldSpeed then
         o.primaryAction = "input_increaseFieldSpeed"
         o.secondaryAction = "input_decreaseFieldSpeed"
-        o.image = AutoDrive.directory .. "textures/speedmeter_field.dds"
+        o.image = "ad_gui.speedmeter_field"
     end
 
     o.layer = 5
     o.isFieldSpeed = fieldSpeed
 
-    o.ov = Overlay.new(o.image, o.position.x, o.position.y, o.size.width, o.size.height)
+    o.ov = g_overlayManager:createOverlay(o.image, o.position.x, o.position.y, o.size.width, o.size.height)
 
     return o
 end
@@ -24,7 +24,7 @@ end
 function ADHudSpeedmeter:onDraw(vehicle, uiScale)
     self.ov:render()
 
-    if AutoDrive.pullDownListExpanded == 0 or AutoDrive.Hud.targetPullDownList.direction == ADPullDownList.EXPANDED_UP then
+    if AutoDrive.pullDownListExpanded == 0 then
         local adFontSize = AutoDrive.FONT_SCALE * uiScale
         setTextColor(unpack(AutoDrive.currentColors.ad_color_hudTextDefault))
         setTextAlignment(RenderText.ALIGN_CENTER)

@@ -905,22 +905,26 @@ function ADGraphManager:findMatchingWayPointForVehicle(vehicle)
     local vehicleVector = {x = rx, z = rz}
     local point = {x = x1, z = z1}
 
-    local bestPoint, distance = self:findMatchingWayPoint(point, vehicleVector, vehicle:getWayPointIdsInRange(1, 20))
+    local bestPoint = self:findMatchingWayPoint(point, vehicleVector, vehicle:getWayPointIdsInRange(1, 20))
 
     if bestPoint == -1 then
         return vehicle:getClosestNotReversedWayPoint()
     end
 
-    return bestPoint, distance
+    return bestPoint
 end
 
 function ADGraphManager:findMatchingWayPoint(point, direction, candidates)
     candidates = candidates or {}
 
     local closest = -1
-    local distance = -1
-    local lastAngleToPoint = -1
-    local lastAngleToVehicle = -1
+    local closestScore = -1
+
+    local function waypointScore(sumOfAbsoluteAngles, distance)
+        -- a point 20m away with zero error is equivalent to a point 0m away with 45 degrees of error
+        return sumOfAbsoluteAngles + 45 * (distance / 20)
+    end
+
     for _, id in pairs(candidates) do
         local toCheck = self.wayPoints[id]
         local nextP = nil
@@ -936,27 +940,12 @@ function ADGraphManager:findMatchingWayPoint(point, direction, candidates)
                 local angleToNextPoint = AutoDrive.angleBetween(direction, vecToNextPoint)
                 local angleToVehicle = AutoDrive.angleBetween(direction, vecToVehicle)
                 local dis = MathUtil.vector2Length(toCheck.x - point.x, toCheck.z - point.z)
+                local score = waypointScore(math.abs(angleToNextPoint) + math.abs(angleToVehicle), dis)
+                local anglesInRange = math.abs(angleToNextPoint) < 60 and math.abs(angleToVehicle) < 30
 
-                if
-                    closest == -1 and (math.abs(angleToNextPoint) < 60 and math.abs(angleToVehicle) < 30) and
-                        #toCheck.incoming > 0
-                 then
+                if (closest == -1 or score < closestScore) and anglesInRange and #toCheck.incoming > 0 then
                     closest = toCheck.id
-                    distance = dis
-                    lastAngleToPoint = angleToNextPoint
-                    lastAngleToVehicle = angleToVehicle
-                else
-                    if
-                        #toCheck.incoming > 0 and
-                            (math.abs(angleToNextPoint) + math.abs(angleToVehicle)) <
-                                (math.abs(lastAngleToPoint) + math.abs(lastAngleToVehicle)) and
-                            (math.abs(angleToNextPoint) < 60 and math.abs(angleToVehicle) < 30)
-                     then
-                        closest = toCheck.id
-                        distance = dis
-                        lastAngleToPoint = angleToNextPoint
-                        lastAngleToVehicle = angleToVehicle
-                    end
+                    closestScore = score
                 end
 
                 outIndex = outIndex + 1
@@ -968,8 +957,7 @@ function ADGraphManager:findMatchingWayPoint(point, direction, candidates)
             end
         end
     end
-
-    return closest, distance
+    return closest
 end
 
 function ADGraphManager:getWayPointsInRange(point, rangeMin, rangeMax)
@@ -1176,8 +1164,10 @@ function ADGraphManager:createDebugMarkers(updateMap)
         local count2 = 1
         local count3 = 1
         local count4 = 1
+        local count5 = 1
         local count9 = 1
         local mapMarkerCounter = #self:getMapMarkers() + 1
+        local tileHashMap = {}
         for i, wp in pairs(network) do
             wp.foundError = false
             -- mark wayPoint without outgoing connection
@@ -1300,6 +1290,36 @@ function ADGraphManager:createDebugMarkers(updateMap)
                     wp.foundError = true
                     count9 = count9 + 1
                     mapMarkerCounter = mapMarkerCounter + 1
+                end
+            end
+            
+            -- duplicate points - creates 10x10m tiles and looks for very close matches
+            local hash = string.format("%.0f_%.0f", wp.x/10, wp.z/10)
+            if tileHashMap[hash] == nil then
+                tileHashMap[hash] = {}
+            end
+            table.insert(tileHashMap[hash], i)
+            if not wp.foundError and #tileHashMap[hash] > 1 then
+                for _, j in tileHashMap[hash] do
+                    if j ~= i then
+                        local wp2 = network[j]
+                        if math.abs(wp.x - wp2.x) < 1e-3 and math.abs(wp.z - wp2.z) < 1e-3 then
+                            local debugMapMarkerName = "5_" .. tostring(count5)
+                            -- create the mapMarker
+                            local mapMarker = {}
+                            mapMarker.name = debugMapMarkerName
+                            mapMarker.group = ADGraphManager.debugGroupName
+                            mapMarker.markerIndex = mapMarkerCounter
+                            mapMarker.id = wp.id
+                            mapMarker.isADDebug = true
+                            self:setMapMarker(mapMarker)
+
+                            wp.foundError = true
+                            count5 = count5 + 1
+                            mapMarkerCounter = mapMarkerCounter + 1
+                            break
+                        end
+                    end
                 end
             end
         end

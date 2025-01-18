@@ -17,6 +17,7 @@ ADStateModule.HELPER_NONE = 10/2 -- must not be 0
 ADStateModule.HELPER_CP = 1
 ADStateModule.HELPER_AIVE = 2
 ADStateModule.HELPER_AI = 3
+ADStateModule.NUM_HELPER_TYPES = 3  -- number of valid helper types above
 
 function ADStateModule:new(vehicle)
     local o = {}
@@ -60,12 +61,12 @@ function ADStateModule:reset()
 
     self.startHelper = false
 
-    if self.vehicle.getLastJob then
-        self.usedHelper = ADStateModule.HELPER_AI
-    elseif self.vehicle.cpStartStopDriver then
+    if self.vehicle.cpStartStopDriver then
         self.usedHelper = ADStateModule.HELPER_CP
     elseif self.vehicle.acParameters then
         self.usedHelper = ADStateModule.HELPER_AIVE
+    elseif self.vehicle.getLastJob then
+        self.usedHelper = ADStateModule.HELPER_AI
     else
         self.usedHelper = ADStateModule.HELPER_NONE
     end
@@ -77,7 +78,6 @@ function ADStateModule:reset()
     self.remainingDriveTime = 0
     self.calculateRemainingDriveTimeInterval = 0
     self.activeBeforeSave = false
-    self.AIVEActiveBeforeSave = false
     self.bunkerUnloadType = ADStateModule.BUNKER_UNLOAD_TRIGGER
     self.automaticUnloadTarget = false
     self.automaticPickupTarget = false
@@ -137,6 +137,11 @@ function ADStateModule:readFromXMLFile(xmlFile, key)
         self.loopCounter = loopCounter
     end
 
+    local loopsDone = xmlFile:getValue(key .. "#loopsDone")
+    if loopsDone ~= nil then
+        self.loopsDone = loopsDone
+    end
+
     local speedLimit = xmlFile:getValue(key .. "#speedLimit")
     if speedLimit ~= nil then
         self.speedLimit = math.min(speedLimit, AutoDrive.getVehicleMaxSpeed(self.vehicle))
@@ -157,14 +162,14 @@ function ADStateModule:readFromXMLFile(xmlFile, key)
         self.driverName = driverName
     end
 
-    local lastActive = xmlFile:getValue(key .. "#lastActive")
-    if lastActive ~= nil then
-        self.activeBeforeSave = lastActive
+    local active = xmlFile:getValue(key .. "#active")
+    if active ~= nil then
+        self.activeBeforeSave = active
     end
 
-    local AIVElastActive = xmlFile:getValue(key .. "#AIVElastActive")
-    if AIVElastActive ~= nil then
-        self.AIVEActiveBeforeSave = AIVElastActive
+    local startHelper = xmlFile:getValue(key .. "#startHelper")
+    if startHelper ~= nil then
+        self.startHelper = startHelper
     end
 
     local bunkerUnloadType = xmlFile:getValue(key .. "#bunkerUnloadType")
@@ -195,11 +200,12 @@ function ADStateModule:saveToXMLFile(xmlFile, key)
     xmlFile:setValue(key .. "#selectedFillTypes", table.concat(self.selectedFillTypes, ','))
     xmlFile:setValue(key .. "#loadByFillLevel", self.loadByFillLevel)
     xmlFile:setValue(key .. "#loopCounter", self.loopCounter)
+    xmlFile:setValue(key .. "#loopsDone", self.loopsDone)
     xmlFile:setValue(key .. "#speedLimit", self.speedLimit)
     xmlFile:setValue(key .. "#fieldSpeedLimit", self.fieldSpeedLimit)
     xmlFile:setValue(key .. "#driverName", self.driverName)
-    xmlFile:setValue(key .. "#lastActive", self.active)
-    xmlFile:setValue(key .. "#AIVElastActive", false)
+    xmlFile:setValue(key .. "#active", self.active)
+    xmlFile:setValue(key .. "#startHelper", self.startHelper)
     xmlFile:setValue(key .. "#bunkerUnloadType", self.bunkerUnloadType)
     -- xmlFile:setValue(key .. "#automaticUnloadTarget", self.automaticUnloadTarget)
     -- xmlFile:setValue(key .. "#automaticPickupTarget", self.automaticPickupTarget)
@@ -391,33 +397,44 @@ function ADStateModule:getStartHelper()
     return self.startHelper
 end
 
+function ADStateModule.getNextHelperType(helper)
+    -- AI -> CP -> AIVE -> AI ...
+    if helper == ADStateModule.HELPER_AI then
+        return ADStateModule.HELPER_CP
+    elseif helper == ADStateModule.HELPER_CP then
+        return ADStateModule.HELPER_AIVE
+    elseif helper == ADStateModule.HELPER_AIVE then
+        return ADStateModule.HELPER_AI
+    else
+        return ADStateModule.HELPER_NONE
+    end
+end
+
+function ADStateModule:isHelperTypeValid(helper)
+    if helper == ADStateModule.HELPER_NONE then
+        return true
+    end
+    if helper == ADStateModule.HELPER_AI and self.vehicle.getLastJob then
+        return true
+    end
+    if helper == ADStateModule.HELPER_CP and self.vehicle.cpStartStopDriver then
+        return true
+    end
+    if helper == ADStateModule.HELPER_AIVE and self.vehicle.acParameters then
+        return true
+    end
+    return false
+end
+
 function ADStateModule:toggleUsedHelper()
     local helper = self.usedHelper
-    if self.vehicle.getLastJob and helper == ADStateModule.HELPER_AI then
-        if self.vehicle.cpStartStopDriver then
-            helper = ADStateModule.HELPER_CP
-        elseif self.vehicle.acParameters then
-            helper = ADStateModule.HELPER_AIVE
-        else
-            helper = ADStateModule.HELPER_AI
+    for _ = 1, ADStateModule.NUM_HELPER_TYPES do
+        helper = self.getNextHelperType(helper)
+        if self:isHelperTypeValid(helper) then
+            break
         end
-    elseif self.vehicle.cpStartStopDriver and helper == ADStateModule.HELPER_CP then
-        if self.vehicle.acParameters then
-            helper = ADStateModule.HELPER_AIVE
-        elseif self.vehicle.getLastJob then
-            helper = ADStateModule.HELPER_AI
-        else
-            helper = ADStateModule.HELPER_CP
-        end
-    elseif self.vehicle.acParameters and helper == ADStateModule.HELPER_AIVE then
-        if self.vehicle.getLastJob then
-            helper = ADStateModule.HELPER_AI
-        elseif self.vehicle.cpStartStopDriver then
-            helper = ADStateModule.HELPER_CP
-        else
-            helper = ADStateModule.HELPER_AIVE
-        end
-    else
+    end
+    if not self:isHelperTypeValid(helper) then
         helper = ADStateModule.HELPER_NONE
     end
     if helper ~= self.usedHelper then

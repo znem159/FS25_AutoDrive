@@ -12,32 +12,22 @@ function ADHudSettingsButton:new(posX, posY, width, height, setting, toolTip, st
 
     o.images = o:readImages()
 
-    o.ov = Overlay.new(o.images[o.state], o.position.x, o.position.y, o.size.width, o.size.height)
+    o.ov = g_overlayManager:createOverlay(o.images[o.state], o.position.x, o.position.y, o.size.width, o.size.height)
 
     return o
 end
 
 function ADHudSettingsButton:readImages()
-    -- Reads these images. They are listed here to pass the test runner check.
-    -- "textures/avoidFruit_1.dds"
-    -- "textures/avoidFruit_2.dds"
-    -- "textures/enableTrafficDetection_1.dds" 
-    -- "textures/enableTrafficDetection_2.dds"
-    -- "textures/enableTrafficDetection_3.dds"
-    -- "textures/exitField_1.dds"
-    -- "textures/exitField_2.dds"
-    -- "textures/exitField_3.dds"
-    -- "textures/restrictToField_1.dds" 
-    -- "textures/restrictToField_2.dds"
-    -- "textures/rotateTargets_1.dds"
-    -- "textures/rotateTargets_2.dds"
-    -- "textures/rotateTargets_3.dds"
-    -- "textures/rotateTargets_4.dds"
-
     local images = {}
     local counter = 1
-    while counter <= 4 do
-        images[counter] = AutoDrive.directory .. "textures/" .. self.setting .. "_" .. counter .. ".dds"
+
+    local adTextureConfig = g_overlayManager.textureConfigs["ad_gui"]
+    while true do
+        local sliceId = self.setting .. "_" .. counter
+        if adTextureConfig.slices[sliceId] == nil then
+            break
+        end
+        images[counter] = "ad_gui." .. sliceId
         counter = counter + 1
     end
     return images
@@ -53,7 +43,7 @@ end
 function ADHudSettingsButton:updateState(vehicle)
     local newState = AutoDrive.getSettingState(self.setting, vehicle)
     self.isVisible = not AutoDrive.isEditorModeEnabled() or AutoDrive.getSetting("wideHUD")
-    self.ov:setImage(self.images[newState])
+    self.ov:setSliceId(self.images[newState])
     self.state = newState
 end
 

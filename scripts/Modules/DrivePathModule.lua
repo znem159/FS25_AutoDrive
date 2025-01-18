@@ -53,6 +53,7 @@ function ADDrivePathModule:reset()
 end
 
 function ADDrivePathModule:setPathTo(wayPointId)
+    self:reset()
     self.wayPoints = ADGraphManager:getPathTo(self.vehicle, wayPointId, self.lastUsedWayPoint)
     local destination = ADGraphManager:getMapMarkerByWayPointId(self:getLastWayPointId())
     self.vehicle.ad.stateModule:setCurrentDestination(destination)
@@ -115,6 +116,7 @@ function ADDrivePathModule:appendPathTo(startWayPointId, wayPointId)
 end
 
 function ADDrivePathModule:setWayPoints(wayPoints)
+    self:reset()
     self.wayPoints = wayPoints
     local destination = ADGraphManager:getMapMarkerByWayPointId(self:getLastWayPointId())
     self.vehicle.ad.stateModule:setCurrentDestination(destination)
@@ -173,14 +175,7 @@ function ADDrivePathModule:update(dt)
             self:checkIfStuck(dt)
 
             if self:isCloseToWaypoint() then
-                local reverseStart, _ = self:checkForReverseSection()
-                if reverseStart then
-                    self.isReversing = not self.isReversing
-                    self.vehicle.ad.specialDrivingModule:reset()
-                    self.vehicle.ad.specialDrivingModule.currentWayPointIndex = self:getCurrentWayPointIndex() + 1
-                else
-                    self:handleReachedWayPoint()
-                end
+                self:handleReachedWayPoint()
             end
         end
 
@@ -209,27 +204,35 @@ function ADDrivePathModule:isCloseToWaypoint()
     end
 
     local maxSkipWayPoints = 1
+    local wp_ahead = self:getNextWayPoint()
+    local wp_current = self:getCurrentWayPoint()
+    local _, isLastForward, isLastReverse = self:checkForReverseSection()
+    if isLastForward or isLastReverse then
+        maxSkipWayPoints = 0
+    end
+
+    AutoDrive.debugPrint(self.vehicle, AutoDrive.DC_PATHINFO, "ADDrivePathModule:isCloseToWaypoint - start, wpIdx=%d, maxSkip=%d", self:getCurrentWayPointIndex(), maxSkipWayPoints)
+
     for i = 0, maxSkipWayPoints do
         if self.wayPoints[self:getCurrentWayPointIndex() + i] ~= nil then
             local distanceToCurrentWp = MathUtil.vector2Length(x - self.wayPoints[self:getCurrentWayPointIndex() + i].x, z - self.wayPoints[self:getCurrentWayPointIndex() + i].z)
             if distanceToCurrentWp < self.min_distance then --and i == 0
+                AutoDrive.debugPrint(self.vehicle, AutoDrive.DC_PATHINFO, "ADDrivePathModule:isCloseToWaypoint(%d/%d) - true distanceToCurrentWp=%f min_distance=%f", i+1, maxSkipWayPoints+1, distanceToCurrentWp, self.min_distance)
                 return true
             end
             -- Check if the angle between vehicle and current wp and current wp to next wp is over 90° - then we should already make the switch
             if i == 1 then
-                local wp_ahead = self:getNextWayPoint()
-                local wp_current = self:getCurrentWayPoint()
-
                 local angle = AutoDrive.angleBetween({x = wp_ahead.x - wp_current.x, z = wp_ahead.z - wp_current.z}, {x = wp_current.x - x, z = wp_current.z - z})
                 angle = math.abs(angle)
 
-                local isReverseStart = wp_ahead.incoming ~= nil and (not table.contains(wp_ahead.incoming, wp_current.id))
-                if angle >= 135 and not isReverseStart then
+                if angle >= 135 then
+                    AutoDrive.debugPrint(self.vehicle, AutoDrive.DC_PATHINFO, "ADDrivePathModule:isCloseToWaypoint(%d/%d) - true angle=%f", i+1, maxSkipWayPoints+1, angle)
                     return true
                 end
             end
         end
     end
+    AutoDrive.debugPrint(self.vehicle, AutoDrive.DC_PATHINFO, "ADDrivePathModule:isCloseToWaypoint - false")
     return false
 end
 
@@ -327,12 +330,12 @@ function ADDrivePathModule:followWaypoints(dt)
             self.acceleration = -math.min(0.6, speedDiff * 0.05)
         end
         
-        if self.vehicle.getAISteeringNode ~= nil then
-            local aix, aiy, aiz = getWorldTranslation(self.vehicle:getAISteeringNode())            
-        --     ADDrawingManager:addLineTask(aix, aiy, aiz, self.targetX, y, self.targetZ, 1, 1, 0, 0)
+        -- if self.vehicle.getAISteeringNode ~= nil then
+        --     local aix, aiy, aiz = getWorldTranslation(self.vehicle:getAISteeringNode())            
+        --     ADDrawingManager:addLineTask(aix, aiy+3, aiz, self.targetX, y+3, self.targetZ, 1, 1, 0, 0)
         -- else            
-        --     ADDrawingManager:addLineTask(x, y, z, self.targetX, y, self.targetZ, 1, 1, 0, 0)
-        end
+        --     ADDrawingManager:addLineTask(x, y+3, z, self.targetX, y+3, self.targetZ, 1, 1, 0, 0)
+        -- end
         if self.vehicle.startMotor then
             if not self.vehicle:getIsMotorStarted() and self.vehicle:getCanMotorRun() and not self.vehicle.ad.specialDrivingModule:shouldStopMotor() then
                 self.vehicle:startMotor()
@@ -340,7 +343,7 @@ function ADDrivePathModule:followWaypoints(dt)
         end
         self.vehicle.ad.trailerModule:handleTrailerReversing(false)
         AutoDrive.driveInDirection(self.vehicle, dt, maxAngle, self.acceleration, 0.8, maxAngle, true, true, lx, lz, self.speedLimit, 1)
-        --local worldX, _, worldZ = AutoDrive.worldToLocal(self.vehicle, self.targetX, 0, self.targetZ)
+        --local worldX, _, worldZ = AutoDrive.worldToLocal(self.vehicle, self.targetX, y, self.targetZ)
         --print("dt: " .. dt .. " acc: " .. self.acceleration .. " x: " .. worldX .. " z: " .. worldZ .. " speedLimit: " .. self.speedLimit)
         --AIVehicleUtil.driveToPoint(self.vehicle, dt, self.acceleration, true, true, worldX, worldZ, self.speedLimit)
     end
@@ -631,9 +634,9 @@ function ADDrivePathModule:switchToNextWayPoint()
     self:setCurrentWayPointIndex(self:getNextWayPointIndex())
     self.minDistanceToNextWp = math.huge
 
-    local _, reverseEnd = self:checkForReverseSection()
-    if reverseEnd and self.isReversing then
-        self.isReversing = false --not self.isReversing
+    local isReverse, _, _ = self:checkForReverseSection()
+    if isReverse ~= self.isReversing then
+        self.isReversing = isReverse
         self.vehicle.ad.specialDrivingModule:reset()
         self.vehicle.ad.specialDrivingModule.currentWayPointIndex = self:getCurrentWayPointIndex()
     end
@@ -642,64 +645,49 @@ end
 function ADDrivePathModule:getLookAheadTarget()
     --start driving to the nextWayPoint when closing in on current waypoint in order to avoid harsh steering angles and oversteering
 
-    local x, _, z = getWorldTranslation(self.vehicle.components[1].node)
+    local x, y, z = getWorldTranslation(self.vehicle.components[1].node)
     if self.vehicle.getAISteeringNode ~= nil then
         x, _, z = getWorldTranslation(self.vehicle:getAISteeringNode())
     end
 
-    local targetX = x
-    local targetZ = z
-
     local wp_current = self:getCurrentWayPoint()
-
-    if wp_current ~= nil then
-        targetX = wp_current.x
-        targetZ = wp_current.z
+    if wp_current == nil then
+        return x, z
     end
 
-    if self:getNextWayPoint() ~= nil and (self:getNextWayPoint().incoming == nil or #self:getNextWayPoint().incoming > 0) then
-        local lookAheadID = 1
-        local lookAheadDistance = AutoDrive.getSetting("lookAheadTurning")
-        local distanceToCurrentTarget = MathUtil.vector2Length(x - wp_current.x, z - wp_current.z)
+    local distanceToCurrentTarget = MathUtil.vector2Length(x - wp_current.x, z - wp_current.z)
+    local lookAheadDistance = AutoDrive.getSetting("lookAheadTurning")
+    local lookAheadRemaining = lookAheadDistance - distanceToCurrentTarget
 
-        local wp_ahead = self.wayPoints[self:getCurrentWayPointIndex() + lookAheadID]
-        local distanceToNextTarget = MathUtil.vector2Length(x - wp_ahead.x, z - wp_ahead.z)
+    local lookAheadID = 0
+    local wp_ahead = wp_current
+    local distanceToNextTarget = 0
 
-        if distanceToCurrentTarget < distanceToNextTarget then
-            lookAheadDistance = lookAheadDistance - distanceToCurrentTarget
+    while lookAheadRemaining > distanceToNextTarget do
+        lookAheadRemaining = lookAheadRemaining - distanceToNextTarget
+        lookAheadID = lookAheadID + 1
+
+        local wp_next = self.wayPoints[self:getCurrentWayPointIndex() + lookAheadID]
+        if wp_next == nil or ADGraphManager:isReverseRoad(wp_ahead, wp_next) then
+            break
         end
-
-        while lookAheadDistance > distanceToNextTarget do
-            lookAheadDistance = lookAheadDistance - distanceToNextTarget
-            lookAheadID = lookAheadID + 1
-            if self.wayPoints[self:getCurrentWayPointIndex() + lookAheadID] == nil then
-                break
-            end
-            wp_current = wp_ahead
-            wp_ahead = self.wayPoints[self:getCurrentWayPointIndex() + lookAheadID]
-            distanceToNextTarget = MathUtil.vector2Length(wp_current.x - wp_ahead.x, wp_current.z - wp_ahead.z)
-        end
-
-        local distX = wp_ahead.x - wp_current.x
-        local distZ = wp_ahead.z - wp_current.z
-        if lookAheadDistance > 0 then
-            local addX = lookAheadDistance * (math.abs(distX) / (math.abs(distX) + math.abs(distZ)))
-            local addZ = lookAheadDistance * (math.abs(distZ) / (math.abs(distX) + math.abs(distZ)))
-            if distX < 0 then
-                addX = -addX
-            end
-
-            if distZ < 0 then
-                addZ = -addZ
-            end
-
-            if (math.abs(distX) + math.abs(distZ)) > 0 then
-                targetX = wp_current.x + addX
-                targetZ = wp_current.z + addZ
-            end
-        end
+        wp_current, wp_ahead = wp_ahead, wp_next
+        distanceToNextTarget = MathUtil.vector2Length(wp_current.x - wp_ahead.x, wp_current.z - wp_ahead.z)
     end
 
+    local targetX, targetZ = wp_current.x, wp_current.z
+    if lookAheadRemaining > 0.1 and distanceToNextTarget > 0.1 then
+        local length = math.min(lookAheadRemaining, distanceToNextTarget)
+        local addX, addZ = MathUtil.vector2SetLength(wp_ahead.x - wp_current.x, wp_ahead.z - wp_current.z, length)
+        targetX = targetX + addX
+        targetZ = targetZ + addZ
+    end
+    
+    if AutoDrive.isEditorModeEnabled() and AutoDrive.getDebugChannelIsSet(AutoDrive.DC_VEHICLEINFO) then
+        ADDrawingManager:addLineTask(x, y+2.2, z, wp_current.x, y+2.2, wp_current.z, 1, 0.8, 0, 0)
+        ADDrawingManager:addLineTask(x, y+2.3, z, wp_ahead.x, y+2.3, wp_ahead.z, 1, 1, 0.2, 0.2)
+        ADDrawingManager:addLineTask(x, y+2.4, z, targetX, y+2.4, targetZ, 1.5, 0, 1, 0)
+    end
     return targetX, targetZ
 end
 
@@ -765,25 +753,39 @@ function ADDrivePathModule:handleBeingStuck()
 end
 
 function ADDrivePathModule:checkForReverseSection()
-    local reverseStart = false
-    local reverseEnd = false
-    if self.wayPoints ~= nil and #self.wayPoints > self:getCurrentWayPointIndex() + 1 and self:getCurrentWayPointIndex() > 1 then
-        local wp_ahead = self.wayPoints[self:getCurrentWayPointIndex() + 1]
-        local wp_current = self.wayPoints[self:getCurrentWayPointIndex() - 0]
-        local wp_ref = self.wayPoints[self:getCurrentWayPointIndex() - 1]
-        local isReverseStart = (wp_ahead.incoming ~= nil and (not table.contains(wp_ahead.incoming, wp_current.id))) or (wp_ahead.isReverse ~= nil and wp_ahead.isReverse == true)
-        local isReverseEnd = wp_ahead.incoming ~= nil and wp_current.incoming ~= nil and table.contains(wp_ahead.incoming, wp_current.id) and not table.contains(wp_current.incoming, wp_ref.id)
+    -- returns [current segment is reversed], [current segment is the last forward segment], [current segment is the last reverse segment]
 
-        local angle = AutoDrive.angleBetween({x = wp_ahead.x - wp_current.x, z = wp_ahead.z - wp_current.z}, {x = wp_current.x - wp_ref.x, z = wp_current.z - wp_ref.z})
-
-        angle = math.abs(angle)
-        if (angle > 100 and isReverseStart) or (wp_ahead.isReverse ~= nil and wp_ahead.isReverse == true) then
-            reverseStart = true
-        end
-        if (angle > 100 and isReverseEnd) or (wp_ahead.isForward ~= nil and wp_ahead.isForward == true) then
-            reverseEnd = true
-        end
+    if self.wayPoints == nil or self:getCurrentWayPointIndex() < 1 or #self.wayPoints <= self:getCurrentWayPointIndex() + 1 then
+        AutoDrive.debugPrint(self.vehicle, AutoDrive.DC_PATHINFO, "ADDrivePathModule:checkForReverseSection wpIdx=%d - first or last segment", self:getCurrentWayPointIndex())
+        return self.isReversing, false, false
     end
 
-    return reverseStart, reverseEnd
+    -- check current segment (required either way)
+    local wp_ref = self.wayPoints[self:getCurrentWayPointIndex() - 1]
+    local wp_current = self.wayPoints[self:getCurrentWayPointIndex() - 0]
+    local wp_ahead = self.wayPoints[self:getCurrentWayPointIndex() + 1]
+
+    local isReverse = ADGraphManager:isReverseRoad(wp_ref, wp_current)
+    local aheadIsReverse = ADGraphManager:isReverseRoad(wp_current, wp_ahead)
+
+    if self.isReversing then
+        -- we're allowed to continue reversing on dual segments
+        isReverse = isReverse or ADGraphManager:isDualRoad(wp_ref, wp_current)
+        aheadIsReverse = aheadIsReverse or ADGraphManager:isDualRoad(wp_current, wp_ahead)
+    end
+
+    -- special case for harvester-task reversed sections
+    isReverse = isReverse or Utils.getNoNil(wp_current.isReverse, false)
+    isReverse = isReverse and not Utils.getNoNil(wp_current.isForward, false)
+    aheadIsReverse = aheadIsReverse or Utils.getNoNil(wp_ahead.isReverse, false)
+    aheadIsReverse = aheadIsReverse and not Utils.getNoNil(wp_ahead.isForward, false)
+
+    local angle = AutoDrive.angleBetween({x = wp_ahead.x - wp_current.x, z = wp_ahead.z - wp_current.z}, {x = wp_current.x - wp_ref.x, z = wp_current.z - wp_ref.z})
+    local isSteepTurn = math.abs(angle) > 100
+
+    local isLastForwardSection = not isReverse and aheadIsReverse and isSteepTurn
+    local isLastReverseSection = isReverse and not aheadIsReverse and isSteepTurn
+
+    AutoDrive.debugPrint(self.vehicle, AutoDrive.DC_PATHINFO, "ADDrivePathModule:checkForReverseSection wpIdx=%d - isReverse: %s, last fwd: %s, last rev: %s", self:getCurrentWayPointIndex(), tostring(isReverse), tostring(isLastForwardSection), tostring(isLastReverseSection))
+    return isReverse, isLastForwardSection, isLastReverseSection
 end

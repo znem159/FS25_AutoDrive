@@ -297,10 +297,8 @@ function ADDimensionSensor:getRealVehicleDimensions_Callback(transformId)
         local collisionObject = g_currentMission.nodeToObject[transformId]
         if collisionObject ~= nil and collisionObject == self.vehicle then
             self.selfHits = self.selfHits + 1
-            return true
         end
     end
-    return false
 end
 
 function AutoDrive.getVehicleDimensions(vehicle, force)

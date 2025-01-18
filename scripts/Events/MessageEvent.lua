@@ -76,8 +76,8 @@ end
 function AutoDriveMessageEvent.sendMessage(vehicle, messageType, text, duration, ...)
     if g_server ~= nil then
         -- Server have to send only to owner
-        if vehicle.owner ~= nil then
-            vehicle.owner:sendEvent(AutoDriveMessageEvent.new(vehicle, false, messageType, text, duration, {...}))
+        if vehicle.ownerConnection ~= nil then
+            vehicle.ownerConnection:sendEvent(AutoDriveMessageEvent.new(vehicle, false, messageType, text, duration, {...}))
         end
     else
         Logging.error("A client is trying to send a message event.")
@@ -102,7 +102,7 @@ end
 function AutoDriveMessageEvent.sendMessageOrNotification(vehicle, messageType, text, duration, ...)
     if g_server ~= nil then
         -- Server have only to send message to owner or notification if there is no owner
-        if vehicle.owner ~= nil then
+        if vehicle.ownerConnection ~= nil then
             AutoDriveMessageEvent.sendMessage(vehicle, messageType, text, duration, ...)
         else
             AutoDriveMessageEvent.sendNotification(vehicle, messageType, text, duration, ...)

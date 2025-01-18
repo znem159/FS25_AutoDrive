@@ -7,36 +7,36 @@
 	<description>
 		<en>
 <![CDATA[This mod can be used to create a network of routes for vehicles to drive autonomously. Once setup you can tell a tractor which is standing anywhere close to the network to drive to any point, such as the shop, field 1 or to a sell point.
-Changelog: please check github...
+Changelog: Necessary adjustments for FS25, color adjustment, conversion of all graphics, new creation of the menus, corrections and optimization of all scripts and routines, adjustment HUD, complete information and release notes: https://github.com/Stephan-S/FS25_AutoDrive
 ]]>
 		</en>
 		<de>
 <![CDATA[Dieser Mod erlaubt es ein Netzwerk von Routen aufzuzeichnen, um dann ein Fahrzeug von jedem beliebigen Punkt zu speziell definierten Zielen, wie zum Beispiel der eigenen Farm, Feld 1 oder auch zu jedem Verkaufspunkt fahren zu lassen.
-Changelog: bitte auf github lesen...
+Changelog: notwendige Anpassungen für den LS25, farbliche Anpassung, Konvertierung aller Grafiken, Neuerstellung der Menüs, Korrekturen und Optimierung aller Skripts und Routinen, Anpassung HUD, vollständige Infos und Release Notes: https://github.com/Stephan-S/FS25_AutoDrive
 ]]>
 		</de>
 		<it>
 <![CDATA[Questa mod può essere usata per creare una rete di percorsi per permettere ai veicoli di guidare autonomamente. Una volta effettuata la configurazione puoi dire a un veicolo di guidare tramite la rete verso un qualsiasi punto, come il negozio, il campo 1 o un punto vendita.
-Changelog: si prega di leggere su github...
+Changelog: Adeguamenti necessari per FS25, adeguamento dei colori, conversione di tutta la grafica, nuova creazione di menu, correzioni e ottimizzazione di tutti gli script e le routine, adeguamento dell'HUD, informazioni complete e note di rilascio: https://github.com/Stephan-S/FS25_AutoDrive
 ]]>
 		</it>
 		<fr>
 <![CDATA[Ce mod peut être utilisé pour créer un réseau de routes permettant aux véhicules de conduire de manière autonome. Une fois la configuration effectuée, vous pouvez indiquer à un tracteur situé près du réseau de se rendre à n’importe quel point, tel que le magasin, le champ 1 ou un point de vente.
-Changelog: à lire sur github...
+Changelog: adaptations nécessaires pour le FS25, adaptation des couleurs, conversion de tous les graphiques, nouvelle création des menus, corrections et optimisation de tous les scripts et routines, adaptation du HUD, infos complètes et release notes : https://github.com/Stephan-S/FS25_AutoDrive
 ]]>
 		</fr>
 		<es>
 <![CDATA[Este mod se utiliza para crear una red de rutas y permitir que los vehículos conduzcan de forma autónoma. Una vez configurado, puede ordenar a un tractor, cercano a la red, que conduzca a cualquier meta definida, como la tienda, el campo 1 o un punto de venta.
-Changelog: por favor lea en github...
+Changelog: Ajustes necesarios para FS25, ajuste de color, conversión de todos los gráficos, nueva creación de menús, correcciones y optimización de todos los scripts y rutinas, ajuste del HUD, información completa y notas de la versión: https://github.com/Stephan-S/FS25_AutoDrive
 ]]>
 		</es>
 		<ru>
 <![CDATA[Этот мод может быть использован для создания сети маршрутов для транспортных средств для автономного вождения. После настройки вы можете указать трактору, стоящему где-угодно рядом с сетью, проехать в любую точку, например, в магазин, поле №1 или в точку продажи.
-Changelog: пожалуйста, читайте на github...
+Changelog: Необходимые корректировки для FS25, настройка цвета, преобразование всей графики, новое создание меню, исправления и оптимизация всех скриптов и процедур, настройка HUD, полная информация и примечания к выпуску: https://github.com/Stephan-S/FS25_AutoDrive
 ]]>
 		</ru>
 	</description>
-	<version>3.0.0.0</version>
+	<version>3.0.0.2</version>
 	<multiplayer supported="true" />
 	<iconFilename>icon_AutoDrive.dds</iconFilename>
 	<extraSourceFiles>
@@ -46,58 +46,58 @@ Changelog: пожалуйста, читайте на github...
 	<l10n filenamePrefix="translations/translation" />
 
 	<actions>
-		<action name="ADSilomode" category="VEHICLE" ignoreComboMask="false" />
-		<action name="ADPreviousMode" category="VEHICLE" ignoreComboMask="false" />
-		<action name="ADRecord" category="VEHICLE" ignoreComboMask="false" />
-		<action name="ADRecord_Dual" category="VEHICLE" ignoreComboMask="false" />
-		<action name="ADRecord_SubPrio" category="VEHICLE" ignoreComboMask="false" />
-		<action name="ADRecord_SubPrioDual" category="VEHICLE" ignoreComboMask="false" />
-		<action name="ADEnDisable" category="VEHICLE" ignoreComboMask="false" />
-		<action name="ADSelectTarget" category="VEHICLE" ignoreComboMask="false" />
-		<action name="ADSelectPreviousTarget" category="VEHICLE" ignoreComboMask="false" />
-		<action name="ADSelectTargetUnload" category="VEHICLE" ignoreComboMask="false" />
-		<action name="ADSelectPreviousTargetUnload" category="VEHICLE" ignoreComboMask="false" />
-		<action name="ADActivateDebug" category="VEHICLE" ignoreComboMask="false" />
-		<action name="ADDisplayMapPoints" category="VEHICLE" ignoreComboMask="false" />
-		<action name="ADDebugSelectNeighbor" category="VEHICLE" ignoreComboMask="false" />
-		<action name="ADDebugCreateConnection" category="VEHICLE" ignoreComboMask="false" />
-		<action name="ADDebugToggleConnectionInverted" category="VEHICLE" ignoreComboMask="false" />
-		<action name="ADDebugChangeNeighbor" category="VEHICLE" ignoreComboMask="false" />
-		<action name="ADDebugPreviousNeighbor" category="VEHICLE" ignoreComboMask="false" />
-		<action name="ADDebugCreateMapMarker" category="VEHICLE" ignoreComboMask="false" />
-		<action name="ADRenameMapMarker" category="VEHICLE" ignoreComboMask="false" />
-		<action name="ADDebugDeleteDestination" category="VEHICLE" ignoreComboMask="false" />
-		<action name="ADNameDriver" category="VEHICLE" ignoreComboMask="false" />
-		<action name="ADSetDestinationFilter" category="VEHICLE" ignoreComboMask="false" />
-		<action name="AD_Speed_up" category="VEHICLE" ignoreComboMask="false" />
-		<action name="AD_Speed_down" category="VEHICLE" ignoreComboMask="false" />
-		<action name="AD_FieldSpeed_up" category="VEHICLE" ignoreComboMask="false" />
-		<action name="AD_FieldSpeed_down" category="VEHICLE" ignoreComboMask="false" />
-		<action name="ADToggleHud" category="VEHICLE" ignoreComboMask="false" />
-		<action name="ADToggleMouse" category="VEHICLE" ignoreComboMask="false" />
-		<action name="ADDebugDeleteWayPoint" category="VEHICLE" ignoreComboMask="false" />
-		<action name="AD_routes_manager" category="VEHICLE" ignoreComboMask="false" />
-		<action name="ADSelectNextFillType" category="VEHICLE" ignoreComboMask="false" />
-		<action name="ADSelectPreviousFillType" category="VEHICLE" ignoreComboMask="false" />
-		<action name="ADOpenGUI" category="VEHICLE" ignoreComboMask="false" />
-		<action name="ADCallDriver" category="VEHICLE" ignoreComboMask="false" />
-		<action name="ADGoToVehicle" category="VEHICLE" ignoreComboMask="false" />
-		<action name="ADIncLoopCounter" category="VEHICLE" ignoreComboMask="false" />
-		<action name="ADDecLoopCounter" category="VEHICLE" ignoreComboMask="false" />
-		<action name="ADSwapTargets" category="VEHICLE" ignoreComboMask="false" />
-		<action name="ADStartHelper" category="VEHICLE" ignoreComboMask="false" />
-		<action name="ADToggleUsedHelper" category="VEHICLE" ignoreComboMask="false" />
-		<action name="AD_open_notification_history" category="VEHICLE" ignoreComboMask="false" />
-		<action name="AD_continue" category="VEHICLE" ignoreComboMask="false" />
-		<action name="ADParkVehicle" category="VEHICLE" ignoreComboMask="false" />
-		<action name="ADSetParkDestination" category="VEHICLE" ignoreComboMask="false" />
-		<action name="AD_devAction" category="VEHICLE" ignoreComboMask="false" />
-		<action name="ADRefuelVehicle" category="VEHICLE" ignoreComboMask="false" />	
-		<action name="ADToggleHudExtension" category="VEHICLE" ignoreComboMask="false" />	
-		<action name="ADToggleAutomaticUnloadTarget" category="VEHICLE" ignoreComboMask="false" />
-		<action name="ADToggleAutomaticPickupTarget" category="VEHICLE" ignoreComboMask="false" />
-		<action name="ADToggleLoadByFillLevel" category="VEHICLE" ignoreComboMask="false" />
-		<action name="ADRepairVehicle" category="VEHICLE" ignoreComboMask="false" />		
+		<action name="ADSilomode"/>
+		<action name="ADPreviousMode"/>
+		<action name="ADRecord"/>
+		<action name="ADRecord_Dual"/>
+		<action name="ADRecord_SubPrio"/>
+		<action name="ADRecord_SubPrioDual"/>
+		<action name="ADEnDisable"/>
+		<action name="ADSelectTarget"/>
+		<action name="ADSelectPreviousTarget"/>
+		<action name="ADSelectTargetUnload"/>
+		<action name="ADSelectPreviousTargetUnload"/>
+		<action name="ADActivateDebug"/>
+		<action name="ADDisplayMapPoints"/>
+		<action name="ADDebugSelectNeighbor"/>
+		<action name="ADDebugCreateConnection"/>
+		<action name="ADDebugToggleConnectionInverted"/>
+		<action name="ADDebugChangeNeighbor"/>
+		<action name="ADDebugPreviousNeighbor"/>
+		<action name="ADDebugCreateMapMarker"/>
+		<action name="ADRenameMapMarker"/>
+		<action name="ADDebugDeleteDestination"/>
+		<action name="ADNameDriver"/>
+		<action name="ADSetDestinationFilter"/>
+		<action name="AD_Speed_up"/>
+		<action name="AD_Speed_down"/>
+		<action name="AD_FieldSpeed_up"/>
+		<action name="AD_FieldSpeed_down"/>
+		<action name="ADToggleHud"/>
+		<action name="ADToggleMouse"/>
+		<action name="ADDebugDeleteWayPoint"/>
+		<action name="AD_routes_manager"/>
+		<action name="ADSelectNextFillType"/>
+		<action name="ADSelectPreviousFillType"/>
+		<action name="ADOpenGUI"/>
+		<action name="ADCallDriver"/>
+		<action name="ADGoToVehicle"/>
+		<action name="ADIncLoopCounter"/>
+		<action name="ADDecLoopCounter"/>
+		<action name="ADSwapTargets"/>
+		<action name="ADStartHelper"/>
+		<action name="ADToggleUsedHelper"/>
+		<action name="AD_open_notification_history"/>
+		<action name="AD_continue"/>
+		<action name="ADParkVehicle"/>
+		<action name="ADSetParkDestination"/>
+		<action name="AD_devAction"/>
+		<action name="ADRefuelVehicle"/>	
+		<action name="ADToggleHudExtension"/>	
+		<action name="ADToggleAutomaticUnloadTarget"/>
+		<action name="ADToggleAutomaticPickupTarget"/>
+		<action name="ADToggleLoadByFillLevel"/>
+		<action name="ADRepairVehicle"/>		
 	</actions>
 
 	<inputBinding>

@@ -34,18 +34,7 @@ function AutoDrive.loadStoredXML(loadInitConfig)
 end
 
 function AutoDrive.loadInitConfig(xmlFile)
-	if ADThirdPartyModsManager:getHasDefaultRoutesForMap(AutoDrive.loadedMap) then
-		local defaultRoutesPath = ADThirdPartyModsManager:getDefaultRoutesForMap(AutoDrive.loadedMap)
-		Logging.info("[AutoDrive] Loading default routes from " .. defaultRoutesPath)
-		local xmlId = loadXMLFile("AutoDrive_XML_temp", defaultRoutesPath)
-		local wayPoints, mapMarkers, groups = AutoDrive.readGraphFromXml(xmlId, "defaultRoutes")
-		ADGraphManager:resetWayPoints()
-		ADGraphManager:resetMapMarkers()
-		ADGraphManager:setWayPoints(wayPoints)
-		ADGraphManager:setMapMarkers(mapMarkers)
-		ADGraphManager:setGroups(groups, true)
-		delete(xmlId)
-	elseif g_currentMission.missionInfo.map.baseDirectory ~= nil and g_currentMission.missionInfo.map.baseDirectory ~= "" then
+	if g_currentMission.missionInfo.map.baseDirectory ~= nil and g_currentMission.missionInfo.map.baseDirectory ~= "" then
 		-- Loading custom init config from mod map
 		local initConfFile = g_currentMission.missionInfo.map.baseDirectory .. "AutoDrive_init_config.xml"
 		if fileExists(initConfFile) then
@@ -94,6 +83,8 @@ function AutoDrive.readFromXML(xmlFile)
 	if idString == nil then
 		return
 	end
+	AutoDrive.ADRouteVersion = getXMLString(xmlFile, "AutoDrive.ADRouteVersion") or "no version defined"
+	AutoDrive.ADRouteAuthor = getXMLString(xmlFile, "AutoDrive.ADRouteAuthor") or "no Author defined"
 
 	AutoDrive.currentDebugChannelMask = getXMLInt(xmlFile, "AutoDrive.currentDebugChannelMask") or 0
 
@@ -290,6 +281,8 @@ function AutoDrive.saveToXML(xmlFile)
 
 	setXMLString(xmlFile, "AutoDrive.version", AutoDrive.version)
 	setXMLString(xmlFile, "AutoDrive.MapName", AutoDrive.loadedMap)
+	setXMLString(xmlFile, "AutoDrive.ADRouteVersion", AutoDrive.ADRouteVersion or "no version defined")
+	setXMLString(xmlFile, "AutoDrive.ADRouteAuthor", AutoDrive.ADRouteAuthor or "no Author defined")
 
 	setXMLInt(xmlFile, "AutoDrive.currentDebugChannelMask", AutoDrive.currentDebugChannelMask)
 
