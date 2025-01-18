@@ -1,14 +1,9 @@
 # FS25_AutoDrive
 FS25 version of the AutoDrive mod
 
-### Latest Release: 3.0.0.0
+### Latest Release: 3.0.0.2
 ![GitHub all releases](https://img.shields.io/github/downloads/Stephan-S/FS25_AutoDrive/total?label=Downloads&style=plastic)  
 Direct Download: https://github.com/Stephan-S/FS25_AutoDrive/releases/latest/download/FS25_AutoDrive.zip
-
-## Placeable Crossings (separate mods)
-Direct Download: https://github.com/Williwillswisse/AD_xCrossing/releases/latest/download/FS25_AutoDrive_xCrossing.zip <br/>
-Direct Download: https://github.com/Williwillswisse/AD_T_intersection/releases/latest/download/FS25_AutoDrive_T_intersection.zip <br/>
-Repository: https://github.com/Williwillswisse
 
 ## Discord Server:
 For help & support, feel free to join us on Discord: 
@@ -29,6 +24,11 @@ https://iwan1803.de/urls/tip
 #### Axel & Tommo (Modder)
 
 #### Willi (Supporter & Tester)
+
+## Placeable Crossings (separate mods)
+Direct Download: https://github.com/Williwillswisse/AD_xCrossing/releases/latest/download/FS25_AutoDrive_xCrossing.zip <br/>
+Direct Download: https://github.com/Williwillswisse/AD_T_intersection/releases/latest/download/FS25_AutoDrive_T_intersection.zip <br/>
+Repository: https://github.com/Williwillswisse
 
 ## Course Editor
 The course editor is now maintained by @KillBait and can be found here:
