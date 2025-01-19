@@ -326,9 +326,9 @@
 		<text name="ad_color_previewNotOk" 							text="20 предпросмотр кривой не OK, есть преграды" />
 		<text name="ad_color_textInputBackground" 					text="21 фон для входных данных, целей и т.д." />
 		<text name="ad_color_hudTextDefault"						text="22 HUD текст, обычный элемент" />
-		<text name="ad_color_hudTextHover"							text="23 HUD текст, зависшие над обычными элементами" />
+		<text name="ad_color_hudTextHover"							text="23 HUD текст, наведённый на обычный элемент" />
 		<text name="ad_color_hudTextSpecial"						text="24 HUD текст, активные элементы и папки" />
-		<text name="ad_color_hudTextHoverSpecial"					text="25 HUD текст, зависшие над активными элементами и папками" />
+		<text name="ad_color_hudTextHoverSpecial"					text="25 HUD текст, наведённый на активный элемента и папку" />
 		<text name="button_delete_all" 								text="Удалить все" />
 		<text name="button_reset_selected" 							text="Сбросить выбранное" />
 		<text name="AD_task_pathfinding"							text="Планирование пути" />
