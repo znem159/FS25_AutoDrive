@@ -1303,7 +1303,7 @@ function ADGraphManager:createDebugMarkers(updateMap)
                 for _, j in tileHashMap[hash] do
                     if j ~= i then
                         local wp2 = network[j]
-                        if math.abs(wp.x - wp2.x) < 1e-3 and math.abs(wp.z - wp2.z) < 1e-3 then
+                        if math.abs(wp.x - wp2.x) < 0.3 and math.abs(wp.z - wp2.z) < 0.3 then
                             local debugMapMarkerName = "5_" .. tostring(count5)
                             -- create the mapMarker
                             local mapMarker = {}
