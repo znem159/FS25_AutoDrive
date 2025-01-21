@@ -31,6 +31,10 @@ Direct Download: https://github.com/Williwillswisse/AD_T_intersection/releases/l
 Direct Download: https://github.com/Williwillswisse/AD_reverseToMarker/releases/latest/download/FS25_AutoDrive_reverseToMarker.zip <br/>
 Repository: https://github.com/Williwillswisse
 
+## Placeables with already prepared AD routes (separate mods)
+A growing number of ingame placeables, e.g. buildings, silos, productions and so on with integrated AD routes. <br/>
+Download: https://hof-hirschfeld.de/category/autodrive/
+
 ## Course Editor
 The course editor is now maintained by @KillBait and can be found here:
 https://github.com/KillBait/AutoDrive_Course_Editor
