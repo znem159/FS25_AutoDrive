@@ -419,7 +419,7 @@ end
 
 function AutoDriveHud:mouseEvent(vehicle, posX, posY, isDown, isUp, button)
 	local mouseActiveForAutoDrive = (g_gui.currentGui == nil or AutoDrive.aiFrameOpen) and (g_inputBinding:getShowMouseCursor() == true)
-	
+
 	if mouseActiveForAutoDrive then
 		local mouseEventHandled = false
 		local silent = false
@@ -461,10 +461,56 @@ function AutoDriveHud:mouseEvent(vehicle, posX, posY, isDown, isUp, button)
             AutoDrive.resetMouseSelections(vehicle)
         end
 
-		vehicle.ad.hoveredNodeId = nil
+        vehicle.ad.hoveredNodeId = nil
         vehicle.ad.sectionWayPoints = {}
-		local adjustedPaths = false
-		if (not mouseEventHandled) and AutoDrive.isInExtendedEditorMode() and g_gui.currentGui == nil then
+        vehicle.ad.selectionRange = vehicle.ad.selectionRange or 1	-- start with 1m range
+        local adjustedPaths = false
+        if (not mouseEventHandled) and AutoDrive.isInExtendedEditorMode() and g_gui.currentGui == nil then
+            if
+                not AutoDrive.leftLSHIFTmodifierKeyPressed
+                and not AutoDrive.leftCTRLmodifierKeyPressed
+                and AutoDrive.leftALTmodifierKeyPressed 
+                and not AutoDrive.rightSHIFTmodifierKeyPressed
+                and vehicle.ad.newcreated == nil
+                and vehicle.ad.selectedNodeId ~= nil
+                then
+                -- selected node and LALT pressed
+                AutoDriveHud.debugMsg(vehicle, "AutoDriveHud:mouseEvent selection start")
+                AutoDrive.mouseWheelActive = true
+                if button == 4 and isUp and vehicle.ad.selectionRange > 1 then
+                    AutoDriveHud.debugMsg(vehicle, "AutoDriveHud:mouseEvent decrement")
+                    -- decrement range
+                    vehicle.ad.selectionActive = true
+                    vehicle.ad.selectionRange = vehicle.ad.selectionRange - 0.5
+                    vehicle.ad.selectionWayPoints = self:getSelectionWayPoints(vehicle)
+                elseif button == 5 and isUp and vehicle.ad.selectionRange < AutoDrive.drawDistance / 2 then
+                    AutoDriveHud.debugMsg(vehicle, "AutoDriveHud:mouseEvent increment")
+                    -- increment range
+                    vehicle.ad.selectionActive = true
+                    vehicle.ad.selectionRange = vehicle.ad.selectionRange + 0.5
+                    vehicle.ad.selectionWayPoints = self:getSelectionWayPoints(vehicle)
+                elseif vehicle.ad.selectionActive then
+                    -- activated again
+                    vehicle.ad.selectionWayPoints = self:getSelectionWayPoints(vehicle)
+                end
+                if button == 1 and isUp and vehicle.ad.selectionActive then
+                    -- delete selected wayPoints
+                    AutoDriveHud.debugMsg(vehicle, "AutoDriveHud:mouseEvent delete selection")
+                    ADGraphManager:deleteWayPointsInSelection(vehicle)
+                    vehicle:resetWayPointsDistance()
+                    vehicle.ad.selectedNodeId = nil
+                end
+            else
+                -- clear selection wayPoints
+                if vehicle.ad.selectionWayPoints and #vehicle.ad.selectionWayPoints > 0 then
+                    for _, wayPointId in pairs(vehicle.ad.selectionWayPoints) do
+                        local wayPoint = ADGraphManager:getWayPointById(wayPointId)
+                        wayPoint.isSelected = false
+                    end
+                    vehicle.ad.selectionWayPoints = {}
+                end
+            end
+
             if
                 not AutoDrive.leftLSHIFTmodifierKeyPressed
                 and not AutoDrive.leftCTRLmodifierKeyPressed
@@ -877,6 +923,23 @@ function AutoDriveHud:deleteMapHotspot(vehicle)
 		vehicle.ad.mapHotspot:delete()
 		vehicle.ad.mapHotspot = nil
 	end
+end
+
+function AutoDriveHud:getSelectionWayPoints(vehicle)
+    local selectionWayPoints = {}
+    if vehicle.ad.selectionActive and vehicle.ad.selectedNodeId then
+        local selectedWayPoint = ADGraphManager:getWayPointById(vehicle.ad.selectedNodeId)
+        for _, elem in pairs(AutoDrive.getWayPointsDistance(vehicle)) do
+            local distance = MathUtil.vector2Length(elem.wayPoint.x - selectedWayPoint.x , elem.wayPoint.z - selectedWayPoint.z)
+            if distance <= vehicle.ad.selectionRange then
+                elem.wayPoint.isSelected = true
+                table.insert(selectionWayPoints, elem.wayPoint.id)
+            else
+                elem.wayPoint.isSelected = false
+            end
+        end
+    end
+    return selectionWayPoints
 end
 
 function AutoDrive:ingameMapElementMouseEvent(superFunc, posX, posY, isDown, isUp, button, eventUsed)

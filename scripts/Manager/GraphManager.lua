@@ -1704,6 +1704,25 @@ function ADGraphManager:deleteWayPointsInSection(vehicle)
     end
 end
 
+function ADGraphManager:deleteWayPointsInSelection(vehicle)
+    if vehicle.ad.selectionWayPoints and #vehicle.ad.selectionWayPoints > 0 then
+        -- delete the wayPoints
+        local pointsToDelete = {}
+        for i = 1, #vehicle.ad.selectionWayPoints do
+            table.insert(pointsToDelete, vehicle.ad.selectionWayPoints[i])
+        end
+        -- sort the wayPoints to delete in descant order to ensure correct linkage deletion
+        local sort_func = function(a, b)
+            return a > b
+        end
+        table.sort(pointsToDelete, sort_func)
+        for i = 1, #pointsToDelete do
+            ADGraphManager:removeWayPoint(pointsToDelete[i])
+        end
+        vehicle.ad.selectionWayPoints = {}
+    end
+end
+
 function ADGraphManager:deleteColorSelectionWayPoints()
     -- delete the color selection wayPoints in descant order to ensure correct linkage deletion
     local actualID = self:getWayPointsCount()
