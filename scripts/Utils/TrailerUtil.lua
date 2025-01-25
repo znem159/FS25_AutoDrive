@@ -1042,7 +1042,7 @@ function AutoDrive.getValidSupportedFillTypes(vehicle, excludedVehicles)
 end
 
 function AutoDrive.setValidSupportedFillType(vehicle, excludedImplementIndex)
-    if vehicle == nil then
+    if vehicle == nil or vehicle.ad == nil or vehicle.ad.stateModule == nil or AutoDrive.isFirstRun == nil then
         return
     end
 
@@ -1099,4 +1099,12 @@ function AutoDrive.setValidSupportedFillType(vehicle, excludedImplementIndex)
     end
 
     return ret
+end
+
+function AutoDrive:setValidSupportedFillTypesForAllVehicles()
+    -- This is called once via AutoDrive:init. We initially suppress filltype updates to deal with 
+    -- the random order of onPostAttachImplement calls. This function repeats those suppressed calls.
+    for _, vehicle in pairs(self:getAllVehicles()) do
+        self:setValidSupportedFillType(vehicle)
+    end
 end

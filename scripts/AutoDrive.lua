@@ -531,6 +531,7 @@ function AutoDrive:init()
 		loadSample(AutoDrive.selectedWayPointSample, fileName, false)
 	end
 	AutoDrivePlaceableData:setActive(true)
+	AutoDrive:setValidSupportedFillTypesForAllVehicles()
 	AutoDrive:autostartHelpers()
 end
 
