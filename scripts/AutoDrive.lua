@@ -218,7 +218,8 @@ function AutoDrive:loadMap(name)
 	AutoDrive.Hud:loadHud()
 
 	-- Save Configuration when saving savegame
-	FSBaseMission.saveSavegame = Utils.appendedFunction(FSBaseMission.saveSavegame, AutoDrive.saveSavegame)
+	-- Fix for 1.5 - FSBaseMission.saveSavegame = Utils.appendedFunction(FSBaseMission.saveSavegame, AutoDrive.saveSavegame)
+	ItemSystem.save = Utils.prependedFunction(ItemSystem.save, AutoDrive.saveSavegame)
 
 	LoadTrigger.onFillTypeSelection = Utils.appendedFunction(LoadTrigger.onFillTypeSelection, AutoDrive.onFillTypeSelection)
 
