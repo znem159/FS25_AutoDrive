@@ -27,6 +27,7 @@ function ADRoutesManager:load()
     createFolder(self.managerFolder)
     self.routesFolder = self.managerFolder .. "routes/"
     createFolder(self.routesFolder)
+    Logging.info("[AD] RoutesManager folder: '" .. self.routesFolder .. "'")
 
     self.cfnFile = self.managerFolder .. "reload.cfn"
 

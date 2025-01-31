@@ -1,5 +1,5 @@
 AutoDrive = {}
-AutoDrive.version = "3.0.0.2"
+AutoDrive.version = "3.0.0.4"
 
 AutoDrive.directory = g_currentModDirectory
 
@@ -218,7 +218,8 @@ function AutoDrive:loadMap(name)
 	AutoDrive.Hud:loadHud()
 
 	-- Save Configuration when saving savegame
-	FSBaseMission.saveSavegame = Utils.appendedFunction(FSBaseMission.saveSavegame, AutoDrive.saveSavegame)
+	-- Fix for 1.5 - FSBaseMission.saveSavegame = Utils.appendedFunction(FSBaseMission.saveSavegame, AutoDrive.saveSavegame)
+	ItemSystem.save = Utils.prependedFunction(ItemSystem.save, AutoDrive.saveSavegame)
 
 	LoadTrigger.onFillTypeSelection = Utils.appendedFunction(LoadTrigger.onFillTypeSelection, AutoDrive.onFillTypeSelection)
 
@@ -531,6 +532,7 @@ function AutoDrive:init()
 		loadSample(AutoDrive.selectedWayPointSample, fileName, false)
 	end
 	AutoDrivePlaceableData:setActive(true)
+	AutoDrive:setValidSupportedFillTypesForAllVehicles()
 	AutoDrive:autostartHelpers()
 end
 

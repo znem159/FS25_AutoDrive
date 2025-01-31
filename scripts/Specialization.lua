@@ -869,7 +869,7 @@ function AutoDrive:onDrawEditorMode()
         if AutoDrive.isInExtendedEditorMode() then
             arrowPosition = DrawingManager.arrows.position.middle
             if AutoDrive.enableSphere == true then
-                if AutoDrive.mouseIsAtPos(point, 0.01) then
+                if AutoDrive.mouseIsAtPos(point, 0.01) or point.isSelected then
                     DrawingManager:addSphereTask(x, y, z, 3, unpack(AutoDrive.currentColors.ad_color_hoveredNode))
                 else
                     if point.id == self.ad.selectedNodeId then
@@ -1050,6 +1050,14 @@ function AutoDrive:onDrawEditorMode()
                 else
                 end
             end
+        end
+    end
+
+    if AutoDrive.isInExtendedEditorMode() and AutoDrive.enableSphere == true then
+        if self.ad.selectionWayPoints and #self.ad.selectionWayPoints > 0 then
+            -- draw range circle for selection wayPoints
+            local selectedWayPoint = ADGraphManager:getWayPointById(self.ad.selectedNodeId)
+            DebugUtil.drawDebugCircle(selectedWayPoint.x, selectedWayPoint.y, selectedWayPoint.z, self.ad.selectionRange, 30, AutoDrive.currentColors.ad_color_hoveredNode, true)
         end
     end
 end
@@ -1669,9 +1677,6 @@ function AutoDrive:updateAutoDriveLights(switchOff)
     if switchOff then
         if AutoDrive.getSetting("useHazardLightReverse", self) and self.setTurnLightState then
             self:setTurnLightState(Lights.TURNLIGHT_OFF)
-        end
-        if self.updateAutomaticLights ~= nil then
-            self:updateAutomaticLights(false, false)
         end
     elseif self.ad ~= nil and self.ad.stateModule:isActive() then
         local isInRangeToLoadUnloadTarget = false
