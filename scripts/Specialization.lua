@@ -791,6 +791,8 @@ function AutoDrive:onLeaveVehicle(wasEntered)
 end
 
 function AutoDrive:onDelete()
+    ADHarvestManager:unregisterHarvester(self)
+    ADHarvestManager:unregisterAsUnloader(self)
     AutoDriveHud:deleteMapHotspot(self)
 end
 
