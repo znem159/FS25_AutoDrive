@@ -283,7 +283,7 @@ function AutoDrivePlaceableData.readGraphFromXml(xmlFile, placeable)
         local mapMarker = {}
         local mapMarkerCounter = 1
 
-		while mapMarker ~= nil and mapMarkerCounter < 10 do
+		while mapMarker ~= nil do
             mapMarker.id = getXMLFloat(xmlFile, "placeable.AutoDrive.mapmarker.mm" .. mapMarkerCounter .. ".id")
             -- if id is still nil, we are at the end of the list and stop here
 
