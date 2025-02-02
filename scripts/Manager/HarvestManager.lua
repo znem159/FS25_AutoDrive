@@ -57,7 +57,7 @@ function ADHarvestManager:registerAsUnloader(vehicle)
 end
 
 function ADHarvestManager:unregisterAsUnloader(vehicle)
-    if vehicle.ad.modes ~= nil and vehicle.ad.modes[AutoDrive.MODE_UNLOAD] ~= nil then
+    if vehicle.ad and vehicle.ad.modes ~= nil and vehicle.ad.modes[AutoDrive.MODE_UNLOAD] ~= nil then
         local followingUnloder = vehicle.ad.modes[AutoDrive.MODE_UNLOAD]:getFollowingUnloader()
         if followingUnloder ~= nil then
             --promote following unloader to current unloader
