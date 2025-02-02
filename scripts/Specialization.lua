@@ -36,7 +36,7 @@ function AutoDrive.registerEventListeners(vehicleType)
             "onPostDetachImplement",
             "onEnterVehicle",
             "onLeaveVehicle",
-            -- "onPlayerLeaveVehicle", -- TODO check, at the moment not called
+            "onSetBroken",
             -- CP events, see ExternalInterface.lua
             "onCpFinished",
             "onCpEmpty",
@@ -44,10 +44,7 @@ function AutoDrive.registerEventListeners(vehicleType)
             "onCpFuelEmpty",
             "onCpBroken",
             -- Giants helper events
-            -- "onAIJobStarted",
             "onAIJobFinished",
-            -- "onAIJobVehicleBlock",
-            -- "onAIJobVehicleContinue",
         }
     ) do
         SpecializationUtil.registerEventListener(vehicleType, n, AutoDrive)
@@ -56,7 +53,6 @@ end
 
 function AutoDrive.registerOverwrittenFunctions(vehicleType)
     SpecializationUtil.registerOverwrittenFunction(vehicleType, "getCanMotorRun",                       AutoDrive.getCanMotorRun)
-    -- SpecializationUtil.registerOverwrittenFunction(vehicleType, "leaveVehicle",                         AutoDrive.leaveVehicle) -- not available
     SpecializationUtil.registerOverwrittenFunction(vehicleType, "getIsAIActive",                        AutoDrive.getIsAIActive)
     SpecializationUtil.registerOverwrittenFunction(vehicleType, "getIsVehicleControlledByPlayer",       AutoDrive.getIsVehicleControlledByPlayer)
     SpecializationUtil.registerOverwrittenFunction(vehicleType, "getActiveFarm",                        AutoDrive.getActiveFarm)
@@ -111,7 +107,6 @@ function AutoDrive:onRegisterActionEvents(_, isOnActiveVehicle)
             if action[5] then
                 g_inputBinding:setActionEventTextVisibility(eventName, action[5] and showF1Help)
                 if showF1Help then
-                    -- g_inputBinding:setActionEventTextPriority(eventName, action[3])
                     if action[6] then
                         g_inputBinding:setActionEventTextPriority(eventName, action[6])
                     end
@@ -788,6 +783,14 @@ function AutoDrive:onLeaveVehicle(wasEntered)
         g_inputBinding:setShowMouseCursor(false)
     end
     AutoDrive.Hud:closeAllPullDownLists(self)
+end
+
+function AutoDrive:onSetBroken()
+    if self.ad ~= nil and self.ad.stateModule ~= nil then
+		if self.ad.stateModule:isActive() then
+			self:stopAutoDrive()
+		end
+	end
 end
 
 function AutoDrive:onDelete()
@@ -1628,48 +1631,6 @@ function AutoDrive:toggleMouse()
         AutoDrive.resetMouseSelections(self)
     end
     self.ad.lastMouseState = g_inputBinding:getShowMouseCursor()
-end
-
-function AutoDrive:onPlayerLeaveVehicle(param)
-    AutoDrive.debugMsg(self, "AutoDrive:onPlayerLeaveVehicle start param %s"
-    , tostring(param)
-    )
-    AutoDrive.debugMsg(self, "AutoDrive:onPlayerLeaveVehicle self.ad %s "
-    , tostring(self.ad)
-    )
-    if self.ad ~= nil then
-        AutoDrive.debugMsg(self, "AutoDrive:onPlayerLeaveVehicle self.getIsEntered %s "
-        , tostring(self.getIsEntered)
-        )
-        if self.getIsEntered then
-            AutoDrive.debugMsg(self, "AutoDrive:onPlayerLeaveVehicle getIsEntered %s "
-            , tostring(self:getIsEntered() )
-            )
-        end
-        if self.getIsEntered ~= nil and self:getIsEntered() then
-            AutoDrive.debugMsg(self, "AutoDrive:onPlayerLeaveVehicle getShowMouseCursor %s "
-            , tostring(g_inputBinding:getShowMouseCursor())
-            )
-            if g_inputBinding:getShowMouseCursor() then
-                g_inputBinding:setShowMouseCursor(false)
-            end
-            AutoDrive.Hud:closeAllPullDownLists(self)
-        end
-    end
-    AutoDrive.debugMsg(self, "AutoDrive:onPlayerLeaveVehicle end")
-end
-
-function AutoDrive:leaveVehicle(superFunc)
-    AutoDrive.debugMsg(self, "AutoDrive:leaveVehicle start")
-    if self.ad ~= nil then
-        if self.getIsEntered ~= nil and self:getIsEntered() then
-            if g_inputBinding:getShowMouseCursor() then
-                g_inputBinding:setShowMouseCursor(false)
-            end
-            AutoDrive.Hud:closeAllPullDownLists(self)
-        end
-    end
-    superFunc(self)
 end
 
 function AutoDrive:updateAutoDriveLights(switchOff)
