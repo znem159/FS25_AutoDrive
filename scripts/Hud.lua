@@ -772,6 +772,7 @@ function AutoDrive.resetMouseSelections(vehicle)
 		vehicle.ad.hoveredNodeId = nil
 		vehicle.ad.newcreated = nil
 		vehicle.ad.sectionWayPoints = {}
+		vehicle.ad.selectionWayPoints = {}
 	end
 end
 
