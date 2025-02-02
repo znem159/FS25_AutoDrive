@@ -336,11 +336,13 @@ function ADTrailerModule:updateLoad(dt)
 
         if not self.isLoading then
             -- try overload from liquid trailers, containers etc.
-            local fillTrigger = AutoDrive.startFillTrigger(self.trailers)
-            if fillTrigger ~= nil then
+            if AutoDrive.startFillTrigger(self.trailers) ~= nil then
                 -- no further actions required, monitoring via fill level - see load from source without trigger
                 AutoDrive.debugPrint(self.vehicle, AutoDrive.DC_TRAILERINFO, "ADTrailerModule:updateLoad overload fillTrigger found -> load already started")
-            end
+            elseif AutoDrive.startLoadTreePlanter(self.trailers) ~= nil then
+                -- no further actions required, monitoring via fill level - see load from source without trigger
+                AutoDrive.debugPrint(self.vehicle, AutoDrive.DC_TRAILERINFO, "ADTrailerModule:updateLoad overload treePlanter found -> load already started")
+            end           
         end
 
         -- check for load from source without trigger

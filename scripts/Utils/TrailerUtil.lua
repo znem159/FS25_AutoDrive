@@ -149,6 +149,8 @@ function AutoDrive.getObjectFillLevels(object)
                 updateFillLevels(fillUnitIndex)
             elseif object.spec_saltSpreader and object.spec_saltSpreader.fillUnitIndex and object.spec_saltSpreader.fillUnitIndex > 0 and object.spec_saltSpreader.fillUnitIndex == fillUnitIndex then
                 updateFillLevels(fillUnitIndex)
+            elseif object.spec_treePlanter and object.spec_treePlanter.fillUnitIndex and object.spec_treePlanter.fillUnitIndex > 0 and object.spec_treePlanter.fillUnitIndex == fillUnitIndex then
+                updateFillLevels(fillUnitIndex)
             elseif object.spec_baleLoader and object.spec_baleLoader.fillUnitIndex and object.spec_baleLoader.fillUnitIndex > 0 and object.spec_baleLoader.fillUnitIndex == fillUnitIndex then
                 updateFillLevels(fillUnitIndex)
             elseif spec_dischargeable and fillUnit and fillUnit.exactFillRootNode then
@@ -955,6 +957,27 @@ function AutoDrive.startFillTrigger(trailers)
     return ret
 end
 
+function AutoDrive.startLoadTreePlanter(trailers)
+    local ret = nil
+    if trailers == nil then
+        return ret
+    end
+    for _, trailer in pairs(trailers) do
+        local rootVehicle = trailer:getRootVehicle()
+        local spec = trailer.spec_treePlanter
+        if spec ~= nil and spec.nearestSaplingPallet ~= nil then
+            for _, fillUnit in ipairs(spec.nearestSaplingPallet:getFillUnits()) do
+                if fillUnit and fillUnit.fillType == rootVehicle.ad.stateModule:getFillType() then
+                    spec.activatable:run()
+                    ret = spec
+                    break
+                end
+            end
+        end
+    end
+    return ret
+end
+
 function AutoDrive.isInRangeToLoadUnloadTarget(vehicle)
     if vehicle == nil or vehicle.ad == nil or vehicle.ad.stateModule == nil or vehicle.ad.drivePathModule == nil then
         return false
@@ -1031,6 +1054,11 @@ function AutoDrive.getValidSupportedFillTypes(vehicle, excludedVehicles)
                     end
                     if trailer.spec_saltSpreader and trailer.spec_saltSpreader.fillUnitIndex and trailer.spec_saltSpreader.fillUnitIndex > 0 then
                         if trailer.spec_saltSpreader.fillUnitIndex == fillUnitIndex then
+                            getsupportedFillTypes(trailer, fillUnitIndex)
+                        end
+                    end
+                    if trailer.spec_treePlanter and trailer.spec_treePlanter.fillUnitIndex and trailer.spec_treePlanter.fillUnitIndex > 0 then
+                        if trailer.spec_treePlanter.fillUnitIndex == fillUnitIndex then
                             getsupportedFillTypes(trailer, fillUnitIndex)
                         end
                     end
