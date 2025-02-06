@@ -269,6 +269,8 @@
 		<text name="gui_ad_FoldImplements_tooltip"					text="AutoDrive attenderà che gli attrezzi si ripieghino prima di partire" />
 		<text name="gui_ad_RecordWhileNotInVehicle"					text="Registrazione senza conducente" />
 		<text name="gui_ad_RecordWhileNotInVehicle_tooltip"			text="AutoDrive continuerà a registrare se il conducente abbandona il veicolo" />
+		<text name="gui_ad_RecordTwoRoads"							text="Record both drive directions" />
+		<text name="gui_ad_RecordTwoRoads_tooltip"					text="Both driving directions will be recorded the same time with selectable offset 0.1 .. 5m for left hand drive / -0.1 .. -5m for right hand drive. Driving reverse wil stop recording! This setting will not be stored by intention!" />
 		<text name="gui_ad_settingsPage_title"						text="Impostazioni" />
 		<text name="gui_ad_userSettingsPage_title"					text="Impostazioni Utente" />
 		<text name="gui_ad_vehicleSettingsPage_title"				text="Impostazioni Veicolo" />
