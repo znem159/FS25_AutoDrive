@@ -17,9 +17,9 @@
 		<text name="input_ADSelectPreviousTarget"					text="AD: Предыдущая локация" />
 		<text name="input_AD_Speed_up"								text="AD: Увеличить скорость" />
 		<text name="input_AD_Speed_down"							text="AD: Уменьшить скорость" />
-		<text name="input_AD_routes_manager" 						text="AD: Менеджер маршрутов" />
-		<text name="input_AD_open_notification_history" 			text="AD: Открыть историю уведомлений" />
-		<text name="input_AD_open_colorSettings" 					text="AD: Назначение цветов" />
+		<text name="input_AD_routes_manager"						text="AD: Менеджер маршрутов" />
+		<text name="input_AD_open_notification_history"				text="AD: Открыть историю уведомлений" />
+		<text name="input_AD_open_colorSettings"					text="AD: Назначение цветов" />
 		<text name="input_AD_continue"								text="AD: Продолжить" />
 		<text name="input_ADSelectTargetUnload"						text="AD: Следующая точка разгрузки" />
 		<text name="input_ADSelectPreviousTargetUnload"				text="AD: Предыдущая точка разгрузки" />
@@ -83,10 +83,10 @@
 		<text name="AD_MODE_LOAD"									text="Загрузка" />
 		<text name="AD_MODE_BGA"									text="Перегрузка из силосной ямы" />
 		<text name="AD_synchronizing"								text="загрузка сети из сервера.." />
-		<text name="AD_lctrl_for_extendedEditor" 					text="L-CTRL расширенный редактор" />
-		<text name="AD_lctrl_for_creation" 							text="L-CTRL создать" />
-		<text name="AD_lalt_for_deletion" 							text="L-ALT удалить" />
-		<text name="AD_lshift_for_reverse" 							text="R-SHIFT движение ЗХ" />
+		<text name="AD_lctrl_for_extendedEditor"					text="L-CTRL расширенный редактор" />
+		<text name="AD_lctrl_for_creation"							text="L-CTRL создать" />
+		<text name="AD_lalt_for_deletion"							text="L-ALT удалить" />
+		<text name="AD_lshift_for_reverse"							text="R-SHIFT движение ЗХ" />
 		<text name="gui_ad_Setting"									text="AutoDrive - Настройки" />
 		<text name="gui_ad_collisionHeigth"							text="Высота преград над землёй" />
 		<text name="gui_ad_collisionHeigth_tooltip"					text="Настройка для обнаружения столкновений/преград перед автомобилем. Если во время движения другие транспортные средства не обнаруживаются, постепенно уменьшайте параметр. (По умолчанию 2 м)" />
@@ -255,7 +255,7 @@
 		<text name="gui_ad_adpd_showConfirmation"					text="AutoDrive: Хотели бы вы импортировать AD сеть из размещаемых объектов?" />
 		<text name="gui_ad_pathfinder"								text="Алгоритм путеискателя" />
 		<text name="gui_ad_pathfinder_tooltip"						text="Выберите алгоритм путеискателя, который будет использоваться (когда не в сети)" />
-		<text name="gui_ad_pathfinder_astar"							text="A-Star + Dubbins" />
+		<text name="gui_ad_pathfinder_astar"						text="A-Star + Dubbins" />
 		<text name="gui_ad_pathfinder_custom"						text="AutoDrive Custom" />
 		<text name="gui_ad_enableRoutesManagerOnDediServer"			text="Маршрутизатор на сервере" />
 		<text name="gui_ad_enableRoutesManagerOnDediServer_tooltip"	text="Включить диспетчер маршрутов на выделенных серверах" />
@@ -268,7 +268,9 @@
 		<text name="gui_ad_FoldImplements"							text="Сворачивание оборудования" />
 		<text name="gui_ad_FoldImplements_tooltip"					text="AutoDrive перед запуском будет ждать, пока оборудование не свернутся." />
 		<text name="gui_ad_RecordWhileNotInVehicle"					text="Запись без водителя" />
-		<text name="gui_ad_RecordWhileNotInVehicle_tooltip"			text="AutoDrive будет продолжать запись, если водитель покидает автомобиль." />	
+		<text name="gui_ad_RecordWhileNotInVehicle_tooltip"			text="AutoDrive будет продолжать запись, если водитель покидает автомобиль." />
+		<text name="gui_ad_RecordTwoRoads"							text="Record both drive directions" />
+		<text name="gui_ad_RecordTwoRoads_tooltip"					text="Both driving directions will be recorded the same time with selectable offset 0.1 .. 5m for left hand drive / -0.1 .. -5m for right hand drive. Driving reverse wil stop recording! This setting will not be stored by intention!" />
 		<text name="gui_ad_settingsPage_title"						text="Общие настройки - AutoDrive" />
 		<text name="gui_ad_userSettingsPage_title"					text="Пользовательские настройки - AutoDrive" />
 		<text name="gui_ad_vehicleSettingsPage_title"				text="Настройки техники - AutoDrive" />
@@ -276,61 +278,61 @@
 		<text name="gui_ad_debugSettingsPage_title"					text="Настройки отладки - AutoDrive" />
 		<text name="gui_ad_eFeaturesSettingsPage_title"				text="Настройки экспериментальных функций - AutoDrive" />
 		<text name="gui_ad_environmentSettingsPage_title"			text="Не функциональные настройки - AutoDrive" />
-		<text name="gui_ad_restoreButtonText" 						text="Восстановить" />
-		<text name="gui_ad_settingsClosingDialog_title" 			text="Все изменения будут утеряны" />
-		<text name="gui_ad_settingsClosingDialog_text" 				text="Вы уверены, что хотите закрыть окно настроек без сохранения?" />
-		<text name="gui_ad_setDefaultButtonText" 					text="Установить как по умолчанию" />
-		<text name="gui_ad_routesManagerTitle" 						text="Менеджер маршрутов" />
-		<text name="gui_ad_routesManagerTextTitle" 					text="Присвоить название маршруту:" />
-		<text name="gui_ad_button_export" 							text="Сохранить" />
-		<text name="gui_ad_button_import" 							text="Загрузить" />
-		<text name="gui_ad_routeExportWarn_text" 					text="Вы уверены, что хотите перезаписать существующий маршрут?" />
-		<text name="gui_ad_routeExportWarn_title" 					text="Перезапись маршрута" />
-		<text name="gui_ad_routeDeleteWarn_text" 					text="Вы уверены, что хотите удалить маршрут '%s'?" />
-		<text name="gui_ad_routeDeleteWarn_title" 					text="Удаление маршрута" />
-		<text name="gui_ad_debugChannelVehicle" 					text="Автомобили" />
-		<text name="gui_ad_debugChannelCombine" 					text="Комбайны" />
-		<text name="gui_ad_debugChannelTrailer" 					text="Прицепы" />
-		<text name="gui_ad_debugChannelDev" 						text="Разработка" />
-		<text name="gui_ad_debugChannelPath" 						text="Поиск пути" />
-		<text name="gui_ad_debugChannelSensor" 						text="Сенсоры" />
-		<text name="gui_ad_debugChannelNetwork" 					text="Сеть" />
-		<text name="gui_ad_debugChannelExternalInterface" 			text="Внешний интерфейс" />
-		<text name="gui_ad_debugChannelRender" 						text="Рендеринг" />
-		<text name="gui_ad_debugChannelRoadNetwork"	 				text="Дорожная сеть" />
+		<text name="gui_ad_restoreButtonText"						text="Восстановить" />
+		<text name="gui_ad_settingsClosingDialog_title"				text="Все изменения будут утеряны" />
+		<text name="gui_ad_settingsClosingDialog_text"				text="Вы уверены, что хотите закрыть окно настроек без сохранения?" />
+		<text name="gui_ad_setDefaultButtonText"					text="Установить как по умолчанию" />
+		<text name="gui_ad_routesManagerTitle"						text="Менеджер маршрутов" />
+		<text name="gui_ad_routesManagerTextTitle"					text="Присвоить название маршруту:" />
+		<text name="gui_ad_button_export"							text="Сохранить" />
+		<text name="gui_ad_button_import"							text="Загрузить" />
+		<text name="gui_ad_routeExportWarn_text"					text="Вы уверены, что хотите перезаписать существующий маршрут?" />
+		<text name="gui_ad_routeExportWarn_title"					text="Перезапись маршрута" />
+		<text name="gui_ad_routeDeleteWarn_text"					text="Вы уверены, что хотите удалить маршрут '%s'?" />
+		<text name="gui_ad_routeDeleteWarn_title"					text="Удаление маршрута" />
+		<text name="gui_ad_debugChannelVehicle"						text="Автомобили" />
+		<text name="gui_ad_debugChannelCombine"						text="Комбайны" />
+		<text name="gui_ad_debugChannelTrailer"						text="Прицепы" />
+		<text name="gui_ad_debugChannelDev"							text="Разработка" />
+		<text name="gui_ad_debugChannelPath"						text="Поиск пути" />
+		<text name="gui_ad_debugChannelSensor"						text="Сенсоры" />
+		<text name="gui_ad_debugChannelNetwork"						text="Сеть" />
+		<text name="gui_ad_debugChannelExternalInterface"			text="Внешний интерфейс" />
+		<text name="gui_ad_debugChannelRender"						text="Рендеринг" />
+		<text name="gui_ad_debugChannelRoadNetwork"					text="Дорожная сеть" />
 		<text name="gui_ad_debugChannelBGA"							text="Режим BGA" />
 		<text name="gui_ad_debugChannelTrains"						text="Поезда" />
-		<text name="gui_ad_debugChannelAll" 						text="Все" />
-		<text name="gui_ad_notificationHistoryTitle" 				text="Уведомления" />
-		<text name="gui_ad_colorSettingsTitle" 						text="Назначение цветов" />
-        <!-- Please keep the numbers in the translation texts - they are used to sort / group the entries in the list -->
-		<text name="ad_color_singleConnection" 						text="01 линия однонаправленного соединения" />
-		<text name="ad_color_dualConnection" 						text="02 линия двунаправленного соединения" />
-		<text name="ad_color_reverseConnection" 					text="03 линия реверсивного соединения" />
-		<text name="ad_color_default" 								text="04 путевая точка однонаправленного и реверсивного соединения" />
-		<text name="ad_color_subPrioSingleConnection" 				text="05 линия вторичного однонаправленного соединения" />
-		<text name="ad_color_subPrioDualConnection" 				text="06 линия вторичного двунаправленного соединения" />
-		<text name="ad_color_subPrioNode" 							text="07 вторичная путевая точка" />
-		<text name="ad_color_hoveredNode" 							text="08 зависшая путевая точка" />
-		<text name="ad_color_previousNode" 							text="09 подсоединённая предыдущая путевая точка" />
-		<text name="ad_color_nextNode" 								text="10 подсоединённая следующая путевая точка" />
-		<text name="ad_color_selectedNode" 							text="11 выделенная путевая точка" />
-		<text name="ad_color_currentConnection" 					text="12 линия планируемого пути" />
+		<text name="gui_ad_debugChannelAll"							text="Все" />
+		<text name="gui_ad_notificationHistoryTitle"				text="Уведомления" />
+		<text name="gui_ad_colorSettingsTitle"						text="Назначение цветов" />
+		<!-- Please keep the numbers in the translation texts - they are used to sort / group the entries in the list -->
+		<text name="ad_color_singleConnection"						text="01 линия однонаправленного соединения" />
+		<text name="ad_color_dualConnection"						text="02 линия двунаправленного соединения" />
+		<text name="ad_color_reverseConnection"						text="03 линия реверсивного соединения" />
+		<text name="ad_color_default"								text="04 путевая точка однонаправленного и реверсивного соединения" />
+		<text name="ad_color_subPrioSingleConnection"				text="05 линия вторичного однонаправленного соединения" />
+		<text name="ad_color_subPrioDualConnection"					text="06 линия вторичного двунаправленного соединения" />
+		<text name="ad_color_subPrioNode"							text="07 вторичная путевая точка" />
+		<text name="ad_color_hoveredNode"							text="08 зависшая путевая точка" />
+		<text name="ad_color_previousNode"							text="09 подсоединённая предыдущая путевая точка" />
+		<text name="ad_color_nextNode"								text="10 подсоединённая следующая путевая точка" />
+		<text name="ad_color_selectedNode"							text="11 выделенная путевая точка" />
+		<text name="ad_color_currentConnection"						text="12 линия планируемого пути" />
 		<text name="ad_color_closestLine"							text="13 линия от техники до ближайшей путевой точки" />
 		<text name="ad_color_editorHeightLine"						text="14 линия от поверхности путевой точки к точке над техникой " />
-		<text name="ad_color_previewSingleConnection" 				text="15 предпросмотр кривой OK, однонаправленное соединение" />
-		<text name="ad_color_previewDualConnection" 				text="16 предпросмотр кривой OK, двунаправленное соединение" />
-		<text name="ad_color_previewSubPrioSingleConnection" 		text="17 предпросмотр кривой OK, вторичное однонаправленное соединение" />
-		<text name="ad_color_previewSubPrioDualConnection" 			text="18 предпросмотр кривой OK, вторичное двунаправленное соединение" />
-		<text name="ad_color_previewOk" 							text="19 предпросмотр кривой OK, нет преград" />
-		<text name="ad_color_previewNotOk" 							text="20 предпросмотр кривой не OK, есть преграды" />
-		<text name="ad_color_textInputBackground" 					text="21 фон для входных данных, целей и т.д." />
+		<text name="ad_color_previewSingleConnection"				text="15 предпросмотр кривой OK, однонаправленное соединение" />
+		<text name="ad_color_previewDualConnection"					text="16 предпросмотр кривой OK, двунаправленное соединение" />
+		<text name="ad_color_previewSubPrioSingleConnection"		text="17 предпросмотр кривой OK, вторичное однонаправленное соединение" />
+		<text name="ad_color_previewSubPrioDualConnection"			text="18 предпросмотр кривой OK, вторичное двунаправленное соединение" />
+		<text name="ad_color_previewOk"								text="19 предпросмотр кривой OK, нет преград" />
+		<text name="ad_color_previewNotOk"							text="20 предпросмотр кривой не OK, есть преграды" />
+		<text name="ad_color_textInputBackground"					text="21 фон для входных данных, целей и т.д." />
 		<text name="ad_color_hudTextDefault"						text="22 HUD текст, обычный элемент" />
 		<text name="ad_color_hudTextHover"							text="23 HUD текст, наведённый на обычный элемент" />
 		<text name="ad_color_hudTextSpecial"						text="24 HUD текст, активные элементы и папки" />
 		<text name="ad_color_hudTextHoverSpecial"					text="25 HUD текст, наведённый на активный элемента и папку" />
-		<text name="button_delete_all" 								text="Удалить все" />
-		<text name="button_reset_selected" 							text="Сбросить выбранное" />
+		<text name="button_delete_all"								text="Удалить все" />
+		<text name="button_reset_selected"							text="Сбросить выбранное" />
 		<text name="AD_task_pathfinding"							text="Планирование пути" />
 		<text name="AD_task_catch_up_with_combine"					text="Подъезжает к комбайну" />
 		<text name="AD_task_clearcrop"								text="Выезжает из посевов" />

@@ -105,6 +105,12 @@
 				</BinaryOption>
 				<Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_gui_ad_RecordWhileNotInVehicle"/>
 			</Bitmap>
+			<Bitmap profile="fs25_multiTextOptionContainer" onCreate="onCreateAutoDriveSettingRow">
+				<MultiTextOption profile="fs25_settingsMultiTextOption" onClick="onOptionChange" onCreate="onCreateAutoDriveSetting" name="RecordTwoRoads" id="RecordTwoRoads">
+					<Text profile="fs25_multiTextOptionTooltip" name="ignore" text="$l10n_gui_ad_RecordTwoRoads_tooltip"/>
+				</MultiTextOption>
+				<Text profile="fs25_settingsMultiTextOptionTitle" text="$l10n_gui_ad_RecordTwoRoads"/>
+			</Bitmap>
 		</ScrollingLayout>
 	</GuiElement>
 	<ThreePartBitmap profile="fs25_sliderDockedBg">

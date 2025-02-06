@@ -268,7 +268,9 @@
 		<text name="gui_ad_FoldImplements"							text="Fold implements" />
 		<text name="gui_ad_FoldImplements_tooltip"					text="AutoDrive will wait for implements to fold up before starting" />
 		<text name="gui_ad_RecordWhileNotInVehicle"					text="Record without driver" />
-		<text name="gui_ad_RecordWhileNotInVehicle_tooltip"			text="AutoDrive will keep recording if driver leaves the vehicle" />
+		<text name="gui_ad_RecordWhileNotInVehicle_tooltip"			text="AutoDrive will keep recording if driver leaves the vehicle.  This setting will not be stored by intention!" />
+		<text name="gui_ad_RecordTwoRoads"							text="Record both drive directions" />
+		<text name="gui_ad_RecordTwoRoads_tooltip"					text="Both driving directions will be recorded the same time with selectable offset 0.1 .. 5m for left hand drive / -0.1 .. -5m for right hand drive. Driving reverse wil stop recording! This setting will not be stored by intention!" />
 		<text name="gui_ad_settingsPage_title"						text="Settings - AutoDrive" />
 		<text name="gui_ad_userSettingsPage_title"					text="User Settings - AutoDrive" />
 		<text name="gui_ad_vehicleSettingsPage_title"				text="Vehicle Settings - AutoDrive" />
