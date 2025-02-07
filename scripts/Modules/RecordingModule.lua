@@ -254,8 +254,8 @@ function ADRecordingModule:recordTwoRoad(node, lastWp, secondLastWp, right)
         else
             max_distance1 = 0.25
         end
-        if (self.steeringAngle < -5 and right)
-            or (self.steeringAngle > 5 and not right) then
+        if (self.steeringAngle < -15 and right)
+            or (self.steeringAngle > 15 and not right) then
             -- steering right / left inner cicle for RHD / LHD
             max_distance1 = 1
         end
