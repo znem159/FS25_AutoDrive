@@ -79,11 +79,12 @@ function ADRecordingModule:start(dual, subPrio)
     end
     self.isRecording = true
     self.isRecordingReverse = self.drivingReverse
+    self.wasRecordingTwoRoads = self.isRecordingTwoRoads
 end
 
 function ADRecordingModule:stop()
-    if not self.isRecordingTwoRoads and AutoDrive.getSetting("autoConnectEnd") then
-        -- no autoconnect for 2 road recording
+    if not (self.isRecordingTwoRoads or self.wasRecordingTwoRoads ~= self.isRecordingTwoRoads) and AutoDrive.getSetting("autoConnectEnd") then
+        -- no autoconnect for 2 road recording or if changed between single and two road recording
         if self.lastWp ~= nil then
             local targetId = ADGraphManager:findMatchingWayPointForVehicle(self.vehicle)
             local targetNode = ADGraphManager:getWayPointById(targetId)
@@ -115,6 +116,7 @@ function ADRecordingModule:updateTick(dt, isActiveForInput, isActiveForInputIgno
     end
     self.isRecordingTwoRoads = AutoDrive.getSetting("RecordTwoRoads") ~= 0
     if self.wasRecordingTwoRoads ~= self.isRecordingTwoRoads then
+        -- disable recording if changed between single and two road recording
         self.vehicle.ad.stateModule:disableCreationMode()
         AutoDriveMessageEvent.sendNotification(self.vehicle, ADMessagesManager.messageTypes.ERROR, "$l10n_gui_ad_RecordTwoRoads;", 1000)
         return
