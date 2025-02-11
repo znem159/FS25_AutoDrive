@@ -630,7 +630,7 @@ function AutoDrive.findGrainBackDoorTipSideIndex(vehicle, trailer)
                 local tx, ty, tz = getWorldTranslation(currentDischargeNode.node)
                 local _, _, diffZ = AutoDrive.worldToLocal(trailer, tx, ty, tz + 50)
                 -- get the 2 most back doors
-                if diffZ <= backDistance1 and currentDischargeNode.effects and table.count(currentDischargeNode.effects) > 0 then
+                if (diffZ <= backDistance1 or math.abs(diffZ - backDistance1) < 1) and currentDischargeNode.effects and table.count(currentDischargeNode.effects) > 0 then
                     backDistance2 = backDistance1
                     dischargeSpeed2 = dischargeSpeed1
                     tipSideIndex2 = tipSideIndex1
