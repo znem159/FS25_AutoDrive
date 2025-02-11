@@ -259,8 +259,8 @@
 		<text name="gui_ad_pathfinder_custom"						text="AutoDrive personalizado" />
 		<text name="gui_ad_enableRoutesManagerOnDediServer"			text="Administrador de rutas en servidor" />
 		<text name="gui_ad_enableRoutesManagerOnDediServer_tooltip"	text="Habilitar el administrador de rutas en servidores dedicados" />
-		<text name="gui_ad_autostartHelpers"						text="Autostart helpers" />
-		<text name="gui_ad_autostartHelpers_tooltip"				text="Automatically restart active helpers after loading a savegame" />
+		<text name="gui_ad_autostartHelpers"						text="Autoiniciar Ayudantes" />
+		<text name="gui_ad_autostartHelpers_tooltip"				text="Inicia automáticamente los ayudantes activos después de cargar un juego de guardado" />
 		<text name="gui_ad_detectSwath"								text="Detección de hileras" />
 		<text name="gui_ad_detectSwath_tooltip"						text="Decide si las hileras se detectan como fruta en el campo." />
 		<text name="gui_ad_colorAssignmentMode"						text="Colores personalizados" />
