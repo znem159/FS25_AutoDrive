@@ -458,7 +458,7 @@ function AutoDrive:onCpFinished()
                 AutoDriveMessageEvent.sendMessageOrNotification(self, ADMessagesManager.messageTypes.ERROR, "$l10n_AD_Driver_of; %s $l10n_AD_parkVehicle_noPosSet;", 5000, self.ad.stateModule:getName())
                 -- stop vehicle movement
                 self.ad.trailerModule:handleTrailerReversing(false)
-                AutoDrive.driveInDirection(self, 16, 30, 0, 0.2, 20, false, false, 0, 0, 0, 1)
+                -- AutoDrive.driveInDirection(self, 16, 30, 0, 0.2, 20, false, false, 0, 0, 0, 1) -- not to call here #222!
                 self:setCruiseControlState(Drivable.CRUISECONTROL_STATE_OFF)
                 if self.stopMotor ~= nil then
                     self:stopMotor()
