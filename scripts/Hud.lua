@@ -907,7 +907,6 @@ end
 
 function AutoDriveHud:createMapHotspot(vehicle)
 	local _, textOffsetY = getNormalizedScreenValues(0, -5)
-	
 	vehicle.ad.mapHotspot = AIHotspot.new()
 	vehicle.ad.mapHotspot:setAIHelperName("AD: " .. vehicle.ad.stateModule:getName())
 	vehicle.ad.mapHotspot:setVehicle(vehicle)
@@ -920,6 +919,7 @@ end
 
 function AutoDriveHud:deleteMapHotspot(vehicle)
 	if vehicle ~= nil and vehicle.ad ~= nil and vehicle.ad.mapHotspot ~= nil then
+		vehicle.ad.mapHotspot:setVehicle(nil)
 		g_currentMission.hud:removeMapHotspot(vehicle.ad.mapHotspot)
 		vehicle.ad.mapHotspot:delete()
 		vehicle.ad.mapHotspot = nil
