@@ -154,6 +154,18 @@ end
 function AutoDrive.getDistanceBetween(vehicleOne, vehicleTwo)
     if vehicleOne == nil or vehicleTwo == nil then
         printCallstack()
+        return math.huge
+    end
+    if not entityExists(vehicleOne.components[1].node) or not entityExists(vehicleTwo.components[1].node) then
+        if not table.contains(AutoDrive.shownErrors, "getDistanceBetween") then
+            table.insert(AutoDrive.shownErrors, "getDistanceBetween")
+            AutoDrive.debugMsg(nil, "AutoDrive.getDistanceBetween ERROR - entity vehicleOne %s vehicleTwo %s"
+            , tostring(entityExists(vehicleOne.components[1].node))
+            , tostring(entityExists(vehicleTwo.components[1].node))
+            )
+            printCallstack()
+        end
+        return math.huge
     end
     local x1, _, z1 = getWorldTranslation(vehicleOne.components[1].node)
     local x2, _, z2 = getWorldTranslation(vehicleTwo.components[1].node)

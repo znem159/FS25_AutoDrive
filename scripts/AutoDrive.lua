@@ -534,6 +534,7 @@ function AutoDrive:init()
 	AutoDrivePlaceableData:setActive(true)
 	AutoDrive:setValidSupportedFillTypesForAllVehicles()
 	AutoDrive:autostartHelpers()
+	AutoDrive.shownErrors = {}
 end
 
 function AutoDrive:saveSavegame()
