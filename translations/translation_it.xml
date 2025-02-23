@@ -13,6 +13,10 @@
 		<text name="input_ADRecord_Dual"							text="AD: Registra percorso a doppio senso" />
 		<text name="input_ADRecord_SubPrio"							text="AD: Registra percorso secondario" />
 		<text name="input_ADRecord_SubPrioDual"						text="AD: Registra il percorso del percorso secondario a doppio senso" />
+		<text name="input_ADRecord_TwoWay"							text="AD: Record 2 routes simultanous 1 direction normal" />
+		<text name="input_ADRecord_Dual_TwoWay"						text="AD: Record 2 routes simultanous 2 way route" />
+		<text name="input_ADRecord_SubPrio_TwoWay"					text="AD: Record 2 routes simultanous 1 direction secondary route" />
+		<text name="input_ADRecord_SubPrioDual_TwoWay"				text="AD: Record 2 routes simultanous 2 way secondary route" />
 		<text name="input_ADSelectTarget"							text="AD: Destinazione successiva" />
 		<text name="input_ADSelectPreviousTarget"					text="AD: Destinazione precedente" />
 		<text name="input_AD_Speed_up"								text="AD: Aumenta velocità" />
@@ -270,7 +274,7 @@
 		<text name="gui_ad_RecordWhileNotInVehicle"					text="Registrazione senza conducente" />
 		<text name="gui_ad_RecordWhileNotInVehicle_tooltip"			text="AutoDrive continuerà a registrare se il conducente abbandona il veicolo" />
 		<text name="gui_ad_RecordTwoRoads"							text="Registra entrambe le direzioni di guida" />
-		<text name="gui_ad_RecordTwoRoads_tooltip"					text="Entrambe le direzioni di guida saranno registrate nello stesso momento con offset selezionabile 0,1 .. 5 m per guida a sinistra / -0,1 .. -5 m per guida a destra. Guidare in retromarcia interromperà la registrazione! Questa impostazione non verrà salvata intenzionalmente!" />
+		<text name="gui_ad_RecordTwoRoads_tooltip"					text="Entrambe le direzioni di guida saranno registrate nello stesso momento con offset selezionabile 0,1 .. 5 m per guida a sinistra / -0,1 .. -5 m per guida a destra. Guidare in retromarcia interromperà la registrazione!" />
 		<text name="gui_ad_settingsPage_title"						text="Impostazioni" />
 		<text name="gui_ad_userSettingsPage_title"					text="Impostazioni Utente" />
 		<text name="gui_ad_vehicleSettingsPage_title"				text="Impostazioni Veicolo" />

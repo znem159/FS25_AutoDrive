@@ -1353,8 +1353,7 @@ AutoDrive.settings.RecordTwoRoads = {
     tooltip = "gui_ad_RecordTwoRoads_tooltip",
     translate = true,
     isVehicleSpecific = false,
-    isUserSpecific = true,
-    shallNotBeSaved = true
+    isUserSpecific = true
 }
 
 function AutoDrive.getSetting(settingName, vehicle)

@@ -52,6 +52,10 @@ Changelog: Необходимые корректировки для FS25, нас
 		<action name="ADRecord_Dual"/>
 		<action name="ADRecord_SubPrio"/>
 		<action name="ADRecord_SubPrioDual"/>
+		<action name="ADRecord_TwoWay"/>
+		<action name="ADRecord_Dual_TwoWay"/>
+		<action name="ADRecord_SubPrio_TwoWay"/>
+		<action name="ADRecord_SubPrioDual_TwoWay"/>
 		<action name="ADEnDisable"/>
 		<action name="ADSelectTarget"/>
 		<action name="ADSelectPreviousTarget"/>

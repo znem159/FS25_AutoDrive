@@ -13,6 +13,10 @@
 		<text name="input_ADRecord_Dual"							text="AD: 2-Weg aufzeichnen" />
 		<text name="input_ADRecord_SubPrio"							text="AD: Nebenstrecke aufzeichnen" />
 		<text name="input_ADRecord_SubPrioDual"						text="AD: Nebenstrecke 2-Weg aufzeichnen" />
+		<text name="input_ADRecord_TwoWay"							text="AD: Aufzeichnen 2 Fahrtrichtungen gleichzeitig" />
+		<text name="input_ADRecord_Dual_TwoWay"						text="AD: 2-Weg aufzeichnen 2 Fahrtrichtungen gleichzeitig" />
+		<text name="input_ADRecord_SubPrio_TwoWay"					text="AD: Nebenstrecke aufzeichnen 2 Fahrtrichtungen gleichzeitig" />
+		<text name="input_ADRecord_SubPrioDual_TwoWay"				text="AD: Nebenstrecke 2-Weg aufzeichnen 2 Fahrtrichtungen gleichzeitig" />
 		<text name="input_ADSelectTarget"							text="AD: Ziel wählen" />
 		<text name="input_ADSelectPreviousTarget"					text="AD: Vorheriges Ziel wählen" />
 		<text name="input_AD_Speed_up"								text="AD: Geschwindigkeit erhöhen" />
@@ -270,7 +274,7 @@
 		<text name="gui_ad_RecordWhileNotInVehicle"					text="Aufnahme ohne Fahrer" />
 		<text name="gui_ad_RecordWhileNotInVehicle_tooltip"			text="AutoDrive wird die Aufnahme nicht beenden, wenn der Fahrer das Fahrzeug verlässt.  Diese Einstellung wird absichtlich nicht gespeichert!" />
 		<text name="gui_ad_RecordTwoRoads"							text="Aufnahme beider Fahrtrichtungen" />
-		<text name="gui_ad_RecordTwoRoads_tooltip"					text="Es werden gleichzeitig beide Fahrtrichtungen aufgezeichnet mit wählbarem Versatz 0.1 .. 5m für Rechtsverkehr / -0.1 .. -5m für Linksverkehr. Rückwärts fahren deaktiviert die Aufnahme! Diese Einstellung wird absichtlich nicht gespeichert!" />
+		<text name="gui_ad_RecordTwoRoads_tooltip"					text="Es werden gleichzeitig beide Fahrtrichtungen aufgezeichnet mit wählbarem Versatz 0.1 .. 5m für Rechtsverkehr / -0.1 .. -5m für Linksverkehr. Rückwärts fahren deaktiviert die Aufnahme!" />
 		<text name="gui_ad_settingsPage_title"						text="Einstellungen - AutoDrive" />
 		<text name="gui_ad_userSettingsPage_title"					text="Benutzereinstellungen - AutoDrive" />
 		<text name="gui_ad_vehicleSettingsPage_title"				text="Fahrzeugeinstellungen - AutoDrive" />

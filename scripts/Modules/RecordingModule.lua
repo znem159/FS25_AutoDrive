@@ -20,30 +20,37 @@ function ADRecordingModule:new(vehicle)
 end
 
 function ADRecordingModule:reset()
+    self.isDual = false
     self.isSubPrio = false
+    self.isTwoWay = false
     self.trailerCount = 0
-    self.isSubPrio = false
     self.flags = 0
     self.isRecording = false
     self.isRecordingReverse = false
     self.drivingReverse = false
-    self.isDual = false
     self.lastWp = nil
     self.secondLastWp = nil
     self.lastWp2 = nil -- 2 road recording
     self.secondLastWp2 = nil -- 2 road recording
-    self.isRecordingTwoRoads = false
 end
 
-function ADRecordingModule:start(dual, subPrio)
+function ADRecordingModule:start(dual, subPrio, twoWay)
     self.isDual = dual
     self.isSubPrio = subPrio
+    self.isTwoWay = twoWay
     self.vehicle:stopAutoDrive()
-    self.isRecordingTwoRoads = AutoDrive.getSetting("RecordTwoRoads") ~= 0
-    if self.isRecordingTwoRoads and self.vehicle.ad.ADLeftNode then
-        setTranslation(self.vehicle.ad.ADLeftNode, AutoDrive.getSetting("RecordTwoRoads"), 0, 0)
-        setTranslation(self.vehicle.ad.ADRightNode, -AutoDrive.getSetting("RecordTwoRoads"), 0, 0)
-        AutoDriveMessageEvent.sendNotification(self.vehicle, ADMessagesManager.messageTypes.INFO, "$l10n_gui_ad_RecordTwoRoads;", 1000)
+
+    if self.isTwoWay then
+        if AutoDrive.getSetting("RecordTwoRoads") == 0 then
+            -- disable recording if twoWay selected but no distance selected
+            self.vehicle.ad.stateModule:disableCreationMode()
+            AutoDriveMessageEvent.sendNotification(self.vehicle, ADMessagesManager.messageTypes.ERROR, "$l10n_gui_ad_RecordTwoRoads;", 1000)
+            return
+        elseif self.vehicle.ad.ADRightNode then
+            setTranslation(self.vehicle.ad.ADLeftNode, AutoDrive.getSetting("RecordTwoRoads"), 0, 0)
+            setTranslation(self.vehicle.ad.ADRightNode, -AutoDrive.getSetting("RecordTwoRoads"), 0, 0)
+            AutoDriveMessageEvent.sendNotification(self.vehicle, ADMessagesManager.messageTypes.INFO, "$l10n_gui_ad_RecordTwoRoads;", 1000)
+        end
     end
 
     local startNodeId, _ = self.vehicle:getClosestWayPoint()
@@ -56,20 +63,20 @@ function ADRecordingModule:start(dual, subPrio)
     local rearOffset = -2
 
     self.drivingReverse = (self.vehicle.lastSpeedReal * self.vehicle.movingDirection) < 0
-    local firstNode, secondNode = self:getRecordingPoints()
+    local firstNode, secondNode = self:getRecordingNodes()
     local x1, y1, z1 = getWorldTranslation(firstNode)
     if self.drivingReverse then
         -- no 2 road recording in reverse driving
-        self.isRecordingTwoRoads = false
+        self.isTwoWay = false
         x1, y1, z1 = AutoDrive.localToWorld(self.vehicle, 0, 0, rearOffset, self.vehicle.ad.specialDrivingModule:getReverseNode())
     end
     self.lastWp = ADGraphManager:recordWayPoint(x1, y1, z1, false, false, self.drivingReverse, 0, self.flags)
-    if self.isRecordingTwoRoads and secondNode then
+    if self.isTwoWay and secondNode then
         local x2, y2, z2 = getWorldTranslation(secondNode)
         self.lastWp2 = ADGraphManager:recordWayPoint(x2, y2, z2, false, false, self.drivingReverse, 0, self.flags)
     end
 
-    if not self.isRecordingTwoRoads and AutoDrive.getSetting("autoConnectStart") then
+    if not self.isTwoWay and AutoDrive.getSetting("autoConnectStart") then
         -- no autoconnect for 2 road recording
         if startNode ~= nil then
             if ADGraphManager:getDistanceBetweenNodes(startNodeId, self.lastWp.id) < 12 then
@@ -79,11 +86,11 @@ function ADRecordingModule:start(dual, subPrio)
     end
     self.isRecording = true
     self.isRecordingReverse = self.drivingReverse
-    self.wasRecordingTwoRoads = self.isRecordingTwoRoads
+    self.wasRecordingTwoRoads = self.isTwoWay
 end
 
 function ADRecordingModule:stop()
-    if not (self.isRecordingTwoRoads or self.wasRecordingTwoRoads ~= self.isRecordingTwoRoads) and AutoDrive.getSetting("autoConnectEnd") then
+    if self.isRecording and not (self.isTwoWay or self.wasRecordingTwoRoads ~= self.isTwoWay) and AutoDrive.getSetting("autoConnectEnd") then
         -- no autoconnect for 2 road recording or if changed between single and two road recording
         if self.lastWp ~= nil then
             local targetId = ADGraphManager:findMatchingWayPointForVehicle(self.vehicle)
@@ -106,7 +113,7 @@ function ADRecordingModule:updateTick(dt, isActiveForInput, isActiveForInputIgno
         return
     end
 
-    local firstNode, secondNode = self:getRecordingPoints()
+    local firstNode, secondNode = self:getRecordingNodes()
     local diffX, diffY, diffZ = AutoDrive.worldToLocal(self.vehicle, self.lastWp.x, self.lastWp.y, self.lastWp.z, firstNode)
     self.drivingReverse = self.isRecordingReverse
     if self.isRecordingReverse and (diffZ < -1) then
@@ -114,16 +121,10 @@ function ADRecordingModule:updateTick(dt, isActiveForInput, isActiveForInputIgno
     elseif not self.isRecordingReverse and (diffZ > 1) then
         self.drivingReverse = true
     end
-    self.isRecordingTwoRoads = AutoDrive.getSetting("RecordTwoRoads") ~= 0
-    if self.wasRecordingTwoRoads ~= self.isRecordingTwoRoads then
-        -- disable recording if changed between single and two road recording
-        self.vehicle.ad.stateModule:disableCreationMode()
-        AutoDriveMessageEvent.sendNotification(self.vehicle, ADMessagesManager.messageTypes.ERROR, "$l10n_gui_ad_RecordTwoRoads;", 1000)
-        return
-    end
-    if self.isRecordingTwoRoads then
-        if self.drivingReverse then
-            -- no 2 road recording in reverse driving - stop recording
+
+    if self.isTwoWay then
+        if self.drivingReverse or (self.wasRecordingTwoRoads and AutoDrive.getSetting("RecordTwoRoads") == 0) then
+            -- no 2 road recording in reverse driving or distance set to 0 - stop recording
             self.vehicle.ad.stateModule:disableCreationMode()
             AutoDriveMessageEvent.sendNotification(self.vehicle, ADMessagesManager.messageTypes.ERROR, "$l10n_gui_ad_RecordTwoRoads;", 1000)
             return
@@ -135,14 +136,15 @@ function ADRecordingModule:updateTick(dt, isActiveForInput, isActiveForInputIgno
         -- 1 road recording
         self:singleRecording()
     end
-    self.wasRecordingTwoRoads = self.isRecordingTwoRoads
+    self.wasRecordingTwoRoads = self.isTwoWay
 end
 
 function ADRecordingModule:singleRecording()
     local rearOffset = -2
     local vehicleX, _, vehicleZ = getWorldTranslation(self.vehicle.components[1].node)
     local reverseX, _, reverseZ = AutoDrive.localToWorld(self.vehicle, 0, 0, rearOffset, self.vehicle.ad.specialDrivingModule:getReverseNode())
-    local x, y, z = getWorldTranslation(self:getRecordingPoints())
+    local firstNode, secondNode = self:getRecordingNodes()
+    local x, y, z = getWorldTranslation(firstNode)
 
     if self.drivingReverse then
         x, y, z = AutoDrive.localToWorld(self.vehicle, 0, 0, rearOffset, self.vehicle.ad.specialDrivingModule:getReverseNode())
@@ -207,7 +209,7 @@ function ADRecordingModule:singleRecording()
 end
 
 function ADRecordingModule:twoRoadRecording()
-    local firstNode, secondNode = self:getRecordingPoints()
+    local firstNode, secondNode = self:getRecordingNodes()
 
     self.speedMatchesRecording = (self.vehicle.lastSpeedReal * self.vehicle.movingDirection) > 0
     self.steeringAngle = math.deg(self.vehicle.rotatedTime)
@@ -275,12 +277,12 @@ end
 function ADRecordingModule:update(dt)
 end
 
-function ADRecordingModule:getRecordingPoints()
+function ADRecordingModule:getRecordingNodes()
     local firstNode = self.vehicle.components[1].node
     local secondNode = nil
     if self.drivingReverse then
         firstNode = self.vehicle.ad.specialDrivingModule:getReverseNode()
-    elseif self.isRecordingTwoRoads and self.vehicle.ad.ADLeftNode then
+    elseif self.isTwoWay and self.vehicle.ad.ADRightNode then
         firstNode = self.vehicle.ad.ADRightNode
         secondNode = self.vehicle.ad.ADLeftNode
         setTranslation(self.vehicle.ad.ADRightNode, -AutoDrive.getSetting("RecordTwoRoads"), 0, 0)

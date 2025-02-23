@@ -674,7 +674,6 @@ function AutoDrive:onPostAttachImplement(attachable, inputJointDescIndex, jointD
         local angle = math.abs(AutoDrive.angleBetween({x = vx, z = vz}, {x = cx, z = cz}))
 
         if angle > 100 then
-            AutoDrive.debugMsg(self, "AutoDrive:onPostAttachImplement isRotatedAttached")
             -- attachable is rotated attached - use sensors from vehicle
             attachable.ad.sensors = nil
             attachable.ad.isReverseAttached = true

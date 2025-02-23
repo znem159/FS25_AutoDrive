@@ -37,6 +37,10 @@
         <slice id="input_record_3" uvs="528px 528px 128px 128px"/>
         <slice id="input_record_4" uvs="660px 528px 128px 128px"/>
         <slice id="input_record_5" uvs="792px 528px 128px 128px"/>
+        <slice id="input_record_6" uvs="1px 1070px 128px 128px"/>
+        <slice id="input_record_7" uvs="131px 1070px 128px 128px"/>
+        <slice id="input_record_8" uvs="263px 1070px 128px 128px"/>
+        <slice id="input_record_9" uvs="394px 1070px 128px 128px"/>
         <slice id="input_removeMapMarker_1" uvs="924px 528px 128px 128px"/>
         <slice id="input_removeWaypoint_1" uvs="1056px 528px 128px 128px"/>
         <slice id="input_routesManager_1" uvs="1188px 528px 128px 128px"/>
