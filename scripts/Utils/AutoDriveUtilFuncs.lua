@@ -117,7 +117,8 @@ function AutoDrive.getVehicleMaxSpeed(vehicle)
     -- 255 is the max value to prevent errors with MP sync
     if vehicle ~= nil and vehicle.spec_motorized ~= nil and vehicle.spec_motorized.motor ~= nil then
         local motor = vehicle.spec_motorized.motor
-        return math.min(motor:getMaximumForwardSpeed() * 3.6, 255)
+        local maxSpeed = math.max(motor:getMaximumForwardSpeed() * 3.6, motor:getMaximumBackwardSpeed() * 3.6)
+        return math.min(maxSpeed, 255)
     end
     return 255
 end
