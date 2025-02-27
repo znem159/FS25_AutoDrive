@@ -92,8 +92,8 @@
 		<text name="AD_lalt_for_deletion"							text="Bal ALT törlés" />
 		<text name="AD_lshift_for_reverse"							text="Bal SHIFT szállító törlése" />
 		<text name="gui_ad_Setting"									text="AutoDrive - Beállítás" />
-		<text name="gui_ad_collisionHeigth"							text="Ütközés érzékelés" />
-		<text name="gui_ad_collisionHeigth_tooltip"					text="Beállítás az ütközés érzékelésére a jármű előtt. Ha vezetés közben nem észlel más járműveket, csökkentse lépésről lépésre. (Alapértelmezett 2m)" />
+		<text name="gui_ad_collisionHeigth"							text="Ütközés érzékelés magassága" />
+		<text name="gui_ad_collisionHeigth_tooltip"					text="Meghatározza az ütközés érzékelés magasságát a jármű előtt. Ha vezetés közben nem észlel más járműveket, csökkentse lépésről lépésre. (Alapértelmezett 2m)" />
 		<text name="gui_ad_blinkValue"								text="Irányjelző bekapcsolása automatikus" />
 		<text name="gui_ad_blinkValue_tooltip"						text="Kormányállás az irányjelző fények automatikus engedélyezéséhez. (0 = az irányjelző fény automatikusan kikapcsol)" />
 		<text name="gui_ad_pipe_offset"								text="Cső eltolás" />
