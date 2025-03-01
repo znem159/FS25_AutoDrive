@@ -355,8 +355,12 @@ function AutoDrive:onReadStream(streamId, connection)
     for i = 1, count do
         local settingName = streamReadString(streamId)
         local value = streamReadUInt16(streamId)
-        self.ad.settings[settingName].current = value
-        self.ad.settings[settingName].new = value
+        if self.ad.settings[settingName] == nil then
+            Logging.warning("[AutoDrive] AutoDrive:onReadStream() encountered unknown setting " .. tostring(settingName))
+        else
+            self.ad.settings[settingName].current = value
+            self.ad.settings[settingName].new = value
+        end
     end
 
     self.ad.stateModule:readStream(streamId)
