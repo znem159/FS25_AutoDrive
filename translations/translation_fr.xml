@@ -97,6 +97,7 @@
 		<text name="gui_ad_blinkValue"								text="Clignotant automatique" />
 		<text name="gui_ad_blinkValue_tooltip"						text="Angle de braquage pour activer automatiquement les clignotants. (0 = clignotants désactivés)" />
 		<text name="gui_ad_pipe_offset"								text="Décalage de la goulotte" />
+		<text name="gui_ad_pipe_offset_tooltip"						text="Additional offset applied to the detected pipe position" />
 		<text name="gui_ad_followDistance"							text="Distance de moissonneuse" />
 		<text name="gui_ad_followDistance_tooltip"					text="Distance depuis l'arrière de la moissonneuse lorsqu'elle est suivie." />
 		<text name="gui_ad_lookahead_turning"						text="Distance de détection (virage)" />

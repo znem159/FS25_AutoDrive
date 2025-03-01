@@ -97,6 +97,7 @@
 		<text name="gui_ad_blinkValue"								text="Frecce automatiche" />
 		<text name="gui_ad_blinkValue_tooltip"						text="Angolo di sterzata per attivare automaticamente le frecce. (0 = indicatore di direzione automatico disattivato)" />
 		<text name="gui_ad_pipe_offset"								text="Distanza dal tubo" />
+		<text name="gui_ad_pipe_offset_tooltip"						text="Additional offset applied to the detected pipe position" />
 		<text name="gui_ad_followDistance"							text="Distanza mietitrebbia" />
 		<text name="gui_ad_followDistance_tooltip"					text="Distanza mantenuta dalla mietitrebbia quando la si segue" />
 		<text name="gui_ad_lookahead_turning"						text="Distanza d'avanti (sterzata)" />

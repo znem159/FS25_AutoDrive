@@ -97,6 +97,7 @@
 		<text name="gui_ad_blinkValue"								text="Intermitentes automáticos" />
 		<text name="gui_ad_blinkValue_tooltip"						text="Ángulo de giro para activar los intermitentes automáticamente. (0 = intermitentes desactivados)." />
 		<text name="gui_ad_pipe_offset"								text="Desplazamiento respecto al tubo de descarga" />
+		<text name="gui_ad_pipe_offset_tooltip"						text="Additional offset applied to the detected pipe position" />
 		<text name="gui_ad_followDistance"							text="Distancia de la cosechadora" />
 		<text name="gui_ad_followDistance_tooltip"					text="La distancia que se mantiene de la cosechadora cuando se sigue por detrás" />
 		<text name="gui_ad_lookahead_turning"						text="Distancia de detección delantera (giros)" />

@@ -97,6 +97,7 @@
 		<text name="gui_ad_blinkValue"								text="自動轉向燈" />
 		<text name="gui_ad_blinkValue_tooltip"						text="自動啟用轉向燈的轉向角度。 (0 = 轉向燈自動停用)" />
 		<text name="gui_ad_pipe_offset"								text="伸出螺旋鉆" />
+		<text name="gui_ad_pipe_offset_tooltip"						text="Additional offset applied to the detected pipe position" />
 		<text name="gui_ad_followDistance"							text="收割機距離" />
 		<text name="gui_ad_followDistance_tooltip"					text="跟隨收割機後端時保持距離" />
 		<text name="gui_ad_lookahead_turning"						text="前視距離（轉彎）" />

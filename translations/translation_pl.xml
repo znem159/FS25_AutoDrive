@@ -97,6 +97,7 @@
 		<text name="gui_ad_blinkValue"								text="Automatyczne kierunkowskazy" />
 		<text name="gui_ad_blinkValue_tooltip"						text="Kąt skrętu przy jakim kierunkowskazy się aktywują automatycznie. (0 = automatyczne kierunkowskazy wyłączone)" />
 		<text name="gui_ad_pipe_offset"								text="Przesunięcie rury" />
+		<text name="gui_ad_pipe_offset_tooltip"						text="Additional offset applied to the detected pipe position" />
 		<text name="gui_ad_followDistance"							text="Odległość od kombajnu" />
 		<text name="gui_ad_followDistance_tooltip"					text="Odległość utrzymywana od kombajnu w czasie podążania za nim" />
 		<text name="gui_ad_lookahead_turning"						text="Odległość patrzenia w przód (skręcanie)" />

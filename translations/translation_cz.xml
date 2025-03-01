@@ -97,6 +97,7 @@
 		<text name="gui_ad_blinkValue"								text="Blinkry automaticky" />
 		<text name="gui_ad_blinkValue_tooltip"						text="Úhel řízení pro automatické zapnutí blinkrů. (0 = automatická deaktivace směrových světel)" />
 		<text name="gui_ad_pipe_offset"								text="Odstup od kombajnu" />
+		<text name="gui_ad_pipe_offset_tooltip"						text="Additional offset applied to the detected pipe position" />
 		<text name="gui_ad_followDistance"							text="Vzdálenost kombajnu" />
 		<text name="gui_ad_followDistance_tooltip"					text="Udržujte vzdálenost od konce kombajnu" />
 		<text name="gui_ad_lookahead_turning"						text="Kontola vpřed" />
