@@ -97,6 +97,7 @@
 		<text name="gui_ad_blinkValue"								text="Вказівник поворотів" />
 		<text name="gui_ad_blinkValue_tooltip"						text="Кут повороту керма для вмикання сигналу повороту (0 = автоматичне увімкнення вимкнено)." />
 		<text name="gui_ad_pipe_offset"								text="Зміщення труби" />
+		<text name="gui_ad_pipe_offset_tooltip"						text="Additional offset applied to the detected pipe position" />
 		<text name="gui_ad_followDistance"							text="Відстань до комбайну" />
 		<text name="gui_ad_followDistance_tooltip"					text="Відстань до комбайну під час руху за ним позаду." />
 		<text name="gui_ad_lookahead_turning"						text="Дивитися під час повороту на" />

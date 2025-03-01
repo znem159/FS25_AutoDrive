@@ -97,6 +97,7 @@
 		<text name="gui_ad_blinkValue"								text="Ligar luz automático" />
 		<text name="gui_ad_blinkValue_tooltip"						text="Ângulo de direção para ativar as luzes de direção automaticamente. (0 = acender luz automática desativada)" />
 		<text name="gui_ad_pipe_offset"								text="Deslocamento do tubo" />
+		<text name="gui_ad_pipe_offset_tooltip"						text="Additional offset applied to the detected pipe position" />
 		<text name="gui_ad_followDistance"							text="Distância colheitadeira" />
 		<text name="gui_ad_followDistance_tooltip"					text="Manter distância aoseguir a colheitadeira" />
 		<text name="gui_ad_lookahead_turning"						text="distância a frente (virar)" />

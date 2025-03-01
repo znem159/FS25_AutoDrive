@@ -97,6 +97,7 @@
 		<text name="gui_ad_blinkValue"								text="Piscas automáticos" />
 		<text name="gui_ad_blinkValue_tooltip"						text="Ângulo de direção para permitir que os piscas liguem automaticamente. (0 = pisca automático desativado)" />
 		<text name="gui_ad_pipe_offset"								text="Offset do tubo" />
+		<text name="gui_ad_pipe_offset_tooltip"						text="Additional offset applied to the detected pipe position" />
 		<text name="gui_ad_followDistance"							text="Distância da ceifeira" />
 		<text name="gui_ad_followDistance_tooltip"					text="Distância a manter da ceifeira quando seguindo atrás dela" />
 		<text name="gui_ad_lookahead_turning"						text="Distância à frente (virar)" />

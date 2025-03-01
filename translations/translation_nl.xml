@@ -97,6 +97,7 @@
 		<text name="gui_ad_blinkValue"								text="Automatische knipperlicht" />
 		<text name="gui_ad_blinkValue_tooltip"						text="Automatische knipperlicht bij stuurhoek. (0 = Automatische knipperlicht uitgeschakeld)" />
 		<text name="gui_ad_pipe_offset"								text="Afstand pijp" />
+		<text name="gui_ad_pipe_offset_tooltip"						text="Additional offset applied to the detected pipe position" />
 		<text name="gui_ad_followDistance"							text="Afstand oogstmachine" />
 		<text name="gui_ad_followDistance_tooltip"					text="Afstand tot de oogstmachine wanneer deze van achter gevold wordt" />
 		<text name="gui_ad_lookahead_turning"						text="Vooruitkijk afstand (Sturen)" />

@@ -97,6 +97,7 @@
 		<text name="gui_ad_blinkValue"								text="自动转向灯" />
 		<text name="gui_ad_blinkValue_tooltip"						text="自动启用转向灯的转向角度。 (0 = 转向灯自动停用)" />
 		<text name="gui_ad_pipe_offset"								text="伸出螺旋钻" />
+		<text name="gui_ad_pipe_offset_tooltip"						text="Additional offset applied to the detected pipe position" />
 		<text name="gui_ad_followDistance"							text="收割机距离" />
 		<text name="gui_ad_followDistance_tooltip"					text="跟随收割机后端时保持距离" />
 		<text name="gui_ad_lookahead_turning"						text="前视距离（转弯）" />

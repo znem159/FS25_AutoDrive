@@ -97,6 +97,7 @@
 		<text name="gui_ad_blinkValue"								text="Automatisk Blinklys" />
 		<text name="gui_ad_blinkValue_tooltip"						text="Vinklen for at aktivere blinklys. (0 = automatisk blinklyst deaktiveret)" />
 		<text name="gui_ad_pipe_offset"								text="Rør forskydning" />
+		<text name="gui_ad_pipe_offset_tooltip"						text="Additional offset applied to the detected pipe position" />
 		<text name="gui_ad_followDistance"							text="Distance til tærsker" />
 		<text name="gui_ad_followDistance_tooltip"					text="Distance holdes fra tærsker, når du følger den bageste ende" />
 		<text name="gui_ad_lookahead_turning"						text="Se fremad distance (turn)" />

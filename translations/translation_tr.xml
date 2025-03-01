@@ -97,6 +97,7 @@
 		<text name="gui_ad_blinkValue"								text="Otomatik Sinyal" />
 		<text name="gui_ad_blinkValue_tooltip"						text="Sinyalleri otomatik olarak etkinleştirmek için direksiyon açısı. (0 = dönüş ışığı otomatik devre dışı bırakılır)" />
 		<text name="gui_ad_pipe_offset"								text="Boru Ofseti" />
+		<text name="gui_ad_pipe_offset_tooltip"						text="Additional offset applied to the detected pipe position" />
 		<text name="gui_ad_followDistance"							text="Biçerdöver mesafesi" />
 		<text name="gui_ad_followDistance_tooltip"					text="Biçerdöverin arkasını takip ederken uzak durulan mesafe" />
 		<text name="gui_ad_lookahead_turning"						text="İleriye bakma mesafesi (dönüş)" />

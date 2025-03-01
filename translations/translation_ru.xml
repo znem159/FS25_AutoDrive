@@ -97,6 +97,7 @@
 		<text name="gui_ad_blinkValue"								text="Указатели поворотов" />
 		<text name="gui_ad_blinkValue_tooltip"						text="Угол поворота рулевого колеса для автовключения сигналов поворота (0 = автовключение отключено)." />
 		<text name="gui_ad_pipe_offset"								text="Смещение трубы" />
+		<text name="gui_ad_pipe_offset_tooltip"						text="Additional offset applied to the detected pipe position" />
 		<text name="gui_ad_followDistance"							text="Расстояние до комбайна" />
 		<text name="gui_ad_followDistance_tooltip"					text="Расстояние до комбайна при следовании за ним сзади." />
 		<text name="gui_ad_lookahead_turning"						text="Просматривать при повороте на" />
