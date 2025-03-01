@@ -1,5 +1,5 @@
 AutoDrive = {}
-AutoDrive.version = "3.0.0.4"
+AutoDrive.version = "3.0.0.5-RC1"
 
 AutoDrive.directory = g_currentModDirectory
 
@@ -534,6 +534,7 @@ function AutoDrive:init()
 	AutoDrivePlaceableData:setActive(true)
 	AutoDrive:setValidSupportedFillTypesForAllVehicles()
 	AutoDrive:autostartHelpers()
+	AutoDrive.shownErrors = {}
 end
 
 function AutoDrive:saveSavegame()

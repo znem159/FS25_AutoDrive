@@ -13,6 +13,10 @@
 		<text name="input_ADRecord_Dual"							text="AD: Añadir ruta 2 direcciones" />
 		<text name="input_ADRecord_SubPrio"							text="AD: Añadir ruta secundaria" />
 		<text name="input_ADRecord_SubPrioDual"						text="AD: Añadir ruta secundaria 2 direcciones" />
+		<text name="input_ADRecord_TwoWay"							text="AD: Record 2 routes simultanous 1 direction normal" />
+		<text name="input_ADRecord_Dual_TwoWay"						text="AD: Record 2 routes simultanous 2 way route" />
+		<text name="input_ADRecord_SubPrio_TwoWay"					text="AD: Record 2 routes simultanous 1 direction secondary route" />
+		<text name="input_ADRecord_SubPrioDual_TwoWay"				text="AD: Record 2 routes simultanous 2 way secondary route" />
 		<text name="input_ADSelectTarget"							text="AD: Seleccionar siguiente destino" />
 		<text name="input_ADSelectPreviousTarget"					text="AD: Seleccionar destino anterior" />
 		<text name="input_AD_Speed_up"								text="AD: Aumentar velocidad" />
@@ -259,8 +263,8 @@
 		<text name="gui_ad_pathfinder_custom"						text="AutoDrive personalizado" />
 		<text name="gui_ad_enableRoutesManagerOnDediServer"			text="Administrador de rutas en servidor" />
 		<text name="gui_ad_enableRoutesManagerOnDediServer_tooltip"	text="Habilitar el administrador de rutas en servidores dedicados" />
-		<text name="gui_ad_autostartHelpers"						text="Autostart helpers" />
-		<text name="gui_ad_autostartHelpers_tooltip"				text="Automatically restart active helpers after loading a savegame" />
+		<text name="gui_ad_autostartHelpers"						text="Autoiniciar Ayudantes" />
+		<text name="gui_ad_autostartHelpers_tooltip"				text="Inicia automáticamente los ayudantes activos después de cargar un juego de guardado" />
 		<text name="gui_ad_detectSwath"								text="Detección de hileras" />
 		<text name="gui_ad_detectSwath_tooltip"						text="Decide si las hileras se detectan como fruta en el campo." />
 		<text name="gui_ad_colorAssignmentMode"						text="Colores personalizados" />
@@ -269,6 +273,8 @@
 		<text name="gui_ad_FoldImplements_tooltip"					text="AutoDrive esperará a que las herramientas se plieguen antes de comenzar" />
 		<text name="gui_ad_RecordWhileNotInVehicle"					text="Grabar sin conductor" />
 		<text name="gui_ad_RecordWhileNotInVehicle_tooltip"			text="AutoDrive seguirá grabando si el conductor abandona el vehículo" />
+		<text name="gui_ad_RecordTwoRoads"							text="Record both drive directions" />
+		<text name="gui_ad_RecordTwoRoads_tooltip"					text="Both driving directions will be recorded the same time with selectable offset 0.1 .. 5m for left hand drive / -0.1 .. -5m for right hand drive. Driving reverse wil stop recording!" />
 		<text name="gui_ad_settingsPage_title"						text="Ajustes - AutoDrive" />
 		<text name="gui_ad_userSettingsPage_title"					text="Ajustes de usuario - AutoDrive" />
 		<text name="gui_ad_vehicleSettingsPage_title"				text="Ajustes del vehículo - AutoDrive" />

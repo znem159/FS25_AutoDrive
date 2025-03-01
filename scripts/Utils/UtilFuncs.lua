@@ -1317,11 +1317,9 @@ function AutoDrive.driveInDirection(self, dt, steeringAngleLimit, acceleration, 
 	AutoDrive.debugTransformMsg(self, "AutoDrive:driveInDirection(%f, %f), limit=%f, slow_limit=%f, accel=%f, slow_accel=%f, allowed=%s, forwards=%s, speed=%f, slowdown=%f", 
 	                            lx, lz, steeringAngleLimit, slowAngleLimit, acceleration, slowAcceleration, tostring(allowedToDrive), tostring(moveForwards), maxSpeed, slowDownFactor)
 	if AutoDrive.isReverseDriving(self) then
-		-- AIVehicleUtil.driveInDirection does not handle steering while reverse driving correctly
-		AIVehicleUtil.driveToPoint(self, dt, acceleration, allowedToDrive, moveForwards, lx*10, lz*10, maxSpeed, false)
-	else
-		AIVehicleUtil.driveInDirection(self, dt, steeringAngleLimit, acceleration, slowAcceleration, slowAngleLimit, allowedToDrive, moveForwards, lx, lz, maxSpeed, slowDownFactor)
+		steeringAngleLimit = -steeringAngleLimit
 	end
+	AIVehicleUtil.driveInDirection(self, dt, steeringAngleLimit, acceleration, slowAcceleration, slowAngleLimit, allowedToDrive, moveForwards, lx, lz, maxSpeed, slowDownFactor)
 end
 
 function AutoDrive.debugTransformMsg(vehicle, debugText, ...)
