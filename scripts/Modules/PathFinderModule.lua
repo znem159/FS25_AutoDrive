@@ -2216,9 +2216,11 @@ function PathFinderModule:checkSlopeAngle(x1, z1, x2, z2)
     angleLeft = math.atan(math.abs(terrainLeft - terrain1) / lengthLeft)
     angleRight = math.atan(math.abs(terrainRight - terrain1) / lengthRight)
 
-    local waterY = g_currentMission.environmentAreaSystem:getWaterYAtWorldPosition(worldPosMiddle.x, terrain3, worldPosMiddle.z) or -200
+    local waterY1 = g_currentMission.environmentAreaSystem:getWaterYAtWorldPosition(x1, terrain1, z1) or -200
+    local waterY2 = g_currentMission.environmentAreaSystem:getWaterYAtWorldPosition(x2, terrain2, z2) or -200
+    local waterY3 = g_currentMission.environmentAreaSystem:getWaterYAtWorldPosition(worldPosMiddle.x, terrain3, worldPosMiddle.z) or -200
 
-    local belowGroundLevel = terrain1 < waterY - 0.5 or terrain2 < waterY - 0.5 or terrain3 < waterY - 0.5
+    local belowGroundLevel = terrain1 < waterY1 - 0.5 or terrain2 < waterY2 - 0.5 or terrain3 < waterY3 - 0.5
 
     if belowGroundLevel then
         if self.vehicle ~= nil and self.vehicle.ad ~= nil and self.vehicle.ad.debug ~= nil and AutoDrive.debugVehicleMsg ~= nil then
