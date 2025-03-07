@@ -1108,13 +1108,13 @@ AutoDrive.settings.remainingDriveTimeInterval = {
     isUserSpecific = false
 }
 
-AutoDrive.settings.BSMRange = {
+AutoDrive.settings.UMRange = {
     values = { 0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 120, 140, 160, 180, 200, 250, 300, 400, 500},
     texts = { "gui_ad_off", "10", "20", "30", "40", "50", "60", "70", "80", "90", "100", "120", "140", "160", "180", "200", "250", "300", "400", "500"},
-    default = 6,
-    current = 6,
-    text = "gui_ad_BSMRange",
-    tooltip = "gui_ad_BSMRange_tooltip",
+    default = 1,
+    current = 1,
+    text = "gui_ad_UMRange",
+    tooltip = "gui_ad_UMRange_tooltip",
     translate = true,
     isVehicleSpecific = false
 }

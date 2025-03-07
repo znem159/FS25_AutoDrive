@@ -251,7 +251,7 @@ function AutoDrive:loadMap(name)
 
 	ADMultipleTargetsManager:load()
 
-	ADBunkerSiloManager:load()
+	ADUnloadManager:load()
 
 	AutoDrivePlaceableData:load()
 
@@ -703,7 +703,7 @@ function AutoDrive:update(dt)
 	if g_server ~= nil then
 		ADHarvestManager:update(dt)
 		ADScheduler:update(dt)
-		ADBunkerSiloManager:update(dt)
+		ADUnloadManager:update(dt)
 	end
 
 	ADMessagesManager:update(dt)

@@ -119,6 +119,8 @@
 		<text name="gui_ad_FS19"									text="FS 19" />
 		<text name="gui_ad_BSMRange"								text="Silážní jáma: manažér rozsahu" />
 		<text name="gui_ad_BSMRange_tooltip"						text="V tomto rozsahu se vozidla do cílového sila bunkru jedno po druhém dostanou na příjezdovou cestu" />
+		<text name="gui_ad_UMRange"									text="Bunker Silo / Unload Manager Range" />
+		<text name="gui_ad_UMRange_tooltip"							text="In this range vehicles to destination bunker silo / same unload destination one by one get driveway" />
 		<text name="ad_bga_init"									text="Inicializace" />
 		<text name="ad_bga_waiting"									text="Čekám na odvozce/jámu" />
 		<text name="ad_bga_active"									text="Aktivní" />

@@ -119,6 +119,8 @@
 		<text name="gui_ad_FS19"									text="FS 19" />
 		<text name="gui_ad_BSMRange"								text="筒仓装载范围" />
 		<text name="gui_ad_BSMRange_tooltip"						text="在这个范围内，车辆一个接一个地到达目的筒仓，进入车道" />
+		<text name="gui_ad_UMRange"									text="Bunker Silo / Unload Manager Range" />
+		<text name="gui_ad_UMRange_tooltip"							text="In this range vehicles to destination bunker silo / same unload destination one by one get driveway" />
 		<text name="ad_bga_init"									text="初始化" />
 		<text name="ad_bga_waiting"									text="等待拖车/筒仓" />
 		<text name="ad_bga_active"									text="活跃" />

@@ -1,23 +1,25 @@
-ADBunkerSiloManager = {}
+ADUnloadManager = {}
 
-ADBunkerSiloManager.UPDATE_TIME = 1000
+ADUnloadManager.UPDATE_TIME = 1000
 
-function ADBunkerSiloManager:load()
+function ADUnloadManager:load()
     self.bunkerSilos = {}
+    self.unloadingTargets = {}
     self.lastUpdateTime = 0
 end
 
-function ADBunkerSiloManager:update(dt)
+function ADUnloadManager:update(dt)
 
-    if g_time < self.lastUpdateTime + ADBunkerSiloManager.UPDATE_TIME then
+    if g_time < self.lastUpdateTime + ADUnloadManager.UPDATE_TIME then
         return
     end
     self.lastUpdateTime = g_time
-    local bsmRange = AutoDrive.getSetting("BSMRange") or 0
-    if bsmRange == 0 then
+    local range = AutoDrive.getSetting("UMRange") or 0
+    if range == 0 then
         return
     end
 
+    -- first check for bunker silos
     self.bunkerSilos = {}
     for _, bunkerSilo in pairs(ADTriggerManager.getUnloadTriggers()) do
         if bunkerSilo and bunkerSilo.bunkerSiloArea then
@@ -33,6 +35,7 @@ function ADBunkerSiloManager:update(dt)
             if vehicle and vehicle.ad and vehicle.ad.stateModule and vehicle.ad.stateModule:isActive() then
                 if self:isDestinationInBunkerSilo(vehicle, bunkerSilo) then
                     table.insert(bunkerSilo.adVehicles, vehicle)
+                    vehicle.ad.isUnloadManaged = true
                     local vehicleX, _, vehicleZ = getWorldTranslation(vehicle.components[1].node)
                     local triggerX, _, triggerZ = ADTriggerManager.getTriggerPos(bunkerSilo)
                     if triggerX ~= nil then
@@ -53,7 +56,7 @@ function ADBunkerSiloManager:update(dt)
             local triggerX, _, triggerZ = ADTriggerManager.getTriggerPos(bunkerSilo)
             if triggerX ~= nil then
                 local distance = MathUtil.vector2Length(triggerX - vehicleX, triggerZ - vehicleZ)
-                if distance < bsmRange then
+                if distance < range then
                     local fillLevel, _, _, _ = AutoDrive.getAllFillLevels(AutoDrive.getAllUnits(vehicle))
                     if AutoDrive.isVehicleInBunkerSiloArea(vehicle)
                     or bunkerSilo.adClosestVehicle == vehicle
@@ -68,9 +71,56 @@ function ADBunkerSiloManager:update(dt)
             end
         end
     end
+
+    self.unloadingTargets = {}
+    for _, vehicle in pairs(AutoDrive.getAllVehicles()) do
+        if vehicle and vehicle.ad and vehicle.ad.stateModule and vehicle.ad.stateModule:isActive() and not vehicle.ad.isUnloadManaged then
+            -- check vehicles not going into bunker silo
+            local destination = nil
+            if vehicle.ad.stateModule:getMode() == AutoDrive.MODE_PICKUPANDDELIVER or vehicle.ad.stateModule:getMode() == AutoDrive.MODE_UNLOAD then
+                destination = vehicle.ad.stateModule:getSecondWayPoint()
+            elseif vehicle.ad.stateModule:getMode() == AutoDrive.MODE_DELIVERTO then
+                destination = vehicle.ad.stateModule:getFirstWayPoint()
+            end
+            if destination and destination > 0 then
+                if self.unloadingTargets[destination] == nil then
+                    self.unloadingTargets[destination] = {}
+                end
+                local wayPoint = ADGraphManager:getWayPointById(destination)
+                local vehicleX, _, vehicleZ = getWorldTranslation(vehicle.components[1].node)
+                local distance = MathUtil.vector2Length(wayPoint.x - vehicleX, wayPoint.z - vehicleZ)
+                if distance < range then
+                    local fillLevel, _, _, _ = AutoDrive.getAllFillLevels(AutoDrive.getAllUnits(vehicle))
+                    if fillLevel > 0.1 then
+                        if self.unloadingTargets[destination][1] == nil or (self.unloadingTargets[destination][1] and distance < self.unloadingTargets[destination][1].minDistance) then
+                            table.insert(self.unloadingTargets[destination], 1, vehicle)
+                            self.unloadingTargets[destination][1].minDistance = distance
+                        else
+                            table.insert(self.unloadingTargets[destination], vehicle)
+                        end
+                    end
+                end
+            end
+        end
+        if vehicle and vehicle.ad and vehicle.ad.stateModule then
+            -- reset the state
+            vehicle.ad.isUnloadManaged = false
+        end
+    end
+    if table.count(self.unloadingTargets) > 0 then
+        for destination, _ in pairs(self.unloadingTargets) do
+            if table.count(self.unloadingTargets[destination]) > 1 then
+                for i, vehicle in pairs(self.unloadingTargets[destination]) do
+                    if i > 1 and vehicle and vehicle.ad and vehicle.ad.drivePathModule then
+                        vehicle.ad.drivePathModule:setPaused()
+                    end
+                end
+            end
+        end
+    end
 end
 
-function ADBunkerSiloManager:isDestinationInBunkerSilo(vehicle, bunkerSilo)
+function ADUnloadManager:isDestinationInBunkerSilo(vehicle, bunkerSilo)
     local network = ADGraphManager:getWayPoints()
     local destination = nil
     local destinationInBunkerSilo = false

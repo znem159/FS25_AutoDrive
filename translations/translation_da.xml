@@ -119,6 +119,8 @@
 		<text name="gui_ad_FS19"									text="FS 19" />
 		<text name="gui_ad_BSMRange"								text="Plan Silo Manager længde" />
 		<text name="gui_ad_BSMRange_tooltip"						text="In this range vehicles to destination bunker silo one by one get driveway" />
+		<text name="gui_ad_UMRange"									text="Bunker Silo / Unload Manager Range" />
+		<text name="gui_ad_UMRange_tooltip"							text="In this range vehicles to destination bunker silo / same unload destination one by one get driveway" />
 		<text name="ad_bga_init"									text="Indlæser" />
 		<text name="ad_bga_waiting"									text="Venter på Trailer/Silo" />
 		<text name="ad_bga_active"									text="Aktiv" />

@@ -119,6 +119,8 @@
 		<text name="gui_ad_FS19"									text="FS 19" />
 		<text name="gui_ad_BSMRange"								text="Gestão da área do silo de Bunker" />
 		<text name="gui_ad_BSMRange_tooltip"						text="Nesta área, os veículos em direção ao silo de bunker, fazem a rota um por um" />
+		<text name="gui_ad_UMRange"									text="Bunker Silo / Unload Manager Range" />
+		<text name="gui_ad_UMRange_tooltip"							text="In this range vehicles to destination bunker silo / same unload destination one by one get driveway" />
 		<text name="ad_bga_init"									text="Inicializando" />
 		<text name="ad_bga_waiting"									text="Aguardando carreta/silo" />
 		<text name="ad_bga_active"									text="Ativo" />
