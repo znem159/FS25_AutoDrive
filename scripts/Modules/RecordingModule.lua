@@ -32,7 +32,6 @@ function ADRecordingModule:reset()
     self.secondLastWp = nil
     self.lastWp2 = nil -- 2 road recording
     self.secondLastWp2 = nil -- 2 road recording
-    self.isRecordingOppositeDriveDirection = false
 end
 
 function ADRecordingModule:start(dual, subPrio, twoWay)
@@ -40,9 +39,8 @@ function ADRecordingModule:start(dual, subPrio, twoWay)
     self.isSubPrio = subPrio
     self.isTwoWay = twoWay
     self.vehicle:stopAutoDrive()
-    self.isRecordingOppositeDriveDirection = AutoDrive.getSetting("RecordOppositeDriveDirectionOffset") ~= 0
     if self.isTwoWay then
-        if self.isRecordingOppositeDriveDirection and (math.abs(AutoDrive.getSetting("RecordDriveDirectionOffset") - AutoDrive.getSetting("RecordOppositeDriveDirectionOffset")) < 0.1) then
+        if math.abs(AutoDrive.getSetting("RecordDriveDirectionOffset") - AutoDrive.getSetting("RecordOppositeDriveDirectionOffset")) < 0.1 then
             -- disable recording if twoWay selected but distance difference between them < 0.1
             self.vehicle.ad.stateModule:disableCreationMode()
             AutoDriveMessageEvent.sendNotification(self.vehicle, ADMessagesManager.messageTypes.ERROR, "$l10n_gui_ad_RecordOppositeDriveDirectionOffset;", 1000)
@@ -72,10 +70,8 @@ function ADRecordingModule:start(dual, subPrio, twoWay)
     if self.isTwoWay then
         if math.abs(AutoDrive.getSetting("RecordDriveDirectionOffset") - AutoDrive.getSetting("RecordOppositeDriveDirectionOffset")) >= 0.1 then
             self.lastWp = ADGraphManager:recordWayPoint(x1, y1, z1, false, false, self.drivingReverse, 0, self.flags)
-            if self.isRecordingOppositeDriveDirection and secondNode then
-                local x2, y2, z2 = getWorldTranslation(secondNode)
-                self.lastWp2 = ADGraphManager:recordWayPoint(x2, y2, z2, false, false, self.drivingReverse, 0, self.flags)
-            end
+            local x2, y2, z2 = getWorldTranslation(secondNode)
+            self.lastWp2 = ADGraphManager:recordWayPoint(x2, y2, z2, false, false, self.drivingReverse, 0, self.flags)
         end
     else
         self.lastWp = ADGraphManager:recordWayPoint(x1, y1, z1, false, false, self.drivingReverse, 0, self.flags)
@@ -133,16 +129,7 @@ function ADRecordingModule:updateTick(dt, isActiveForInput, isActiveForInputIgno
     end
 
     if self.isTwoWay then
-        if self.drivingReverse
-            or (self.wasRecordingTwoRoads
-                and
-                (
-                    (self.isRecordingOppositeDriveDirection ~= (AutoDrive.getSetting("RecordOppositeDriveDirectionOffset") ~= 0))
-                    or
-                    (self.isRecordingOppositeDriveDirection and (math.abs(AutoDrive.getSetting("RecordDriveDirectionOffset") - AutoDrive.getSetting("RecordOppositeDriveDirectionOffset")) < 0.1))
-                )
-            )
-        then
+        if self.drivingReverse or (self.wasRecordingTwoRoads and math.abs(AutoDrive.getSetting("RecordDriveDirectionOffset") - AutoDrive.getSetting("RecordOppositeDriveDirectionOffset")) < 0.1) then
             -- no 2 road recording in reverse driving, changed offsets improper or distance set to 0 - stop recording
             self.vehicle.ad.stateModule:disableCreationMode()
             AutoDriveMessageEvent.sendNotification(self.vehicle, ADMessagesManager.messageTypes.ERROR, "$l10n_gui_ad_RecordOppositeDriveDirectionOffset;", 1000)
@@ -235,9 +222,7 @@ function ADRecordingModule:twoRoadRecording()
         self.steeringAngle = math.deg(self.vehicle.rotatedTime)
 
         self.lastWp, self.secondLastWp = self:recordTwoRoad(firstNode, self.lastWp, self.secondLastWp, true)
-        if self.isRecordingOppositeDriveDirection then
-            self.lastWp2, self.secondLastWp2 = self:recordTwoRoad(secondNode, self.lastWp2, self.secondLastWp2, false)
-        end
+        self.lastWp2, self.secondLastWp2 = self:recordTwoRoad(secondNode, self.lastWp2, self.secondLastWp2, false)
     end
 end
 

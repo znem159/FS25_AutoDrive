@@ -279,7 +279,7 @@
 		<text name="gui_ad_RecordDriveDirectionOffset"					text="Aufzeichnung Versatz Fahrtrichtung" />
 		<text name="gui_ad_RecordDriveDirectionOffset_tooltip"			text="verschiebt die Aufzeichnung vom Fahrzeug nach links (-0.1 .. -5m) oder rechts (0.1 .. 5m). Rückwärts fahren deaktiviert die Aufnahme!" />
 		<text name="gui_ad_RecordOppositeDriveDirectionOffset"			text="Aufzeichnung Versatz Gegenrichtung" />
-		<text name="gui_ad_RecordOppositeDriveDirectionOffset_tooltip"	text="verschiebt die Aufzeichnung vom Fahrzeug nach links (-0.1 .. -5m) oder rechts (0.1 .. 5m), Aus - keine Aufzeichnung. Rückwärts fahren deaktiviert die Aufnahme!" />
+		<text name="gui_ad_RecordOppositeDriveDirectionOffset_tooltip"	text="verschiebt die Aufzeichnung vom Fahrzeug nach links (-0.1 .. -5m) oder rechts (0.1 .. 5m). Rückwärts fahren deaktiviert die Aufnahme!" />
 		<text name="gui_ad_settingsPage_title"							text="Einstellungen - AutoDrive" />
 		<text name="gui_ad_userSettingsPage_title"						text="Benutzereinstellungen - AutoDrive" />
 		<text name="gui_ad_vehicleSettingsPage_title"					text="Fahrzeugeinstellungen - AutoDrive" />
