@@ -1359,7 +1359,7 @@ AutoDrive.settings.RecordDriveDirectionOffset = {
         "-0.3 m",
         "-0.2 m",
         "-0.1 m",
-        "gui_ad_off",
+        "0 m",
         "0.1 m",
         "0.2 m",
         "0.3 m",
