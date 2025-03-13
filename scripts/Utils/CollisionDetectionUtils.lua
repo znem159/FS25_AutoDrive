@@ -331,7 +331,7 @@ function AutoDrive.getVehicleDimensions(vehicle, force)
     vehicle.ad.adDimensions.width, vehicle.ad.adDimensions.length = vehicle.size.width, vehicle.size.length
     if force then -- only measure if force true
         vehicle.ad.adDimensions = {}
-        if vehicle.ad.adDimSensor == nil then
+        if vehicle.ad.adDimSensor == nil or vehicle.ad.adDimSensor.vehicle ~= vehicle then
             vehicle.ad.adDimSensor = ADDimensionSensor:new(vehicle)
         end
         if vehicle.ad.adDimSensor and vehicle.ad.adDimSensor.getRealVehicleDimensions then
