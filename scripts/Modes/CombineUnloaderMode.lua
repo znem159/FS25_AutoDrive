@@ -328,6 +328,7 @@ function CombineUnloaderMode:assignToHarvester(harvester)
         self.vehicle.ad.taskModule:abortCurrentTask()
         self.combine = harvester
         self.combineRootVehicle = self.combine:getRootVehicle()
+        AutoDrive.validateCachedPipeData(harvester)
 
         -- if combine has extended pipe, aim for that. Otherwise DriveToVehicle and choose from there
         if AutoDrive.isPipeOut(self.combine) then
