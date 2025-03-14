@@ -1434,7 +1434,7 @@ end
 
 function PathFinderModule:checkForFruitTypeInArea(cell, fruitTypeIndex, corners)
     local fruitValue = 0
-    fruitValue, _, _, _ = FSDensityMapUtil.getFruitArea(fruitTypeIndex, corners[1].x, corners[1].z, corners[2].x, corners[2].z, corners[3].x, corners[3].z, true, true)
+    fruitValue = AutoDrive.getFruitValue(fruitTypeIndex, corners[1].x, corners[1].z, corners[2].x, corners[2].z, corners[3].x, corners[3].z)
 
     if (self.fruitToCheck == nil or self.fruitToCheck < 1) and (fruitValue > PathFinderModule.MIN_FRUIT_VALUE) then
         self.fruitToCheck = fruitTypeIndex
@@ -2065,9 +2065,9 @@ function PathFinderModule:smoothResultingPPPath_Refined()
                                 local fruitTypeIndex = fruitType.index
                                 local fruitValue = 0
                                 if self.isSecondChasingVehicle then
-                                    fruitValue, _, _, _ = FSDensityMapUtil.getFruitArea(fruitTypeIndex, cornerWideX, cornerWideZ, cornerWide2X, cornerWide2Z, cornerWide4X, cornerWide4Z, true, true)
+                                    fruitValue = AutoDrive.getFruitValue(fruitTypeIndex, cornerWideX, cornerWideZ, cornerWide2X, cornerWide2Z, cornerWide4X, cornerWide4Z)
                                 else
-                                    fruitValue, _, _, _ = FSDensityMapUtil.getFruitArea(fruitTypeIndex, cornerX, cornerZ, corner2X, corner2Z, corner4X, corner4Z, true, true)
+                                    fruitValue = AutoDrive.getFruitValue(fruitTypeIndex, cornerX, cornerZ, corner2X, corner2Z, corner4X, corner4Z)
                                 end
                                 hasCollision = hasCollision or (fruitValue > 50)
                                 if hasCollision then
@@ -2088,9 +2088,9 @@ function PathFinderModule:smoothResultingPPPath_Refined()
                         if self.fruitToCheck ~= nil then
                             local fruitValue = 0
                             if self.isSecondChasingVehicle then
-                                fruitValue, _, _, _ = FSDensityMapUtil.getFruitArea(self.fruitToCheck, cornerWideX, cornerWideZ, cornerWide2X, cornerWide2Z, cornerWide4X, cornerWide4Z, true, true)
+                                fruitValue = AutoDrive.getFruitValue(self.fruitToCheck, cornerWideX, cornerWideZ, cornerWide2X, cornerWide2Z, cornerWide4X, cornerWide4Z)
                             else
-                                fruitValue, _, _, _ = FSDensityMapUtil.getFruitArea(self.fruitToCheck, cornerX, cornerZ, corner2X, corner2Z, corner4X, corner4Z, true, true)
+                                fruitValue = AutoDrive.getFruitValue(self.fruitToCheck, cornerX, cornerZ, corner2X, corner2Z, corner4X, corner4Z)
                             end
                             hasCollision = hasCollision or (fruitValue > 50)
 
