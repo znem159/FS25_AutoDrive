@@ -83,6 +83,7 @@ function AutoDrive.registerFunctions(vehicleType)
     SpecializationUtil.registerFunction(vehicleType, "generateUTurn", AutoDrive.generateUTurn)
     SpecializationUtil.registerFunction(vehicleType, "getCanAdTakeControl", AutoDrive.getCanAdTakeControl) -- see ExternalInterface.lua
     SpecializationUtil.registerFunction(vehicleType, "adGetRemainingDriveTime", AutoDrive.adGetRemainingDriveTime)
+    SpecializationUtil.registerFunction(vehicleType, "adHasHarvesterAvailableUnloader", ADHarvestManager.adHasHarvesterAvailableUnloader)
 end
 
 function AutoDrive.registerEvents(vehicleType)
